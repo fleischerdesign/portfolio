@@ -20,13 +20,13 @@
         </div>
         <div class="md:ml-auto lg:mx-auto">
           <h3 class="text-xl font-medium pb-4">Contact</h3>
-          <p>+49 123 456789</p>
-          <p>hello@fleischer.design</p>
-          <p>17036 Neubrandenburg</p>
+          <p class="text-neutral-400">+49 123 456789</p>
+          <p class="text-neutral-400">hello@fleischer.design</p>
+          <p class="text-neutral-400">17036 Neubrandenburg</p>
         </div>
         <div class="ml-0 lg:ml-auto">
           <h3 class="text-xl font-medium pb-4">Sitemap</h3>
-          <ul class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-y-2 gap-x-6">
+          <ul class="text-neutral-400 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-y-2 gap-x-6">
             <li><a>Home</a></li>
             <li><a>Store</a></li>
             <li><a>Projects</a></li>
@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <p class="text-neutral-500 text-sm container mx-auto pt-4">&copy; 2025 Philipp Fleischer. All rights reserved.
+    <p class="text-neutral-600 text-sm container mx-auto pt-4">&copy; 2025 Philipp Fleischer. All rights reserved.
     </p>
   </footer>
 </template>
