@@ -1,5 +1,5 @@
 <template>
-  <footer class="py-5 gap-1 bg-gradient-to-br from-neutral-900 to-neutral-800 border-t border-neutral-700">
+  <footer class="py-5 bg-gradient-to-br from-neutral-900 to-neutral-800 border-t border-neutral-700">
     <div class="container mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="flex flex-col gap-4">
@@ -18,22 +18,22 @@
             </Button>
           </div>
         </div>
-        <div>
+        <div class="md:ml-auto lg:mx-auto">
           <h3 class="text-xl font-medium pb-4">Contact</h3>
           <p>+49 123 456789</p>
           <p>hello@fleischer.design</p>
           <p>17036 Neubrandenburg</p>
         </div>
-        <div>
+        <div class="ml-0 lg:ml-auto">
           <h3 class="text-xl font-medium pb-4">Sitemap</h3>
-          <ul class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+          <ul class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-y-2 gap-x-6">
             <li><a>Home</a></li>
             <li><a>Store</a></li>
             <li><a>Projects</a></li>
             <li><a>Blog</a></li>
             <li><a>About</a></li>
             <li><a>Resume</a></li>
-            <li><a>Impressum</a></li>
+            <li><a>Legal</a></li>
           </ul>
         </div>
       </div>
