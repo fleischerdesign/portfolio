@@ -11,28 +11,28 @@
       <p class="text-neutral-400 w-full lg:w-2/3">I’m an aspiring Computer Science Expert who thrives on clean code,
         seamless user experiences, and innovative solutions that bring ideas to life.</p>
       <div class="flex gap-3 w-full">
-        <Button href="#">
+        <Button href="https://linkedin.com/" target="_blank">
           <Icon name="mdi:linkedin" size="30" />
         </Button>
-        <Button>
+        <Button href="https://github.com/fleischerdesign" target="_blank">
           <Icon name="mdi:github" size="30" />
         </Button>
-        <Button>
+        <Button href="https://instagram.com/fleischer.design/" target="_blank">
           <Icon name="mdi:instagram" size="30" />
         </Button>
         <a class="flex my-auto" href="#overview"><Icon name="mdi:arrow-down" size="30" class="animate-pulse hover:animate-none" /></a>
       </div>
     </div>
   </div>
-  <div id="overview" class="grid grid-cols-3 gap-3 mb-16">
-    <Card class="flex flex-col col-span-2 gap-1">
+  <div id="overview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-16">
+    <Card class="flex flex-col col-span-1 md:col-span-2 gap-1">
       <CardContainer class="flex-col">
         <h3 class="text-3xl font-medium">GitHub Activity</h3>
         <p class="text-neutral-400">{{ subtitle }}</p>
         <ContributionChart :contributions="contributions" @displayedWeeksCountChanged="onDisplayedWeeksCountChanged" />
       </CardContainer>
     </Card>
-    <Card class="!p-0 overflow-hidden h-full group">
+    <Card class="!p-0 overflow-hidden min-h-60 group">
       <div
         class="!bg-[url(/img/profile.jpg)] bg-center bg-cover w-full h-full opacity-80 hover:opacity-100 transition group-hover:scale-110">
       </div>

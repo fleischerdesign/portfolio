@@ -3,6 +3,9 @@ import colors from 'tailwindcss/colors'
 
 export default <Partial<Config>>{
     theme: {
+    container: {
+      padding: "2rem"
+    },
     extend: {
       dropShadow: {
         'emit': '0px 0px 10px #38812E',
