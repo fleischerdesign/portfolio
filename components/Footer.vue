@@ -27,13 +27,13 @@
         <div class="ml-0 lg:ml-auto">
           <h3 class="text-xl font-medium pb-4">Sitemap</h3>
           <ul class="text-neutral-400 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-y-2 gap-x-6">
-            <li><a>Home</a></li>
-            <li><a>Store</a></li>
-            <li><a>Projects</a></li>
-            <li><a>Blog</a></li>
-            <li><a>About</a></li>
-            <li><a>Resume</a></li>
-            <li><a>Legal</a></li>
+            <li><NuxtLink to="/">Home</NuxtLink></li>
+            <li><NuxtLink to="/store">Store</NuxtLink></li>
+            <li><NuxtLink to="/projects">Projects</NuxtLink></li>
+            <li><NuxtLink to="/blog">Blog</NuxtLink></li>
+            <li><NuxtLink to="/about">About</NuxtLink></li>
+            <li><NuxtLink to="/resume">Resume</NuxtLink></li>
+            <li><NuxtLink to="/imprint">Legal</NuxtLink></li>
           </ul>
         </div>
       </div>
