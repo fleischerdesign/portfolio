@@ -20,11 +20,13 @@
         <Button href="https://instagram.com/fleischer.design/" target="_blank">
           <Icon name="mdi:instagram" size="30" />
         </Button>
-        <a class="flex my-auto" href="#overview"><Icon name="mdi:arrow-down" size="30" class="animate-pulse hover:animate-none" /></a>
+        <a class="flex my-auto" href="#overview">
+          <Icon name="mdi:arrow-down" size="30" class="animate-pulse hover:animate-none" />
+        </a>
       </div>
     </div>
   </div>
-  <div id="overview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-16">
+  <div id="overview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-24">
     <Card class="flex flex-col col-span-1 md:col-span-2 gap-1">
       <CardContainer class="flex-col">
         <h3 class="text-3xl font-medium">GitHub Activity</h3>
@@ -89,7 +91,7 @@
       </CardContainer>
     </Card>
   </div>
-  <div class="mb-16">
+  <div class="mb-24">
     <div class="flex flex-col gap-4">
       <h1 class="text-5xl font-semibold">Projects</h1>
       <p class="text-neutral-400 w-full lg:w-2/4">Explore a collection of my web development projects, ranging from
@@ -132,10 +134,12 @@
       </Card>
     </div>
   </div>
-<div class="mb-16">
+  <div class="mb-24">
     <div class="flex flex-col gap-4">
       <h1 class="text-5xl font-semibold">Posts</h1>
-      <p class="text-neutral-400 w-full lg:w-2/4">Discover a collection of my blog posts where I share learnings, experiences, and practical advice related to Coding, Hacking, UI & UX. Join me as I explore and document my journey in Computer Science.</p>
+      <p class="text-neutral-400 w-full lg:w-2/4">Discover a collection of my blog posts where I share learnings,
+        experiences, and practical advice related to Coding, Hacking, UI & UX. Join me as I explore and document my
+        journey in Computer Science.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
       <Card class="group overflow-hidden !flex-col">
@@ -173,10 +177,11 @@
       </Card>
     </div>
   </div>
-<div class="">
+  <div class="mb-24">
     <div class="flex flex-col gap-4">
       <h1 class="text-5xl font-semibold">Contact</h1>
-      <p class="text-neutral-400 w-full lg:w-2/4">Get in touch! Whether you have a project in mind, want to explore ideas, or simply want to connect, I'd love to hear from you.</p>
+      <p class="text-neutral-400 w-full lg:w-2/4">Get in touch! Whether you have a project in mind, want to explore
+        ideas, or simply want to connect, I'd love to hear from you.</p>
     </div>
   </div>
 </template>
