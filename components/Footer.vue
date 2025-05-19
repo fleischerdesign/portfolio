@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <p class="text-neutral-600 text-sm container mx-auto pt-4">&copy; 2025 Philipp Fleischer. All rights reserved.
+    <p class="text-neutral-600 text-sm container mx-auto pt-4 pb-16">&copy; 2025 Philipp Fleischer. All rights reserved.
     </p>
   </footer>
 </template>
