@@ -4,7 +4,13 @@ import colors from 'tailwindcss/colors'
 export default <Partial<Config>>{
     theme: {
     container: {
-      padding: "2rem"
+      center: true,
+      padding: {
+        DEFAULT: "1rem",
+        sm: "1rem",
+        md: "3rem",
+        lg: "6rem"
+      }
     },
     extend: {
       dropShadow: {
@@ -14,7 +20,7 @@ export default <Partial<Config>>{
         primary: {
             700: "#2B2B2B",
             800: "#1A1A1A",
-            900: "#151515",
+            900: "#121212",
         },
         secondary: "rgba(64, 64, 64, 0.60)",
       },
