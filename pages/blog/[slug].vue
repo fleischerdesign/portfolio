@@ -22,8 +22,10 @@
         </div>
       </div>
     </div>
-    <div class="container overflow-hidden my-8 prose prose-neutral prose-invert max-w-none">
+    <div class="container">
+    <div class="my-8 prose prose-neutral prose-invert max-w-none">
       <ContentRenderer v-if="post" :value="post" />
+    </div>
     </div>
   </article>
 </template>
