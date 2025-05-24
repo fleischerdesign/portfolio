@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="min-h-screen flex items-center 2xl:min-h-[600px]">
     <div class="flex flex-col items-start gap-4">
       <Chip>
@@ -21,7 +22,7 @@
           <Icon name="mdi:instagram" size="30" />
         </Button>
         <a class="flex my-auto" href="#overview">
-          <Icon name="mdi:arrow-down" size="30" class="animate-pulse hover:animate-none" />
+          <Icon name="mage:arrow-down" size="30" class="animate-pulse hover:animate-none" />
         </a>
       </div>
     </div>
@@ -183,6 +184,7 @@
       <p class="text-neutral-400 w-full lg:w-2/4">Get in touch! Whether you have a project in mind, want to explore
         ideas, or simply want to connect, I'd love to hear from you.</p>
     </div>
+  </div>
   </div>
 </template>
 
