@@ -13,6 +13,9 @@ export default <Partial<Config>>{
       }
     },
     extend: {
+      grayscale: {
+        50: '50%',
+      },
       dropShadow: {
         'emit': '0px 0px 10px #38812E',
       },
