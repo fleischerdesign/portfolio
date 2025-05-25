@@ -143,7 +143,7 @@
       </div>
       <div class="mb-24">
         <div class="flex flex-col gap-4">
-          <h1 class="text-5xl font-semibold">Posts</h1>
+          <h1 class="text-5xl font-semibold">Blog</h1>
           <p class="text-neutral-400 w-full lg:w-2/4">Discover a collection of my blog posts where I share learnings,
             experiences, and practical advice related to Coding, Hacking, UI & UX. Join me as I explore and document my
             journey in Computer Science.</p>
