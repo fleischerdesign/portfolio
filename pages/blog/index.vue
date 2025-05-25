@@ -10,19 +10,7 @@
                     journey in Computer Science.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
-                <Card v-for="(post, index) in data" :key="index" class="group overflow-hidden !flex-col">
-                    <NuxtLink :to="`/blog/${post?.slug}`" class="w-full h-full">
-                        <div class="h-60 w-full overflow-hidden relative">
-                            <div class="absolute b-0">test</div>
-                            <img :src="post?.image?.src"
-                                class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition" />
-                        </div>
-                        <CardContainer class="flex-col">
-                            <h3 class="text-3xl font-medium">{{ post?.title }}</h3>
-                            <p class="text-neutral-400">{{ post?.description }}</p>
-                        </CardContainer>
-                    </NuxtLink>
-                </Card>
+                <BlogPostCard v-for="(post, index) in data" :key="index" :post="post" />
             </div>
         </div>
     </div>
@@ -32,7 +20,7 @@
 const route = useRoute()
 const { data } = await useAsyncData(route.path, () => {
     return queryCollection('posts')
-        .select('title', 'date', 'description', "image", "slug")
+        .select('title', 'date', 'description', "image", "slug", "readingTime")
         .all()
 })
 </script>
