@@ -7,7 +7,7 @@ tags:
   - school
   - blabla
 image:
-  src: /img/erik-mclean-FoB-ImUjLqE-unsplash.jpg
+  src: /img/cdc-IFpQtennlj8-unsplash.jpg
   alt: ""
 readingTime: 1234
 author:
