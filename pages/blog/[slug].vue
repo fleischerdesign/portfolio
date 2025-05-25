@@ -2,7 +2,7 @@
   <article>
     <div>
       <div class="min-h-screen relative flex items-center 2xl:min-h-[600px]">
-        <img :src="post?.image?.src" class="w-full h-full absolute z-0 object-cover grayscale-50 opacity-50"
+        <img :src="post?.image?.src" class="w-full h-full absolute z-0 object-cover opacity-40"
           :alt="post?.title || 'Post Background'" />
         <div class="container flex flex-col items-start gap-4 relative z-1">
           <div class="flex items-center gap-2 drop-shadow-md">
@@ -35,21 +35,5 @@ const route = useRoute()
 const { data: post } = await useAsyncData(() => {
   return queryCollection("posts").where("slug", "=", route.params.slug).first()
 })
-
-const formattedDate = computed(() => {
-  if (!post.value?.date) {
-    return '' // Fallback, falls kein Datum vorhanden ist
-  }
-
-  const date = new Date(post.value.date)
-
-  // Wähle deine bevorzugten Optionen
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long', // 'long' (Mai), 'short' (Mai), 'numeric' (5)
-    day: 'numeric' // 'numeric' (22), '2-digit' (22)
-  };
-
-  return new Intl.DateTimeFormat('de-DE', options).format(date)
-})
+const formattedDate = computed(() => formatDate(post.value?.date))
 </script>

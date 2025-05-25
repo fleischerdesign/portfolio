@@ -96,7 +96,7 @@
       </div>
       <div class="mb-24">
         <div class="flex flex-col gap-4">
-          <h1 class="text-5xl font-semibold">Projects</h1>
+          <NuxtLink to="/projects" class="self-start"><h1 class="text-5xl font-semibold">Projects</h1></NuxtLink>
           <p class="text-neutral-400 w-full lg:w-2/4">Explore a collection of my web development projects, ranging from
             dynamic e-commerce sites to custom tools. Each showcases my expertise in creating functional and
             user-friendly
@@ -143,53 +143,18 @@
       </div>
       <div class="mb-24">
         <div class="flex flex-col gap-4">
-          <h1 class="text-5xl font-semibold">Blog</h1>
+          <NuxtLink to="/blog" class="self-start"><h1 class="text-5xl font-semibold">Blog</h1></NuxtLink>
           <p class="text-neutral-400 w-full lg:w-2/4">Discover a collection of my blog posts where I share learnings,
             experiences, and practical advice related to Coding, Hacking, UI & UX. Join me as I explore and document my
             journey in Computer Science.</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
-          <Card class="group overflow-hidden !flex-col">
-            <div class="h-60 w-full overflow-hidden">
-              <img src="/img/profile.jpg"
-                class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition" />
-            </div>
-            <CardContainer class="flex-col">
-              <h3 class="text-3xl font-medium">Junction</h3>
-              <p class="text-neutral-400">One integration, structured patient data, dedicated support. Minimal
-                operational
-                headaches for users with whatever.</p>
-            </CardContainer>
-          </Card>
-          <Card class="group overflow-hidden !flex-col">
-            <div class="h-60 w-full overflow-hidden">
-              <img src="/img/profile.jpg"
-                class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition" />
-            </div>
-            <CardContainer class="flex-col">
-              <h3 class="text-3xl font-medium">Junction</h3>
-              <p class="text-neutral-400">One integration, structured patient data, dedicated support. Minimal
-                operational
-                headaches for users with whatever.</p>
-            </CardContainer>
-          </Card>
-          <Card class="group overflow-hidden !flex-col">
-            <div class="h-60 w-full overflow-hidden">
-              <img src="/img/profile.jpg"
-                class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition" />
-            </div>
-            <CardContainer class="flex-col">
-              <h3 class="text-3xl font-medium">Junction</h3>
-              <p class="text-neutral-400">One integration, structured patient data, dedicated support. Minimal
-                operational
-                headaches for users with whatever.</p>
-            </CardContainer>
-          </Card>
+          <BlogPostCard v-for="(post, index) in data" :key="index" :post="post" />
         </div>
       </div>
       <div class="mb-24">
         <div class="flex flex-col gap-4">
-          <h1 class="text-5xl font-semibold">Contact</h1>
+          <NuxtLink to="/contact" class="self-start"><h1 class="text-5xl font-semibold">Contact</h1></NuxtLink>
           <p class="text-neutral-400 w-full lg:w-2/4">Get in touch! Whether you have a project in mind, want to explore
             ideas, or simply want to connect, I'd love to hear from you.</p>
         </div>
@@ -198,7 +163,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+const route = useRoute()
+const { data } = await useAsyncData(route.path, () => {
+    return queryCollection('posts')
+        .select('title', 'date', 'description', "image", "slug", "readingTime")
+        .limit(3)
+        .all()
+})
+</script>
+
+<script lang="ts">
 export default {
   data() {
     return {
@@ -237,7 +212,7 @@ export default {
       }
       return contributions;
     },
-    onDisplayedWeeksCountChanged(count) {
+    onDisplayedWeeksCountChanged(count: number) {
       this.displayedWeeks = count;
     },
   },
