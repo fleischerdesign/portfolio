@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container max-w-screen-xl">
     <div>
       <div class="min-h-screen flex items-center 2xl:min-h-[600px]">
         <div class="flex flex-col items-start gap-4">

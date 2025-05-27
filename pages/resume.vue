@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto py-16">
+    <div class="container max-w-screen-xl mx-auto py-16">
         <h1 class="text-4xl font-bold mb-4">Resume</h1>
         <p class="text-lg text-neutral-400 mb-8">
         Welcome to my blog! Here, I share my thoughts, experiences, and insights on various topics related to technology,

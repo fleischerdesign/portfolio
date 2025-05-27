@@ -1,6 +1,6 @@
 <template>
   <footer class="py-5 bg-gradient-to-br from-neutral-900 to-neutral-800 border-t border-neutral-700">
-    <div class="container">
+    <div class="container max-w-screen-xl">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="flex flex-col gap-4">
           <h3 class="text-3xl font-medium">Philipp Fleischer</h3>
@@ -37,6 +37,6 @@
         </div>
       </div>
     </div>
-    <p class="text-neutral-600 text-sm container mx-auto pt-4 pb-16">{{ $t("footer.copyright") }}</p>
+    <p class="text-neutral-600 text-sm container max-w-screen-xl mx-auto pt-4 pb-16">{{ $t("footer.copyright") }}</p>
   </footer>
 </template>

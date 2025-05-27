@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto py-16">
+    <div class="container mx-auto py-16 max-w-screen-xl">
         <div class="flex flex-col gap-4 mb-4">
             <h1 class="text-5xl font-semibold">{{ $t("about.title") }}</h1>
             <p class="text-neutral-400 w-full lg:w-2/3">{{ $t("about.subtitle") }}</p>

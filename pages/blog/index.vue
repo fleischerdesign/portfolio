@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto py-16">
+    <div class="container max-w-screen-xl mx-auto py-16">
         <div class="mb-24">
             <div class="flex flex-col gap-4">
                 <h1 class="text-5xl font-semibold">{{ $t("blog.title") }}</h1>

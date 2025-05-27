@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto py-16">
+    <div class="container max-w-screen-xl mx-auto py-16">
         <h1 class="text-4xl font-bold mb-4">Store</h1>
         <p class="text-lg text-neutral-400 mb-8">
         I’m an aspiring Computer Science Expert who thrives on clean code, seamless user experiences, and innovative
