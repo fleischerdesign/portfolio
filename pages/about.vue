@@ -11,7 +11,7 @@
                     <img src="/img/profile.jpg" class="group-hover:scale-110 transition w-full h-full object-cover" />
                 </div>
             </Card>
-            <Card class="group">
+            <Card hover class="group">
                 <NuxtLink to="#early_life">
                     <CardContainer class="flex flex-col">
                         <div class="flex items-center gap-2">
@@ -27,7 +27,7 @@
                     </CardContainer>
                 </NuxtLink>
             </Card>
-            <Card class="group">
+            <Card hover class="group">
                 <NuxtLink to="#career_path">
                     <CardContainer class="flex flex-col">
                         <div class="flex items-center gap-2">
@@ -43,7 +43,7 @@
                     </CardContainer>
                 </NuxtLink>
             </Card>
-            <Card class="group">
+            <Card hover class="group">
                 <NuxtLink to="#personal_life">
                     <CardContainer class="flex flex-col">
                         <div class="flex items-center gap-2">
@@ -59,7 +59,7 @@
                     </CardContainer>
                 </NuxtLink>
             </Card>
-            <Card class="group">
+            <Card hover class="group">
                 <NuxtLink to="#resume">
                     <CardContainer class="flex flex-col">
                         <div class="flex items-center gap-2">

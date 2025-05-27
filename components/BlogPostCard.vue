@@ -1,5 +1,5 @@
 <template>
-    <Card class="group overflow-hidden !flex-col">
+    <Card hover class="group overflow-hidden !flex-col">
         <NuxtLink :to="$localePath(`/blog/${post?.slug}`)" class="w-full h-full">
             <div class="h-60 w-full overflow-hidden relative">
                 <div

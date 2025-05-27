@@ -82,7 +82,7 @@
             <p class="text-neutral-400">{{ $t("home.overview.statistics.subtitle") }}</p>
           </CardContainer>
         </Card>
-        <Card class="flex flex-col col-span-1">
+        <Card hover class="flex flex-col col-span-1">
           <CardContainer class="flex-col">
             <h3 class="text-3xl font-medium">{{ $t("home.overview.searching.title") }}</h3>
             <p class="text-neutral-400">{{ $t("home.overview.searching.subtitle") }}</p>
@@ -95,7 +95,7 @@
           <p class="text-neutral-400 w-full lg:w-2/3">{{ $t("home.projects.subtitle") }}</p>
         </div>
         <div class="grid grid-cols-1 gap-3 mt-4">
-          <Card class="group h-60 overflow-hidden">
+          <Card hover class="group h-60 overflow-hidden">
             <div class="w-1/3 overflow-hidden">
               <img src="/img/profile.jpg"
                 class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition" />
@@ -107,7 +107,7 @@
                 headaches for users with whatever.</p>
             </CardContainer>
           </Card>
-          <Card class="group h-60 overflow-hidden">
+          <Card hover class="group h-60 overflow-hidden">
             <div class="w-1/3 overflow-hidden">
               <img src="/img/profile.jpg"
                 class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition" />
@@ -119,7 +119,7 @@
                 headaches for users with whatever.</p>
             </CardContainer>
           </Card>
-          <Card class="group h-60 overflow-hidden">
+          <Card hover class="group h-60 overflow-hidden">
             <div class="w-1/3 overflow-hidden">
               <img src="/img/profile.jpg"
                 class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition" />
