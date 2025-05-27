@@ -155,10 +155,12 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+const { locale } = useI18n();
 
 const route = useRoute();
 const { data } = await useAsyncData(route.path, () => {
   return queryCollection('posts')
+    .where('locale', '=', locale.value)
     .select('title', 'date', 'description', "image", "slug", "readingTime")
     .limit(3)
     .all();

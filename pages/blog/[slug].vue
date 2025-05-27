@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="container max-w-screen-xl">
-    <div class="my-8 prose prose-neutral prose-invert max-w-none">
+    <div class="my-8 prose prose-neutral prose-invert max-w-none prose-a:prose-headings:no-underline prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl">
       <ContentRenderer v-if="post" :value="post" />
     </div>
     </div>
@@ -31,9 +31,12 @@
 </template>
 
 <script lang="ts" setup>
+const { locale } = useI18n()
 const route = useRoute()
 const { data: post } = await useAsyncData(() => {
-  return queryCollection("posts").where("slug", "=", route.params.slug).first()
+  return queryCollection("posts")
+  .where('locale', '=', locale.value)
+  .where("slug", "=", route.params.slug).first()
 })
 const formattedDate = computed(() => formatDate(post.value?.date))
 </script>
