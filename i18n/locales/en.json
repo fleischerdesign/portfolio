@@ -1,0 +1,126 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Blog",
+    "projects": "Projects",
+    "store": "Store",
+    "resume": "Resume",
+    "legal": "Legal"
+  },
+  "footer": {
+    "copyright": "© 2025 Philipp Fleischer. All rights reserved.",
+    "contact": "Contact",
+    "sitemap": "Sitemap"
+  },
+  "home": {
+    "hero": {
+      "status": {
+        "programming": "Now programming"
+      },
+      "greeting": "Hi, I'm Philipp Fleischer",
+      "summary": "I’m an aspiring Computer Science Expert who thrives on clean code, seamless user experiences, and innovative solutions that bring ideas to life."
+    },
+    "overview": {
+      "github": {
+        "title": "GitHub Activity",
+        "subtitle": {
+          "year": "Contributions in the last year.",
+          "months": "Contributions in the last {count} months.",
+          "weeks": "Contributions in the last {count} weeks.",
+          "week": "Contributions in the last week.",
+          "overview": "Contribution overview."
+        }
+      },
+      "techstack": {
+        "title": "Tech Stack",
+        "subtitle": "Technologies i’m using."
+      },
+      "statistics": {
+        "title": "Statistics",
+        "subtitle": "Some Numbers about me."
+      },
+      "searching": {
+        "title": "I'm searching!",
+        "subtitle": "Aspiring Application Developer (FIAE) seeking a 6-month internship to: Apply coding skills in real-world projects Collaborate with experienced teams Interested in connecting?"
+      }
+    },
+    "projects": {
+      "title": "Projects",
+      "subtitle": "Explore a collection of my web development projects, ranging from dynamic e-commerce sites to custom tools. Each showcases my expertise in creating functional and user-friendly solutions."
+    },
+    "blog": {
+      "title": "Blog",
+      "subtitle": "Discover a collection of my blog posts where I share learnings, experiences, and practical advice related to Coding, Hacking, UI & UX. Join me as I explore and document my journey in Computer Science."
+    },
+    "contact": {
+      "title": "Contact",
+      "subtitle": "Get in touch! Whether you have a project in mind, want to explore ideas, or simply want to connect, I'd love to hear from you."
+    }
+  },
+  "about": {
+    "title": "About Me",
+    "subtitle": "I’m an aspiring Computer Science Expert who thrives on clean code, seamless user experiences, and innovative solutions that bring ideas to life.",
+    "overview": {
+      "earlyLife": {
+        "title": "Early Life",
+        "subtitle": "From youthful creativity to early fascination with computers – my childhood was a playground for imagination and a blossoming interest in technology."
+      },
+      "careerPath": {
+        "title": "Career Path",
+        "subtitle": "Explore my career trajectory from media design beginnings to my current retraining as an IT Specialist, marked by a constant drive to innovate and excel."
+      },
+      "personalLife": {
+        "title": "Personal Life",
+        "subtitle": "Whether it's a run in the park or experimenting in the kitchen, my personal life is driven by a desire for growth, enjoyment, and staying current with tech trends."
+      },
+      "resume": {
+        "title": "Resume",
+        "subtitle": "A detailed overview of my education, skills, and professional milestones. Click here for my complete resume."
+      }
+    },
+    "earlyLife": {
+      "title": "Early Life",
+      "subtitle": "I was born in Demmin, Germany, and from a very young age, an insatiable curiosity defined me. This drive has pushed me to work hard and explore new horizons throughout my life.",
+      "content": {
+        "paragraph1": "My fascination with computers and technology began incredibly early. At just six years old, I got my first computer, opening up a world of possibilities and interaction that immediately captivated me. I wasn't just interested in the technical side; I was also a highly creative child, spending hours painting, drawing, and letting my imagination run wild.",
+        "paragraph2": "I was fortunate to have an elementary school teacher, Mr. Frank, who shared my enthusiasm for technology. Thanks to him, our classroom was uniquely equipped with numerous computers, which significantly nurtured our understanding and engagement with tech. This early exposure, combined with my inherent curiosity, laid the groundwork for my future.",
+        "paragraph3": "My first foray into coding came at the age of eight. I remember programming my first line of code using AutoIt to automate mechanics in video games. This early experience wasn't just about problem-solving; it was about realizing the incredible potential of technology to bring ideas to life and create new interactions. These foundational years cemented my passion for the digital world and set me on a path of continuous discovery and innovation."
+      }
+    },
+    "careerPath": {
+      "title": "Career Path",
+      "subtitle": "My professional journey has been shaped by a continuous drive to learn, adapt, and build. It's a path that has evolved through various experiences, ultimately leading me to my true passion in web development and IT.",
+      "content": {
+        "paragraph1": "I initially embarked on my career by beginning an apprenticeship as a Media Designer for Digital and Print Media at IT College Putbus on Rügen. This foundational experience provided me with a solid understanding of design principles and digital content creation. Unfortunately, the school's insolvency presented an unexpected turn, requiring me to quickly adapt and seek new opportunities.",
+        "paragraph2": "Undeterred, I continued my apprenticeship at the Designbüro Persch in Hamburg, where I further honed my skills in a practical environment. Seeking to broaden my horizons even more, I later relocated to Rostock to continue my training, where I explored the realm of image and sound, gaining valuable insights into multimedia production.",
+        "paragraph3": "These experiences, while diverse, consistently reinforced my fascination with technology and its application. They built a strong creative and technical foundation, but my true calling lay deeper in the digital infrastructure. This led me to my current endeavor: a retraining program to become an IT Specialist at WBS Training. Here, I'm intensely focused on deepening my programming knowledge, understanding complex systems, and mastering the technologies that power modern applications.",
+        "paragraph4": "My unique background in media design, combined with my rigorous IT specialization, allows me to approach web development with a comprehensive perspective – bridging the gap between aesthetics, user experience, and robust technical implementation. I am constantly eager to apply my evolving skill set to create clean, efficient, and impactful digital solutions."
+      }
+    },
+    "personalLife": {
+      "title": "Personal Life",
+      "subtitle": "Beyond my professional pursuits, my personal life is a vibrant space for creativity, well-being, and continuous growth. It's where I recharge, explore new interests, and deepen my connection with the world around me.",
+      "content": {
+        "paragraph1": "I genuinely enjoy expressing myself creatively, whether through painting, drawing, or other artistic outlets. This passion for creativity extends into my daily life and often influences my problem-solving approach in my professional work.",
+        "paragraph2": "Staying active is also a key part of my routine. I love going for runs and hitting the gym for strength training, finding both physical and mental benefits in pushing my limits. Being in nature is incredibly important to me; whether it's a quiet walk or an invigorating hike, I cherish the moments spent outdoors.",
+        "paragraph3": "My intellectual curiosity isn't limited to technology. I enjoy diving into novels for a good story, but you'll also find me engrossed in non-fiction books, always eager to learn something new. This drive for continuous self-improvement is a core part of who I am.",
+        "paragraph4": "And then there's cooking! I absolutely adore spending time in the kitchen. Asian cuisine holds a special place in my heart, and you can bet there's always a large jar of homemade kimchi in my fridge, just in case – it's my go-to comfort food. This love for food extends to trying new recipes and exploring different culinary traditions.",
+        "paragraph5": "Finally, keeping up with the latest technology trends and news isn't just a professional necessity; it's a genuine personal interest. I love seeing what's new, understanding how it works, and considering its potential impact, all of which feeds back into my passion for web development and innovation."
+      }
+    },
+    "resume": {
+      "title": "Resume",
+      "subtitle": "Dive deeper into my qualifications and accomplishments. This section provides a comprehensive overview of my skills, education, and professional milestones."
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Discover a collection of my blog posts where I share learnings, experiences, and practical advice related to Coding, Hacking, UI & UX. Join me as I explore and document my journey in Computer Science."
+  },
+  "blogPost": {
+    "date": {
+      "on": "on"
+    }
+  }
+}

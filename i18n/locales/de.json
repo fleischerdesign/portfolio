@@ -1,0 +1,126 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "Über mich",
+    "blog": "Blog",
+    "projects": "Projekte",
+    "store": "Store",
+    "resume": "Lebenslauf",
+    "legal": "Impressum"
+  },
+  "footer": {
+    "copyright": "© 2025 Philipp Fleischer. Alle Rechte vorbehalten.",
+    "contact": "Kontakt",
+    "sitemap": "Sitemap"
+  },
+  "home": {
+    "hero": {
+      "status": {
+        "programming": "Am programmieren"
+      },
+      "greeting": "Moin, ich bin Philipp!",
+      "summary": "Als angehender Informatiker lebe ich für sauberen Code, reibungslose Nutzererfahrungen und innovative Lösungen, die Konzepte Wirklichkeit werden lassen."
+    },
+    "overview": {
+      "github": {
+        "title": "GitHub Aktivität",
+        "subtitle": {
+          "year": "Beiträge im letzten Jahr.",
+          "months": "Beiträge in den letzten {count} Monaten.",
+          "weeks": "Beiträge in den letzten {count} Wochen.",
+          "week": "Beiträge in der letzten Woche.",
+          "overview": "Beitragsübersicht."
+        }
+      },
+      "techstack": {
+        "title": "Tech Stack",
+        "subtitle": "Technologien, die ich nutze."
+      },
+      "statistics": {
+        "title": "Statistiken",
+        "subtitle": "Einige Zahlen über mich."
+      },
+      "searching": {
+        "title": "Ich bin auf der Suche!",
+        "subtitle": "Angehender Anwendungsentwickler (FIAE) sucht ein 6-monatiges Praktikum, um: Programmierkenntnisse in realen Projekten anzuwenden; mit erfahrenen Teams zusammenzuarbeiten. Interessiert, sich zu vernetzen?"
+      }
+    },
+    "projects": {
+      "title": "Projekte",
+      "subtitle": "Entdecke eine Auswahl meiner Programmierprojekte, von dynamischen E-Commerce-Sites bis hin zu kleineren Tools. Jedes Projekt zeigt meine Expertise in der Erstellung funktionaler und benutzerfreundlicher Lösungen."
+    },
+    "blog": {
+      "title": "Blog",
+      "subtitle": "Entdecke eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleite mich auf meine Reise in die Informatik."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "subtitle": "Schreib mir was! Egal, ob du ein Projekt im Kopf hast, Ideen austauschen oder einfach nur in Kontakt treten möchtest – ich freue mich darauf, von dir zu hören."
+    }
+  },
+  "about": {
+    "title": "Über mich",
+    "subtitle": "Ich bin ein angehender Informatiker, der sich in der Entwicklung von sauberem Code, nahtlosen Nutzererlebnissen und innovativen Lösungen entfaltet, die Ideen zum Leben erwecken.",
+    "overview": {
+      "earlyLife": {
+        "title": "Frühe Jahre",
+        "subtitle": "Von jugendlicher Kreativität bis zur frühen Faszination für Computer – meine Kindheit war ein Spielplatz für Fantasie und ein aufblühendes Interesse an Technologien."
+      },
+      "careerPath": {
+        "title": "Karriereweg",
+        "subtitle": "Entdecken Sie meinen beruflichen Werdegang von den Anfängen im Mediendesign bis zu meiner aktuellen Umschulung zum IT-Spezialisten, geprägt von einem ständigen Drang zu Innovation."
+      },
+      "personalLife": {
+        "title": "Privatleben",
+        "subtitle": "Ob beim Laufen im Park oder beim Experimentieren in der Küche – mein Privatleben ist geprägt von dem Wunsch nach Wachstum, Genuss und dem Bleiben am Puls der Technologietrends."
+      },
+      "resume": {
+        "title": "Lebenslauf",
+        "subtitle": "Tauche tiefer in meine Qualifikationen und Erfolge ein. Dieser Abschnitt bietet einen umfassenden Überblick über meine Fähigkeiten, Ausbildung und beruflichen Meilensteine."
+      }
+    },
+    "earlyLife": {
+      "title": "Frühe Jahre",
+      "subtitle": "Ich wurde in Demmin, Mecklenburg-Vorpommern, geboren, und von klein auf definierte mich eine unstillbare Neugier. Dieser Antrieb hat mich mein ganzes Leben lang dazu gebracht, hart zu arbeiten und neue Horizonte zu erkunden.",
+      "content": {
+        "paragraph1": "Meine Faszination für Computer und Technologie begann unglaublich früh. Mit nur sechs Jahren bekam ich meinen ersten Computer, der eine Welt voller Möglichkeiten und Interaktionen eröffnete, die mich sofort in ihren Bann zog. Ich interessierte mich nicht nur für die technische Seite; ich war auch ein sehr kreatives Kind, verbrachte Stunden mit Malen, Zeichnen und ließ meiner Fantasie freien Lauf.",
+        "paragraph2": "Ich hatte das Glück, einen Grundschullehrer, Herrn Frank, zu haben, der meine Begeisterung für Technologie teilte. Dank ihm war unser Klassenzimmer einzigartig mit zahlreichen Computern ausgestattet, was unser Verständnis und Engagement für Technik erheblich förderte. Diese frühe Exposition, kombiniert mit meiner angeborenen Neugier, legte den Grundstein für meine Zukunft.",
+        "paragraph3": "Meine erste Berührung mit dem Programmieren hatte ich im Alter von acht Jahren. Ich erinnere mich daran, wie ich meine erste Codezeile mit AutoIt programmierte, um Mechaniken in Videospielen zu automatisieren. Diese frühe Erfahrung ging nicht nur um Problemlösung; es ging darum, das unglaubliche Potenzial der Technologie zu erkennen, Ideen zum Leben zu erwecken und neue Interaktionen zu schaffen. Diese prägenden Jahre festigten meine Leidenschaft für die digitale Welt und setzten mich auf einen Pfad kontinuierlicher Entdeckung und Innovation."
+      }
+    },
+    "careerPath": {
+      "title": "Karriereweg",
+      "subtitle": "Mein beruflicher Werdegang ist geprägt von einem ständigen Drang zu lernen, sich anzupassen und zu gestalten. Es ist ein Weg, der sich durch verschiedene Erfahrungen entwickelt hat und mich letztendlich zu meiner wahren Leidenschaft in der Anwendungsentwicklung und IT geführt hat.",
+      "content": {
+        "paragraph1": "Ich begann meine berufliche Laufbahn mit einer Ausbildung zum Mediengestalter für Digital- und Printmedien am IT College Putbus auf Rügen. Diese grundlegende Erfahrung vermittelte mir ein solides Verständnis für Designprinzipien und die Erstellung digitaler Inhalte. Leider führte die Insolvenz der Schule zu einer unerwarteten Wendung, die mich dazu zwang, mich schnell anzupassen und neue Möglichkeiten zu suchen.",
+       "paragraph2": "Unbeirrt setzte ich meine Ausbildung im Designbüro Persch in Hamburg fort, wo ich meine Fähigkeiten in einem praktischen Umfeld weiter verfeinerte. Um meinen Horizont noch zu erweitern, zog ich später nach Rostock, um meine Ausbildung fortzusetzen. Dort vertiefte ich mich in den Bereich Bild und Ton und gewann wertvolle Einblicke in die Multimedia-Produktion.",
+        "paragraph3": "Diese vielfältigen Erfahrungen bestärkten mich stets in meiner Faszination für Technologie und deren Anwendung. Sie bildeten ein starkes kreatives und technisches Fundament, doch meine wahre Berufung lag tiefer in der digitalen Infrastruktur. Dies führte mich zu meinem aktuellen Vorhaben: einer Umschulung zum Fachinformatiker bei der WBS Training. Hier konzentriere ich mich intensiv darauf, mein Programmierwissen zu vertiefen, komplexe Systeme zu verstehen und die Technologien zu beherrschen, die moderne Anwendungen antreiben.",
+        "paragraph4": "Mein einzigartiger Hintergrund im Mediendesign, kombiniert mit meiner rigorosen IT-Spezialisierung, ermöglicht es mir, die Webentwicklung aus einer umfassenden Perspektive anzugehen – ich schlage die Brücke zwischen Ästhetik, Benutzererfahrung und robuster technischer Implementierung. Ich bin ständig bestrebt, meine sich entwickelnden Fähigkeiten einzusetzen, um saubere, effiziente und wirkungsvolle digitale Lösungen zu schaffen."
+      }
+    },
+    "personalLife": {
+      "title": "Privatleben",
+      "subtitle": "Abseits meiner beruflichen Ziele ist mein Privatleben ein lebendiger Raum für Kreativität, Wohlbefinden und kontinuierliches Wachstum. Hier lade ich meine Batterien auf, erkunde neue Interessen und vertiefe meine Verbindung zur Welt um mich herum.",
+      "content": {
+        "paragraph1": "Ich genieße es wirklich, mich kreativ auszudrücken, sei es durch Malen, Zeichnen oder andere künstlerische Betätigungen. Diese Leidenschaft für Kreativität erstreckt sich auf mein tägliches Leben und beeinflusst oft meinen Problemlösungsansatz in meiner beruflichen Arbeit.",
+        "paragraph2": "Aktiv zu bleiben ist ebenfalls ein wichtiger Teil meiner Routine. Ich gehe gerne laufen und trainiere im Fitnessstudio Kraft, wobei ich sowohl körperliche als auch geistige Vorteile im Überschreiten meiner Grenzen finde. In der Natur zu sein ist unglaublich wichtig für mich; ob es ein ruhiger Spaziergang oder eine belebende Wanderung ist, ich schätze die Momente, die ich im Freien verbringe.",
+        "paragraph3": "Meine intellektuelle Neugier beschränkt sich nicht auf Technologie. Ich tauche gerne in Romane ein, um eine gute Geschichte zu lesen, aber Sie werden mich auch in Sachbüchern vertieft finden, immer begierig darauf, etwas Neues zu lernen. Dieser Drang zur kontinuierlichen Selbstverbesserung ist ein Kernbestandteil meiner Persönlichkeit.",
+        "paragraph4": "Und dann ist da noch das Kochen! Ich verbringe absolut gerne Zeit in der Küche. Die asiatische Cuisine hat einen besonderen Platz in meinem Herzen, und du kannst drauf wetten, dass sich immer ein großes Glas selbstgemachtes Kimchi in meinem Kühlschrank befindet – für den Fall der Fälle. Diese Liebe zum Essen erstreckt sich auf das Ausprobieren neuer Rezepte und das Erkunden verschiedener kulinarischer Traditionen.",
+        "paragraph5": "Schließlich ist es nicht nur eine berufliche Notwendigkeit, sich über die neuesten Technologietrends und -nachrichten auf dem Laufenden zu halten; es ist ein echtes persönliches Interesse. Ich liebe es zu sehen, was neu ist, zu verstehen, wie es funktioniert, und seine potenziellen Auswirkungen zu bedenken, all das fließt in meine Leidenschaft für Webentwicklung und Innovation ein."
+      }
+    },
+    "resume": {
+      "title": "Lebenslauf",
+      "subtitle": "Tauchen Sie tiefer in meine Qualifikationen und Erfolge ein. Dieser Abschnitt bietet einen umfassenden Überblick über meine Fähigkeiten, Ausbildung und beruflichen Meilensteine."
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Entdecken Sie eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleiten Sie mich auf meiner Reise in der Informatik."
+  },
+  "blogPost": {
+    "date": {
+      "on": "am"
+    }
+  }
+}

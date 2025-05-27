@@ -9,7 +9,7 @@ tags:
 image:
   src: /img/erik-mclean-FoB-ImUjLqE-unsplash.jpg
   alt: ""
-readingTime: 1234
+readingTime: 10
 author:
   name: Philipp Fleischer
   avatar: /img/profile.jpg

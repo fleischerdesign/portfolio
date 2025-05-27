@@ -4,8 +4,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="flex flex-col gap-4">
           <h3 class="text-3xl font-medium">Philipp Fleischer</h3>
-          <p class="text-neutral-400">I’m an aspiring Computer Science Expert who thrives on clean code, seamless user
-            experiences, and innovative solutions that bring ideas to life.</p>
+          <p class="text-neutral-400">{{ $t("home.hero.summary") }}</p>
           <div class="flex gap-3 w-full">
             <Button href="https://linkedin.com/" target="_blank">
               <Icon name="mdi:linkedin" size="30" />
@@ -19,26 +18,25 @@
           </div>
         </div>
         <div class="md:ml-auto lg:mx-auto">
-          <h3 class="text-xl font-medium pb-4">Contact</h3>
+          <h3 class="text-xl font-medium pb-4">{{ $t("footer.contact") }}</h3>
           <p class="text-neutral-400">+49 123 456789</p>
           <p class="text-neutral-400">hello@fleischer.design</p>
           <p class="text-neutral-400">17036 Neubrandenburg</p>
         </div>
         <div class="ml-0 lg:ml-auto">
-          <h3 class="text-xl font-medium pb-4">Sitemap</h3>
+          <h3 class="text-xl font-medium pb-4">{{ $t("footer.sitemap") }}</h3>
           <ul class="text-neutral-400 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-y-2 gap-x-6">
-            <li><NuxtLink to="/">Home</NuxtLink></li>
-            <li><NuxtLink to="/store">Store</NuxtLink></li>
-            <li><NuxtLink to="/projects">Projects</NuxtLink></li>
-            <li><NuxtLink to="/blog">Blog</NuxtLink></li>
-            <li><NuxtLink to="/about">About</NuxtLink></li>
-            <li><NuxtLink to="/resume">Resume</NuxtLink></li>
-            <li><NuxtLink to="/imprint">Legal</NuxtLink></li>
+            <li><NuxtLink :to="$localePath('/')">{{ $t("navigation.home") }}</NuxtLink></li>
+            <li><NuxtLink :to="$localePath('/store')">{{ $t("navigation.store") }}</NuxtLink></li>
+            <li><NuxtLink :to="$localePath('/projects')">{{ $t("navigation.projects") }}</NuxtLink></li>
+            <li><NuxtLink :to="$localePath('/blog')">{{ $t("navigation.blog") }}</NuxtLink></li>
+            <li><NuxtLink :to="$localePath('/about')">{{ $t("navigation.about") }}</NuxtLink></li>
+            <li><NuxtLink :to="$localePath('/resume')">{{ $t("navigation.resume") }}</NuxtLink></li>
+            <li><NuxtLink :to="$localePath('/legal')">{{ $t("navigation.legal") }}</NuxtLink></li>
           </ul>
         </div>
       </div>
     </div>
-    <p class="text-neutral-600 text-sm container mx-auto pt-4 pb-16">&copy; 2025 Philipp Fleischer. All rights reserved.
-    </p>
+    <p class="text-neutral-600 text-sm container mx-auto pt-4 pb-16">{{ $t("footer.copyright") }}</p>
   </footer>
 </template>

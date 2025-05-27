@@ -9,7 +9,7 @@ tags:
 image:
   src: /img/cdc-IFpQtennlj8-unsplash.jpg
   alt: ""
-readingTime: 1234
+readingTime: 5
 author:
   name: Philipp Fleischer
   avatar: /img/profile.jpg

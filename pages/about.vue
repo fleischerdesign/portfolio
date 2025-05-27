@@ -1,21 +1,142 @@
 <template>
     <div class="container mx-auto py-16">
-        <h1 class="text-4xl font-bold mb-4">About Me</h1>
-        <p class="text-lg text-neutral-400 mb-8">
-        I’m an aspiring Computer Science Expert who thrives on clean code, seamless user experiences, and innovative
-        solutions that bring ideas to life.
-        </p>
-        <h2 class="text-2xl font-semibold mb-4">My Journey</h2>
-        <p class="text-lg text-neutral-400 mb-8">
-        My journey in the tech world began with a fascination for how things work. From building my first website to
-        developing complex applications, I have always been driven by a desire to learn and grow.
-        </p>
-        <h2 class="text-2xl font-semibold mb-4">Skills</h2>
-        <ul class="list-disc list-inside text-lg text-neutral-400 mb-8">
-        <li>Web Development</li>
-        <li>UI/UX Design</li>
-        <li>Problem Solving</li>
-        <li>Team Collaboration</li>
-        </ul>
+        <div class="flex flex-col gap-4 mb-4">
+            <h1 class="text-5xl font-semibold">{{ $t("about.title") }}</h1>
+            <p class="text-neutral-400 w-full lg:w-2/3">{{ $t("about.subtitle") }}</p>
+        </div>
+        <div
+            class="grid grid-cols-1 grid-rows-1 md:grid-cols-2 md:grid-rows-2 lg:grid-cols-3 gap-4 mb-24 items-stretch">
+            <Card class="overflow-hidden row-span-2">
+                <div class="overflow-hidden group w-full h-full max-h-[500px]">
+                    <img src="/img/profile.jpg" class="group-hover:scale-110 transition w-full h-full object-cover" />
+                </div>
+            </Card>
+            <Card class="group">
+                <NuxtLink to="#early_life">
+                    <CardContainer class="flex flex-col">
+                        <div class="flex items-center gap-2">
+                            <div class="flex">
+                                <Icon name="mage:rocket" size="30"
+                                    class="opacity-100 transition group-hover:opacity-0" />
+                                <Icon name="mage:rocket-fill" size="30"
+                                    class="absolute opacity-0 transition group-hover:opacity-100" />
+                            </div>
+                            <h3 class="text-3xl font-medium">{{ $t("about.overview.earlyLife.title") }}</h3>
+                        </div>
+                        <p class="text-neutral-400">{{ $t("about.overview.earlyLife.subtitle") }}</p>
+                    </CardContainer>
+                </NuxtLink>
+            </Card>
+            <Card class="group">
+                <NuxtLink to="#career_path">
+                    <CardContainer class="flex flex-col">
+                        <div class="flex items-center gap-2">
+                            <div class="flex">
+                                <Icon name="mage:cup-hot" size="30"
+                                    class="opacity-100 transition group-hover:opacity-0" />
+                                <Icon name="mage:cup-hot-fill" size="30"
+                                    class="absolute opacity-0 transition group-hover:opacity-100" />
+                            </div>
+                            <h3 class="text-3xl font-medium">{{ $t("about.overview.careerPath.title") }}</h3>
+                        </div>
+                        <p class="text-neutral-400">{{ $t("about.overview.careerPath.subtitle") }}</p>
+                    </CardContainer>
+                </NuxtLink>
+            </Card>
+            <Card class="group">
+                <NuxtLink to="#personal_life">
+                    <CardContainer class="flex flex-col">
+                        <div class="flex items-center gap-2">
+                            <div class="flex">
+                                <Icon name="mage:heart" size="30"
+                                    class="opacity-100 transition group-hover:opacity-0" />
+                                <Icon name="mage:heart-fill" size="30"
+                                    class="absolute opacity-0 transition group-hover:opacity-100" />
+                            </div>
+                            <h3 class="text-3xl font-medium">{{ $t("about.overview.personalLife.title") }}</h3>
+                        </div>
+                        <p class="text-neutral-400">{{ $t("about.overview.personalLife.subtitle") }}</p>
+                    </CardContainer>
+                </NuxtLink>
+            </Card>
+            <Card class="group">
+                <NuxtLink to="#resume">
+                    <CardContainer class="flex flex-col">
+                        <div class="flex items-center gap-2">
+                            <div class="flex">
+                                <Icon name="mage:checklist-note" size="30"
+                                    class="opacity-100 transition group-hover:opacity-0" />
+                                <Icon name="mage:checklist-note-fill" size="30"
+                                    class="absolute opacity-0 transition group-hover:opacity-100" />
+                            </div>
+                            <h3 class="text-3xl font-medium">{{ $t("about.overview.resume.title") }}</h3>
+                        </div>
+                        <p class="text-neutral-400">{{ $t("about.overview.resume.subtitle") }}</p>
+                    </CardContainer>
+                </NuxtLink>
+            </Card>
+        </div>
+        <div class="flex flex-col gap-4 mb-24">
+            <h1 class="text-5xl font-semibold" id="early_life">{{ $t("about.earlyLife.title") }}</h1>
+            <p class="text-2xl text-neutral-400 italic">{{ $t("about.earlyLife.subtitle") }}</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="rounded-lg overflow-hidden self-start group">
+                    <img src="/img/child.jpg" class="rounded-lg group-hover:scale-110 transition" />
+                </div>
+                <div class="flex flex-col gap-4">
+
+                    <p>{{ $t("about.earlyLife.content.paragraph1") }}</p>
+
+                    <p>{{ $t("about.earlyLife.content.paragraph2") }}</p>
+
+                    <p>{{ $t("about.earlyLife.content.paragraph3") }}</p>
+
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col gap-4 mb-24">
+            <h1 class="text-5xl font-semibold" id="career_path">{{ $t("about.careerPath.title") }}</h1>
+            <p class="text-2xl text-neutral-400 italic">{{ $t("about.careerPath.subtitle") }}</p>
+
+            <p>{{ $t("about.careerPath.content.paragraph1") }}</p>
+
+            <p>{{ $t("about.careerPath.content.paragraph2") }}</p>
+
+            <p>{{ $t("about.careerPath.content.paragraph3") }}</p>
+
+            <p>{{ $t("about.careerPath.content.paragraph4") }}</p>
+        </div>
+        <div class="flex flex-col gap-4 mb-24">
+            <h1 class="text-5xl font-semibold" id="personal_life">{{ $t("about.personalLife.title") }}</h1>
+            <p class="text-2xl text-neutral-400 italic">{{ $t("about.personalLife.subtitle") }}</p>
+
+            <p>{{ $t("about.personalLife.content.paragraph1") }}</p>
+
+            <p>{{ $t("about.personalLife.content.paragraph2") }}</p>
+
+            <div class="grid grid-cols-3 gap-4 items-stretch">
+                <div class="rounded-lg overflow-hidden group">
+                    <img src="/img/IMG-20230618-WA0007.jpg"
+                        class="rounded-lg group-hover:scale-110 transition h-full w-full object-cover" />
+                </div>
+                <div class="rounded-lg overflow-hidden group">
+                    <img src="/img/2023-01-19.jpg"
+                        class="rounded-lg group-hover:scale-110 transition h-full w-full object-cover" />
+                </div>
+                <div class="rounded-lg overflow-hidden group">
+                    <img src="/img/business_atire.jpg"
+                        class="rounded-lg group-hover:scale-110 transition h-full w-full object-cover" />
+                </div>
+            </div>
+            <p>{{ $t("about.personalLife.content.paragraph3") }}</p>
+
+            <p>{{ $t("about.personalLife.content.paragraph4") }}</p>
+
+            <p>{{ $t("about.personalLife.content.paragraph5") }}</p>
+        </div>
+                <div class="flex flex-col gap-4 mb-24">
+            <h1 class="text-5xl font-semibold" id="resume">{{ $t("about.resume.title") }}</h1>
+            <p class="text-2xl text-neutral-400 italic">{{ $t("about.resume.subtitle") }}</p>
+                </div>
     </div>
 </template>
