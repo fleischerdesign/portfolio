@@ -5,7 +5,7 @@ export default defineContentConfig({
     collections: {
         posts: defineCollection({
             type: 'page',
-            source: 'posts/*.md',
+            source: '**/posts/*.md',
             schema: z.object({
                 title: z.string(),
                 slug: z.string(),
@@ -24,6 +24,7 @@ export default defineContentConfig({
                     avatar: z.string().optional(),
                 }),
                 draft: z.boolean().default(false),
+                locale: z.enum(['de', 'en']),
             })
         })
     }
