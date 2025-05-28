@@ -122,5 +122,9 @@
     "date": {
       "on": "on"
     }
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "Explore a collection of my web development projects, ranging from dynamic e-commerce sites to custom tools. Each showcases my expertise in creating functional and user-friendly solutions."
   }
 }

@@ -167,7 +167,8 @@ const { data } = await useAsyncData(route.path, () => {
 });
 
 
-const contributions = ref(generateDemoContributions());
+const contributions = useFetch('/api/contributions').data;
+console.log(contributions.value);
 const displayedWeeks = ref(0);
 
 const { t } = useI18n();
@@ -185,21 +186,6 @@ const subtitle = computed(() => {
     return t("home.overview.github.subtitle.overview");
   }
 });
-
-function generateDemoContributions() {
-  const demoContributions = [];
-  const today = new Date();
-
-  for (let i = 360; i >= 0; i--) {
-    const date = new Date(today);
-    date.setDate(date.getDate() - i);
-    demoContributions.push({
-      date: date.toISOString().split('T')[0],
-      count: Math.floor(Math.random() * 15),
-    });
-  }
-  return demoContributions;
-}
 
 function onDisplayedWeeksCountChanged(count: number) {
   displayedWeeks.value = count;
