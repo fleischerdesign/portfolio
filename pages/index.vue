@@ -7,7 +7,7 @@
             <svg class="inline overflow-visible m-auto" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
               <circle class="drop-shadow-emit fill-green-400" r="8" cx="8" cy="8" />
               <circle class="drop-shadow-emit animate-ping origin-center fill-green-400" r="8" cx="8" cy="8" />
-            </svg><span>{{ $t("home.hero.status.programming") }}</span>
+            </svg><span v-if="now?.status">{{ now?.status }}</span>
           </Chip>
           <h1 class="text-5xl font-semibold">{{ $t("home.hero.greeting") }}</h1>
           <p class="text-neutral-400 w-full lg:w-2/3">{{ $t("home.hero.summary") }}</p>
@@ -38,7 +38,8 @@
         </Card>
         <Card class="!p-0 overflow-hidden min-h-60 group">
           <div
-            class="!bg-[url(/img/profile.jpg)] bg-center bg-cover w-full h-full opacity-80 hover:opacity-100 transition group-hover:scale-110">
+            :style="`background-image: url('${profilePicUrl}')`"
+            class="bg-center bg-cover w-full h-full opacity-80 hover:opacity-100 transition group-hover:scale-110">
           </div>
         </Card>
         <Card class="flex flex-col col-span-1">
@@ -153,11 +154,29 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 const { locale } = useI18n();
-
+const { t } = useI18n();
 const route = useRoute();
+
+useSeoMeta({
+  title: t("navigation.home"),
+  ogTitle: t("navigation.home"),
+  description: t("home.hero.summary"),
+  ogDescription: t("home.hero.summary"),
+  ogImage: 'https://example.com/image.png',
+  ogUrl: route.fullPath,
+  ogType: 'website', 
+  ogLocale: locale.value,
+  twitterTitle: t("navigation.home"),
+  twitterCard: 'summary_large_image',
+  twitterDescription: t("home.hero.summary"),
+  twitterImage: 'https://example.com/image.png',
+  robots: 'index, follow',
+})
+
+const $img = useImage()
+const profilePicUrl = $img('/img/profile.jpg', { width: 800, quality: 100 })
+
 const { data } = await useAsyncData(route.path, () => {
   return queryCollection('posts')
     .where('locale', '=', locale.value)
@@ -166,12 +185,11 @@ const { data } = await useAsyncData(route.path, () => {
     .all();
 });
 
+const now = await useFetch('/api/now', { query: { lang: locale.value } }).data
 
-const contributions = useFetch('/api/contributions').data;
-console.log(contributions.value);
+const contributions = useFetch('/api/contributions', {lazy: false}).data;
 const displayedWeeks = ref(0);
 
-const { t } = useI18n();
 const subtitle = computed(() => {
   if (displayedWeeks.value === 52) {
     return t("home.overview.github.subtitle.year");
