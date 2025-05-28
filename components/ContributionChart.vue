@@ -1,6 +1,6 @@
 <template>
   <div ref="container" class="w-full overflow-visible">
-    <svg ref="svg" class="overflow-visible" :viewBox="`0 0 ${totalCalculatedWidth} ${totalHeight}`"
+    <svg v-if="contributions" ref="svg" class="overflow-visible" :viewBox="`0 0 ${totalCalculatedWidth} ${totalHeight}`"
       :style="{ width: `${totalCalculatedWidth}px`, height: `${totalHeight}px` }" preserveAspectRatio="xMinYMin meet">
       <g v-for="(week, weekIndex) in displayedWeeks" :key="weekIndex"
         :transform="`translate(${weekIndex * (currentSquareSize + currentGap)}, 0)`">
@@ -22,15 +22,22 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 export default {
   props: {
     contributions: {
-      type: Array,
+      type: [Array, null],
       required: true,
-      validator: (value) =>
-        value.every(
-          (item) =>
-            item.date &&
-            typeof item.date === 'string' &&
-            typeof item.count === 'number'
-        ),
+      validator: (value) => {
+      // 1. Null explizit erlauben
+      if (value === null) return true
+      
+      // 2. Prüfe ob es ein Array ist
+      if (!Array.isArray(value)) return false
+      
+      // 3. Prüfe jedes Element
+      return value.every(item => 
+        item?.date && 
+        typeof item.date === 'string' && 
+        typeof item.count === 'number'
+      )
+    }
     },
     roundedCorner: {
       type: Number,
