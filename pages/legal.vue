@@ -19,3 +19,25 @@
         </ul>
     </div>
 </template>
+
+<script lang="ts" setup>
+const { t } = useI18n();
+const route = useRoute();
+const { locale } = useI18n();
+
+useSeoMeta({
+  title: t("navigation.legal"),
+  ogTitle: t("navigation.legal"),
+  description: t("legal.title"),
+  ogDescription: t("legal.subtitle"),
+  ogImage: 'https://example.com/image.png',
+  ogUrl: route.fullPath,
+  ogType: 'website', 
+  ogLocale: locale.value,
+  twitterTitle: t("navigation.legal"),
+  twitterCard: 'summary_large_image',
+  twitterDescription: t("legal.subtitle"),
+  twitterImage: 'https://example.com/image.png',
+  robots: 'index, follow',
+})
+</script>

@@ -21,4 +21,22 @@ const { data } = await useAsyncData(route.path, () => {
         .select('title', 'date', 'description', "image", "slug", "readingTime")
         .all()
 })
+
+const { t } = useI18n()
+
+useSeoMeta({
+  title: t("navigation.blog"),
+  ogTitle: t("navigation.blog"),
+  description: t("blog.subtitle"),
+  ogDescription: t("blog.subtitle"),
+  ogImage: 'https://example.com/image.png',
+  ogUrl: route.fullPath,
+  ogType: 'website', 
+  ogLocale: locale.value,
+  twitterTitle: t("navigation.blog"),
+  twitterCard: 'summary_large_image',
+  twitterDescription: t("blog.subtitle"),
+  twitterImage: 'https://example.com/image.png',
+  robots: 'index, follow',
+})
 </script>
