@@ -33,61 +33,61 @@ Bevor wir uns in die Details stürzen, lass uns einen kurzen Blick auf unsere dr
 
 ### Was ist React eigentlich?
 
-React ist eine JavaScript-Bibliothek (nicht Framework - ja, die Diskussion gibt es wirklich), die 2013 von Facebook entwickelt wurde[4]. Mit beeindruckenden 1,3 Milliarden Downloads und 210.000 GitHub-Sternen ist React definitiv der Klassenbully der Frontend-Welt[3]. Aber im Gegensatz zu echten Bullies ist React eigentlich ziemlich nett zu dir, wenn du erstmal seine Eigenarten verstanden hast.
+React ist eine JavaScript-Bibliothek (nicht Framework - ja, die Diskussion gibt es wirklich), die 2013 von Facebook entwickelt wurde. Mit beeindruckenden 1,3 Milliarden Downloads und 210.000 GitHub-Sternen ist React definitiv der Klassenbully der Frontend-Welt. Aber im Gegensatz zu echten Bullies ist React eigentlich ziemlich nett zu dir, wenn du erstmal seine Eigenarten verstanden hast.
 
-Die Grundidee von React ist simpel: Alles ist eine Komponente. Du baust deine Benutzeroberfläche aus kleinen, wiederverwendbaren Bausteinen zusammen - wie Lego für Erwachsene, nur dass du am Ende keine bunten Plastiksteine unter dem Sofa findest[4].
+Die Grundidee von React ist simpel: Alles ist eine Komponente. Du baust deine Benutzeroberfläche aus kleinen, wiederverwendbaren Bausteinen zusammen - wie Lego für Erwachsene, nur dass du am Ende keine bunten Plastiksteine unter dem Sofa findest.
 
 ### Die Stärken von React
 
-React hat nicht umsonst die größte Community der drei Frameworks. Mit über 32 Millionen wöchentlichen Downloads ist es quasi der Volkswagen unter den Frontend-Frameworks - weit verbreitet, zuverlässig und mit Ersatzteilen an jeder Ecke[13].
+React hat nicht umsonst die größte Community der drei Frameworks. Mit über 32 Millionen wöchentlichen Downloads ist es quasi der Volkswagen unter den Frontend-Frameworks - weit verbreitet, zuverlässig und mit Ersatzteilen an jeder Ecke.
 
-Die **Virtual DOM-Technologie** ist einer der größten Trümpfe von React[3]. Stell dir vor, du wärst ein sehr ordentlicher Mensch (ich weiß, schwer vorstellbar), der vor jeder Änderung in der Wohnung erstmal einen Plan macht, wo was hinkommt. Genau das macht das Virtual DOM - es plant die Änderungen im Voraus und führt sie dann effizient aus.
+Die **Virtual DOM-Technologie** ist einer der größten Trümpfe von React. Stell dir vor, du wärst ein sehr ordentlicher Mensch (ich weiß, schwer vorstellbar), der vor jeder Änderung in der Wohnung erstmal einen Plan macht, wo was hinkommt. Genau das macht das Virtual DOM - es plant die Änderungen im Voraus und führt sie dann effizient aus.
 
-Ein weiterer Pluspunkt ist das gigantische Ökosystem. Für React gibt es mehr Third-Party-Bibliotheken als Katzenvideos auf YouTube - und das will schon was heißen[12]. Egal was du vorhast, irgendjemand hat wahrscheinlich schon eine React-Komponente dafür gebaut.
+Ein weiterer Pluspunkt ist das gigantische Ökosystem. Für React gibt es mehr Third-Party-Bibliotheken als Katzenvideos auf YouTube - und das will schon was heißen. Egal was du vorhast, irgendjemand hat wahrscheinlich schon eine React-Komponente dafür gebaut.
 
 ### Die Schattenseiten von React
 
-Aber React ist nicht nur Sonnenschein und Regenbogen. Die Lernkurve kann ganz schön steil sein, besonders wenn du neu in der Welt der JavaScript-Frameworks bist[12]. JSX, das sind diese HTML-ähnlichen Tags mitten im JavaScript-Code, kann anfangs ziemlich verwirrend sein. Es ist wie wenn jemand Deutsch und Englisch in einem Satz mischt - funktioniert, sieht aber komisch aus.
+Aber React ist nicht nur Sonnenschein und Regenbogen. Die Lernkurve kann ganz schön steil sein, besonders wenn du neu in der Welt der JavaScript-Frameworks bist. JSX, das sind diese HTML-ähnlichen Tags mitten im JavaScript-Code, kann anfangs ziemlich verwirrend sein. Es ist wie wenn jemand Deutsch und Englisch in einem Satz mischt - funktioniert, sieht aber komisch aus.
 
-Ein weiteres Problem ist die Größe. React allein ist schon 44,5 KB groß (minified und gzipped)[19]. Das klingt nach wenig, aber in der Welt der Frontend-Performance ist das wie mit einem Panzer zum Brötchen holen zu fahren.
+Ein weiteres Problem ist die Größe. React allein ist schon 44,5 KB groß (minified und gzipped). Das klingt nach wenig, aber in der Welt der Frontend-Performance ist das wie mit einem Panzer zum Brötchen holen zu fahren.
 
 ## Vue: Der charmante Diplomat
 
 ### Was macht Vue besonders?
 
-Vue.js wurde 2014 von Evan You entwickelt, nachdem er bei Google mit AngularJS gearbeitet hatte und dachte: "Das geht bestimmt einfacher"[7]. Und er hatte recht! Vue ist wie der nette Nachbar unter den Frameworks - freundlich, hilfsbereit und irgendwie macht er alles ein bisschen angenehmer.
+Vue.js wurde 2014 von Evan You entwickelt, nachdem er bei Google mit AngularJS gearbeitet hatte und dachte: "Das geht bestimmt einfacher". Und er hatte recht! Vue ist wie der nette Nachbar unter den Frameworks - freundlich, hilfsbereit und irgendwie macht er alles ein bisschen angenehmer.
 
-Mit 430 Millionen Downloads und 209.000 GitHub-Sternen ist Vue zwar nicht ganz so populär wie React, aber definitiv kein Mauerblümchen[3]. Vue bezeichnet sich selbst als "progressives Framework", was im Grunde bedeutet: Du kannst klein anfangen und dich dann hocharbeiten, ohne gleich dein ganzes Projekt umkrempeln zu müssen.
+Mit 430 Millionen Downloads und 209.000 GitHub-Sternen ist Vue zwar nicht ganz so populär wie React, aber definitiv kein Mauerblümchen. Vue bezeichnet sich selbst als "progressives Framework", was im Grunde bedeutet: Du kannst klein anfangen und dich dann hocharbeiten, ohne gleich dein ganzes Projekt umkrempeln zu müssen.
 
 ### Die Superkräfte von Vue
 
-Vue hat eine der **sanftesten Lernkurven** aller modernen Frameworks[9]. Wenn du HTML, CSS und ein bisschen JavaScript kannst, bist du schon 80% des Weges zu deiner ersten Vue-App[9]. Es ist wie Fahrradfahren lernen - am Anfang wackelst du ein bisschen, aber dann läuft es wie von selbst.
+Vue hat eine der **sanftesten Lernkurven** aller modernen Frameworks. Wenn du HTML, CSS und ein bisschen JavaScript kannst, bist du schon 80% des Weges zu deiner ersten Vue-App[9]. Es ist wie Fahrradfahren lernen - am Anfang wackelst du ein bisschen, aber dann läuft es wie von selbst.
 
-Die **Template-Syntax** von Vue ist besonders anfängerfreundlich. Statt JSX verwendest du einfach HTML mit ein paar speziellen Attributen. Es ist wie normales HTML, nur mit Superkräften[15]. Ein weiterer Pluspunkt ist das ausbalancierte Ökosystem - Vue Router für Routing, Vuex für State Management. Alles aus einer Hand, perfekt aufeinander abgestimmt[15].
+Die **Template-Syntax** von Vue ist besonders anfängerfreundlich. Statt JSX verwendest du einfach HTML mit ein paar speziellen Attributen. Es ist wie normales HTML, nur mit Superkräften. Ein weiterer Pluspunkt ist das ausbalancierte Ökosystem - Vue Router für Routing, Vuex für State Management. Alles aus einer Hand, perfekt aufeinander abgestimmt.
 
 ### Wo Vue schwächelt
 
 Vue ist manchmal *zu* einfach. Wenn du komplexe Enterprise-Anwendungen baust, kann die Einfachheit manchmal im Weg stehen. Es ist wie mit einem Schweizer Taschenmesser - super praktisch für die meisten Dinge, aber wenn du einen Baum fällen willst, brauchst du vielleicht doch eine richtige Säge.
 
-Die Community ist zwar aktiv, aber deutlich kleiner als die von React[12]. Das bedeutet weniger Third-Party-Bibliotheken und manchmal musst du das Rad neu erfinden, wo React-Entwickler einfach `npm install` tippen.
+Die Community ist zwar aktiv, aber deutlich kleiner als die von React. Das bedeutet weniger Third-Party-Bibliotheken und manchmal musst du das Rad neu erfinden, wo React-Entwickler einfach `npm install` tippen.
 
 ## Svelte: Der revolutionäre Newcomer
 
 ### Was ist denn nun Svelte?
 
-Svelte ist der Punk-Rocker unter den Frontend-Frameworks. 2016 von Rich Harris entwickelt, macht es alles anders als die etablierten Spieler[17]. Während React und Vue zur Laufzeit im Browser arbeiten, erledigt Svelte die meiste Arbeit schon während des Build-Prozesses[1]. Es ist wie der Unterschied zwischen einem Fertiggericht und einem selbst gekochten Essen - das eine ist sofort da, das andere braucht Vorbereitung, schmeckt aber besser.
+Svelte ist der Punk-Rocker unter den Frontend-Frameworks. 2016 von Rich Harris entwickelt, macht es alles anders als die etablierten Spieler. Während React und Vue zur Laufzeit im Browser arbeiten, erledigt Svelte die meiste Arbeit schon während des Build-Prozesses. Es ist wie der Unterschied zwischen einem Fertiggericht und einem selbst gekochten Essen - das eine ist sofort da, das andere braucht Vorbereitung, schmeckt aber besser.
 
 ### Die Svelte-Revolution
 
-Der größte Unterschied zu React und Vue ist, dass Svelte **keinen virtuellen DOM** braucht[2]. Während andere Frameworks komplizierte Tänze aufführen, um herauszufinden, was sich geändert hat, macht Svelte das alles zur Build-Zeit[10]. Das Ergebnis? Eine winzige Bundle-Größe von nur 1,8 KB (gzipped)[19] - das ist so klein, dass es praktisch in eine Jackentasche passt.
+Der größte Unterschied zu React und Vue ist, dass Svelte **keinen virtuellen DOM** braucht. Während andere Frameworks komplizierte Tänze aufführen, um herauszufinden, was sich geändert hat, macht Svelte das alles zur Build-Zeit. Das Ergebnis? Eine winzige Bundle-Größe von nur 1,8 KB (gzipped) - das ist so klein, dass es praktisch in eine Jackentasche passt.
 
-Die Performance von Svelte ist beeindruckend. In Benchmarks schlägt es sowohl React als auch Vue bei Rendering-Zeit und Speicherverbrauch[6][11]. Es ist wie ein Sportwagen unter den Familienautos - schnell, effizient und macht einfach Spaß zu fahren.
+Die Performance von Svelte ist beeindruckend. In Benchmarks schlägt es sowohl React als auch Vue bei Rendering-Zeit und Speicherverbrauch. Es ist wie ein Sportwagen unter den Familienautos - schnell, effizient und macht einfach Spaß zu fahren.
 
 ### Die Svelte-Herausforderungen
 
-Der größte Nachteil von Svelte ist paradoxerweise auch einer seiner Vorteile: Es ist anders. Wenn du jahrelang mit React oder Vue gearbeitet hast, musst du bei Svelte umdenken[10]. Es ist wie vom Automatik- zum Schaltgetriebe zu wechseln - machbar, aber du musst neue Gewohnheiten entwickeln.
+Der größte Nachteil von Svelte ist paradoxerweise auch einer seiner Vorteile: Es ist anders. Wenn du jahrelang mit React oder Vue gearbeitet hast, musst du bei Svelte umdenken. Es ist wie vom Automatik- zum Schaltgetriebe zu wechseln - machbar, aber du musst neue Gewohnheiten entwickeln.
 
-Das Ökosystem ist noch relativ klein[6]. Während React-Entwickler aus tausenden von Bibliotheken wählen können, ist bei Svelte manchmal Eigeninitiative gefragt. Es ist wie in einer kleinen Stadt zu leben - charmant und überschaubar, aber manchmal musst du für besondere Dinge in die große Stadt fahren.
+Das Ökosystem ist noch relativ klein. Während React-Entwickler aus tausenden von Bibliotheken wählen können, ist bei Svelte manchmal Eigeninitiative gefragt. Es ist wie in einer kleinen Stadt zu leben - charmant und überschaubar, aber manchmal musst du für besondere Dinge in die große Stadt fahren.
 
 ## Performance-Schlacht: Wer ist der Schnellste?
 
@@ -95,74 +95,74 @@ Hier wird es richtig spannend! Performance ist wie PS bei Autos - nicht alles, a
 
 ### Bundle-Größen im Vergleich
 
-Svelte ist hier der klare Gewinner mit nur 1,8 KB[19]. Vue schafft etwa 16 KB[6], während React mit 44,5 KB (inklusive ReactDOM) den letzten Platz belegt[19]. Das ist wie der Unterschied zwischen einem Rucksack, einem Koffer und einem Umzugswagen.
+Svelte ist hier der klare Gewinner mit nur 1,8 KB. Vue schafft etwa 16 KB, während React mit 44,5 KB (inklusive ReactDOM) den letzten Platz belegt. Das ist wie der Unterschied zwischen einem Rucksack, einem Koffer und einem Umzugswagen.
 
 ### Rendering-Performance
 
-In den JavaScript Framework Benchmarks führt Svelte konstant die Leistungstabellen an[6]. Vue folgt dicht dahinter, während React etwas hinterherhinkt. Aber Vorsicht: In der realen Welt sind diese Unterschiede oft weniger dramatisch als in synthetischen Benchmarks.
+In den JavaScript Framework Benchmarks führt Svelte konstant die Leistungstabellen an. Vue folgt dicht dahinter, während React etwas hinterherhinkt. Aber Vorsicht: In der realen Welt sind diese Unterschiede oft weniger dramatisch als in synthetischen Benchmarks.
 
 ### Lighthouse-Scores
 
-Hier zeigt sich ein interessanter Trend: Ein Reddit-Nutzer berichtete, dass seine React-Apps typischerweise Lighthouse-Scores von 60-70 erreichen, während seine Svelte-Apps konstant über 90 liegen - und das ohne besondere Optimierungen[14]. Das ist wie der Unterschied zwischen einem gebrauchten Kleinwagen und einem nagelneuen Sportwagen.
+Hier zeigt sich ein interessanter Trend: Ein Reddit-Nutzer berichtete, dass seine React-Apps typischerweise Lighthouse-Scores von 60-70 erreichen, während seine Svelte-Apps konstant über 90 liegen - und das ohne besondere Optimierungen. Das ist wie der Unterschied zwischen einem gebrauchten Kleinwagen und einem nagelneuen Sportwagen.
 
 ## Wann solltest du welches Framework wählen?
 
 ### React ist perfekt wenn...
 
-- Du in einem großen Team arbeitest und viele Entwickler brauchst (React-Devs findet man an jeder Straßenecke)[20]
-- Du komplexe, große Anwendungen baust (Netflix, Facebook, Instagram verwenden React)[7]
-- Du auch mobile Apps entwickeln willst (React Native macht's möglich)[20]
-- Du ein riesiges Ökosystem brauchst (für React gibt es einfach alles)[12]
+- Du in einem großen Team arbeitest und viele Entwickler brauchst (React-Devs findet man an jeder Straßenecke)
+- Du komplexe, große Anwendungen baust (Netflix, Facebook, Instagram verwenden React)
+- Du auch mobile Apps entwickeln willst (React Native macht's möglich)
+- Du ein riesiges Ökosystem brauchst (für React gibt es einfach alles)
 
 ### Vue ist die richtige Wahl wenn...
 
-- Du schnell produktiv werden willst (die Lernkurve ist ein Traum)[9]
-- Du bestehende Projekte erweitern möchtest (Vue ist super integrierbar)[12]
-- Du ein ausgewogenes Framework-Erlebnis suchst (alles aus einer Hand)[15]
-- Du Wert auf gute Dokumentation legst (Vue hat fantastische Docs)[9]
+- Du schnell produktiv werden willst (die Lernkurve ist ein Traum)
+- Du bestehende Projekte erweitern möchtest (Vue ist super integrierbar)
+- Du ein ausgewogenes Framework-Erlebnis suchst (alles aus einer Hand)
+- Du Wert auf gute Dokumentation legst (Vue hat fantastische Docs)
 
 ### Svelte solltest du wählen wenn...
 
-- Performance oberste Priorität hat (besonders für mobile Geräte)[11]
-- Du kleine bis mittlere Projekte entwickelst[19]
-- Du gerne mit neuen Technologien experimentierst[6]
-- Bundle-Größe kritisch ist (jedes Kilobyte zählt)[19]
+- Performance oberste Priorität hat (besonders für mobile Geräte)
+- Du kleine bis mittlere Projekte entwickelst
+- Du gerne mit neuen Technologien experimentierst
+- Bundle-Größe kritisch ist (jedes Kilobyte zählt)
 
 ## Die Community-Schlacht
 
-Die Größe und Aktivität der Community ist oft entscheidender als technische Features. React hat mit Abstand die größte Community - es ist wie das iPhone der Frontend-Welt[13]. Vue hat eine kleinere, aber sehr enthusiastische Community, während Svelte schnell wächst und laut Stack Overflow Survey 2022 das zweitbeliebteste Framework ist[19].
+Die Größe und Aktivität der Community ist oft entscheidender als technische Features. React hat mit Abstand die größte Community - es ist wie das iPhone der Frontend-Welt. Vue hat eine kleinere, aber sehr enthusiastische Community, während Svelte schnell wächst und laut Stack Overflow Survey 2022 das zweitbeliebteste Framework ist.
 
-Interessant ist auch die Zufriedenheit der Entwickler: 89,7% der Svelte-Nutzer sind zufrieden mit ihrem Framework, während React "nur" 83% erreicht[19]. Das ist wie der Unterschied zwischen einem kleinen, feinen Restaurant und einer großen Fastfood-Kette - beide haben ihre Berechtigung, aber die Erfahrung ist unterschiedlich.
+Interessant ist auch die Zufriedenheit der Entwickler: 89,7% der Svelte-Nutzer sind zufrieden mit ihrem Framework, während React "nur" 83% erreicht. Das ist wie der Unterschied zwischen einem kleinen, feinen Restaurant und einer großen Fastfood-Kette - beide haben ihre Berechtigung, aber die Erfahrung ist unterschiedlich.
 
 ## Die Lernkurve: Vom Anfänger zum Profi
 
 ### React: Der steinige Pfad
 
-React hat definitiv die steilste Lernkurve der drei Kandidaten. JSX, State Management, Hooks, Context API - es gibt viel zu lernen[12]. Aber dafür bist du danach auch gut gerüstet für komplexe Projekte. Es ist wie Geige lernen - am Anfang klingt es schrecklich, aber wenn du's drauf hast, kannst du Symphonien spielen.
+React hat definitiv die steilste Lernkurve der drei Kandidaten. JSX, State Management, Hooks, Context API - es gibt viel zu lernen. Aber dafür bist du danach auch gut gerüstet für komplexe Projekte. Es ist wie Geige lernen - am Anfang klingt es schrecklich, aber wenn du's drauf hast, kannst du Symphonien spielen.
 
 ### Vue: Der sanfte Einstieg
 
-Vue macht es Anfängern besonders leicht. Die Template-Syntax ist intuitiv, die Dokumentation ist exzellent, und du kannst schnell erste Erfolge feiern[9]. Es ist wie Ukulele lernen - schnell erste Songs, und trotzdem kann man richtig gut werden.
+Vue macht es Anfängern besonders leicht. Die Template-Syntax ist intuitiv, die Dokumentation ist exzellent, und du kannst schnell erste Erfolge feiern. Es ist wie Ukulele lernen - schnell erste Songs, und trotzdem kann man richtig gut werden.
 
 ### Svelte: Der andere Weg
 
-Svelte ist weder besonders schwer noch besonders einfach zu lernen. Es ist einfach anders. Wenn du schon Erfahrung mit anderen Frameworks hast, musst du umdenken. Für komplette Anfänger kann es aber sehr intuitiv sein[10].
+Svelte ist weder besonders schwer noch besonders einfach zu lernen. Es ist einfach anders. Wenn du schon Erfahrung mit anderen Frameworks hast, musst du umdenken. Für komplette Anfänger kann es aber sehr intuitiv sein.
 
 ## Tooling und Entwicklererfahrung
 
 ### Development Experience
 
-Alle drei Frameworks haben mittlerweile ausgezeichnete Tooling-Unterstützung. React profitiert von seiner Popularität - praktisch jeder Editor und jedes Tool unterstützt React out-of-the-box. Vue hat mit Vue DevTools fantastische Browser-Extensions für Debugging[5]. Svelte ist hier noch am wenigsten unterstützt, holt aber schnell auf[5].
+Alle drei Frameworks haben mittlerweile ausgezeichnete Tooling-Unterstützung. React profitiert von seiner Popularität - praktisch jeder Editor und jedes Tool unterstützt React out-of-the-box. Vue hat mit Vue DevTools fantastische Browser-Extensions für Debugging. Svelte ist hier noch am wenigsten unterstützt, holt aber schnell auf.
 
 ### Build-Tools und Setup
 
-Create React App macht den Einstieg in React einfach, aber kann limitierend sein[15]. Vue CLI bietet einen interaktiven Projekt-Generator, der sehr anfängerfreundlich ist[15]. SvelteKit (das offizielle Svelte-Framework) ist noch relativ jung, aber bereits sehr mächtig[17].
+Create React App macht den Einstieg in React einfach, aber kann limitierend sein. Vue CLI bietet einen interaktiven Projekt-Generator, der sehr anfängerfreundlich ist. SvelteKit (das offizielle Svelte-Framework) ist noch relativ jung, aber bereits sehr mächtig.
 
 ## Die Zukunft: Wohin geht die Reise?
 
 React bleibt voraussichtlich der Marktführer, allein schon wegen der riesigen bestehenden Codebases. Vue wird weiter wachsen, besonders in Asien ist es bereits sehr populär. Svelte ist der spannendste Kandidat - die Technologie ist vielversprechend, aber es bleibt abzuwarten, ob es kritische Masse erreichen kann.
 
-Ein interessanter Trend ist, dass viele erfahrene Entwickler von React zu Svelte wechseln, wenn sie die Chance haben[16]. Das ist wie der Wechsel von einem großen Konzern zu einem innovativen Startup - riskanter, aber potentiell lohnender.
+Ein interessanter Trend ist, dass viele erfahrene Entwickler von React zu Svelte wechseln, wenn sie die Chance haben. Das ist wie der Wechsel von einem großen Konzern zu einem innovativen Startup - riskanter, aber potentiell lohnender.
 
 ## Das Fazit: Es kommt darauf an (wie immer)
 

@@ -24,11 +24,11 @@ Stell dir vor, du gehst in eine WG-Küche und findest dort schmutziges Geschirr,
 
 ## Was ist eigentlich Code-Qualität?
 
-Code-Qualität ist wie gute Manieren für Programmierer - theoretisch weiß jeder, wie es geht, aber in der Praxis sieht's oft anders aus[1]. Vereinfacht gesagt beschreibt **Code-Qualität** das Maß, mit dem dein Quellcode bestehende Anforderungen erfüllt, die über das bloße "Es funktioniert" hinausgehen[1].
+Code-Qualität ist wie gute Manieren für Programmierer - theoretisch weiß jeder, wie es geht, aber in der Praxis sieht's oft anders aus. Vereinfacht gesagt beschreibt **Code-Qualität** das Maß, mit dem dein Quellcode bestehende Anforderungen erfüllt, die über das bloße "Es funktioniert" hinausgehen.
 
-Dabei geht es nicht nur darum, dass dein Code tut, was er soll (das wäre zu einfach), sondern auch um nicht-funktionale Anforderungen wie Verständlichkeit, Analysierbarkeit, Modifizierbarkeit und Testbarkeit[1]. Mit anderen Worten: Dein Code sollte nicht nur funktionieren, sondern auch so geschrieben sein, dass andere Entwickler (und du selbst in sechs Monaten) nicht den Wunsch verspüren, ihren Laptop aus dem Fenster zu werfen.
+Dabei geht es nicht nur darum, dass dein Code tut, was er soll (das wäre zu einfach), sondern auch um nicht-funktionale Anforderungen wie Verständlichkeit, Analysierbarkeit, Modifizierbarkeit und Testbarkeit. Mit anderen Worten: Dein Code sollte nicht nur funktionieren, sondern auch so geschrieben sein, dass andere Entwickler (und du selbst in sechs Monaten) nicht den Wunsch verspüren, ihren Laptop aus dem Fenster zu werfen.
 
-Die wichtigsten Eigenschaften guter Code-Qualität sind[2][4]:
+Die wichtigsten Eigenschaften guter Code-Qualität sind:
 
 - **Lesbarkeit**: Dein Code sollte sich lesen wie ein gutes Buch, nicht wie die Gebrauchsanweisung eines IKEA-Möbelstücks
 - **Wartbarkeit**: Änderungen sollten möglich sein, ohne dass das gesamte System zusammenbricht wie ein Kartenhaus
@@ -38,13 +38,13 @@ Die wichtigsten Eigenschaften guter Code-Qualität sind[2][4]:
 
 ## Warum ist Code-Qualität wichtiger als dein Kaffeekonsum?
 
-Schlechte Code-Qualität ist wie ein schlechter Witz - am Anfang mag es noch lustig sein, aber auf Dauer wird es einfach nur peinlich. Die Statistiken sprechen eine klare Sprache: Etwa 70-80% der Lebensdauer einer Software fällt in den Wartungszeitraum[15]. Das bedeutet, dass du viel mehr Zeit damit verbringst, bestehenden Code zu lesen und zu modifizieren, als neuen zu schreiben.
+Schlechte Code-Qualität ist wie ein schlechter Witz - am Anfang mag es noch lustig sein, aber auf Dauer wird es einfach nur peinlich. Die Statistiken sprechen eine klare Sprache: Etwa 70-80% der Lebensdauer einer Software fällt in den Wartungszeitraum. Das bedeutet, dass du viel mehr Zeit damit verbringst, bestehenden Code zu lesen und zu modifizieren, als neuen zu schreiben.
 
 ### Die versteckten Kosten schlechter Code-Qualität
 
-Stell dir vor, du musst jeden Morgen durch ein Labyrinth navigieren, nur um zu deinem Arbeitsplatz zu gelangen. Genau so fühlt es sich an, wenn du mit schlecht geschriebenem Code arbeitest. Studien zeigen, dass alleine der Einsatz von Komplexitätsmetriken und die Verbesserung damit aufgezeigter Codeteile zu etwa 20% höherer Produktivität in der Softwarewartung führen[1].
+Stell dir vor, du musst jeden Morgen durch ein Labyrinth navigieren, nur um zu deinem Arbeitsplatz zu gelangen. Genau so fühlt es sich an, wenn du mit schlecht geschriebenem Code arbeitest. Studien zeigen, dass alleine der Einsatz von Komplexitätsmetriken und die Verbesserung damit aufgezeigter Codeteile zu etwa 20% höherer Produktivität in der Softwarewartung führen.
 
-Gute Code-Qualität bringt konkrete Vorteile[2][12]:
+Gute Code-Qualität bringt konkrete Vorteile:
 
 - **Reduzierte Bug-Rate**: Qualitätscode ist resistenter gegen Fehler - wie ein gutes Immunsystem
 - **Verbesserte Performance**: Optimierter Code läuft effizienter und macht deine Nutzer glücklicher
@@ -55,9 +55,9 @@ Gute Code-Qualität bringt konkrete Vorteile[2][12]:
 
 ### Clean Code - Der heilige Gral der Programmierung
 
-Clean Code ist ein Begriff, der durch Robert Cecil Martin (auch bekannt als "Uncle Bob") populär wurde[15]. Es geht darum, Code zu schreiben, der so klar und verständlich ist wie ein gut geschriebener Roman - nur ohne die langweiligen Beschreibungen von Landschaften über drei Seiten hinweg.
+Clean Code ist ein Begriff, der durch Robert Cecil Martin (auch bekannt als "Uncle Bob") populär wurde. Es geht darum, Code zu schreiben, der so klar und verständlich ist wie ein gut geschriebener Roman - nur ohne die langweiligen Beschreibungen von Landschaften über drei Seiten hinweg.
 
-Die wichtigsten Clean Code Prinzipien[5][15]:
+Die wichtigsten Clean Code Prinzipien:
 
 **Klarheit vor Cleverness**: Dein Code sollte selbsterklärend sein. Wenn du einen Kommentar brauchst, um zu erklären, was eine Zeile macht, ist sie wahrscheinlich zu kompliziert. Es ist wie mit Witzen - wenn du ihn erklären musst, war er nicht gut.
 
@@ -90,21 +90,21 @@ SOLID ist ein Akronym für fünf Designprinzipien, die deinen Code stabiler mach
 
 ## Metriken - Wie misst man Code-Qualität?
 
-Code-Qualität zu messen ist wie Humor zu messen - schwierig, aber nicht unmöglich. Es gibt verschiedene Metriken, die dir dabei helfen, objektiv zu bewerten, wie gut (oder schlecht) dein Code wirklich ist[3][11].
+Code-Qualität zu messen ist wie Humor zu messen - schwierig, aber nicht unmöglich. Es gibt verschiedene Metriken, die dir dabei helfen, objektiv zu bewerten, wie gut (oder schlecht) dein Code wirklich ist.
 
 ### Zyklomatische Komplexität
 
-Die zyklomatische Komplexität misst die Anzahl der linear unabhängigen Pfade durch deinen Code[11]. Die Formel dafür ist:
+Die zyklomatische Komplexität misst die Anzahl der linear unabhängigen Pfade durch deinen Code. Die Formel dafür ist:
 
 ````
 V(G) = e - n + 2
 ````
 
-Wobei `e` die Anzahl der Kanten und `n` die Anzahl der Knoten im Kontrollflussgraphen darstellt[11]. Einfacher ausgedrückt: Je mehr if-else Statements und Schleifen du hast, desto komplexer wird dein Code. Eine Komplexität über 10 gilt als problematisch - etwa so wie mehr als 10 Tabs im Browser zu haben.
+Wobei `e` die Anzahl der Kanten und `n` die Anzahl der Knoten im Kontrollflussgraphen darstellt. Einfacher ausgedrückt: Je mehr if-else Statements und Schleifen du hast, desto komplexer wird dein Code. Eine Komplexität über 10 gilt als problematisch - etwa so wie mehr als 10 Tabs im Browser zu haben.
 
 ### Wichtige Code-Metriken
 
-Die Hersteller Initiative Software (HIS) hat einen Basissatz von Code-Metriken definiert[3]:
+Die Hersteller Initiative Software (HIS) hat einen Basissatz von Code-Metriken definiert:
 
 - **COMF** (Kommentardichte): Wie gut ist dein Code dokumentiert?
 - **PATH** (Anzahl der Pfade): Wie viele verschiedene Wege gibt es durch deinen Code?
@@ -115,30 +115,30 @@ Die Hersteller Initiative Software (HIS) hat einen Basissatz von Code-Metriken d
 
 ### Statische Code-Analyse
 
-Statische Code-Analyse ist wie ein sehr pedantischer Deutschlehrer, der deinen Code auf Herz und Nieren prüft, ohne ihn tatsächlich ausführen zu müssen[8]. Diese Tools verwenden Compiler-ähnliche Frontends, um syntaktische und semantische Modelle deiner Software zu erstellen und dann gegen vordefinierte Regeln zu prüfen[8].
+Statische Code-Analyse ist wie ein sehr pedantischer Deutschlehrer, der deinen Code auf Herz und Nieren prüft, ohne ihn tatsächlich ausführen zu müssen. Diese Tools verwenden Compiler-ähnliche Frontends, um syntaktische und semantische Modelle deiner Software zu erstellen und dann gegen vordefinierte Regeln zu prüfen.
 
 Beliebte Tools für statische Analyse:
 
-- **ESLint** für JavaScript[7]: Ein konfigurierbarer Linter, der dir hilft, Probleme in deinem JavaScript-Code zu finden
-- **SonarQube** für verschiedene Sprachen[6]: Ein umfassendes Tool für Code-Qualität und Sicherheitsanalyse
-- **QA-MISRA** für C/C++[3]: Speziell für sicherheitskritische Anwendungen
+- **ESLint** für JavaScript: Ein konfigurierbarer Linter, der dir hilft, Probleme in deinem JavaScript-Code zu finden
+- **SonarQube** für verschiedene Sprachen: Ein umfassendes Tool für Code-Qualität und Sicherheitsanalyse
+- **QA-MISRA** für C/C++: Speziell für sicherheitskritische Anwendungen
 
 ### Code Reviews - Der soziale Aspekt der Qualität
 
-Code Reviews sind wie Peer-Review in der Wissenschaft, nur mit mehr Koffein und weniger lateinischen Begriffen[10][16]. Dabei schaut sich ein anderer Entwickler deinen Code an und stellt Fragen wie[16]:
+Code Reviews sind wie Peer-Review in der Wissenschaft, nur mit mehr Koffein und weniger lateinischen Begriffen. Dabei schaut sich ein anderer Entwickler deinen Code an und stellt Fragen wie:
 
 - Gibt es offensichtliche Logikfehler?
 - Wurden alle Anforderungen implementiert?
 - Reichen die Tests aus?
 - Entspricht der Code den Formatierungsrichtlinien?
 
-Ein gutes Code Review ist wie ein konstruktives Gespräch unter Freunden - ehrlich, aber nicht verletzend. Es geht nicht darum, den anderen fertig zu machen, sondern gemeinsam besseren Code zu schreiben[16].
+Ein gutes Code Review ist wie ein konstruktives Gespräch unter Freunden - ehrlich, aber nicht verletzend. Es geht nicht darum, den anderen fertig zu machen, sondern gemeinsam besseren Code zu schreiben.
 
 ### Refactoring - Frühjahrsputz für Code
 
-Refactoring ist der Prozess, bei dem du bestehenden Code verbesserst, ohne seine Funktionalität zu ändern[12]. Es ist wie Renovierung - am Ende sieht alles besser aus, aber die Grundstruktur bleibt dieselbe.
+Refactoring ist der Prozess, bei dem du bestehenden Code verbesserst, ohne seine Funktionalität zu ändern. Es ist wie Renovierung - am Ende sieht alles besser aus, aber die Grundstruktur bleibt dieselbe.
 
-Die Vorteile von Refactoring[12]:
+Die Vorteile von Refactoring:
 
 - **Verbesserte Lesbarkeit**: Code wird verständlicher
 - **Erhöhte Wiederverwendbarkeit**: Code kann einfacher in anderen Projekten genutzt werden
@@ -148,7 +148,7 @@ Die Vorteile von Refactoring[12]:
 
 ### Der "Pfadfinder-Regel" folgen
 
-Robert Martin formulierte die Pfadfinder-Regel für Code: "Hinterlasse den Code sauberer, als du ihn vorgefunden hast"[15]. Das bedeutet nicht, dass du jedes Mal eine komplette Renovierung durchführen musst, aber kleine Verbesserungen summieren sich über die Zeit.
+Robert Martin formulierte die Pfadfinder-Regel für Code: "Hinterlasse den Code sauberer, als du ihn vorgefunden hast". Das bedeutet nicht, dass du jedes Mal eine komplette Renovierung durchführen musst, aber kleine Verbesserungen summieren sich über die Zeit.
 
 ### Automatisierung ist dein Freund
 
@@ -170,7 +170,7 @@ Es ist verlockend, immer den perfekten Code schreiben zu wollen, aber manchmal i
 
 ### Technische Schulden
 
-Technische Schulden entstehen, wenn du bewusst Abkürzungen nimmst, um schneller voranzukommen[5]. Wie bei echten Schulden auch, musst du sie irgendwann mit Zinsen zurückzahlen. Der Trick ist, bewusste Entscheidungen zu treffen und nicht aus Bequemlichkeit in die Schuldenspirale zu geraten.
+Technische Schulden entstehen, wenn du bewusst Abkürzungen nimmst, um schneller voranzukommen. Wie bei echten Schulden auch, musst du sie irgendwann mit Zinsen zurückzahlen. Der Trick ist, bewusste Entscheidungen zu treffen und nicht aus Bequemlichkeit in die Schuldenspirale zu geraten.
 
 ### Legacy Code
 
