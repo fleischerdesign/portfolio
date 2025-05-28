@@ -1,6 +1,6 @@
 {
   "navigation": {
-    "home": "Home",
+    "home": "Startseite",
     "about": "Über mich",
     "blog": "Blog",
     "projects": "Projekte",
@@ -68,7 +68,7 @@
       },
       "careerPath": {
         "title": "Karriereweg",
-        "subtitle": "Entdecken Sie meinen beruflichen Werdegang von den Anfängen im Mediendesign bis zu meiner aktuellen Umschulung zum IT-Spezialisten, geprägt von einem ständigen Drang zu Innovation."
+        "subtitle": "Entdecke meinen beruflichen Werdegang von den Anfängen im Mediendesign bis zu meiner aktuellen Umschulung zum IT-Spezialisten, geprägt von einem ständigen Drang zu Innovation."
       },
       "personalLife": {
         "title": "Privatleben",
@@ -104,19 +104,19 @@
       "content": {
         "paragraph1": "Ich genieße es wirklich, mich kreativ auszudrücken, sei es durch Malen, Zeichnen oder andere künstlerische Betätigungen. Diese Leidenschaft für Kreativität erstreckt sich auf mein tägliches Leben und beeinflusst oft meinen Problemlösungsansatz in meiner beruflichen Arbeit.",
         "paragraph2": "Aktiv zu bleiben ist ebenfalls ein wichtiger Teil meiner Routine. Ich gehe gerne laufen und trainiere im Fitnessstudio Kraft, wobei ich sowohl körperliche als auch geistige Vorteile im Überschreiten meiner Grenzen finde. In der Natur zu sein ist unglaublich wichtig für mich; ob es ein ruhiger Spaziergang oder eine belebende Wanderung ist, ich schätze die Momente, die ich im Freien verbringe.",
-        "paragraph3": "Meine intellektuelle Neugier beschränkt sich nicht auf Technologie. Ich tauche gerne in Romane ein, um eine gute Geschichte zu lesen, aber Sie werden mich auch in Sachbüchern vertieft finden, immer begierig darauf, etwas Neues zu lernen. Dieser Drang zur kontinuierlichen Selbstverbesserung ist ein Kernbestandteil meiner Persönlichkeit.",
+        "paragraph3": "Meine intellektuelle Neugier beschränkt sich nicht auf Technologie. Ich tauche gerne in Romane ein, um eine gute Geschichte zu lesen, aber man wird mich auch in Sachbüchern vertieft finden, immer begierig darauf, etwas Neues zu lernen. Dieser Drang zur kontinuierlichen Selbstverbesserung ist ein Kernbestandteil meiner Persönlichkeit.",
         "paragraph4": "Und dann ist da noch das Kochen! Ich verbringe absolut gerne Zeit in der Küche. Die asiatische Cuisine hat einen besonderen Platz in meinem Herzen, und du kannst drauf wetten, dass sich immer ein großes Glas selbstgemachtes Kimchi in meinem Kühlschrank befindet – für den Fall der Fälle. Diese Liebe zum Essen erstreckt sich auf das Ausprobieren neuer Rezepte und das Erkunden verschiedener kulinarischer Traditionen.",
         "paragraph5": "Schließlich ist es nicht nur eine berufliche Notwendigkeit, sich über die neuesten Technologietrends und -nachrichten auf dem Laufenden zu halten; es ist ein echtes persönliches Interesse. Ich liebe es zu sehen, was neu ist, zu verstehen, wie es funktioniert, und seine potenziellen Auswirkungen zu bedenken, all das fließt in meine Leidenschaft für Webentwicklung und Innovation ein."
       }
     },
     "resume": {
       "title": "Lebenslauf",
-      "subtitle": "Tauchen Sie tiefer in meine Qualifikationen und Erfolge ein. Dieser Abschnitt bietet einen umfassenden Überblick über meine Fähigkeiten, Ausbildung und beruflichen Meilensteine."
+      "subtitle": "Tauche tiefer in meine Qualifikationen und Erfolge ein. Dieser Abschnitt bietet einen umfassenden Überblick über meine Fähigkeiten, Ausbildung und beruflichen Meilensteine."
     }
   },
   "blog": {
     "title": "Blog",
-    "subtitle": "Entdecken Sie eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleiten Sie mich auf meiner Reise in der Informatik."
+    "subtitle": "Entdecke eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleite mich auf meine Reise in die Informatik."
   },
   "blogPost": {
     "date": {
