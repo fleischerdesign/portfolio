@@ -97,7 +97,7 @@
         <div class="grid grid-cols-1 gap-3 mt-4">
           <Card hover class="group h-60 overflow-hidden">
             <div class="w-1/3 overflow-hidden">
-              <img src="/img/profile.jpg"
+              <NuxtImg sizes="800px" src="/img/profile.jpg"
                 class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition" />
             </div>
             <CardContainer class="flex-col">

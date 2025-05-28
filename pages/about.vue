@@ -8,7 +8,7 @@
             class="grid grid-cols-1 grid-rows-1 md:grid-cols-2 md:grid-rows-2 lg:grid-cols-3 gap-4 mb-24 items-stretch">
             <Card class="overflow-hidden row-span-2">
                 <div class="overflow-hidden group w-full h-full max-h-[500px]">
-                    <img src="/img/profile.jpg" class="group-hover:scale-110 transition w-full h-full object-cover" />
+                    <NuxtImg sizes="300px sm:100vw" src="/img/profile.jpg" class="group-hover:scale-110 transition w-full h-full object-cover" />
                 </div>
             </Card>
             <Card hover class="group">
@@ -81,7 +81,7 @@
             <p class="text-2xl text-neutral-400 italic">{{ $t("about.earlyLife.subtitle") }}</p>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div class="rounded-lg overflow-hidden self-start group">
-                    <img src="/img/child.jpg" class="rounded-lg group-hover:scale-110 transition" />
+                    <NuxtImg sizes="100vw lg:600px" src="/img/child.jpg" class="rounded-lg group-hover:scale-110 transition" />
                 </div>
                 <div class="flex flex-col gap-4">
 
@@ -116,15 +116,15 @@
 
             <div class="grid grid-cols-3 gap-4 items-stretch">
                 <div class="rounded-lg overflow-hidden group">
-                    <img src="/img/IMG-20230618-WA0007.jpg"
+                    <NuxtImg sizes="400px" src="/img/IMG-20230618-WA0007.jpg"
                         class="rounded-lg group-hover:scale-110 transition h-full w-full object-cover" />
                 </div>
                 <div class="rounded-lg overflow-hidden group">
-                    <img src="/img/2023-01-19.jpg"
+                    <NuxtImg sizes="400px" src="/img/2023-01-19.jpg"
                         class="rounded-lg group-hover:scale-110 transition h-full w-full object-cover" />
                 </div>
                 <div class="rounded-lg overflow-hidden group">
-                    <img src="/img/business_atire.jpg"
+                    <NuxtImg sizes="400px" src="/img/business_atire.jpg"
                         class="rounded-lg group-hover:scale-110 transition h-full w-full object-cover" />
                 </div>
             </div>

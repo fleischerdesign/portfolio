@@ -9,7 +9,7 @@
                         <span class="flex items-center gap-1 py-1 px-2 backdrop-blur-md bg-neutral-900/40 rounded-lg"><Icon name="mage:clock" size="20" />{{ post.readingTime }}</span>
                     </div>
                 </div>
-                <img :src="post?.image?.src"
+                <NuxtImg sizes="600px" :src="post?.image?.src"
                     class="h-full w-full object-cover opacity-40 group-hover:opacity-100 group-hover:scale-110 transition" />
             </div>
             <CardContainer class="flex-col">
