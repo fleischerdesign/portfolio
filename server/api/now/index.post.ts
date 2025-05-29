@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
   const newData: Record<string, string> = {
     de: body.de,
     en: body.en,
+    icon: body.icon,
     updatedAt: new Date().toISOString()
   }
 

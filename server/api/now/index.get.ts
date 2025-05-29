@@ -19,7 +19,7 @@ export default cachedEventHandler(async (event) => {
   ) as string
 
   if (!existsSync(DATA_PATH)) {
-    return { status: 'No status set!', updatedAt: null }
+    return { status: 'No status set!', updatedAt: null , icon: 'info'}
   }
 
   try {
@@ -28,6 +28,7 @@ export default cachedEventHandler(async (event) => {
     
     return {
       status: data[lang] || data.de,
+      icon: data.icon || 'info',
       updatedAt: data.updatedAt
     }
   } catch (error) {
