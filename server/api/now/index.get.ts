@@ -25,7 +25,6 @@ export default cachedEventHandler(async (event) => {
   try {
     const rawData = readFileSync(DATA_PATH, 'utf-8')
     const data = JSON.parse(rawData) as Record<string, string>
-    
     return {
       status: data[lang] || data.de,
       icon: data.icon || 'info',
