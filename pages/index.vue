@@ -145,6 +145,7 @@
           <NuxtLink :to="$localePath('/contact')" class="self-start"><h1 class="text-5xl font-semibold">{{ $t("home.contact.title") }}</h1></NuxtLink>
           <p class="text-neutral-400 w-full lg:w-2/3">{{ $t("home.contact.subtitle") }}</p>
         </div>
+        <ContactForm class="mt-4" />
       </div>
     </div>
   </div>
@@ -156,12 +157,10 @@ const { t } = useI18n();
 const route = useRoute();
 const { contributions, fetchContributions } = useGitHubContributions()
 
-const { refresh } = await useAsyncData('contributions', async () => {
-  await fetchContributions();
-});
-
-onMounted(() => {
-
+onMounted(async () => {
+  if (contributions.value.length === 0) {
+    await fetchContributions();
+  }
 });
 
 useSeoMeta({
