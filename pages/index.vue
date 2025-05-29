@@ -3,12 +3,7 @@
     <div>
       <div class="min-h-screen flex items-center 2xl:min-h-[600px]">
         <div class="flex flex-col items-start gap-4">
-          <Chip>
-            <svg class="inline overflow-visible m-auto" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
-              <circle class="drop-shadow-emit fill-green-400" r="8" cx="8" cy="8" />
-              <circle class="drop-shadow-emit animate-ping origin-center fill-green-400" r="8" cx="8" cy="8" />
-            </svg><span v-if="now?.status">{{ now?.status }}</span>
-          </Chip>
+          <NowIndicator />
           <h1 class="text-5xl font-semibold">{{ $t("home.hero.greeting") }}</h1>
           <p class="text-neutral-400 w-full lg:w-2/3">{{ $t("home.hero.summary") }}</p>
           <div class="flex gap-3 w-full">
@@ -32,8 +27,10 @@
           <CardContainer class="flex-col">
             <h3 class="text-3xl font-medium">{{ $t("home.overview.github.title") }}</h3>
             <p class="text-neutral-400">{{ subtitle }}</p>
+                      <ClientOnly>
             <ContributionChart :contributions="contributions"
               @displayedWeeksCountChanged="onDisplayedWeeksCountChanged" />
+              </ClientOnly>
           </CardContainer>
         </Card>
         <Card class="!p-0 overflow-hidden min-h-60 group">
@@ -157,6 +154,15 @@
 const { locale } = useI18n();
 const { t } = useI18n();
 const route = useRoute();
+const { contributions, fetchContributions } = useGitHubContributions()
+
+const { refresh } = await useAsyncData('contributions', async () => {
+  await fetchContributions();
+});
+
+onMounted(() => {
+
+});
 
 useSeoMeta({
   title: t("navigation.home"),
@@ -185,9 +191,6 @@ const { data } = await useAsyncData(route.path, () => {
     .all();
 });
 
-const now = await useFetch('/api/now', { query: { lang: locale.value } }).data
-
-const contributions = useFetch('/api/contributions', {lazy: false}).data;
 const displayedWeeks = ref(0);
 
 const subtitle = computed(() => {
