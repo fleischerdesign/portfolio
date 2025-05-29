@@ -1,5 +1,5 @@
 <template>
-    <Chip class="flex flex-row gap-7">
+    <Chip class="flex flex-row gap-9">
         <div class="flex overflow-visible relative items-center justify-center drop-shadow-emit">
             <Icon :name="now?.icon || 'mage:clock'" size="24" class="text-green-400 inset-0 absolute" />
             <Icon :name="now?.icon || 'mage:clock'" size="24"
