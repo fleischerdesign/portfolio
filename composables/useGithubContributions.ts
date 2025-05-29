@@ -4,16 +4,16 @@ type Contribution = {
 }
 
 export const useGitHubContributions = () => {
-  const contributions = ref<Contribution[]>([]);
+  const contributions = useState<Contribution[]>('contributions', () => []);
 
   const fetchContributions = async () => {
-    const { data } = await useFetch<Contribution[]>('/api/contributions');
-    contributions.value = data.value ?? [];
+    try {
+      const data = await $fetch<Contribution[]>('/api/contributions');
+      contributions.value = data;
+    } catch (error) {
+      console.error('Failed to fetch contributions:', error);
+    }
   };
-
-  onUnmounted(() => {
-    contributions.value = [];
-  });
 
   return { contributions, fetchContributions };
 };
