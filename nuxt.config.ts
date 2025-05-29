@@ -13,7 +13,8 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/content',
     '@nuxtjs/i18n',
-    '@nuxt/image'
+    '@nuxt/image',
+    '@nuxtjs/color-mode'
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }

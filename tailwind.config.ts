@@ -1,5 +1,9 @@
 import type { Config } from 'tailwindcss'
 import typography from '@tailwindcss/typography'
+import colors from 'tailwindcss/colors'
+
+const primary = colors.neutral
+const secondary = colors.emerald
 
 export default <Partial<Config>>{
     plugins: [typography],
@@ -18,15 +22,12 @@ export default <Partial<Config>>{
         50: '50%',
       },
       dropShadow: {
-        'emit': '0px 0px 10px #38812E',
+        'emit': '0px 0px 5px ' + secondary['500'],
+        'emit-lg': '0px 0px 10px ' + secondary['500'],
       },
       colors: {
-        primary: {
-            700: "#2B2B2B",
-            800: "#1A1A1A",
-            900: "#121212",
-        },
-        secondary: "rgba(64, 64, 64, 0.60)",
+        neutral: primary,
+        secondary: secondary,
       },
     }
   }

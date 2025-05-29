@@ -33,7 +33,7 @@
     <div
       v-if="tooltip.visible"
       :style="{ left: tooltip.x + 'px', top: tooltip.y + 'px' }"
-      class="absolute z-50 pointer-events-none px-3 py-2 bg-gradient-to-br from-neutral-900/40 to-neutral-800/40 border rounded-lg border-neutral-700/40 text-white backdrop-blur-md transition-opacity duration-200"
+      class="absolute z-50 pointer-events-none px-3 py-2 bg-gradient-to-br dark:from-neutral-900/40 from-neutral-100/40 dark:to-neutral-800/40 to-neutral-200/40 border rounded-lg dark:border-neutral-700/40 border-neutral-300/40 dark:text-white text-neutral-950 backdrop-blur-md transition-opacity duration-200"
     >
       {{ tooltip.content }}
     </div>
@@ -191,11 +191,11 @@ function getColorLevel(count: number) {
 function getColorClass(count: number) {
   const level = getColorLevel(count)
   const colors = [
-    'fill-primary-900 dark:fill-primary-900/60 stroke-neutral-800',
-    'fill-green-300 dark:fill-green-800 hover:scale-125 hover:shadow-lg transition-transform origin-center',
-    'fill-green-400 dark:fill-green-600 hover:scale-125 hover:shadow-lg transition-transform origin-center',
-    'fill-green-500 dark:fill-green-400 hover:scale-125 hover:shadow-lg transition-transform origin-center',
-    'fill-green-600 dark:fill-green-200 hover:scale-125 hover:shadow-lg transition-transform origin-center',
+    'dark:fill-neutral-900 fill-neutral-100 dark:stroke-neutral-800 stroke-neutral-200',
+    'dark:fill-secondary-300 fill-secondary-700 hover:scale-125 hover:shadow-lg transition-transform origin-center',
+    'dark:fill-secondary-400 fill-secondary-600 hover:scale-125 hover:shadow-lg transition-transform origin-center',
+    'dark:fill-secondary-500 fill-secondary-500 yhover:scale-125 hover:shadow-lg transition-transform origin-center',
+    'dark:fill-secondary-600 fill-secondary-400 hover:scale-125 hover:shadow-lg transition-transform origin-center',
   ]
   return colors[level]
 }

@@ -1,7 +1,7 @@
 <template>
   <article>
     <div>
-      <div class="min-h-screen relative flex items-center 2xl:min-h-[600px]">
+      <div class="min-h-screen relative flex items-center 2xl:min-h-[600px] dark:bg-transparent bg-neutral-100">
         <NuxtImg sizes="100vw sm:100vw" :placeholder="[50, 25, 75, 5]" :src="post?.image?.src" class="w-full h-full absolute z-0 object-cover opacity-40"
           :alt="post?.title || 'Post Background'" />
         <div class="container max-w-screen-xl flex flex-col items-start gap-4 relative z-1">
@@ -13,7 +13,7 @@
             <span>{{ $t("blogPost.date.on") }} {{ formattedDate }}</span>
           </div>
           <h1 class="text-5xl font-semibold drop-shadow-md">{{ post?.title }}</h1>
-          <p class="text-lg text-neutral-400 drop-shadow-md">{{ post?.description }}</p>
+          <p class="text-lg dark:text-neutral-400 drop-shadow-md">{{ post?.description }}</p>
           <div class="flex gap-2">
             <tag class="drop-shadow-md" fill hover v-for="(tag, index) in post?.tags" :key="index">
               {{ tag }}
@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="container max-w-screen-xl">
-    <div class="my-8 prose prose-neutral prose-invert max-w-none prose-a:prose-headings:no-underline prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl">
+    <div class="my-8 prose prose-neutral dark:prose-invert max-w-none prose-a:prose-headings:no-underline prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl">
       <ContentRenderer v-if="post" :value="post" />
     </div>
     </div>

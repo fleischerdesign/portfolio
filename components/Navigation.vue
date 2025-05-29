@@ -2,12 +2,15 @@
     <div class="flex fixed bottom-0 my-2 w-full z-20">
         <div class="m-auto flex gap-2">
             <div
-                class="group p-3 flex backdrop-blur-md bg-gradient-to-br from-neutral-900/40 to-neutral-800/40 border rounded-lg border-neutral-700/40 hover:bg-gradient-to-br hover:from-neutral-800/40 hover:to-neutral-900/40 hover:border-neutral-600/40 hover:shadow-inner transition">
-                <Icon name="mage:bolt" size="30" class="opacity-60 hover:-translate-y-1 transition hover-group:opacity-0"/>
-                <Icon name="mage:bolt-fill" size="30" class="opacity-0 absolute transition group-hover:opacity-100"/>
+                @click="$toggleDarkMode()"
+                class="cursor-pointer group p-3 flex backdrop-blur-md bg-gradient-to-br dark:from-neutral-900/40 from-neutral-100/40 dark:to-neutral-800/40 to-neutral-200/40 border rounded-lg dark:border-neutral-700/40 border-neutral-300/40 hover:bg-gradient-to-br dark:hover:from-neutral-800/40 hover:from-neutral-200/40 dark:hover:to-neutral-900/40 hover:to-neutral-100/40 dark:hover:border-neutral-600/40 hover:border-neutral-400/40 hover:shadow-inner transition">
+                <Icon v-if="colorMode.preference == 'light'" name="mage:moon" size="30" class="opacity-60 hover:-translate-y-1 transition hover-group:opacity-0"/>
+                <Icon v-if="colorMode.preference == 'light'" name="mage:moon-fill" size="30" class="opacity-0 absolute transition group-hover:opacity-100"/>
+                <Icon v-if="colorMode.preference == 'dark'" name="mage:sun" size="30" class="opacity-60 hover:-translate-y-1 transition hover-group:opacity-0"/>
+                <Icon v-if="colorMode.preference == 'dark'" name="mage:sun-fill" size="30" class="opacity-0 absolute transition group-hover:opacity-100"/>
             </div>
             <div
-                class="flex gap-3 p-3 backdrop-blur-md bg-gradient-to-br from-neutral-900/40 to-neutral-800/40 border rounded-lg border-neutral-700/40 hover:bg-gradient-to-br hover:from-neutral-800/40 hover:to-neutral-900/40 hover:border-neutral-600/40 hover:shadow-inner transition">
+                class="flex gap-3 p-3 backdrop-blur-md bg-gradient-to-br dark:from-neutral-900/40 from-neutral-100/40 dark:to-neutral-800/40 to-neutral-200/40 border rounded-lg dark:border-neutral-700/40 border-neutral-300/40 hover:bg-gradient-to-br dark:hover:from-neutral-800/40 hover:from-neutral-200/40 dark:hover:to-neutral-900/40 hover:to-neutral-100/40 dark:hover:border-neutral-600/40 hover:border-neutral-400/40 hover:shadow-inner transition">
                 <NuxtLink :to="$localePath('/')" class="group flex" activeClass="active">
                     <Icon name="mage:home" size="30" class="group-[.active]:opacity-0 opacity-40 transition group-hover:opacity-0"/>
                     <Icon name="mage:home-fill" size="30" class="group-[.active]:opacity-100 absolute opacity-0 transition group-hover:opacity-40"/>
@@ -32,3 +35,10 @@
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+const colorMode = useColorMode()
+const $toggleDarkMode = () => {
+    colorMode.preference = colorMode.preference === 'dark' ? 'light' : 'dark'
+}
+</script>

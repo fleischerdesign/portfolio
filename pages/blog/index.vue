@@ -3,7 +3,7 @@
         <div class="mb-24">
             <div class="flex flex-col gap-4">
                 <h1 class="text-5xl font-semibold">{{ $t("blog.title") }}</h1>
-                <p class="text-neutral-400 w-full lg:w-2/3">{{ $t("blog.subtitle") }}</p>
+                <p class="dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("blog.subtitle") }}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
                 <BlogPostCard v-for="(post, index) in data" :key="index" :post="post" />

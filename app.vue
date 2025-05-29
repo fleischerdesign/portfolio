@@ -1,9 +1,7 @@
 <template>
-  <div class="bg-primary-900 min-h-screen text-white">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -14,8 +12,13 @@ useHead({
   meta: [
     { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
-  ]
+  ],
+  bodyAttrs: {
+    class: 'dark:bg-neutral-900 dark:text-white text-neutral-950 bg-neutral-100 transition'
+  }
 })
+
+
 </script>
 
 

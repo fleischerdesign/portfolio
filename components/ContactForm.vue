@@ -1,68 +1,41 @@
 <template>
   <form @submit.prevent="onSubmit" class="flex flex-col gap-6">
     <div>
-      <label class="block text-neutral-400 mb-1" for="name">Name</label>
-      <input
-        v-model="form.name"
-        id="name"
-        type="text"
-        class="bg-gradient-to-br from-neutral-900 to-neutral-800 w-full px-4 py-2 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-        :class="{ 'border-red-500': errors.name }"
-        placeholder="Dein Name"
-        required
-      />
+      <label class="block dark:text-neutral-400 text-neutral-600 mb-1" for="name">Name</label>
+      <input v-model="form.name" id="name" type="text"
+        class="dark:placeholder-neutral-600 place-holder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 w-full px-4 py-2 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 focus:drop-shadow-emit transition"
+        :class="{ 'border-red-500': errors.name }" placeholder="Dein Name" required />
       <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</p>
     </div>
     <div>
       <label class="block text-neutral-400 mb-1" for="email">E-Mail</label>
-      <input
-        v-model="form.email"
-        id="email"
-        type="email"
-        class="bg-gradient-to-br from-neutral-900 to-neutral-800 w-full px-4 py-2 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-        :class="{ 'border-red-500': errors.email }"
-        placeholder="deine@email.de"
-        required
-      />
+      <input v-model="form.email" id="email" type="email"
+        class="dark:placeholder-neutral-600 place-holder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 w-full px-4 py-2 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 focus:drop-shadow-emit transition"
+        :class="{ 'border-red-500': errors.email }" placeholder="deine@email.de" required />
       <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email }}</p>
     </div>
     <div>
       <label class="block text-neutral-400 mb-1" for="subject">Betreff</label>
-      <input
-        v-model="form.subject"
-        id="subject"
-        type="subject"
-        class="bg-gradient-to-br from-neutral-900 to-neutral-800 w-full px-4 py-2 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-        :class="{ 'border-red-500': errors.subject }"
-        placeholder="Dein Anliegen"
-        required
-      />
+      <input v-model="form.subject" id="subject" type="subject"
+        class="dark:placeholder-neutral-600 place-holder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 w-full px-4 py-2 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 focus:drop-shadow-emit transition"
+        :class="{ 'border-red-500': errors.subject }" placeholder="Dein Anliegen" required />
       <p v-if="errors.subject" class="text-red-500 text-sm mt-1">{{ errors.subject }}</p>
     </div>
     <div>
       <label class="block text-neutral-400 mb-1" for="message">Nachricht</label>
-      <textarea
-        v-model="form.message"
-        id="message"
-        rows="5"
-        class="bg-gradient-to-br from-neutral-900 to-neutral-800 w-full px-4 py-2 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-        :class="{ 'border-red-500': errors.message }"
-        placeholder="Deine Nachricht"
-        required
-      ></textarea>
+      <div class="grid grid-cols-3 gap-4">
+        <textarea v-model="form.message" id="message" rows="5"
+          class="col-span-3 md:col-span-2 dark:placeholder-neutral-600 place-holder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 w-full px-4 py-2 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 focus:drop-shadow-emit transition"
+          :class="{ 'border-red-500': errors.message }" placeholder="Deine Nachricht" required></textarea>
+        <button type="submit"
+          class=" bg-secondary-400 col-span-3 md:col-span-1 text-neutral-900 px-4 py-4 rounded-lg hover:bg-secondary-600 active:bg-secondary-500 active:drop-shadow-emit transition font-medium"
+          :disabled="loading">
+          {{ loading ? 'Senden...' : 'Senden' }}
+        </button>
+      </div>
       <p v-if="errors.message" class="text-red-500 text-sm mt-1">{{ errors.message }}</p>
     </div>
-    <div class="grid grid-cols-2 gap-4">
-    <Button class="px-4 py-4 place-self-start"><Icon name="mage:phone" size="30" /></Button>
-    <button
-      type="submit"
-      class="border border-green-300 bg-green-400 text-neutral-900 px-4 py-4 rounded-lg hover:bg-green-600 hover:border-green-500 active:bg-green-500 active:border-green-400 active:drop-shadow-emit transition"
-      :disabled="loading"
-    >
-      {{ loading ? 'Senden...' : 'Senden' }}
-    </button>
-    </div>
-    <p v-if="success" class="text-green-600 text-center mt-2">Vielen Dank für deine Nachricht!</p>
+    <p v-if="success" class="text-secondary-400 text-center mt-2 drop-shadow-emit-lg">Vielen Dank für deine Nachricht!</p>
     <p v-if="submitError" class="text-red-600 text-center mt-2">Fehler beim Senden. Bitte versuche es erneut.</p>
   </form>
 </template>

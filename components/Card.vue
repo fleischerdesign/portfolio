@@ -1,7 +1,7 @@
 <template>
-    <div class="flex bg-gradient-to-br from-neutral-900 to-neutral-800 border rounded-lg border-neutral-700 transition"
+    <div class="flex bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 border rounded-lg dark:border-neutral-700 border-neutral-300 transition"
         :class="{
-            'hover:bg-gradient-to-br hover:from-neutral-800 hover:to-neutral-900 hover:border-neutral-600 hover:shadow-inner cursor-pointer': hover,
+            ' dark:hover:from-neutral-800 hover:from-neutral-200 dark:hover:to-neutral-900 hover:to-neutral-100 dark:hover:border-neutral-600 hover:border-neutral-400 hover:shadow-inner cursor-pointer': hover,
         }">
         <slot />
     </div>
