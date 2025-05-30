@@ -80,7 +80,7 @@
             <h1 class="text-5xl font-semibold" id="early_life">{{ $t("about.earlyLife.title") }}</h1>
             <p class="text-2xl dark:text-neutral-400 text-neutral-600 italic">{{ $t("about.earlyLife.subtitle") }}</p>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div class="rounded-lg overflow-hidden self-start group">
+                <div class="shadow-sm rounded-lg overflow-hidden self-start group">
                     <NuxtImg sizes="100vw lg:600px" src="/img/child.jpg" class="rounded-lg group-hover:scale-110 transition" />
                 </div>
                 <div class="flex flex-col gap-4">
@@ -115,15 +115,15 @@
             <p>{{ $t("about.personalLife.content.paragraph2") }}</p>
 
             <div class="grid grid-cols-3 gap-4 items-stretch">
-                <div class="rounded-lg overflow-hidden group">
+                <div class="shadow-sm rounded-lg overflow-hidden group">
                     <NuxtImg sizes="400px" src="/img/IMG-20230618-WA0007.jpg"
                         class="rounded-lg group-hover:scale-110 transition h-full w-full object-cover" />
                 </div>
-                <div class="rounded-lg overflow-hidden group">
+                <div class="shadow-sm rounded-lg overflow-hidden group">
                     <NuxtImg sizes="400px" src="/img/2023-01-19.jpg"
                         class="rounded-lg group-hover:scale-110 transition h-full w-full object-cover" />
                 </div>
-                <div class="rounded-lg overflow-hidden group">
+                <div class="shadow-sm rounded-lg overflow-hidden group">
                     <NuxtImg sizes="400px" src="/img/business_atire.jpg"
                         class="rounded-lg group-hover:scale-110 transition h-full w-full object-cover" />
                 </div>

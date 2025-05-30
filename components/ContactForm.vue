@@ -3,21 +3,21 @@
     <div>
       <label class="block dark:text-neutral-400 text-neutral-600 mb-1" for="name">Name</label>
       <input v-model="form.name" id="name" type="text"
-        class="dark:placeholder-neutral-600 place-holder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 w-full px-4 py-2 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 focus:drop-shadow-emit transition"
+        class="shadow-sm dark:placeholder-neutral-600 place-holder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 w-full px-4 py-2 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 focus:drop-shadow-emit transition"
         :class="{ 'border-red-500': errors.name }" placeholder="Dein Name" required />
       <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</p>
     </div>
     <div>
       <label class="block text-neutral-400 mb-1" for="email">E-Mail</label>
       <input v-model="form.email" id="email" type="email"
-        class="dark:placeholder-neutral-600 place-holder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 w-full px-4 py-2 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 focus:drop-shadow-emit transition"
+        class="shadow-sm dark:placeholder-neutral-600 place-holder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 w-full px-4 py-2 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 focus:drop-shadow-emit transition"
         :class="{ 'border-red-500': errors.email }" placeholder="deine@email.de" required />
       <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email }}</p>
     </div>
     <div>
       <label class="block text-neutral-400 mb-1" for="subject">Betreff</label>
       <input v-model="form.subject" id="subject" type="subject"
-        class="dark:placeholder-neutral-600 place-holder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 w-full px-4 py-2 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 focus:drop-shadow-emit transition"
+        class="shadow-sm dark:placeholder-neutral-600 place-holder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 w-full px-4 py-2 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 focus:drop-shadow-emit transition"
         :class="{ 'border-red-500': errors.subject }" placeholder="Dein Anliegen" required />
       <p v-if="errors.subject" class="text-red-500 text-sm mt-1">{{ errors.subject }}</p>
     </div>
@@ -25,10 +25,10 @@
       <label class="block text-neutral-400 mb-1" for="message">Nachricht</label>
       <div class="grid grid-cols-3 gap-4">
         <textarea v-model="form.message" id="message" rows="5"
-          class="col-span-3 md:col-span-2 dark:placeholder-neutral-600 place-holder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 w-full px-4 py-2 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 focus:drop-shadow-emit transition"
+          class="shadow-sm col-span-3 md:col-span-2 dark:placeholder-neutral-600 place-holder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 w-full px-4 py-2 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 focus:drop-shadow-emit transition"
           :class="{ 'border-red-500': errors.message }" placeholder="Deine Nachricht" required></textarea>
         <button type="submit"
-          class=" bg-secondary-400 col-span-3 md:col-span-1 text-neutral-900 px-4 py-4 rounded-lg hover:bg-secondary-600 active:bg-secondary-500 active:drop-shadow-emit transition font-medium"
+          class="shadow-sm bg-secondary-400 col-span-3 md:col-span-1 text-neutral-900 px-4 py-4 rounded-lg hover:bg-secondary-600 active:bg-secondary-500 active:drop-shadow-emit transition font-medium"
           :disabled="loading">
           {{ loading ? 'Senden...' : 'Senden' }}
         </button>

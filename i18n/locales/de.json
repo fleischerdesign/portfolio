@@ -126,5 +126,9 @@
   "projects": {
     "title": "Projekte",
     "subtitle": "Entdecke eine Auswahl meiner Programmierprojekte, von dynamischen E-Commerce-Sites bis hin zu kleineren Tools. Jedes Projekt zeigt meine Expertise in der Erstellung funktionaler und benutzerfreundlicher Lösungen."
+  },
+  "store": {
+    "title": "Store",
+    "subtitle": "Entdecke eine Auswahl meiner Programmierprojekte, von dynamischen E-Commerce-Sites bis hin zu kleineren Tools. Jedes Projekt zeigt meine Expertise in der Erstellung funktionaler und benutzerfreundlicher Lösungen."
   }
 }

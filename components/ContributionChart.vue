@@ -33,7 +33,7 @@
     <div
       v-if="tooltip.visible"
       :style="{ left: tooltip.x + 'px', top: tooltip.y + 'px' }"
-      class="absolute z-50 pointer-events-none px-3 py-2 bg-gradient-to-br dark:from-neutral-900/40 from-neutral-100/40 dark:to-neutral-800/40 to-neutral-200/40 border rounded-lg dark:border-neutral-700/40 border-neutral-300/40 dark:text-white text-neutral-950 backdrop-blur-md transition-opacity duration-200"
+      class="shadow-lg absolute z-50 pointer-events-none px-3 py-2 bg-gradient-to-br dark:from-neutral-900/40 from-neutral-100/40 dark:to-neutral-800/40 to-neutral-200/40 border rounded-lg dark:border-neutral-700/40 border-neutral-300/40 dark:text-white text-neutral-950 backdrop-blur-md transition-opacity duration-200"
     >
       {{ tooltip.content }}
     </div>
