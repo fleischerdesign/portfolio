@@ -1,0 +1,35 @@
+name: Deploy Nuxt App
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clean Install
+        run: |
+          rm -rf node_modules
+          npm ci --production
+
+      - name: Build Docker image
+        run: docker build -t my-nuxt-app .
+
+      # Optional: Push in ein Registry
+      # - name: Push Docker image
+      #   run: docker push mein-registry/portfolio
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /pfad/zu/deinem/app-verzeichnis
+            git pull
+            docker compose down
+            docker compose up -d --build
