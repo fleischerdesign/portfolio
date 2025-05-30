@@ -4,7 +4,7 @@ import { dirname, resolve } from 'path'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-const DATA_PATH = resolve(__dirname, '../now.json')
+const DATA_PATH = resolve(__dirname, '../data/now.json')
 
 export default cachedEventHandler(async (event) => {
   const query = getQuery(event)

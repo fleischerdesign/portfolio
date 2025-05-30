@@ -4,7 +4,7 @@ import { dirname, resolve } from 'path'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-const DATA_PATH = resolve(__dirname, '../now.json')
+const DATA_PATH = resolve(__dirname, '../data/now.json')
 
 export default defineEventHandler(async (event) => {
   const token = getHeader(event, 'Authorization')?.replace('Bearer ', '')
