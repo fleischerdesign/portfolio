@@ -7,13 +7,13 @@
           <h1 class="text-5xl font-semibold">{{ $t("home.hero.greeting") }}</h1>
           <p class="dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("home.hero.summary") }}</p>
           <div class="flex gap-3 w-full">
-            <Button href="https://linkedin.com/" target="_blank">
+            <Button to="https://linkedin.com/" target="_blank">
               <Icon name="mdi:linkedin" size="30" />
             </Button>
-            <Button href="https://github.com/fleischerdesign" target="_blank">
+            <Button to="https://github.com/fleischerdesign" target="_blank">
               <Icon name="mdi:github" size="30" />
             </Button>
-            <Button href="https://instagram.com/fleischer.design/" target="_blank">
+            <Button to="https://instagram.com/fleischer.design/" target="_blank">
               <Icon name="mdi:instagram" size="30" />
             </Button>
             <a class="flex my-auto" href="#overview">
