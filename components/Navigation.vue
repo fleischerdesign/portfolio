@@ -4,12 +4,10 @@
             <div
                 @click="$toggleDarkMode()"
                 class="shadow-sm cursor-pointer group p-3 flex backdrop-blur-md bg-gradient-to-br dark:from-neutral-900/40 from-neutral-100/40 dark:to-neutral-800/40 to-neutral-200/40 border rounded-lg dark:border-neutral-700/40 border-neutral-300/40 hover:bg-gradient-to-br dark:hover:from-neutral-800/40 hover:from-neutral-200/40 dark:hover:to-neutral-900/40 hover:to-neutral-100/40 dark:hover:border-neutral-600/40 hover:border-neutral-400/40 hover:shadow-inner transition">
-                <Icon v-if="colorMode.preference == 'light'" name="mage:moon" size="30" class="opacity-40 hover:-translate-y-1 transition group-hover:opacity-0"/>
-                <Icon v-if="colorMode.preference == 'light'" name="mage:moon-fill" size="30" class="opacity-0 absolute transition group-hover:opacity-100"/>
-                <Icon v-if="colorMode.preference == 'dark'" name="mage:sun" size="30" class="opacity-40 hover:-translate-y-1 transition group-hover:opacity-0"/>
-                <Icon v-if="colorMode.preference == 'dark'" name="mage:sun-fill" size="30" class="opacity-0 absolute transition group-hover:opacity-100"/>
-                <Icon v-if="colorMode.preference == 'system'" name="mage:light-bulb-off" size="30" class="opacity-40 hover:-translate-y-1 transition group-hover:opacity-0"/>
-                <Icon v-if="colorMode.preference == 'system'" name="mage:light-bulb-off-fill" size="30" class="opacity-0 absolute transition group-hover:opacity-100"/>
+                <Icon v-if="colorMode.value == 'light'" name="mage:moon" size="30" class="opacity-40 hover:-translate-y-1 transition group-hover:opacity-0"/>
+                <Icon v-if="colorMode.value == 'light'" name="mage:moon-fill" size="30" class="opacity-0 absolute transition group-hover:opacity-100"/>
+                <Icon v-if="colorMode.value == 'dark'" name="mage:sun" size="30" class="opacity-40 hover:-translate-y-1 transition group-hover:opacity-0"/>
+                <Icon v-if="colorMode.value == 'dark'" name="mage:sun-fill" size="30" class="opacity-0 absolute transition group-hover:opacity-100"/>
             </div>
             <div
                 class="shadow-sm flex gap-3 p-3 backdrop-blur-md bg-gradient-to-br dark:from-neutral-900/40 from-neutral-100/40 dark:to-neutral-800/40 to-neutral-200/40 border rounded-lg dark:border-neutral-700/40 border-neutral-300/40 hover:bg-gradient-to-br dark:hover:from-neutral-800/40 hover:from-neutral-200/40 dark:hover:to-neutral-900/40 hover:to-neutral-100/40 dark:hover:border-neutral-600/40 hover:border-neutral-400/40 hover:shadow-inner transition">
@@ -41,12 +39,6 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
 const $toggleDarkMode = () => {
-  if (colorMode.preference === 'light') {
-    colorMode.preference = 'dark'
-  } else if (colorMode.preference === 'dark') {
-    colorMode.preference = 'system'
-  } else {
-    colorMode.preference = 'light'
-  }
+  colorMode.preference = colorMode.preference === 'dark' ? 'light' : 'dark'
 }
 </script>
