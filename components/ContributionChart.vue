@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch, type Ref } from 'vue'
+const { t, locale } = useI18n();
 
 interface Contribution {
   date: string
@@ -83,7 +83,7 @@ const tooltip = ref({
 
 const formatDate = (isoDate: string) => {
   const date = new Date(isoDate)
-  return date.toLocaleDateString('de-DE', {
+  return date.toLocaleDateString(locale.value, {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -99,7 +99,7 @@ function showTooltip(event: MouseEvent, day: Contribution) {
     visible: true,
     x: event.clientX - rect.left + 12,
     y: event.clientY - rect.top + 12,
-    content: `${day.count} Beitrag${day.count === 1 ? '' : 'e'} am ${formatDate(day.date)}`
+    content: day.count === 1 ? t("home.overview.github.tooltip.single", { count: day.count, date: formatDate(day.date) }) : t("home.overview.github.tooltip.many", { count: day.count, date: formatDate(day.date) })
   }
 }
 function hideTooltip() {

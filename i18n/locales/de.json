@@ -30,6 +30,10 @@
           "weeks": "Beiträge in den letzten {count} Wochen.",
           "week": "Beiträge in der letzten Woche.",
           "overview": "Beitragsübersicht."
+        },
+        "tooltip": {
+          "single": "{count} Beitrag am {date}",
+          "many": "{count} Beiträge am {date}"
         }
       },
       "techstack": {

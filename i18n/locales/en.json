@@ -30,6 +30,10 @@
           "weeks": "Contributions in the last {count} weeks.",
           "week": "Contributions in the last week.",
           "overview": "Contribution overview."
+        },
+        "tooltip": {
+          "single": "{count} contribution on {date}",
+          "many": "{count} contributions on {date}"
         }
       },
       "techstack": {
