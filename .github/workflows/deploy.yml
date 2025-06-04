@@ -62,9 +62,10 @@ jobs:
           key: ${{ secrets.SSH_DEPLOY_KEY }}
           script: |
             export DEPLOY_DIR="/opt/stacks/portfolio/app"
-            export COMPOSE_FILE="$DEPLOY_DIR/compose.yaml"
+            export COMPOSE_FILE="$DEPLOY_DIR/../compose.yaml"
             
             cd "$DEPLOY_DIR"
+            mv "$DEPLOY_DIR/compose.yaml" "$DEPLOY_DIR/../compose.yaml"
             
             # Set permissions
             chown -R deployer:deployer "$DEPLOY_DIR"
