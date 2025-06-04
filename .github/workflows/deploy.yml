@@ -1,35 +1,58 @@
-name: Deploy Nuxt App
-
+name: Production Deployment
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Clean Install
-        run: |
-          rm -rf node_modules
-          npm ci --production
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_DEPLOY_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
 
-      - name: Build Docker image
-        run: docker build -t my-nuxt-app .
-
-      # Optional: Push in ein Registry
-      # - name: Push Docker image
-      #   run: docker push mein-registry/portfolio
-
-      - name: Deploy via SSH
+      - name: Secure Deployment
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          username: deployer
+          key: ${{ secrets.SSH_DEPLOY_KEY }}
           script: |
-            cd /pfad/zu/deinem/app-verzeichnis
-            git pull
-            docker compose down
-            docker compose up -d --build
+            # 1. Environment Setup
+            export DEPLOY_DIR="/opt/stacks/portfolio"
+            export COMPOSE_FILE="$DEPLOY_DIR/docker-compose.yml"
+            
+            # 2. Safe Directory Fix
+            git config --global --add safe.directory "$DEPLOY_DIR"
+            
+            # 3. Log previous container state
+            docker compose -f "$COMPOSE_FILE" ps --all > /tmp/pre_deploy_containers.log
+            
+            # 4. Atomic Deployment
+            {
+              cd "$DEPLOY_DIR"
+              git fetch origin main
+              git reset --hard origin/main
+              docker compose -f "$COMPOSE_FILE" down --remove-orphans
+              docker compose -f "$COMPOSE_FILE" up -d --build
+            } || {
+              echo "Deployment failed! Rolling back..."
+              docker compose -f "$COMPOSE_FILE" up -d
+              exit 1
+            }
+            
+            # 5. Post-Deploy Checks
+            sleep 10
+            docker compose -f "$COMPOSE_FILE" ps --filter "status=running"
+            curl -sSf https://fleischer.design > /dev/null || exit 1
+            
+            # 6. Cleanup
+            docker system prune -f --filter "until=24h"
