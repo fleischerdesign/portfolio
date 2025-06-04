@@ -9,7 +9,10 @@ services:
     networks:
       - web
     volumes:
-      - ./data:/app/data
+      - portfolio_data:/app/data
 networks:
   web:
     external: true
+
+volumes:
+  portfolio_data:

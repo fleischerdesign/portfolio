@@ -65,6 +65,7 @@ jobs:
             export COMPOSE_FILE="$DEPLOY_DIR/../compose.yaml"
             
             cd "$DEPLOY_DIR"
+            echo "moving compose.yaml to parent directory..."
             mv "$DEPLOY_DIR/compose.yaml" "$DEPLOY_DIR/../compose.yaml"
             
             # Set permissions
