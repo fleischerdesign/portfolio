@@ -4,7 +4,7 @@ services:
     labels:
       caddy: fleischer.design
       caddy.reverse_proxy: "{{upstreams 3000}}"
-    env_file: ../.env
+    env_file: .env
     restart: unless-stopped
     networks:
       - web
