@@ -1,15 +1,39 @@
-# Build-Stage
+# ---- Builder Stage ----
 FROM node:20-alpine AS builder
+
+# 1. Cache-Layer für Abhängigkeiten
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci --production
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev --prefer-offline --audit=false
+
+# 2. Build-Schritt mit minimalen Layern
 COPY . .
 RUN npm run build
 
-# Production-Stage
+# ---- Production Stage ----
 FROM node:20-alpine
+
+# 3. Sicherheit & Minimal-Image
 WORKDIR /app
-COPY --from=builder /app/.output ./ 
-COPY --from=builder /app/node_modules ./node_modules
-ENV NODE_ENV=production
+RUN apk add --no-cache dumb-init && \
+    adduser -D app && \
+    chown -R app:app /app
+USER app
+
+# 4. Nur notwendige Artefakte kopieren
+COPY --from=builder --chown=app:app /app/.output ./
+COPY --from=builder --chown=app:app /app/node_modules ./node_modules
+
+# 5. Runtime-Konfiguration
+ENV NODE_ENV=production \
+    PORT=3000 \
+    HOST=0.0.0.0
+EXPOSE 3000
+
+# 6. Healthcheck mit Ihrem Endpunkt
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
+    CMD curl -fs http://localhost:3000/api/health | grep -q '"status":"ok"' || exit 1
+
+# 7. Optimierte Container-Initialisierung
+ENTRYPOINT ["dumb-init"]
 CMD ["node", "/app/server/index.mjs"]
