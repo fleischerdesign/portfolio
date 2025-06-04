@@ -29,7 +29,7 @@ jobs:
           script: |
             # 1. Environment Setup
             export DEPLOY_DIR="/opt/stacks/portfolio"
-            export COMPOSE_FILE="$DEPLOY_DIR/compose.yml"
+            export COMPOSE_FILE="$DEPLOY_DIR/compose.yaml"
             
             # 2. Safe Directory Fix
             git config --global --add safe.directory "$DEPLOY_DIR"
