@@ -1,21 +1,28 @@
 # ---- Builder Stage ----
 FROM node:20-alpine AS builder
 
+# Cache busting mit Build-Argumenten
+ARG CACHEBUST=1
+
 # 1. Cache-Layer für Abhängigkeiten
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --prefer-offline --audit=false
 
-# 2. Build-Schritt mit minimalen Layern
+# 2. Copy source mit Cache-Busting
 COPY . .
-RUN npm run build
+
+# Print build info to bust cache
+RUN echo "Build time: $(date)" && \
+    echo "Cache buster: $CACHEBUST" && \
+    npm run build
 
 # ---- Production Stage ----
 FROM node:20-alpine
 
 # 3. Sicherheit & Minimal-Image
 WORKDIR /app
-RUN apk add --no-cache dumb-init && \
+RUN apk add --no-cache dumb-init curl && \
     adduser -D app && \
     chown -R app:app /app
 USER app
@@ -30,7 +37,7 @@ ENV NODE_ENV=production \
     HOST=0.0.0.0
 EXPOSE 3000
 
-# 6. Healthcheck mit Ihrem Endpunkt
+# 6. Healthcheck
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
     CMD curl -fs http://localhost:3000/api/health | grep -q '"status":"ok"' || exit 1
 
