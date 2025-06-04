@@ -1,4 +1,4 @@
-name: Production Deployment
+name: Production Deployment (Transfer)
 on:
   push:
     branches: [master]
@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.SSH_DEPLOY_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
 
-      - name: Secure Deployment
+      - name: Transfer Code and Deploy
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -28,67 +28,80 @@ jobs:
           key: ${{ secrets.SSH_DEPLOY_KEY }}
           script: |
             # 1. Environment Setup
-            export DEPLOY_DIR="/opt/stacks/portfolio"
+            export DEPLOY_DIR="/opt/stacks/portfolio/app"
             export COMPOSE_FILE="$DEPLOY_DIR/compose.yaml"
             
-            # 2. Safe Directory Fix
-            git config --global --add safe.directory "$DEPLOY_DIR"
-            
-            # 3. Log previous container state
-            docker compose -f "$COMPOSE_FILE" ps --all > /tmp/pre_deploy_containers.log
-            
-            # 4. Stop containers first
+            # 2. Stop containers
             echo "Stopping containers..."
-            docker compose -f "$COMPOSE_FILE" down --remove-orphans
+            docker compose -f "$COMPOSE_FILE" down --remove-orphans || true
             
-            # 5. CRITICAL: Nuclear Docker cache clearing
-            echo "Clearing ALL Docker cache..."
-            docker builder prune -af --filter="until=1s"
-            docker system prune -af --volumes
+            # 3. Create backup
+            echo "Creating backup..."
+            cp -r "$DEPLOY_DIR" "$DEPLOY_DIR.backup.$(date +%s)" || true
             
-            # Remove specific portfolio images
-            docker images | grep portfolio | awk '{print $3}' | xargs -r docker rmi -f || true
+            # 4. Clear deploy directory
+            echo "Clearing deploy directory..."
+            rm -rf "$DEPLOY_DIR"
+            mkdir -p "$DEPLOY_DIR"
+
+      - name: Copy Repository Files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: deployer
+          key: ${{ secrets.SSH_DEPLOY_KEY }}
+          source: "."
+          target: "/opt/stacks/portfolio/app"
+          rm: false
+
+      - name: Build and Start
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: deployer
+          key: ${{ secrets.SSH_DEPLOY_KEY }}
+          script: |
+            export DEPLOY_DIR="/opt/stacks/portfolio/app"
+            export COMPOSE_FILE="$DEPLOY_DIR/compose.yaml"
             
-            # Clear buildx cache if exists
-            docker buildx prune -af || true
-            
-            # 6. Fresh git pull
-            echo "Updating code..."
             cd "$DEPLOY_DIR"
-            git fetch origin master
-            git reset --hard origin/master
-            git clean -fd
             
-            echo "Current commit: $(git rev-parse --short HEAD)"
+            # Set permissions
+            chown -R deployer:deployer "$DEPLOY_DIR"
             
-            # 7. Force complete rebuild with no cache + build args
-            echo "Force rebuilding without cache..."
+            # Clear Docker cache
+            echo "Clearing Docker cache..."
+            docker system prune -af --volumes
+            docker builder prune -af
+            
+            # Force rebuild
+            echo "Building application..."
             export DOCKER_BUILDKIT=1
-            export BUILDKIT_PROGRESS=plain
-            export BUILD_TIME=$(date +%s)
+            export CACHEBUST=$(date +%s)
+            export BUILD_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
             
             docker compose -f "$COMPOSE_FILE" build \
               --no-cache \
               --pull \
-              --build-arg CACHEBUST=$(date +%s) \
-              --build-arg BUILD_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+              --build-arg CACHEBUST=$CACHEBUST \
+              --build-arg BUILD_TIME="$BUILD_TIME"
             
-            # 8. Start services
+            # Start services
             echo "Starting services..."
             docker compose -f "$COMPOSE_FILE" up -d
             
-            # 9. Post-Deploy Checks
-            echo "Waiting for services to start..."
-            sleep 15
+            # Wait and verify
+            echo "Waiting for services..."
+            sleep 20
             
             echo "Container status:"
             docker compose -f "$COMPOSE_FILE" ps
             
             echo "Recent logs:"
-            docker compose -f "$COMPOSE_FILE" logs --tail=30
+            docker compose -f "$COMPOSE_FILE" logs --tail=20
             
             # Health check
             curl -sSf https://fleischer.design > /dev/null && echo "✅ Site is accessible" || echo "❌ Site check failed"
             
-            # 10. Cleanup
-            docker system prune -f --filter "until=24h"
+            # Cleanup old backups (keep last 3)
+            find /opt/stacks -name "portfolio.backup.*" -type d | sort | head -n -3 | xargs rm -rf

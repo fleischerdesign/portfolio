@@ -1,6 +1,6 @@
 services:
   portfolio:
-    build: .
+    build: app
     labels:
       caddy: fleischer.design
       caddy.reverse_proxy: "{{upstreams 3000}}"
