@@ -37,23 +37,58 @@ jobs:
             # 3. Log previous container state
             docker compose -f "$COMPOSE_FILE" ps --all > /tmp/pre_deploy_containers.log
             
-            # 4. Atomic Deployment
-            {
-              cd "$DEPLOY_DIR"
-              git fetch origin master
-              git reset --hard origin/master
-              docker compose -f "$COMPOSE_FILE" down --remove-orphans
-              docker compose -f "$COMPOSE_FILE" up -d --build
-            } || {
-              echo "Deployment failed! Rolling back..."
-              docker compose -f "$COMPOSE_FILE" up -d
-              exit 1
-            }
+            # 4. Stop containers first
+            echo "Stopping containers..."
+            docker compose -f "$COMPOSE_FILE" down --remove-orphans
             
-            # 5. Post-Deploy Checks
-            sleep 10
-            docker compose -f "$COMPOSE_FILE" ps --filter "status=running"
-            curl -sSf https://fleischer.design > /dev/null || exit 1
+            # 5. CRITICAL: Nuclear Docker cache clearing
+            echo "Clearing ALL Docker cache..."
+            docker builder prune -af --filter="until=1s"
+            docker system prune -af --volumes
             
-            # 6. Cleanup
+            # Remove specific portfolio images
+            docker images | grep portfolio | awk '{print $3}' | xargs -r docker rmi -f || true
+            
+            # Clear buildx cache if exists
+            docker buildx prune -af || true
+            
+            # 6. Fresh git pull
+            echo "Updating code..."
+            cd "$DEPLOY_DIR"
+            git fetch origin master
+            git reset --hard origin/master
+            git clean -fd
+            
+            echo "Current commit: $(git rev-parse --short HEAD)"
+            
+            # 7. Force complete rebuild with no cache + build args
+            echo "Force rebuilding without cache..."
+            export DOCKER_BUILDKIT=1
+            export BUILDKIT_PROGRESS=plain
+            export BUILD_TIME=$(date +%s)
+            
+            docker compose -f "$COMPOSE_FILE" build \
+              --no-cache \
+              --pull \
+              --build-arg CACHEBUST=$(date +%s) \
+              --build-arg BUILD_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+            
+            # 8. Start services
+            echo "Starting services..."
+            docker compose -f "$COMPOSE_FILE" up -d
+            
+            # 9. Post-Deploy Checks
+            echo "Waiting for services to start..."
+            sleep 15
+            
+            echo "Container status:"
+            docker compose -f "$COMPOSE_FILE" ps
+            
+            echo "Recent logs:"
+            docker compose -f "$COMPOSE_FILE" logs --tail=30
+            
+            # Health check
+            curl -sSf https://fleischer.design > /dev/null && echo "✅ Site is accessible" || echo "❌ Site check failed"
+            
+            # 10. Cleanup
             docker system prune -f --filter "until=24h"
