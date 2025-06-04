@@ -27,6 +27,9 @@ RUN apk add --no-cache dumb-init curl && \
     chown -R app:app /app
 USER app
 
+# 4. Data-Verzeichnis als app user erstellen
+RUN mkdir -p /app/data
+
 # 4. Nur notwendige Artefakte kopieren
 COPY --from=builder --chown=app:app /app/.output ./
 COPY --from=builder --chown=app:app /app/node_modules ./node_modules
