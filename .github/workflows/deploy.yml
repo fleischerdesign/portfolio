@@ -40,8 +40,8 @@ jobs:
             # 4. Atomic Deployment
             {
               cd "$DEPLOY_DIR"
-              git fetch origin main
-              git reset --hard origin/main
+              git fetch origin master
+              git reset --hard origin/master
               docker compose -f "$COMPOSE_FILE" down --remove-orphans
               docker compose -f "$COMPOSE_FILE" up -d --build
             } || {
