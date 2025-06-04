@@ -2,7 +2,6 @@
     <div class="container max-w-screen-xl mx-auto py-16">
         <h1 class="text-4xl font-bold mb-4">Imprint</h1>
         <p class="text-lg dark:text-neutral-400 text-neutral-600 mb-8">
-        TESTESTEST
         I’m an aspiring Computer Science Expert who thrives on clean code, seamless user experiences, and innovative
         solutions that bring ideas to life.
         </p>
