@@ -7,7 +7,7 @@
           <h1 class="text-5xl font-semibold">{{ $t("home.hero.greeting") }}</h1>
           <p class="dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("home.hero.summary") }}</p>
           <div class="flex gap-3 w-full">
-            <Button to="https://linkedin.com/" target="_blank">
+            <Button to="https://www.linkedin.com/in/philipp-fleischer-95ba23369/" target="_blank">
               <Icon name="mdi:linkedin" size="30" />
             </Button>
             <Button to="https://github.com/fleischerdesign" target="_blank">

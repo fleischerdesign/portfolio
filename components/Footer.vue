@@ -6,7 +6,7 @@
           <h3 class="text-3xl font-medium">Philipp Fleischer</h3>
           <p class="dark:text-neutral-400 text-neutral-600">{{ $t("home.hero.summary") }}</p>
           <div class="flex gap-3 w-full">
-            <Button to="https://linkedin.com/" target="_blank">
+            <Button to="https://www.linkedin.com/in/philipp-fleischer-95ba23369/" target="_blank">
               <Icon name="mdi:linkedin" size="30" />
             </Button>
             <Button to="https://github.com/fleischerdesign" target="_blank">
