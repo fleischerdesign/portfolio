@@ -133,6 +133,23 @@
   },
   "store": {
     "title": "Store",
-    "subtitle": "Explore a collection of my web development projects, ranging from dynamic e-commerce sites to custom tools. Each showcases my expertise in creating functional and user-friendly solutions."
+    "subtitle": "For the breaks between deploys: Premium developer merch that fuses coding spirit with workspace vibes. Sustainable & packed with inside jokes."
+  },
+  "contact": {
+    "form": {
+      "label": {
+        "name": "Name",
+        "email": "E-mail",
+        "message": "Message",
+        "submit": "Send",
+        "subject": "Subject"
+      },
+      "placeholder": {
+        "name": "Your Name",
+        "email": "{'your@mail.com'}",
+        "message": "Your Message",
+        "subject": "Subject of your message"
+      }
+    }
   }
 }

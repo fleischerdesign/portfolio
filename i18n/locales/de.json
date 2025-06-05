@@ -133,6 +133,23 @@
   },
   "store": {
     "title": "Store",
-    "subtitle": "Entdecke eine Auswahl meiner Programmierprojekte, von dynamischen E-Commerce-Sites bis hin zu kleineren Tools. Jedes Projekt zeigt meine Expertise in der Erstellung funktionaler und benutzerfreundlicher Lösungen."
+    "subtitle": "Für die Pausen zwischen den Deploys: Hochwertiger Developer-Merch, der Programmierseele und Arbeitsplatz vereint. Nachhaltig & voller Inside-Jokes."
+  },
+  "contact": {
+    "form": {
+      "label": {
+        "name": "Name",
+        "email": "E-mail",
+        "message": "Nachricht",
+        "submit": "Senden",
+        "subject": "Betreff"
+      },
+      "placeholder": {
+        "name": "Dein Name",
+        "email": "{'deine@email.com'}",
+        "message": "Deine Nachricht",
+        "subject": "Betreff deiner Nachricht"
+      }
+    }
   }
 }
