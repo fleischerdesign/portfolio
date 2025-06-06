@@ -1,9 +1,8 @@
 <template>
     <div class="container max-w-screen-xl mx-auto py-16">
-        <h1 class="text-4xl font-bold mb-4">Imprint</h1>
-        <p class="text-lg dark:text-neutral-400 text-neutral-600 mb-8">
-        I’m an aspiring Computer Science Expert who thrives on clean code, seamless user experiences, and innovative
-        solutions that bring ideas to life.
+        <h1 class="text-4xl font-bold mb-4">{{ $t("legal.title") }}</h1>
+        <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 mb-8">
+        {{ $t("legal.subtitle") }}
         </p>
 <p>Angaben gemäß § 5 DDG</p><p>Philipp Fleischer<br> 
 <br> 

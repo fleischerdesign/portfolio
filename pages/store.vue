@@ -3,7 +3,7 @@
         <div class="mb-24">
             <div class="flex flex-col gap-4">
                 <h1 class="text-5xl font-semibold">{{ $t("store.title") }}</h1>
-                <p class="dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("store.subtitle") }}</p>
+                <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("store.subtitle") }}</p>
             </div>
         </div>
     </div>

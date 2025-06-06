@@ -87,6 +87,11 @@
       "title": "Early Life",
       "subtitle": "I was born in Demmin, Germany, and from a very young age, an insatiable curiosity defined me. This drive has pushed me to work hard and explore new horizons throughout my life.",
       "content": {
+        "quote": "Technology has always been more than just a hobby - it was a passion that drove me.",
+        "imgCaption": "My first computer",
+        "title1": "Childhood and Creativity",
+        "title2": "First Steps into Technology",
+        "title3": "Early Coding Adventures",
         "paragraph1": "My fascination with computers and technology began incredibly early. At just six years old, I got my first computer, opening up a world of possibilities and interaction that immediately captivated me. I wasn't just interested in the technical side; I was also a highly creative child, spending hours painting, drawing, and letting my imagination run wild.",
         "paragraph2": "I was fortunate to have an elementary school teacher, Mr. Frank, who shared my enthusiasm for technology. Thanks to him, our classroom was uniquely equipped with numerous computers, which significantly nurtured our understanding and engagement with tech. This early exposure, combined with my inherent curiosity, laid the groundwork for my future.",
         "paragraph3": "My first foray into coding came at the age of eight. I remember programming my first line of code using AutoIt to automate mechanics in video games. This early experience wasn't just about problem-solving; it was about realizing the incredible potential of technology to bring ideas to life and create new interactions. These foundational years cemented my passion for the digital world and set me on a path of continuous discovery and innovation."
@@ -96,6 +101,10 @@
       "title": "Career Path",
       "subtitle": "My professional journey has been shaped by a continuous drive to learn, adapt, and build. It's a path that has evolved through various experiences, ultimately leading me to my true passion in web development and IT.",
       "content": {
+        "title1": "Launching My Career in Media Design",
+        "title2": "Expanding Expertise Through Practical Experience",
+        "title3": "Pivoting Toward IT Specialization",
+        "title4": "Engineering Solutions at the Design-Technology Intersection",
         "paragraph1": "I initially embarked on my career by beginning an apprenticeship as a Media Designer for Digital and Print Media at IT College Putbus on Rügen. This foundational experience provided me with a solid understanding of design principles and digital content creation. Unfortunately, the school's insolvency presented an unexpected turn, requiring me to quickly adapt and seek new opportunities.",
         "paragraph2": "Undeterred, I continued my apprenticeship at the Designbüro Persch in Hamburg, where I further honed my skills in a practical environment. Seeking to broaden my horizons even more, I later relocated to Rostock to continue my training, where I explored the realm of image and sound, gaining valuable insights into multimedia production.",
         "paragraph3": "These experiences, while diverse, consistently reinforced my fascination with technology and its application. They built a strong creative and technical foundation, but my true calling lay deeper in the digital infrastructure. This led me to my current endeavor: a retraining program to become an IT Specialist at WBS Training. Here, I'm intensely focused on deepening my programming knowledge, understanding complex systems, and mastering the technologies that power modern applications.",
@@ -106,6 +115,18 @@
       "title": "Personal Life",
       "subtitle": "Beyond my professional pursuits, my personal life is a vibrant space for creativity, well-being, and continuous growth. It's where I recharge, explore new interests, and deepen my connection with the world around me.",
       "content": {
+        "picture1": {
+          "text": "Break at the Gallery",
+          "caption": "Art & Culture"
+        },
+        "picture2": {
+          "text": "Animal Lover",
+          "caption": "Encounter with a Goat"
+        },
+        "picture3": {
+          "text": "Portrait",
+          "caption": "A Gaze into the Camera"
+        },
         "paragraph1": "I genuinely enjoy expressing myself creatively, whether through painting, drawing, or other artistic outlets. This passion for creativity extends into my daily life and often influences my problem-solving approach in my professional work.",
         "paragraph2": "Staying active is also a key part of my routine. I love going for runs and hitting the gym for strength training, finding both physical and mental benefits in pushing my limits. Being in nature is incredibly important to me; whether it's a quiet walk or an invigorating hike, I cherish the moments spent outdoors.",
         "paragraph3": "My intellectual curiosity isn't limited to technology. I enjoy diving into novels for a good story, but you'll also find me engrossed in non-fiction books, always eager to learn something new. This drive for continuous self-improvement is a core part of who I am.",
@@ -149,6 +170,50 @@
         "email": "{'your@mail.com'}",
         "message": "Your Message",
         "subject": "Subject of your message"
+      }
+    }
+  },
+  "legal": {
+    "title": "Imprint",
+    "subtitle": "Here you'll find all legal information about my website, including legal notice and privacy policy."
+  },
+  "cv": {
+    "timeline": {
+      "wbs": {
+        "title": "WBS Training AG",
+        "description": "Retraining as an IT Specialist for Application Development"
+      },
+      "medienkolleg": {
+        "title": "Medienkolleg Rostock",
+        "description": "Training as a Media Designer for Digital and Print Media"
+      },
+      "persch": {
+        "title": "Designbüro Persch",
+        "description": "Training as a Media Designer for Digital and Print Media"
+      },
+      "ups": {
+        "title": "United Parcel Service",
+        "description": "Warehouse Worker & Teamlead"
+      },
+      "lidl": {
+        "title": "Lidl GmbH & Co. KG",
+        "description": "Retail Salesperson"
+      },
+      "timeoff": {
+        "title": "Career Break",
+        "description": "Health-related break from work and reassessment of career goals"
+      },
+      "putbus": {
+        "title": "IT-College Putbus",
+        "description": "Training as a Media Designer for Digital and Print Media"
+      },
+      "secschool": {
+        "title": "8. Realschule Johann Heinrich Voß",
+        "description": "GCSE"
+      },
+      "elementary": {
+        "title": "9. Grundschule Hans Christian Andersen",
+        "description": "Elementary school diploma"
       }
     }
   }

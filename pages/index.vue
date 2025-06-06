@@ -36,7 +36,7 @@
         <Card class="!p-0 overflow-hidden min-h-60 group">
           <div
             :style="`background-image: url('${profilePicUrl}')`"
-            class="bg-center bg-cover w-full h-full transition group-hover:scale-110">
+            class="bg-center bg-cover w-full h-full transition duration-500 group-hover:scale-110">
           </div>
         </Card>
         <Card class="flex flex-col col-span-1">
@@ -78,6 +78,7 @@
           <CardContainer class="flex-col">
             <h3 class="text-3xl font-medium">{{ $t("home.overview.statistics.title") }}</h3>
             <p class="dark:text-neutral-400 text-neutral-600">{{ $t("home.overview.statistics.subtitle") }}</p>
+          <stats />
           </CardContainer>
         </Card>
         <Card hover class="flex flex-col col-span-1">
@@ -90,7 +91,7 @@
       <div class="mb-24">
         <div class="flex flex-col gap-4">
           <NuxtLink to="/projects" class="self-start"><h1 class="text-5xl font-semibold">{{ $t("home.projects.title") }}</h1></NuxtLink>
-          <p class="dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("home.projects.subtitle") }}</p>
+          <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("home.projects.subtitle") }}</p>
         </div>
         <div class="grid grid-cols-1 gap-3 mt-4">
           <Card hover class="group h-60 overflow-hidden">
@@ -134,7 +135,7 @@
       <div class="mb-24">
         <div class="flex flex-col gap-4">
           <NuxtLink :to="$localePath('/blog')" class="self-start"><h1 class="text-5xl font-semibold">{{ $t("home.blog.title") }}</h1></NuxtLink>
-          <p class="dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("home.blog.subtitle") }}</p>
+          <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("home.blog.subtitle") }}</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
           <BlogPostCard v-for="(post, index) in data" :key="index" :post="post" />
@@ -143,7 +144,7 @@
       <div class="mb-24">
         <div class="flex flex-col gap-4">
           <NuxtLink :to="$localePath('/contact')" class="self-start"><h1 class="text-5xl font-semibold">{{ $t("home.contact.title") }}</h1></NuxtLink>
-          <p class="dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("home.contact.subtitle") }}</p>
+          <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("home.contact.subtitle") }}</p>
         </div>
         <ContactForm class="mt-4" />
       </div>

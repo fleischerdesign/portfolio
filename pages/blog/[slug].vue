@@ -13,7 +13,7 @@
             <span>{{ $t("blogPost.date.on") }} {{ formattedDate }}</span>
           </div>
           <h1 class="text-5xl font-semibold drop-shadow-md">{{ post?.title }}</h1>
-          <p class="text-lg dark:text-neutral-400 drop-shadow-md">{{ post?.description }}</p>
+          <p class="border-l-4 border-secondary-400  pl-4 text-lg dark:text-neutral-400 drop-shadow-md">{{ post?.description }}</p>
           <div class="flex gap-2">
             <tag class="drop-shadow-md" fill hover v-for="(tag, index) in post?.tags" :key="index">
               {{ tag }}

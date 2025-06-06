@@ -87,6 +87,11 @@
       "title": "Frühe Jahre",
       "subtitle": "Ich wurde in Demmin, Mecklenburg-Vorpommern, geboren, und von klein auf definierte mich eine unstillbare Neugier. Dieser Antrieb hat mich mein ganzes Leben lang dazu gebracht, hart zu arbeiten und neue Horizonte zu erkunden.",
       "content": {
+      "quote": "Die Begeisterung für Technologie war bei mir schon immer mehr als nur ein Hobby - es war eine Leidenschaft, die mich antrieb.",
+      "imgCaption": "Mein erster Computer",
+      "title1": "Aufgewachsen in der digitalen Welt",
+      "title2": "Prägende Schuljahre",
+      "title3": "Erste Programmiererfahrungen",
         "paragraph1": "Meine Faszination für Computer und Technologie begann unglaublich früh. Mit nur sechs Jahren bekam ich meinen ersten Computer, der eine Welt voller Möglichkeiten und Interaktionen eröffnete, die mich sofort in ihren Bann zog. Ich interessierte mich nicht nur für die technische Seite; ich war auch ein sehr kreatives Kind, verbrachte Stunden mit Malen, Zeichnen und ließ meiner Fantasie freien Lauf.",
         "paragraph2": "Ich hatte das Glück, einen Grundschullehrer, Herrn Frank, zu haben, der meine Begeisterung für Technologie teilte. Dank ihm war unser Klassenzimmer einzigartig mit zahlreichen Computern ausgestattet, was unser Verständnis und Engagement für Technik erheblich förderte. Diese frühe Exposition, kombiniert mit meiner angeborenen Neugier, legte den Grundstein für meine Zukunft.",
         "paragraph3": "Meine erste Berührung mit dem Programmieren hatte ich im Alter von acht Jahren. Ich erinnere mich daran, wie ich meine erste Codezeile mit AutoIt programmierte, um Mechaniken in Videospielen zu automatisieren. Diese frühe Erfahrung ging nicht nur um Problemlösung; es ging darum, das unglaubliche Potenzial der Technologie zu erkennen, Ideen zum Leben zu erwecken und neue Interaktionen zu schaffen. Diese prägenden Jahre festigten meine Leidenschaft für die digitale Welt und setzten mich auf einen Pfad kontinuierlicher Entdeckung und Innovation."
@@ -96,8 +101,12 @@
       "title": "Karriereweg",
       "subtitle": "Mein beruflicher Werdegang ist geprägt von einem ständigen Drang zu lernen, sich anzupassen und zu gestalten. Es ist ein Weg, der sich durch verschiedene Erfahrungen entwickelt hat und mich letztendlich zu meiner wahren Leidenschaft in der Anwendungsentwicklung und IT geführt hat.",
       "content": {
+        "title1": "Start als Mediengestalter: Grundlagen & Herausforderungen",
+        "title2": "Praktische Vertiefung: Von Hamburg nach Rostock",
+        "title3": "Berufliche Neuorientierung: Der Weg zur IT-Spezialisierung",
+        "title4": "Meine Vision: Brücken bauen zwischen Design und Technik",
         "paragraph1": "Ich begann meine berufliche Laufbahn mit einer Ausbildung zum Mediengestalter für Digital- und Printmedien am IT College Putbus auf Rügen. Diese grundlegende Erfahrung vermittelte mir ein solides Verständnis für Designprinzipien und die Erstellung digitaler Inhalte. Leider führte die Insolvenz der Schule zu einer unerwarteten Wendung, die mich dazu zwang, mich schnell anzupassen und neue Möglichkeiten zu suchen.",
-       "paragraph2": "Unbeirrt setzte ich meine Ausbildung im Designbüro Persch in Hamburg fort, wo ich meine Fähigkeiten in einem praktischen Umfeld weiter verfeinerte. Um meinen Horizont noch zu erweitern, zog ich später nach Rostock, um meine Ausbildung fortzusetzen. Dort vertiefte ich mich in den Bereich Bild und Ton und gewann wertvolle Einblicke in die Multimedia-Produktion.",
+        "paragraph2": "Unbeirrt setzte ich meine Ausbildung im Designbüro Persch in Hamburg fort, wo ich meine Fähigkeiten in einem praktischen Umfeld weiter verfeinerte. Um meinen Horizont noch zu erweitern, zog ich später nach Rostock, um meine Ausbildung fortzusetzen. Dort vertiefte ich mich in den Bereich Bild und Ton und gewann wertvolle Einblicke in die Multimedia-Produktion.",
         "paragraph3": "Diese vielfältigen Erfahrungen bestärkten mich stets in meiner Faszination für Technologie und deren Anwendung. Sie bildeten ein starkes kreatives und technisches Fundament, doch meine wahre Berufung lag tiefer in der digitalen Infrastruktur. Dies führte mich zu meinem aktuellen Vorhaben: einer Umschulung zum Fachinformatiker bei der WBS Training. Hier konzentriere ich mich intensiv darauf, mein Programmierwissen zu vertiefen, komplexe Systeme zu verstehen und die Technologien zu beherrschen, die moderne Anwendungen antreiben.",
         "paragraph4": "Mein einzigartiger Hintergrund im Mediendesign, kombiniert mit meiner rigorosen IT-Spezialisierung, ermöglicht es mir, die Webentwicklung aus einer umfassenden Perspektive anzugehen – ich schlage die Brücke zwischen Ästhetik, Benutzererfahrung und robuster technischer Implementierung. Ich bin ständig bestrebt, meine sich entwickelnden Fähigkeiten einzusetzen, um saubere, effiziente und wirkungsvolle digitale Lösungen zu schaffen."
       }
@@ -106,6 +115,18 @@
       "title": "Privatleben",
       "subtitle": "Abseits meiner beruflichen Ziele ist mein Privatleben ein lebendiger Raum für Kreativität, Wohlbefinden und kontinuierliches Wachstum. Hier lade ich meine Batterien auf, erkunde neue Interessen und vertiefe meine Verbindung zur Welt um mich herum.",
       "content": {
+        "picture1": {
+          "text": "Auszeit in der Gallerie",
+          "caption": "Kunst & Kultur"
+        },
+        "picture2": {
+          "text": "Tierliebe",
+          "caption": "Zusammenkunft mit einer Ziege"
+        },
+        "picture3": {
+          "text": "Portrait",
+          "caption": "Ein Blick in die Kamera"
+        },
         "paragraph1": "Ich genieße es wirklich, mich kreativ auszudrücken, sei es durch Malen, Zeichnen oder andere künstlerische Betätigungen. Diese Leidenschaft für Kreativität erstreckt sich auf mein tägliches Leben und beeinflusst oft meinen Problemlösungsansatz in meiner beruflichen Arbeit.",
         "paragraph2": "Aktiv zu bleiben ist ebenfalls ein wichtiger Teil meiner Routine. Ich gehe gerne laufen und trainiere im Fitnessstudio Kraft, wobei ich sowohl körperliche als auch geistige Vorteile im Überschreiten meiner Grenzen finde. In der Natur zu sein ist unglaublich wichtig für mich; ob es ein ruhiger Spaziergang oder eine belebende Wanderung ist, ich schätze die Momente, die ich im Freien verbringe.",
         "paragraph3": "Meine intellektuelle Neugier beschränkt sich nicht auf Technologie. Ich tauche gerne in Romane ein, um eine gute Geschichte zu lesen, aber man wird mich auch in Sachbüchern vertieft finden, immer begierig darauf, etwas Neues zu lernen. Dieser Drang zur kontinuierlichen Selbstverbesserung ist ein Kernbestandteil meiner Persönlichkeit.",
@@ -149,6 +170,50 @@
         "email": "{'deine@email.com'}",
         "message": "Deine Nachricht",
         "subject": "Betreff deiner Nachricht"
+      }
+    }
+  },
+  "legal": {
+    "title": "Impressum",
+    "subtitle": "Hier findest du alle rechtlichen Informationen zu meiner Website, einschließlich Impressum und Datenschutzerklärung."
+  },
+  "cv": {
+    "timeline": {
+      "wbs": {
+        "title": "WBS Training AG",
+        "description": "Umschulung zum Fachinformatiker für Anwendungsentwicklung"
+      },
+      "medienkolleg": {
+        "title": "Medienkolleg Rostock",
+        "description": "Ausbildung zum Mediengestalter für Digital- und Printmedien"
+      },
+      "persch": {
+        "title": "Designbüro Persch",
+        "description": "Ausbildung zum Mediengestalter für Digital- und Printmedien"
+      },
+      "ups": {
+        "title": "United Parcel Service",
+        "description": "Lagermitarbeiter und Teamleitung"
+      },
+      "lidl": {
+        "title": "Lidl GmbH & Co. KG",
+        "description": "Verkäufer im Einzelhandel"
+      },
+      "timeoff": {
+        "title": "Auszeit",
+        "description": "Gesundheitsbedingte Auszeit und Neubewertung der Karriereziele"
+      },
+      "putbus": {
+        "title": "IT-College Putbus",
+        "description": "Ausbildung zum Mediengestalter für Digital- und Printmedien"
+      },
+      "secschool": {
+        "title": "8. Realschule Johann Heinrich Voß",
+        "description": "Mittlere Reife"
+      },
+      "elementary": {
+        "title": "9. Grundschule Hans Christian Andersen",
+        "description": "Grundschulabschluss"
       }
     }
   }

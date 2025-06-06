@@ -4,7 +4,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="flex flex-col gap-4">
           <h3 class="text-3xl font-medium">Philipp Fleischer</h3>
-          <p class="dark:text-neutral-400 text-neutral-600">{{ $t("home.hero.summary") }}</p>
+          <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600">{{ $t("home.hero.summary") }}</p>
           <div class="flex gap-3 w-full">
             <Button to="https://www.linkedin.com/in/philipp-fleischer-95ba23369/" target="_blank">
               <Icon name="mdi:linkedin" size="30" />

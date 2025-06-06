@@ -10,7 +10,7 @@
                     </div>
                 </div>
                 <NuxtImg sizes="600px" :src="post?.image?.src"
-                    class="h-full w-full object-cover group-hover:scale-110 transition" />
+                    class="h-full w-full object-cover group-hover:scale-110 transition duration-500" />
             </div>
             <CardContainer class="flex-col">
                 <h3 class="text-3xl font-medium">{{ post?.title }}</h3>
