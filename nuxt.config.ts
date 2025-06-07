@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxt/image',
     '@nuxtjs/color-mode',
-    'nuxt-umami'
+    '@nuxtjs/plausible',
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }
@@ -33,17 +33,10 @@ export default defineNuxtConfig({
     ],
     baseUrl: 'https://fleischer.design',
   },
-  umami: {
-    id: '0c413438-663e-421d-aa54-421985781ff6',
-    host: 'https://cloud.umami.is',
-    autoTrack: true,
-    // proxy: 'cloak',
-    // useDirective: true,
-    // ignoreLocalhost: true,
-    // excludeQueryParams: false,
-    // domains: ['cool-site.app', 'my-space.site'],
-    // customEndpoint: '/my-custom-endpoint',
-    // enabled: false,
-    // logErrors: true,
+  plausible: {
+    // Prevent tracking on localhost
+    ignoredHostnames: ['localhost'],
+    apiHost: 'https://plausible.igy.ancoris.ovh',
+    autoOutboundTracking: true,
   },
 })
