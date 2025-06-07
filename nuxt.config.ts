@@ -35,7 +35,7 @@ export default defineNuxtConfig({
   },
   umami: {
     id: '0c413438-663e-421d-aa54-421985781ff6',
-    host: 'https://fleischer.design',
+    host: 'https://cloud.umami.is',
     autoTrack: true,
     // proxy: 'cloak',
     // useDirective: true,
