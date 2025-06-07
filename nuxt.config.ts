@@ -38,5 +38,6 @@ export default defineNuxtConfig({
     ignoredHostnames: ['localhost'],
     apiHost: 'https://plausible.igy.ancoris.ovh',
     autoOutboundTracking: true,
+    proxy: true,
   },
 })
