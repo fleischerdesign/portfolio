@@ -14,7 +14,8 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/i18n',
     '@nuxt/image',
-    '@nuxtjs/color-mode'
+    '@nuxtjs/color-mode',
+    'nuxt-umami'
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }
@@ -31,5 +32,18 @@ export default defineNuxtConfig({
       { code: 'de', name: 'German', file: 'de.json' }
     ],
     baseUrl: 'https://fleischer.design',
-  }
+  },
+  umami: {
+    id: '0c413438-663e-421d-aa54-421985781ff6',
+    host: 'https://fleischer.design',
+    autoTrack: true,
+    // proxy: 'cloak',
+    // useDirective: true,
+    // ignoreLocalhost: true,
+    // excludeQueryParams: false,
+    // domains: ['cool-site.app', 'my-space.site'],
+    // customEndpoint: '/my-custom-endpoint',
+    // enabled: false,
+    // logErrors: true,
+  },
 })
