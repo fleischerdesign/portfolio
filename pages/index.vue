@@ -82,7 +82,7 @@
         <div class="grid grid-cols-1 gap-3 mt-4">
           <Card hover class="group h-60 overflow-hidden">
             <div class="w-1/3 overflow-hidden">
-              <NuxtImg sizes="800px" src="/img/profile.jpg"
+              <NuxtImg sizes="800px" src="/img/profile.jpg" alt="Portrait (Philipp Fleischer)"
                 class="h-full w-full object-cover group-hover:scale-110 transition" />
             </div>
             <CardContainer class="flex-col">

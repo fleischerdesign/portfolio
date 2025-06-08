@@ -40,4 +40,11 @@ export default defineNuxtConfig({
     autoOutboundTracking: true,
     proxy: true,
   },
+  image: {
+    ipx: {
+      modifiers: {
+        format: "webp",
+      },
+    },
+  },
 })
