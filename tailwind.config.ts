@@ -29,6 +29,6 @@ export default <Partial<Config>>{
         neutral: primary,
         secondary: secondary,
       },
-    }
+    },
   }
 }

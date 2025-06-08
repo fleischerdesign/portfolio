@@ -1,10 +1,13 @@
 <template>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
+  <NuxtLoadingIndicator :color="tailwindConfig.theme.colors.secondary[400]" />
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
+import tailwindConfig from '#tailwind-config'
+
 useHead({
   titleTemplate: (titleChunk) => {
     return titleChunk ? `${titleChunk} - Philipp Fleischer` : 'Philipp Fleischer'
@@ -31,6 +34,7 @@ html {
 .page-leave-active {
   transition: all 0.05s;
 }
+
 .page-enter-from,
 .page-leave-to {
   opacity: 0;

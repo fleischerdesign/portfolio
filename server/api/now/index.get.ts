@@ -19,7 +19,7 @@ export default cachedEventHandler(async (event) => {
   ) as string
 
   if (!existsSync(DATA_PATH)) {
-    return { status: 'No status set!', updatedAt: null , icon: 'info'}
+    return { status: 'No status set!', updatedAt: null , icon: 'mage:zap'}
   }
 
   try {
