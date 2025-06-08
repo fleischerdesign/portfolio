@@ -1,12 +1,8 @@
 <template>
     <div class="container mx-auto py-16 max-w-screen-xl">
-        <div class="flex flex-col gap-4 mb-4">
-            <h1 class="text-5xl font-semibold">{{ $t("about.title") }}</h1>
-            <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{
-                $t("about.subtitle") }}</p>
-        </div>
+        <HeadingSection :title="$t('about.title')" :subtitle="$t('about.subtitle')" />
         <div
-            class="grid grid-cols-1 grid-rows-1 md:grid-cols-2 md:grid-rows-2 lg:grid-cols-3 gap-4 mb-24 items-stretch">
+            class="grid grid-cols-1 grid-rows-1 md:grid-cols-2 md:grid-rows-2 lg:grid-cols-3 gap-4 mb-24 mt-4 items-stretch">
             <Card class="overflow-hidden row-span-2 group relative">
                 <div class="overflow-hidden w-full h-full max-h-[500px]">
                     <NuxtImg sizes="300px sm:100vw" src="/img/profile.jpg"
@@ -97,10 +93,7 @@
         </div>
         
         <div class="flex flex-col gap-4 mb-24">
-            <h1 class="text-5xl font-semibold" id="early_life">{{ $t("about.earlyLife.title") }}</h1>
-            <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{
-                $t("about.earlyLife.subtitle") }}</p>
-
+            <HeadingSection :title="$t('about.earlyLife.title')" :subtitle="$t('about.earlyLife.subtitle')" id="early_life" />
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div class="order-2 lg:order-1">
                     <div class="flex flex-col gap-6">
@@ -154,9 +147,7 @@
             </div>
         </div>
         <div class="flex flex-col gap-4 mb-24">
-            <h1 class="text-5xl font-semibold" id="career_path">{{ $t("about.careerPath.title") }}</h1>
-            <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{
-                $t("about.careerPath.subtitle") }}</p>
+            <HeadingSection :title="$t('about.careerPath.title')" :subtitle="$t('about.careerPath.subtitle')" id="career_path"/>
                         <div class="flex items-start gap-4">
                             <div>
                                 <div class="flex items-center gap-2">
@@ -200,10 +191,7 @@
 
         </div>
         <div class="flex flex-col gap-4 mb-24">
-            <h1 class="text-5xl font-semibold" id="personal_life">{{ $t("about.personalLife.title") }}</h1>
-            <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{
-                $t("about.personalLife.subtitle") }}
-            </p>
+            <HeadingSection :title="$t('about.personalLife.title')" :subtitle="$t('about.personalLife.subtitle')" id="personal_life"/>
 
             <p>{{ $t("about.personalLife.content.paragraph1") }}</p>
 
@@ -248,9 +236,7 @@
             <p>{{ $t("about.personalLife.content.paragraph5") }}</p>
         </div>
         <div class="flex flex-col gap-4 mb-24">
-            <h1 class="text-5xl font-semibold" id="resume">{{ $t("about.resume.title") }}</h1>
-            <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{
-                $t("about.resume.subtitle") }}</p>
+            <HeadingSection :title="$t('about.resume.title')" :subtitle="$t('about.resume.subtitle')" id="resume"/>
         </div>
     </div>
 </template>

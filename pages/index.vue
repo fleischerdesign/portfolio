@@ -27,15 +27,14 @@
           <CardContainer class="flex-col">
             <h3 class="text-3xl font-medium">{{ $t("home.overview.github.title") }}</h3>
             <p class="dark:text-neutral-400 text-neutral-600">{{ subtitle }}</p>
-                      <ClientOnly>
-            <ContributionChart :contributions="contributions"
-              @displayedWeeksCountChanged="onDisplayedWeeksCountChanged" />
-              </ClientOnly>
+            <ClientOnly>
+              <ContributionChart :contributions="contributions"
+                @displayedWeeksCountChanged="onDisplayedWeeksCountChanged" />
+            </ClientOnly>
           </CardContainer>
         </Card>
         <Card class="!p-0 overflow-hidden min-h-60 group">
-          <div
-            :style="`background-image: url('${profilePicUrl}')`"
+          <div :style="`background-image: url('${profilePicUrl}')`"
             class="bg-center bg-cover w-full h-full transition duration-500 group-hover:scale-110">
           </div>
         </Card>
@@ -78,7 +77,7 @@
           <CardContainer class="flex-col">
             <h3 class="text-3xl font-medium">{{ $t("home.overview.statistics.title") }}</h3>
             <p class="dark:text-neutral-400 text-neutral-600">{{ $t("home.overview.statistics.subtitle") }}</p>
-          <stats />
+            <stats />
           </CardContainer>
         </Card>
         <Card hover class="flex flex-col col-span-1">
@@ -89,10 +88,7 @@
         </Card>
       </div>
       <div class="mb-24">
-        <div class="flex flex-col gap-4">
-          <NuxtLink to="/projects" class="self-start"><h1 class="text-5xl font-semibold">{{ $t("home.projects.title") }}</h1></NuxtLink>
-          <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("home.projects.subtitle") }}</p>
-        </div>
+        <HeadingSection :title="$t('home.projects.title')" :subtitle="$t('home.projects.subtitle')" link="/projects" />
         <div class="grid grid-cols-1 gap-3 mt-4">
           <Card hover class="group h-60 overflow-hidden">
             <div class="w-1/3 overflow-hidden">
@@ -101,31 +97,32 @@
             </div>
             <CardContainer class="flex-col">
               <h3 class="text-3xl font-medium">Junction</h3>
-              <p class="dark:text-neutral-400 text-neutral-600">One integration, structured patient data, dedicated support. Minimal
+              <p class="dark:text-neutral-400 text-neutral-600">One integration, structured patient data, dedicated
+                support. Minimal
                 operational
                 headaches for users with whatever.</p>
             </CardContainer>
           </Card>
           <Card hover class="group h-60 overflow-hidden">
             <div class="w-1/3 overflow-hidden">
-              <img src="/img/profile.jpg"
-                class="h-full w-full object-cover group-hover:scale-110 transition" />
+              <img src="/img/profile.jpg" class="h-full w-full object-cover group-hover:scale-110 transition" />
             </div>
             <CardContainer class="flex-col">
               <h3 class="text-3xl font-medium">Junction</h3>
-              <p class="dark:text-neutral-400 text-neutral-600">One integration, structured patient data, dedicated support. Minimal
+              <p class="dark:text-neutral-400 text-neutral-600">One integration, structured patient data, dedicated
+                support. Minimal
                 operational
                 headaches for users with whatever.</p>
             </CardContainer>
           </Card>
           <Card hover class="group h-60 overflow-hidden">
             <div class="w-1/3 overflow-hidden">
-              <img src="/img/profile.jpg"
-                class="h-full w-full object-cover group-hover:scale-110 transition" />
+              <img src="/img/profile.jpg" class="h-full w-full object-cover group-hover:scale-110 transition" />
             </div>
             <CardContainer class="flex-col">
               <h3 class="text-3xl font-medium">Junction</h3>
-              <p class="dark:text-neutral-400 text-neutral-600">One integration, structured patient data, dedicated support. Minimal
+              <p class="dark:text-neutral-400 text-neutral-600">One integration, structured patient data, dedicated
+                support. Minimal
                 operational
                 headaches for users with whatever.</p>
             </CardContainer>
@@ -133,19 +130,13 @@
         </div>
       </div>
       <div class="mb-24">
-        <div class="flex flex-col gap-4">
-          <NuxtLink :to="$localePath('/blog')" class="self-start"><h1 class="text-5xl font-semibold">{{ $t("home.blog.title") }}</h1></NuxtLink>
-          <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("home.blog.subtitle") }}</p>
-        </div>
+        <HeadingSection :title="$t('home.blog.title')" :subtitle="$t('home.blog.subtitle')" link="/blog" />
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
           <BlogPostCard v-for="(post, index) in data" :key="index" :post="post" />
         </div>
       </div>
       <div class="mb-24">
-        <div class="flex flex-col gap-4">
-          <NuxtLink :to="$localePath('/contact')" class="self-start"><h1 class="text-5xl font-semibold">{{ $t("home.contact.title") }}</h1></NuxtLink>
-          <p class="border-l-4 border-secondary-400  pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("home.contact.subtitle") }}</p>
-        </div>
+        <HeadingSection :title="$t('home.contact.title')" :subtitle="$t('home.contact.subtitle')" link="/contact" />
         <ContactForm class="mt-4" />
       </div>
     </div>
@@ -171,7 +162,7 @@ useSeoMeta({
   ogDescription: t("home.hero.summary"),
   ogImage: 'https://example.com/image.png',
   ogUrl: route.fullPath,
-  ogType: 'website', 
+  ogType: 'website',
   ogLocale: locale.value,
   twitterTitle: t("navigation.home"),
   twitterCard: 'summary_large_image',

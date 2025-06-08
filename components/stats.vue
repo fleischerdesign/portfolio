@@ -1,12 +1,4 @@
 <script setup>
-// Unverändert
-const animatedValues = ref({
-  stackOverflow: 0,
-  coffee: 0,
-  linesOfCode: 0,
-  semicolons: 0
-});
-
 function diffTimeValue(start, dailyValue) {
     const today = new Date()
     const diffTime = Math.abs(start - today)
