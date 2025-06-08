@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-4 mb-10">
     <NuxtLinkLocale v-if="link" :to="link" class="self-start">
       <h1 class="text-5xl font-semibold">{{ title }}</h1>
     </NuxtLinkLocale>

@@ -12,7 +12,7 @@
             </chip>
             <span>{{ $t("blogPost.date.on") }} {{ formattedDate }}</span>
           </div>
-<HeadingSection :title="post!.title" :subtitle="post!.description!" />
+<HeadingSection :title="post!.title" :subtitle="post!.description!" class="!mb-0"/>
           <div class="flex gap-2">
             <tag class="drop-shadow-md" fill hover v-for="(tag, index) in post?.tags" :key="index">
               {{ tag }}
@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="container max-w-screen-xl">
-    <div class="my-8 prose prose-neutral dark:prose-invert max-w-none prose-a:prose-headings:no-underline prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl">
+    <div class="my-8 prose prose-neutral dark:prose-invert max-w-none prose-a:prose-headings:no-underline prose-h1:text-4xl prose-h2:text-3xl prose-h2:border-l-4 prose-h2:border-secondary-400 prose-h2:pl-4 prose-h3:text-2xl prose-h4:text-xl">
       <ContentRenderer v-if="post" :value="post" />
     </div>
     </div>

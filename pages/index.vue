@@ -6,20 +6,11 @@
           <NowIndicator />
           <h1 class="text-5xl font-semibold">{{ $t("home.hero.greeting") }}</h1>
           <p class="dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">{{ $t("home.hero.summary") }}</p>
-          <div class="flex gap-3 w-full">
-            <Button to="https://www.linkedin.com/in/philipp-fleischer-95ba23369/" target="_blank">
-              <Icon name="mdi:linkedin" size="30" />
-            </Button>
-            <Button to="https://github.com/fleischerdesign" target="_blank">
-              <Icon name="mdi:github" size="30" />
-            </Button>
-            <Button to="https://instagram.com/fleischer.design/" target="_blank">
-              <Icon name="mdi:instagram" size="30" />
-            </Button>
+          <SocialLinks>
             <a class="flex my-auto" href="#overview">
               <Icon name="mage:arrow-down" size="30" class="animate-pulse hover:animate-none" />
             </a>
-          </div>
+          </SocialLinks>
         </div>
       </div>
       <div id="overview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-24">
@@ -28,8 +19,7 @@
             <h3 class="text-3xl font-medium">{{ $t("home.overview.github.title") }}</h3>
             <p class="dark:text-neutral-400 text-neutral-600">{{ subtitle }}</p>
             <ClientOnly>
-              <GithubChart :contributions="contributions"
-                @displayedWeeksCountChanged="onDisplayedWeeksCountChanged" />
+              <GithubChart :contributions="contributions" @displayedWeeksCountChanged="onDisplayedWeeksCountChanged" />
             </ClientOnly>
           </CardContainer>
         </Card>
@@ -144,6 +134,8 @@
 </template>
 
 <script lang="ts" setup>
+import SocialLinks from '~/components/SocialLinks.vue';
+
 const { locale } = useI18n();
 const { t } = useI18n();
 const route = useRoute();

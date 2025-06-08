@@ -1,0 +1,14 @@
+<template>
+    <div class="flex gap-3 w-full">
+        <Button to="https://www.linkedin.com/in/philipp-fleischer-95ba23369/" target="_blank">
+            <Icon name="mdi:linkedin" size="30" />
+        </Button>
+        <Button to="https://github.com/fleischerdesign" target="_blank">
+            <Icon name="mdi:github" size="30" />
+        </Button>
+        <Button to="https://instagram.com/fleischer.design/" target="_blank">
+            <Icon name="mdi:instagram" size="30" />
+        </Button>
+        <slot />
+    </div>
+</template>

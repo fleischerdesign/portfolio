@@ -92,8 +92,9 @@
             </Card>
         </div>
         
-        <div class="flex flex-col gap-4 mb-24">
-            <HeadingSection :title="$t('about.earlyLife.title')" :subtitle="$t('about.earlyLife.subtitle')" id="early_life" />
+        <div>
+        <HeadingSection :title="$t('about.earlyLife.title')" :subtitle="$t('about.earlyLife.subtitle')" id="early_life" />
+        <div class="flex flex-col gap-x-4 mb-24">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div class="order-2 lg:order-1">
                     <div class="flex flex-col gap-6">
@@ -140,14 +141,16 @@
                             <div class="font-medium text-white">{{ $t("about.earlyLife.content.imgCaption") }}</div>
                         </div>
                     </div>
-                    <div class="my-6 border-l-4 border-secondary-400 pl-4 py-2 italic text-gray-600 dark:text-gray-300">
+                    <div class="mt-6 border-l-4 border-secondary-400 pl-4 p-2 italic text-gray-600 dark:text-gray-300">
                         <p>"{{ $t('about.earlyLife.content.quote') }}"</p>
                     </div>
                 </div>
             </div>
         </div>
+        </div>
+        <div>
+        <HeadingSection :title="$t('about.careerPath.title')" :subtitle="$t('about.careerPath.subtitle')" id="career_path"/>
         <div class="flex flex-col gap-4 mb-24">
-            <HeadingSection :title="$t('about.careerPath.title')" :subtitle="$t('about.careerPath.subtitle')" id="career_path"/>
                         <div class="flex items-start gap-4">
                             <div>
                                 <div class="flex items-center gap-2">
@@ -190,9 +193,10 @@
                         </div>
 
         </div>
-        <div class="flex flex-col gap-4 mb-24">
+        </div>
+        <div>
             <HeadingSection :title="$t('about.personalLife.title')" :subtitle="$t('about.personalLife.subtitle')" id="personal_life"/>
-
+        <div class="flex flex-col gap-4 mb-24">
             <p>{{ $t("about.personalLife.content.paragraph1") }}</p>
 
             <p>{{ $t("about.personalLife.content.paragraph2") }}</p>
@@ -234,6 +238,7 @@
             <p>{{ $t("about.personalLife.content.paragraph4") }}</p>
 
             <p>{{ $t("about.personalLife.content.paragraph5") }}</p>
+        </div>
         </div>
         <div class="flex flex-col gap-4 mb-24">
             <HeadingSection :title="$t('about.resume.title')" :subtitle="$t('about.resume.subtitle')" id="resume"/>
