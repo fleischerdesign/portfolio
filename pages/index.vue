@@ -28,7 +28,7 @@
             <h3 class="text-3xl font-medium">{{ $t("home.overview.github.title") }}</h3>
             <p class="dark:text-neutral-400 text-neutral-600">{{ subtitle }}</p>
             <ClientOnly>
-              <ContributionChart :contributions="contributions"
+              <GithubChart :contributions="contributions"
                 @displayedWeeksCountChanged="onDisplayedWeeksCountChanged" />
             </ClientOnly>
           </CardContainer>
