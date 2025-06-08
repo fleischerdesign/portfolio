@@ -41,8 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
 const form = ref({
   name: '',
   email: '',
@@ -73,9 +71,10 @@ async function onSubmit() {
   success.value = false
   submitError.value = false
   try {
-    // Hier könntest du einen API-Call machen, z.B. via useFetch oder Supabase
-    // await $fetch('/api/contact', { method: 'POST', body: form.value })
-    await new Promise(resolve => setTimeout(resolve, 1200)) // Demo: Fake-Delay
+    const response = await $fetch('/api/contact', {
+      method: 'POST',
+      body: form.value
+    })
     success.value = true
     form.value = { name: '', email: '', subject: '', message: '' }
   } catch (e) {
