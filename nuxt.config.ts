@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: {
@@ -48,7 +47,6 @@ export default defineNuxtConfig({
     baseUrl: 'https://fleischer.design',
   },
   plausible: {
-    // Prevent tracking on localhost
     ignoredHostnames: ['localhost'],
     apiHost: 'https://plausible.igy.ancoris.ovh',
     autoOutboundTracking: true,
