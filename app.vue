@@ -7,10 +7,14 @@
 
 <script setup lang="ts">
 import tailwindConfig from '#tailwind-config'
+const { locale } = useI18n() // Importiere die aktuelle Sprache aus dem i18n Plugin
 
 useHead({
   titleTemplate: (titleChunk) => {
     return titleChunk ? `${titleChunk} - Philipp Fleischer` : 'Philipp Fleischer'
+  },
+  htmlAttrs: {
+    lang: locale // Das setzt das lang-Attribut auf den aktuellen Sprachcode
   },
   meta: [
     { charset: 'utf-8' },
