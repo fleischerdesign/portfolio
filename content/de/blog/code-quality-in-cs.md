@@ -1,4 +1,5 @@
 ---
+slug: code-quality-in-cs
 date: 2025-05-27
 published: true
 category: programming
@@ -16,7 +17,6 @@ author:
   avatar: /img/profile.jpg
 draft: false
 description: Ein kleiner Leitfaden zur Code-Qualität. Warum sauberer Code wichtiger ist als dein Kaffeekonsum und wie du ihn erreichst.
-slug: code-quality-informatik
 locale: de
 title: Code Quality in der Informatik
 ---

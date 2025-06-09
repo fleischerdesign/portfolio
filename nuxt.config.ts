@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     }
   },
   modules: [
+    '@nuxtjs/sitemap',
     '@nuxtjs/tailwindcss',
     '@nuxt/icon',
     '@nuxt/content',
@@ -15,7 +16,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/color-mode',
     '@nuxtjs/plausible',
-    './modules/autoTranslate'
+    './modules/autoTranslate',
+    '@nuxtjs/robots',
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }
@@ -25,19 +27,21 @@ export default defineNuxtConfig({
     model: 'gpt-4.1-nano', // Modell je nach Provider
     paths: [
       {
-        sourcePath: 'posts', // Übersetzt content/de/posts/*.md → content/en/posts/*.md
-        targetPath: 'posts'
+        sourcePath: 'blog',
+        targetPath: 'blog'
       },
     ],
     sourceLocale: 'de',
     targetLocale: 'en',
-    fieldsToTranslate: ['tags', 'category', 'image:alt', 'description', 'slug', 'title', 'locale'],
+    fieldsToTranslate: ['tags', 'category', 'image:alt', 'description', 'title', 'locale'],
   },
   i18n: {
+    strategy: 'prefix',
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
-      redirectOn: 'root'
+      redirectOn: 'root',
+      alwaysRedirect: true,
     },
     defaultLocale: 'en',
     locales: [

@@ -1,4 +1,5 @@
 ---
+slug: code-coffee-and-ai-modern-ides-review
 date: 2025-05-27
 published: true
 category: programming
@@ -15,7 +16,6 @@ author:
   avatar: /img/profile.jpg
 draft: false
 description: "Moderne IDEs und Code-Editoren 2025: Ein Überblick mit Prise Nerd-Humor. Vergleiche, Features und warum dein Editor dich manchmal anflüstert."
-slug: moderne-ides-code-editoren-2025
 locale: de
 title: "Code, Kaffee und KI: Moderne IDEs im Check"
 ---

@@ -1,4 +1,5 @@
 ---
+slug: frontend-frameworks-comparison-react-vue-svelte
 date: 2025-05-27
 published: true
 category: programming
@@ -18,7 +19,6 @@ author:
   avatar: /img/profile.jpg
 draft: false
 description: Der ultimative Showdown der Frontend-Giganten! React, Vue und Svelte im direkten Vergleich - mit allem was das Entwicklerherz begehrt.
-slug: frontend-frameworks-in-comparison-react-vs-vue-vs-svelte
 locale: de
 title: Frontend-Frameworks im Vergleich - React vs. Vue vs. Svelte
 ---

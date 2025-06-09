@@ -167,7 +167,7 @@ const $img = useImage()
 const profilePicUrl = $img('/img/profile.jpg', { width: 800, quality: 100 })
 
 const { data } = await useAsyncData(route.path, () => {
-  return queryCollection('posts')
+  return queryCollection('blog')
     .where('locale', '=', locale.value)
     .select('title', 'date', 'description', "image", "slug", "readingTime")
     .limit(3)

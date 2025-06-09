@@ -1,4 +1,5 @@
 ---
+slug: code-quality-in-cs
 date: 2025-05-27
 published: true
 category: programming
@@ -16,7 +17,6 @@ author:
   avatar: /img/profile.jpg
 draft: false
 description: A brief guide to code quality. Why clean code is more important than your coffee consumption and how to achieve it.
-slug: code-quality-informatics
 locale: en
 title: Code Quality in Computer Science
 ---
@@ -26,15 +26,15 @@ Imagine walking into a shared apartment kitchen and finding dirty dishes that ha
 
 Code quality is like good manners for programmers—everyone theoretically knows how to do it, but in practice, it often looks different. Put simply, **code quality** describes the extent to which your source code meets existing requirements beyond just "it works."
 
-It’s not only about your code doing what it’s supposed to (that would be too easy), but also about non-functional requirements such as understandability, analyzability, modifiability, and testability. In other words: your code should not only work but also be written in a way that other developers (and yourself in six months) won’t feel like throwing their laptop out the window.
+It’s not only about your code doing what it’s supposed to (that would be too easy), but also about non-functional requirements such as understandability, analyzability, modifiability, and testability. In other words: your code should not only work but also be written in a way that other developers (and yourself in six months) won’t feel like throwing your laptop out the window.
 
 The key properties of good code quality are:
 
 - **Readability**: Your code should read like a good book, not like the instruction manual of an IKEA furniture piece
 - **Maintainability**: Changes should be possible without the entire system collapsing like a house of cards
 - **Efficiency**: Your code should run performant and not consume more resources than a Bitcoin mining rig
-- **Modularity**: Break your code into logical units—like Lego bricks, not like a welded metal lump
-- **Security**: Your code should be more secure than Fort Knox, not more permeable than a pasta strainer
+- **Modularity**: Divide your code into logical units—like Lego bricks, not like a welded metal lump
+- **Security**: Your code should be more secure than Fort Knox, not more permeable than a colander
 
 ## Why is code quality more important than your coffee consumption?
 
@@ -42,22 +42,22 @@ Poor code quality is like a bad joke—initially, it might be funny, but over ti
 
 ### The hidden costs of poor code quality
 
-Imagine having to navigate a labyrinth every morning just to get to your workplace. That’s how it feels working with poorly written code. Studies show that using complexity metrics and improving the parts of code highlighted by them can lead to about 20% higher productivity in software maintenance.
+Imagine having to navigate a labyrinth every morning just to get to your workplace. That’s how it feels working with poorly written code. Studies show that using complexity metrics and improving the parts highlighted by them can lead to about 20% higher productivity in software maintenance.
 
 Good code quality offers tangible benefits:
 
 - **Reduced bug rate**: Quality code is more resistant to errors—like a strong immune system
 - **Improved performance**: Optimized code runs more efficiently and makes your users happier
-- **Increased reusability**: Clean code can be reused in other projects—copy-paste becomes copy-paste-profit
+- **Increased reusability**: Clean code can be used in other projects—copy-paste becomes copy-paste-profit
 - **Better teamwork**: When everyone understands the code, everyone can work productively on it
 
 ## Principles for top-notch code quality
 
 ### Clean Code – The holy grail of programming
 
-Clean Code is a term popularized by Robert Cecil Martin (also known as "Uncle Bob"). It’s about writing code that’s as clear and understandable as a well-written novel—just without the boring descriptions of landscapes spanning three pages.
+Clean Code is a term popularized by Robert Cecil Martin (also known as "Uncle Bob"). It’s about writing code that’s as clear and understandable as a well-written novel—just without the boring descriptions of landscapes over three pages.
 
-The most important Clean Code principles:
+The most important principles of Clean Code:
 
 **Clarity over cleverness**: Your code should be self-explanatory. If you need a comment to explain what a line does, it’s probably too complicated. It’s like jokes—if you have to explain it, it wasn’t a good joke.
 
@@ -77,7 +77,7 @@ function calculateDiscount(price, discountPercentage) {
 }
 ```
 
-**Functions should do one thing well**: A function that validates data, sends an email, and brews coffee is about as useful as a soluble tea bag.
+**Functions should do one thing well**: A function that validates data, sends an email, and brews coffee is as useful as a soluble tea bag.
 
 ### The SOLID principles
 
@@ -101,11 +101,11 @@ Cyclomatic complexity measures the number of linearly independent paths through 
 V(G) = e - n + 2
 ```
 
-Where `e` is the number of edges and `n` is the number of nodes in the control flow graph. Simply put: the more if-else statements and loops you have, the more complex your code becomes. A complexity over 10 is considered problematic—like having more than 10 tabs open in your browser.
+where `e` is the number of edges and `n` the number of nodes in the control flow graph. Simply put: the more if-else statements and loops you have, the more complex your code becomes. A complexity over 10 is considered problematic—like having more than ten tabs open in your browser.
 
 ### Important code metrics
 
-The Software Initiative for Quality (SIQ) has defined a basic set of code metrics:
+The Software Initiative (HIS) has defined a basic set of code metrics:
 
 - **COMF** (Comment Density): How well is your code documented?
 - **PATH** (Number of Paths): How many different routes are there through your code?
@@ -116,7 +116,7 @@ The Software Initiative for Quality (SIQ) has defined a basic set of code metric
 
 ### Static code analysis
 
-Static code analysis is like a very pedantic language teacher checking your code thoroughly without executing it. These tools use compiler-like frontends to create syntactic and semantic models of your software and then check them against predefined rules.
+Static code analysis is like a very pedantic German teacher checking your code thoroughly without actually executing it. These tools use compiler-like frontends to create syntactic and semantic models of your software and then check against predefined rules.
 
 Popular static analysis tools:
 
@@ -126,14 +126,14 @@ Popular static analysis tools:
 
 ### Code reviews – The social aspect of quality
 
-Code reviews are like peer review in science—only with more caffeine and fewer Latin terms. Another developer looks at your code and asks questions like:
+Code reviews are like peer review in science—just with more caffeine and fewer Latin terms. Another developer examines your code and asks questions like:
 
 - Are there obvious logic errors?
 - Have all requirements been implemented?
 - Are the tests sufficient?
 - Does the code follow formatting guidelines?
 
-A good code review is like a constructive conversation among friends—honest but not hurtful. It’s about writing better code together, not tearing each other down.
+A good code review is like a constructive conversation among friends—honest, but not hurtful. It’s about writing better code together, not tearing each other down.
 
 ### Refactoring – Spring cleaning for code
 
@@ -145,7 +145,7 @@ Benefits of refactoring:
 - **Increased reusability**: Code can be more easily used in other projects
 - **Better maintainability**: Bugs are easier to fix, and extensions are simpler to implement
 
-## Practical tips for everyday coding
+## Practical tips for everyday life
 
 ### Follow the "Pathfinder Rule"
 
@@ -167,11 +167,11 @@ Tests are like safety nets for acrobats—you hope you never need them, but when
 
 ### The perfectionism trap
 
-It’s tempting to always write perfect code, but sometimes "good enough" really is enough. The art is recognizing when additional optimization isn’t worth the effort. It’s like cleaning your apartment—eventually, it’s clean enough to host guests.
+It’s tempting to always write perfect code, but sometimes "good enough" really is enough. The art is knowing when additional optimization isn’t worth the effort. It’s like cleaning your apartment—eventually, it’s clean enough to welcome guests.
 
 ### Technical debt
 
-Technical debt occurs when you deliberately take shortcuts to move faster. Like real debt, you’ll have to pay it back with interest someday. The trick is to make conscious decisions and avoid spiraling into laziness.
+Technical debt occurs when you deliberately take shortcuts to move faster. Like real debt, you’ll have to pay it back with interest someday. The trick is to make conscious decisions and avoid spiraling into debt out of convenience.
 
 ### Legacy code
 
@@ -179,7 +179,7 @@ Legacy code is like an old, stubborn dog—you love it, but it doesn’t always 
 
 ## Conclusion: Code quality as an investment in the future
 
-Code quality isn’t a one-time thing but a continuous process—like brushing your teeth, just for your code. Investing in good code quality pays off in the long run through lower maintenance costs, fewer bugs, and happier developers.
+Code quality isn’t a one-time thing but a continuous process—like brushing your teeth, just for your code. Investing in good code quality pays off in the long run through reduced maintenance costs, fewer bugs, and happier developers.
 
 Remember: every line of code you write today is a gift to your future self. And your future self will thank you when it’s not sitting in front of the screen wondering, "What the hell was I thinking?"
 
@@ -191,6 +191,6 @@ Key points for better code quality:
 4. **Refactor regularly and pay off your technical debt**
 5. **Use static analysis tools and metrics**
 
-Code quality isn’t a luxury—it’s a necessity. In a world where software becomes more complex and development cycles accelerate, high-quality code is the difference between success and chaos. So, go ahead—turn your code into a work of art that functions well and looks good too!
+Code quality isn’t a luxury—it’s a necessity. In a world where software becomes more complex and development cycles faster, high-quality code is the difference between success and chaos. So, go ahead—turn your code into a work of art that functions well and looks good too!
 
-*P.S.: If after reading this article you still think code quality is overrated, maybe consider a career as a street musician. They also have fewer problems with legacy code.*
+*P.S.: If after reading this article you still think code quality is overrated, maybe consider a career as a street musician. They also have fewer issues with legacy code.*

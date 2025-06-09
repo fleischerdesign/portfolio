@@ -33,7 +33,7 @@
 const { locale } = useI18n()
 const route = useRoute()
 const { data: post } = await useAsyncData(() => {
-  return queryCollection("posts")
+  return queryCollection("blog")
   .where('locale', '=', locale.value)
   .where("slug", "=", route.params.slug).first()
 })

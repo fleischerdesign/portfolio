@@ -1,4 +1,5 @@
 ---
+slug: operating-systems-for-developers
 date: 2025-05-27
 published: true
 category: programming
@@ -15,7 +16,6 @@ author:
   avatar: /img/profile.jpg
 draft: false
 description: Leitfaden zur Wahl des idealen Entwickler-Betriebssystems. Vergleich von Linux, Windows und macOS mit Praxis-Tipps, Terminal-Snippets und nerdy Insider-Witzen.
-slug: operating-systems-for-developers
 locale: de
 title: Betriebssysteme für Entwickler
 ---
