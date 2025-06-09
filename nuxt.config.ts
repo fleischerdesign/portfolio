@@ -16,9 +16,23 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/color-mode',
     '@nuxtjs/plausible',
+    './modules/autoTranslate'
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }
+  },
+  autoTranslate: {
+    apiProvider: 'openai', // oder 'anthropic', 'google'
+    model: 'gpt-4.1-nano', // Modell je nach Provider
+    paths: [
+      {
+        sourcePath: 'posts', // Übersetzt content/de/posts/*.md → content/en/posts/*.md
+        targetPath: 'posts'
+      },
+    ],
+    sourceLocale: 'de',
+    targetLocale: 'en',
+    fieldsToTranslate: ['tags', 'category', 'image:alt', 'description', 'slug', 'title', 'locale'],
   },
   i18n: {
     detectBrowserLanguage: {

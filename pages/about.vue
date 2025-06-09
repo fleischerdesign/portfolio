@@ -11,7 +11,7 @@
 
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4 text-white opacity-100 transition-opacity">
-                    <div class="text-xl font-semibold">Philipp Fleischer</div>
+                    <div class="text-xl font-semibold">Philipp Fleischer, 29</div>
                     <div class="">Angehender <span class="text-secondary-400">Fachinformatiker</span> für Anwendungsentwicklung</div>
                     <div class="mt-2 text-sm flex flex-wrap gap-2">
                         <Tag class="bg-black/40 backdrop-blur-md border-0 shadow-md">
