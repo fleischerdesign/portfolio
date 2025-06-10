@@ -13,7 +13,7 @@
 const { locale } = useI18n()
 const route = useRoute()
 const { data } = await useAsyncData(route.path, () => {
-    return queryCollection('posts')
+    return queryCollection('blog')
         .where('locale', '=', locale.value)
         .select('title', 'date', 'description', "image", "slug", "readingTime")
         .all()
