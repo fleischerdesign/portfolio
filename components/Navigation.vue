@@ -28,31 +28,31 @@
                     <Icon name="mage:home" size="30"
                         class="group-[.active]:opacity-0 opacity-40 transition group-hover:opacity-0" />
                     <Icon name="mage:home-fill" size="30"
-                        class="group-[.active]:opacity-100 absolute opacity-0 transition group-hover:opacity-40" />
+                        class="group-[.active]:opacity-100 group-[.active]:text-secondary-400 absolute opacity-0 transition group-hover:opacity-40" />
                 </NuxtLink>
                 <NuxtLink :to="$localePath('/about')" class="group flex" activeClass="active">
                     <Icon name="mage:user-square" size="30"
                         class="group-[.active]:opacity-0 opacity-40 transition group-hover:opacity-0" />
                     <Icon name="mage:user-square-fill" size="30"
-                        class="group-[.active]:opacity-100 absolute opacity-0 transition group-hover:opacity-40" />
+                        class="group-[.active]:opacity-100 group-[.active]:text-secondary-400 absolute opacity-0 transition group-hover:opacity-40" />
                 </NuxtLink>
                 <NuxtLink :to="$localePath('/blog')" class="group flex" activeClass="active">
                     <Icon name="mage:note" size="30"
                         class="group-[.active]:opacity-0 opacity-40 transition group-hover:opacity-0" />
                     <Icon name="mage:note-fill" size="30"
-                        class="group-[.active]:opacity-100 absolute opacity-0 transition group-hover:opacity-40" />
+                        class="group-[.active]:opacity-100 group-[.active]:text-secondary-400 absolute opacity-0 transition group-hover:opacity-40" />
                 </NuxtLink>
                 <NuxtLink :to="$localePath('/projects')" class="group flex" activeClass="active">
                     <Icon name="mage:briefcase" size="30"
                         class="group-[.active]:opacity-0 opacity-40 transition group-hover:opacity-0" />
                     <Icon name="mage:briefcase-fill" size="30"
-                        class="group-[.active]:opacity-100 absolute opacity-0 transition group-hover:opacity-40" />
+                        class="group-[.active]:opacity-100 group-[.active]:text-secondary-400 absolute opacity-0 transition group-hover:opacity-40" />
                 </NuxtLink>
                 <NuxtLink :to="$localePath('/store')" class="group flex" activeClass="active">
                     <Icon name="mage:shop" size="30"
                         class="group-[.active]:opacity-0 opacity-40 transition group-hover:opacity-0" />
                     <Icon name="mage:shop-fill" size="30"
-                        class="group-[.active]:opacity-100 absolute opacity-0 transition group-hover:opacity-40" />
+                        class="group-[.active]:opacity-100 group-[.active]:text-secondary-400 absolute opacity-0 transition group-hover:opacity-40" />
                 </NuxtLink>
             </div>
         </div>

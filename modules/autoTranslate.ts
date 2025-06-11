@@ -6,6 +6,7 @@ import { defineNuxtModule } from 'nuxt/kit'
 interface PathConfig {
   sourcePath: string
   targetPath: string
+  fieldsToTranslate?: string[]
 }
 
 interface TranslationConfig {
@@ -55,44 +56,36 @@ export default defineNuxtModule<TranslationConfig>({
   }
 })
 
-async function translateMarkdownFiles(config: TranslationConfig): Promise<void> {
+async function translateMarkdownFiles(config: TranslationConfig) {
   const contentDir = 'content'
   
   try {
     for (const pathConfig of config.paths) {
+      // Merge pfadspezifische und globale Felder
+      const fieldsToTranslate = pathConfig.fieldsToTranslate || config.fieldsToTranslate
+      const mergedConfig = { ...config, fieldsToTranslate }
+
       const sourceDir = path.join(contentDir, config.sourceLocale, pathConfig.sourcePath)
       const targetDir = path.join(contentDir, config.targetLocale, pathConfig.targetPath)
-
-      console.log(`📂 Processing path: ${sourceDir} → ${targetDir}`)
       
-      // Erstelle Ziel-Ordner falls nicht vorhanden
-      await fs.mkdir(targetDir, { recursive: true })
+      console.log(`📂 Processing path: ${sourceDir} → ${targetDir} (Fields: ${fieldsToTranslate.join(', ')})`)
 
-      // Lese alle Markdown-Dateien
+      await fs.mkdir(targetDir, { recursive: true })
       const files = await fs.readdir(sourceDir)
       const markdownFiles = files.filter(file => file.endsWith('.md'))
-
-      console.log(`📄 Found: ${markdownFiles.length} Markdown files`)
 
       for (const file of markdownFiles) {
         const sourcePath = path.join(sourceDir, file)
         const targetPath = path.join(targetDir, file)
-
-        // Prüfe ob Übersetzung nötig ist
-        const shouldTranslate = await needsTranslation(sourcePath, targetPath)
         
-        if (shouldTranslate) {
+        if (await needsTranslation(sourcePath, targetPath)) {
           console.log(`🔄 Translating: ${file}`)
-          await translateFile(sourcePath, targetPath, config)
-        } else {
-          console.log(`✅ Up to date: ${file}`)
+          await translateFile(sourcePath, targetPath, mergedConfig) // mergedConfig verwenden
         }
       }
     }
-
-    console.log('✅ All translations completed!')
   } catch (error) {
-    console.error('❌ Error during translation:', error)
+    console.error('❌ Translation error:', error)
     throw error
   }
 }

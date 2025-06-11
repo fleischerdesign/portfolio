@@ -28,12 +28,17 @@ export default defineNuxtConfig({
     paths: [
       {
         sourcePath: 'blog',
-        targetPath: 'blog'
+        targetPath: 'blog',
+        fieldsToTranslate: ['tags', 'category', 'image:alt', 'description', 'title', 'locale'],
+      },
+      {
+        sourcePath: 'projects',
+        targetPath: 'projects',
+        fieldsToTranslate: ['category', 'tags', 'image:alt', 'subtitle', 'title', 'locale', 'features', 'learned', 'challenges'],
       },
     ],
     sourceLocale: 'de',
     targetLocale: 'en',
-    fieldsToTranslate: ['tags', 'category', 'image:alt', 'description', 'title', 'locale'],
   },
   i18n: {
     strategy: 'prefix',

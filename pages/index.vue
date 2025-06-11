@@ -32,35 +32,7 @@
           <CardContainer class="flex-col">
             <h3 class="text-3xl font-medium">{{ $t("home.overview.techstack.title") }}</h3>
             <p class="dark:text-neutral-400 text-neutral-600">{{ $t("home.overview.techstack.subtitle") }}</p>
-            <div class="flex flex-wrap gap-2">
-              <Tag>
-                <Icon name="lineicons:typescript" size="20" /><span>TypeScript</span>
-              </Tag>
-              <Tag>
-                <Icon name="lineicons:react" size="20" /><span>React</span>
-              </Tag>
-              <Tag>
-                <Icon name="lineicons:git" size="20" /><span>Git</span>
-              </Tag>
-              <Tag>
-                <Icon name="lineicons:docker" size="20" /><span>Docker</span>
-              </Tag>
-              <Tag>
-                <Icon name="gravity-ui:target-dart" size="20" /><span>Dart</span>
-              </Tag>
-              <Tag>
-                <Icon name="teenyicons:rust-outline" size="20" /><span>Rust</span>
-              </Tag>
-              <Tag>
-                <Icon name="lineicons:tailwindcss" size="20" /><span>Tailwind</span>
-              </Tag>
-              <Tag>
-                <Icon name="flowbite:vue-solid" size="20" /><span>Vue</span>
-              </Tag>
-              <Tag>
-                <Icon name="material-symbols:flutter" size="20" /><span>Flutter</span>
-              </Tag>
-            </div>
+            <TechstackList :items="['Typescript', 'React', 'Git', 'Docker', 'Dart', 'Rust', 'Tailwind', 'Vue', 'Flutter']" />
           </CardContainer>
         </Card>
         <Card class="flex flex-col col-span-1">
@@ -80,49 +52,13 @@
       <div class="mb-24">
         <HeadingSection :title="$t('home.projects.title')" :subtitle="$t('home.projects.subtitle')" link="/projects" />
         <div class="grid grid-cols-1 gap-3 mt-4">
-          <Card hover class="group h-60 overflow-hidden">
-            <div class="w-1/3 overflow-hidden">
-              <NuxtImg sizes="800px" src="/img/profile.jpg" alt="Portrait (Philipp Fleischer)"
-                class="h-full w-full object-cover group-hover:scale-110 transition" />
-            </div>
-            <CardContainer class="flex-col">
-              <h3 class="text-3xl font-medium">Junction</h3>
-              <p class="dark:text-neutral-400 text-neutral-600">One integration, structured patient data, dedicated
-                support. Minimal
-                operational
-                headaches for users with whatever.</p>
-            </CardContainer>
-          </Card>
-          <Card hover class="group h-60 overflow-hidden">
-            <div class="w-1/3 overflow-hidden">
-              <img src="/img/profile.jpg" class="h-full w-full object-cover group-hover:scale-110 transition" />
-            </div>
-            <CardContainer class="flex-col">
-              <h3 class="text-3xl font-medium">Junction</h3>
-              <p class="dark:text-neutral-400 text-neutral-600">One integration, structured patient data, dedicated
-                support. Minimal
-                operational
-                headaches for users with whatever.</p>
-            </CardContainer>
-          </Card>
-          <Card hover class="group h-60 overflow-hidden">
-            <div class="w-1/3 overflow-hidden">
-              <img src="/img/profile.jpg" class="h-full w-full object-cover group-hover:scale-110 transition" />
-            </div>
-            <CardContainer class="flex-col">
-              <h3 class="text-3xl font-medium">Junction</h3>
-              <p class="dark:text-neutral-400 text-neutral-600">One integration, structured patient data, dedicated
-                support. Minimal
-                operational
-                headaches for users with whatever.</p>
-            </CardContainer>
-          </Card>
+          <ProjectCard v-for="(project, index) in projects" :key="index" hover class="group h-60 overflow-hidden" :project="project" />
         </div>
       </div>
       <div class="mb-24">
         <HeadingSection :title="$t('home.blog.title')" :subtitle="$t('home.blog.subtitle')" link="/blog" />
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
-          <BlogPostCard v-for="(post, index) in data" :key="index" :post="post" />
+          <BlogPostCard v-for="(post, index) in posts" :key="index" :post="post" />
         </div>
       </div>
       <div class="mb-24">
@@ -166,13 +102,23 @@ useSeoMeta({
 const $img = useImage()
 const profilePicUrl = $img('/img/profile.jpg', { width: 800, quality: 100 })
 
-const { data } = await useAsyncData(route.path, () => {
+const {data: posts} = await useAsyncData(route.path+'_posts', () => {
   return queryCollection('blog')
     .where('locale', '=', locale.value)
     .select('title', 'date', 'description', "image", "slug", "readingTime")
     .limit(3)
     .all();
 });
+
+const {data: projects} = await useAsyncData(route.path+'_projects', () => {
+  return queryCollection('projects')
+    .where('locale', '=', locale.value)
+    .select('title', 'date', 'subtitle', "image", "slug")
+    .limit(3)
+    .all();
+});
+
+console.log('Geladene Projekte:', projects.value);
 
 const displayedWeeks = ref(0);
 

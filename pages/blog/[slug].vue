@@ -32,10 +32,34 @@
 <script lang="ts" setup>
 const { locale } = useI18n()
 const route = useRoute()
+
 const { data: post } = await useAsyncData(() => {
   return queryCollection("blog")
   .where('locale', '=', locale.value)
   .where("slug", "=", route.params.slug).first()
 })
 const formattedDate = computed(() => formatDate(post.value?.date))
+
+useSeoMeta({
+  title: post.value?.title || 'Blog Post',
+  ogTitle: post.value?.title || 'Blog Post',
+  description: post.value?.description || 'Blog Post Description',
+  ogDescription: post.value?.description || 'Blog Post Description',
+  ogImage: post.value?.image || 'https://example.com/image.png',
+  ogUrl: route.fullPath,
+  ogType: 'website', 
+  ogLocale: locale.value,
+  twitterTitle: post.value?.title || 'Blog Post',
+  twitterCard: 'summary_large_image',
+  twitterDescription: post.value?.description || 'Blog Post Description',
+  twitterImage: 'https://example.com/image.png',
+  robots: 'index, follow',
+})
+
+if (!post.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Blogpost Not Found'
+  })
+}
 </script>
