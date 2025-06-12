@@ -10,7 +10,8 @@
                     </div>
                 </div>
                 <NuxtImg sizes="600px" :src="post?.image?.src"
-                    class="h-full w-full object-cover group-hover:scale-110 transition duration-500" />
+                    class="h-full w-full object-cover group-hover:scale-110 transition duration-500"
+                    :alt="post?.image?.alt" />
             </div>
             <CardContainer class="flex-col">
                 <h3 class="text-3xl font-medium">{{ post?.title }}</h3>
@@ -26,7 +27,7 @@ const props = defineProps<{
         title: string
         description?: string
         date: Date
-        image?: { src: string }
+        image?: { src: string, alt: string }
         slug: string
         readingTime?: number
     }
