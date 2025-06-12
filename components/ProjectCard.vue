@@ -19,7 +19,7 @@
 const props = defineProps<{
     project: {
         title: string
-        description?: string
+        subtitle?: string
         image?: { src: string, alt?: string }
         slug: string
     }

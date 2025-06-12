@@ -14,7 +14,7 @@
           </div>
 <HeadingSection :title="post!.title" :subtitle="post!.description!" class="!mb-0"/>
           <div class="flex gap-2">
-            <tag class="drop-shadow-md" fill hover v-for="(tag, index) in post?.tags" :key="index">
+            <tag class="drop-shadow-md" gradient hover v-for="(tag, index) in post?.tags" :key="index">
               {{ tag }}
             </tag>
           </div>

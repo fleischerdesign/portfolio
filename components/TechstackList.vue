@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-wrap gap-2">
-        <Tag v-for="(item, index) in items" :key="index">
+        <Tag fill v-for="(item, index) in items" :key="index">
             <Icon v-if="techIcons[item]" :name="techIcons[item]" class="text-xl" />
             <span>{{ item }}</span>
         </Tag>

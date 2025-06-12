@@ -30,7 +30,7 @@ const stats = [
 
 <template>
   <div class="flex flex-col gap-2">
-    <Tag 
+    <Tag fill
       v-for="(stat, index) in stats" 
       :key="index"
       class="flex items-center justify-between p-2 rounded-md"

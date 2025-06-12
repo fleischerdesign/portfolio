@@ -7,65 +7,65 @@
                     <NuxtImg sizes="100vw sm:100vw" :placeholder="[50, 25, 75, 5]" :src="project?.image?.src"
                         class="w-full h-full object-cover" :alt="project?.title || 'Project Background'" />
                 </Card>
+<Card> <!-- Deine bestehende Card-Komponente -->
+  <CardContainer class="flex flex-col h-full gap-2">
+    <h3 class="text-3xl font-medium">Details</h3>
+    <div class="flex gap-2 flex-col">
+      <div 
+        v-for="(value, key) in {
+          'Kategorie': project?.category,
+          'Datum': formattedDate,
+          'Status': project?.published ? 'Veröffentlicht' : 'In Entwicklung'
+        }" 
+        :key="key"
+        class="flex justify-between items-center py-2 px-3 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700"
+      >
+        <span class="text-neutral-600 dark:text-neutral-300">{{ key }}:</span>
+        <span class="font-medium text-neutral-800 dark:text-white">{{ value }}</span>
+      </div>
+    </div>
+  </CardContainer>
+</Card>
                 <Card>
-                    <CardContainer class="flex flex-col h-full gap-1">
-                        <h3 class="text-3xl font-medium">Details</h3>
-                        <div class="">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600 dark:text-gray-400">Kategorie:</span>
-                                <span class="font-medium">{{ project?.category }}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600 dark:text-gray-400">Datum:</span>
-                                <span class="font-medium">{{ formattedDate }}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600 dark:text-gray-400">Status:</span>
-                                <span
-                                    class="inline-block px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded text-xs font-medium">
-                                    {{ project?.published ? 'Veröffentlicht' : 'In Entwicklung' }}
-                                </span>
-                            </div>
-                        </div>
-                    </CardContainer>
-                </Card>
-                <Card>
-                    <CardContainer class="flex flex-col gap-1">
+                    <CardContainer class="flex flex-col gap-2">
                         <h3 class="text-3xl font-medium">{{ $t("home.overview.techstack.title") }}</h3>
                         <TechstackList :items="project?.techstack" />
                     </CardContainer>
                 </Card>
                 <Card>
-                    <CardContainer class="flex flex-col h-full gap-1">
+                    <CardContainer class="flex flex-col h-full gap-2">
                         <h3 class="text-3xl font-medium">Herausforderungen</h3>
                         <ul class="space-y-2">
-                            <li v-for="challenge in project?.challenges?.slice(0, 2)" :key="challenge" 
+                            <li v-for="challenge in project?.challenges?.slice(0, 2)" :key="challenge"
                                 class="flex items-start gap-2">
-                                <Icon name="mage:exclamation-circle" class="w-4 h-4 text-secondary-400 mt-0.5 flex-shrink-0" />
+                                <Icon name="mage:exclamation-circle"
+                                    class="w-4 h-4 text-secondary-400 mt-0.5 flex-shrink-0" />
                                 <span>{{ challenge }}</span>
                             </li>
                         </ul>
                     </CardContainer>
                 </Card>
                 <Card>
-                    <CardContainer class="flex flex-col h-full gap-1">
+                    <CardContainer class="flex flex-col h-full gap-2">
                         <h3 class="text-3xl font-medium">Features</h3>
                         <ul class="space-y-2">
-                            <li v-for="feature in project?.features?.slice(0, 3)" :key="feature" 
+                            <li v-for="feature in project?.features?.slice(0, 3)" :key="feature"
                                 class="flex items-start gap-2">
-                                <Icon name="heroicons:check-circle" class="w-4 h-4 text-secondary-400 mt-0.5 flex-shrink-0" />
+                                <Icon name="heroicons:check-circle"
+                                    class="w-4 h-4 text-secondary-400 mt-0.5 flex-shrink-0" />
                                 <span>{{ feature }}</span>
                             </li>
                         </ul>
                     </CardContainer>
                 </Card>
                 <Card>
-                    <CardContainer class="flex flex-col h-full gap-1">
+                    <CardContainer class="flex flex-col h-full gap-2">
                         <h3 class="text-3xl font-medium">Gelernt</h3>
                         <ul class="space-y-2">
-                            <li v-for="learning in project?.learned?.slice(0, 2)" :key="learning" 
+                            <li v-for="learning in project?.learned?.slice(0, 2)" :key="learning"
                                 class="flex items-start gap-2">
-                                <Icon name="mage:information-circle" class="w-4 h-4 text-secondary-400 mt-0.5 flex-shrink-0" />
+                                <Icon name="mage:information-circle"
+                                    class="w-4 h-4 text-secondary-400 mt-0.5 flex-shrink-0" />
                                 <span>{{ learning }}</span>
                             </li>
                         </ul>
@@ -83,7 +83,7 @@
 <script lang="ts" setup>
 const { locale } = useI18n()
 const route = useRoute()
-const { data: project} = await useAsyncData(() => {
+const { data: project } = await useAsyncData(() => {
     return queryCollection("projects")
         .where('locale', '=', locale.value)
         .where("slug", "=", route.params.slug).first()
@@ -91,19 +91,19 @@ const { data: project} = await useAsyncData(() => {
 const formattedDate = computed(() => project.value ? formatDate(project.value.date) : '')
 
 useSeoMeta({
-  title: project.value?.title || 'Blog Post',
-  ogTitle: project.value?.title || 'Blog Post',
-  description: project.value?.description || 'Blog Post Description',
-  ogDescription: project.value?.description || 'Blog Post Description',
-  ogImage: project.value?.image || 'https://example.com/image.png',
-  ogUrl: route.fullPath,
-  ogType: 'website', 
-  ogLocale: locale.value,
-  twitterTitle: project.value?.title || 'Blog Post',
-  twitterCard: 'summary_large_image',
-  twitterDescription: project.value?.description || 'Blog Post Description',
-  twitterImage: 'https://example.com/image.png',
-  robots: 'index, follow',
+    title: project.value?.title || 'Blog Post',
+    ogTitle: project.value?.title || 'Blog Post',
+    description: project.value?.description || 'Blog Post Description',
+    ogDescription: project.value?.description || 'Blog Post Description',
+    ogImage: project.value?.image || 'https://example.com/image.png',
+    ogUrl: route.fullPath,
+    ogType: 'website',
+    ogLocale: locale.value,
+    twitterTitle: project.value?.title || 'Blog Post',
+    twitterCard: 'summary_large_image',
+    twitterDescription: project.value?.description || 'Blog Post Description',
+    twitterImage: 'https://example.com/image.png',
+    robots: 'index, follow',
 })
 
 if (!project.value) {
