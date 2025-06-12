@@ -1,6 +1,6 @@
 <template>
     <NuxtLink :to="$localePath(`/projects/${project?.slug}`)" class="group">
-    <Card>
+    <Card class="overflow-hidden">
         <div class="w-1/3 overflow-hidden">
             <NuxtImg :src="project.image?.src"
                 :alt="project.image?.alt || project.title"
