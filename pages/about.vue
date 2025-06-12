@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto py-16 max-w-screen-xl">
-        <HeadingSection :title="$t('about.title')" :subtitle="$t('about.subtitle')" />
+        <HeadingSite :title="$t('about.title')" :subtitle="$t('about.subtitle')" />
         <div
             class="grid grid-cols-1 grid-rows-1 md:grid-cols-2 md:grid-rows-2 lg:grid-cols-3 gap-4 mb-24 mt-4 items-stretch">
             <Card class="overflow-hidden row-span-2 group relative">

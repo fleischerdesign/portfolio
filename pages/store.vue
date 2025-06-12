@@ -1,7 +1,7 @@
 <template>
     <div class="container max-w-screen-xl mx-auto py-16">
         <div class="mb-24">
-            <HeadingSection :title="$t('store.title')" :subtitle="$t('store.subtitle')" />
+            <HeadingSite :title="$t('store.title')" :subtitle="$t('store.subtitle')" />
         </div>
     </div>
 </template>

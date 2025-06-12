@@ -1,7 +1,7 @@
 <template>
     <div class="container max-w-screen-xl mx-auto py-16">
         <div class="mb-24">
-            <HeadingSection :title="$t('projects.title')" :subtitle="$t('projects.subtitle')" />
+            <HeadingSite :title="$t('projects.title')" :subtitle="$t('projects.subtitle')" />
             <ProjectCard
                 v-for="(project, index) in data"
                 :key="index"

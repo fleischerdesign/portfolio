@@ -1,7 +1,7 @@
 <template>
     <div class="container max-w-screen-xl mx-auto py-16">
         <div class="mb-24">
-            <HeadingSection :title="project!.title" :subtitle="project!.subtitle" />
+            <HeadingSite :title="project!.title" :subtitle="project!.subtitle" />
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-3 gap-3">
                 <Card class="rounded-md overflow-hidden min-h-96 col-span-1 md:col-span-2 row-span-2">
                     <NuxtImg sizes="100vw sm:100vw" :placeholder="[50, 25, 75, 5]" :src="project?.image?.src"
