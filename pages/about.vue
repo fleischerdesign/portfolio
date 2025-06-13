@@ -5,7 +5,7 @@
             class="grid grid-cols-1 grid-rows-1 md:grid-cols-2 md:grid-rows-2 lg:grid-cols-3 gap-4 mb-24 mt-4 items-stretch">
             <Card class="overflow-hidden row-span-2 group relative">
                 <div class="overflow-hidden w-full h-full max-h-[500px]">
-                    <NuxtImg sizes="300px sm:100vw" src="/img/profile.jpg"
+                    <NuxtImg sizes="300px sm:100vw" src="/img/profile.jpg" placeholder
                         class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
                 </div>
 
