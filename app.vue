@@ -1,5 +1,5 @@
 <template>
-  <NuxtLoadingIndicator :color="tailwindConfig.theme.colors.secondary[400]" />
+  <NuxtLoadingIndicator :color="loadingColor" />
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
@@ -7,6 +7,7 @@
 
 <script setup lang="ts">
 import tailwindConfig from '#tailwind-config'
+const loadingColor = tailwindConfig.theme.colors.secondary[400]
 const { locale } = useI18n() // Importiere die aktuelle Sprache aus dem i18n Plugin
 
 useHead({
