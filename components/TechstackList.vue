@@ -20,6 +20,9 @@ const techIcons = {
   'Vue': 'teenyicons:vue-solid',
   'Flutter': 'simple-icons:flutter',
   'Typescript': 'simple-icons:typescript',
+  'Dart': 'simple-icons:dart',
+  'Rust': 'simple-icons:rust',
+  'Tailwind': 'simple-icons:tailwindcss'
 }
 
 const props = defineProps({
