@@ -71,4 +71,10 @@ export default defineNuxtConfig({
   tailwindcss: {
     exposeConfig: true,
   },
+  icon: {
+    customCollections: [{
+      prefix: 'logo',
+      dir: './assets/logo'
+    }]
+  }
 })

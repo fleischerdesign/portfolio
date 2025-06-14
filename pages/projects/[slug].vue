@@ -3,29 +3,28 @@
         <div class="mb-24">
             <HeadingSite :title="project!.title" :subtitle="project!.subtitle" />
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-3 gap-3">
-                <Card class="rounded-md overflow-hidden min-h-96 col-span-1 md:col-span-2 row-span-2">
+                <Card class="rounded-md overflow-hidden min-h-96 col-span-1 md:col-span-2 row-span-2 relative">
                     <NuxtImg sizes="100vw sm:100vw" :placeholder="[50, 25, 75, 5]" :src="project?.image?.src"
                         class="w-full h-full object-cover" :alt="project?.title || 'Project Background'" />
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <Icon :name="'logo:'+project!.slug" class="w-40 h-40 text-emerald-400" />
+                </div>
                 </Card>
-<Card> <!-- Deine bestehende Card-Komponente -->
-  <CardContainer class="flex flex-col h-full gap-2">
-    <h3 class="text-3xl font-medium">Details</h3>
-    <div class="flex gap-2 flex-col">
-      <div 
-        v-for="(value, key) in {
-          'Kategorie': project?.category,
-          'Datum': formattedDate,
-          'Status': project?.published ? 'Veröffentlicht' : 'In Entwicklung'
-        }" 
-        :key="key"
-        class="flex justify-between items-center py-2 px-3 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700"
-      >
-        <span class="text-neutral-600 dark:text-neutral-300">{{ key }}:</span>
-        <span class="font-medium text-neutral-800 dark:text-white">{{ value }}</span>
-      </div>
-    </div>
-  </CardContainer>
-</Card>
+                <Card>
+                    <CardContainer class="flex flex-col h-full gap-2">
+                        <h3 class="text-3xl font-medium">Details</h3>
+                        <div class="flex gap-2 flex-col">
+                            <div v-for="(value, key) in {
+                                'Kategorie': project?.category,
+                                'Datum': formattedDate,
+                                'Status': project?.published ? 'Veröffentlicht' : 'In Entwicklung'
+                            }" :key="key" class="flex justify-between items-center py-2 px-3 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700">
+                                <span class="text-neutral-600 dark:text-neutral-300">{{ key }}:</span>
+                                <span class="font-medium text-neutral-800 dark:text-white">{{ value }}</span>
+                            </div>
+                        </div>
+                    </CardContainer>
+                </Card>
                 <Card>
                     <CardContainer class="flex flex-col gap-2">
                         <h3 class="text-3xl font-medium">{{ $t("home.overview.techstack.title") }}</h3>
