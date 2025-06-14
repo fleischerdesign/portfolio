@@ -2,15 +2,16 @@
     <div class="container max-w-screen-xl mx-auto py-16">
         <div class="mb-24">
             <HeadingSite :title="$t('projects.title')" :subtitle="$t('projects.subtitle')" />
+            <div class="grid grid-cols-1 gap-3 mt-4">
             <ProjectCard
                 v-for="(project, index) in data"
                 :key="index"
                 :project="project"
             />
+            </div>
         </div>
     </div>
 </template>
-
 <script lang="ts" setup>
 const { locale } = useI18n()
 const route = useRoute()

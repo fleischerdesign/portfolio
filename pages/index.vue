@@ -52,7 +52,7 @@
       <div class="mb-24">
         <HeadingSection :title="$t('home.projects.title')" :subtitle="$t('home.projects.subtitle')" link="/projects" />
         <div class="grid grid-cols-1 gap-3 mt-4">
-          <ProjectCard v-for="(project, index) in projects" :key="index" hover class="group h-60 overflow-hidden" :project="project" />
+          <ProjectCard v-for="(project, index) in projects" :key="index" hover class="group overflow-hidden" :project="project" />
         </div>
       </div>
       <div class="mb-24">
