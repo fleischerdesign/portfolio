@@ -3,7 +3,7 @@
         <div class="mb-24">
             <HeadingSite :title="project!.title" :subtitle="project!.subtitle" />
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                <Card class="rounded-md overflow-hidden col-span-1 md:col-span-2 row-span-2 relative">
+                <Card class="overflow-hidden col-span-1 md:col-span-2 row-span-2 relative">
                     <NuxtImg sizes="100vw sm:100vw" :placeholder="[50, 25, 75, 5]" :src="project?.image?.src"
                         class="w-full h-full object-cover aspect-[4/3]" :alt="project?.title || 'Project Background'" />
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
