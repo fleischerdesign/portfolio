@@ -14,13 +14,9 @@
                     <CardContainer class="flex flex-col h-full gap-2">
                         <h3 class="text-3xl font-medium">Details</h3>
                         <div class="flex gap-2 flex-col">
-                            <div v-for="(value, key) in {
-                                'Kategorie': project?.category,
-                                'Datum': formattedDate,
-                                'Status': project?.published ? 'Veröffentlicht' : 'In Entwicklung'
-                            }" :key="key" class="flex justify-between items-center py-2 px-3 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700">
-                                <span class="text-neutral-600 dark:text-neutral-300">{{ key }}:</span>
-                                <span class="font-medium text-neutral-800 dark:text-white">{{ value }}</span>
+                            <div v-for="item in details" :key="item.label" class="flex justify-between items-center py-2 px-3 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700">
+                                <span class="text-neutral-600 dark:text-neutral-300">{{ item.label }}:</span>
+                                <span class="font-medium text-neutral-800 dark:text-white">{{ item.value }}</span>
                             </div>
                         </div>
                     </CardContainer>
@@ -33,7 +29,7 @@
                 </Card>
                 <Card>
                     <CardContainer class="flex flex-col h-full gap-2">
-                        <h3 class="text-3xl font-medium">Herausforderungen</h3>
+                        <h3 class="text-3xl font-medium">{{ $t("project.challenges") }}</h3>
                         <ul class="space-y-2">
                             <li v-for="challenge in project?.challenges?.slice(0, 2)" :key="challenge"
                                 class="flex items-start gap-2">
@@ -59,7 +55,7 @@
                 </Card>
                 <Card>
                     <CardContainer class="flex flex-col h-full gap-2">
-                        <h3 class="text-3xl font-medium">Gelernt</h3>
+                        <h3 class="text-3xl font-medium">{{ $t("project.learned") }}</h3>
                         <ul class="space-y-2">
                             <li v-for="learning in project?.learned?.slice(0, 2)" :key="learning"
                                 class="flex items-start gap-2">
@@ -80,7 +76,7 @@
 </template>
 
 <script lang="ts" setup>
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 const route = useRoute()
 const { data: project } = await useAsyncData(() => {
     return queryCollection("projects")
@@ -111,4 +107,13 @@ if (!project.value) {
         statusMessage: 'Project Not Found'
     })
 }
+
+const details = [
+  { label: t('project.category'), value: project?.value.category },
+  { label: t('project.date'), value: formattedDate },
+  { 
+    label: t('project.state.title'), 
+    value: project?.value.published ? t('project.state.published') : t('project.state.unpublished')
+  }
+]
 </script>

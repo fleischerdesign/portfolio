@@ -42,7 +42,10 @@
       },
       "statistics": {
         "title": "Statistiken",
-        "subtitle": "Einige Zahlen über mich."
+        "subtitle": "Einige Zahlen über mich.",
+        "coffee": "Getrunkene Kaffees",
+        "lines": "Codezeilen geschrieben",
+        "deployments": "Aktive Deployments"
       },
       "searching": {
         "title": "Ich bin auf der Suche!",
@@ -215,6 +218,17 @@
         "title": "9. Grundschule Hans Christian Andersen",
         "description": "Grundschulabschluss"
       }
+    }
+  },
+  "project": {
+    "learned": "Gelernt",
+    "challenges": "Herausforderungen",
+    "category": "Kategorie",
+    "date": "Datum",
+    "state": {
+      "title": "Status",
+      "published": "Veröffentlicht",
+      "notpublished": "Unveröffentlicht"
     }
   }
 }

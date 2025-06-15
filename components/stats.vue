@@ -1,4 +1,6 @@
 <script setup>
+const { t } = useI18n();
+
 function diffTimeValue(start, dailyValue) {
     const today = new Date()
     const diffTime = Math.abs(start - today)
@@ -9,19 +11,19 @@ function diffTimeValue(start, dailyValue) {
 const stats = [
   { 
     key: 'coffee', 
-    label: 'Getrunkene Kaffees', 
+    label: t("home.overview.statistics.coffee"), 
     icon: 'mdi:coffee', 
     value: diffTimeValue(new Date('2012-12-16'), 4)
   },
   { 
     key: 'linesOfCode', 
-    label: 'Codezeilen geschrieben', 
+    label: t("home.overview.statistics.lines"), 
     icon: 'mdi:code-tags', 
     value: diffTimeValue(new Date('2008-12-16'), 100)
   },
   { 
     key: 'deployments', 
-    label: 'Aktive Deployments', 
+    label: t("home.overview.statistics.deployments"), 
     icon: 'mage:box-3d',
     value: 21
   }
