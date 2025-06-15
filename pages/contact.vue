@@ -22,17 +22,17 @@ const route = useRoute();
 const { locale } = useI18n();
 
 useSeoMeta({
-  title: t("navigation.contact"),
+  title: t("home.contact.title"),
   ogTitle: t("navigation.contact"),
-  description: t("contact.title"),
-  ogDescription: t("contact.subtitle"),
+  description: t("home.contact.title"),
+  ogDescription: t("home.contact.subtitle"),
   ogImage: 'https://example.com/image.png',
   ogUrl: route.fullPath,
   ogType: 'website', 
   ogLocale: locale.value,
-  twitterTitle: t("navigation.contact"),
+  twitterTitle: t("home.contact.title"),
   twitterCard: 'summary_large_image',
-  twitterDescription: t("contact.subtitle"),
+  twitterDescription: t("home.contact.subtitle"),
   twitterImage: 'https://example.com/image.png',
   robots: 'index, follow',
 })
