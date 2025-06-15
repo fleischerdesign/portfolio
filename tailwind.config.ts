@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss'
 import typography from '@tailwindcss/typography'
 import colors from 'tailwindcss/colors'
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 const primary = colors.neutral
 const secondary = colors.emerald
@@ -18,6 +19,9 @@ export default <Partial<Config>>{
       }
     },
     extend: {
+      fontFamily: {
+        sans: ['Roboto', ...defaultTheme.fontFamily.sans],
+      },
       grayscale: {
         50: '50%',
       },

@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     '@nuxtjs/plausible',
     './modules/autoTranslate',
     '@nuxtjs/robots',
+    '@nuxtjs/google-fonts'
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -81,5 +82,10 @@ export default defineNuxtConfig({
       prefix: 'logo',
       dir: './assets/logo'
     }]
+  },
+  googleFonts: {
+    families: {
+      Roboto: true,
+    }
   }
 })
