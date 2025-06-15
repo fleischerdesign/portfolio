@@ -5,7 +5,7 @@
                 <NuxtImg :src="project.image?.src" :alt="project.image?.alt || project.title" sizes="600px"
                     class="h-full w-full object-cover group-hover:scale-110 aspect-[4/3] transition duration-500" />
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <Icon :name="'logo:'+project!.slug" class="w-24 h-24 text-emerald-400 drop-shadow-emit" />
+                    <Icon :name="'logo:'+project!.slug" class="w-24 h-24 fill-emerald-400" mode="svg" />
                 </div>
             </div>
             <CardContainer class="flex-col">

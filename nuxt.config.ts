@@ -50,8 +50,8 @@ export default defineNuxtConfig({
     },
     defaultLocale: 'en',
     locales: [
-      { code: 'en', name: 'English', file: 'en.json' },
-      { code: 'de', name: 'German', file: 'de.json' }
+      { code: 'en', name: 'English', file: 'en.json', language: 'en-US' },
+      { code: 'de', name: 'German', file: 'de.json' , language: 'de-DE' }
     ],
     baseUrl: 'https://fleischer.design',
   },

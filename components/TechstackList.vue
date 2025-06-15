@@ -22,7 +22,14 @@ const techIcons = {
   'Typescript': 'simple-icons:typescript',
   'Dart': 'simple-icons:dart',
   'Rust': 'simple-icons:rust',
-  'Tailwind': 'simple-icons:tailwindcss'
+  'Tailwind': 'simple-icons:tailwindcss',
+  'Nuxt': 'simple-icons:nuxt',
+  'Markdown': 'simple-icons:markdown',
+  'Vite': 'simple-icons:vite',
+  'SQL': 'mage:database',
+  'GitHub Actions': 'devicon-plain:githubactions',
+  'LLM': 'simple-icons:openai',
+  'Firebase': 'simple-icons:firebase'
 }
 
 const props = defineProps({
