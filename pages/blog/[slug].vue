@@ -7,12 +7,12 @@
         <div class="container max-w-screen-xl flex flex-col items-start gap-4 relative z-1">
           <div class="flex items-center gap-2 drop-shadow-md">
             <chip>
-              <NuxtLink class="flex gap-2"><img :src="post?.author.avatar" class="w-6 h-6 rounded-full" />Philipp
+              <NuxtLink class="flex gap-2"><NuxtImg :src="post?.author.avatar" class="w-6 h-6 rounded-full" alt="Avatar" />Philipp
                 Fleischer</NuxtLink>
             </chip>
             <span>{{ $t("blogPost.date.on") }} {{ formattedDate }}</span>
           </div>
-<HeadingSection :title="post!.title" :subtitle="post!.description!" class="!mb-0"/>
+<HeadingSite :title="post!.title" :subtitle="post!.description!" class="!mb-0"/>
           <div class="flex gap-2">
             <tag class="drop-shadow-md" gradient hover v-for="(tag, index) in post?.tags" :key="index">
               {{ tag }}
