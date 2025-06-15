@@ -7,7 +7,7 @@
                     <NuxtImg sizes="100vw sm:100vw" :placeholder="[50, 25, 75, 5]" :src="project?.image?.src"
                         class="w-full h-full object-cover aspect-[4/3]" :alt="project?.title || 'Project Background'" />
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <Icon :name="'logo:'+project!.slug" class="w-40 h-40 fill-emerald-400" mode="svg" />
+                    <Icon :name="'logo:'+project!.slug" class="w-40 h-40 fill-emerald-400 drop-shadow-xl" mode="svg" />
                 </div>
                 </Card>
                 <Card>

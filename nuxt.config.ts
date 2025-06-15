@@ -20,7 +20,12 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
   ],
   app: {
-    pageTransition: { name: 'page', mode: 'out-in' }
+    pageTransition: { name: 'page', mode: 'out-in' },
+      head: {
+      link: [
+        { rel: 'icon', type: 'image/png', href: '/favicon.png' }
+      ]
+    }
   },
   autoTranslate: {
     apiProvider: 'openai', // oder 'anthropic', 'google'
