@@ -48,17 +48,17 @@
         "deployments": "Aktive Deployments"
       },
       "searching": {
-        "title": "Ich bin auf der Suche!",
-        "subtitle": "Angehender Anwendungsentwickler (FIAE) sucht ein 6-monatiges Praktikum, um: Programmierkenntnisse in realen Projekten anzuwenden; mit erfahrenen Teams zusammenzuarbeiten. Interessiert, sich zu vernetzen?"
+        "title": "Bereit für den Praxiseinstieg!",
+        "subtitle": "Motiviert, lernbereit und voller Tatendrang. Ich möchte mein Wissen in der Praxis anwenden und mit Profis zusammenarbeiten. Interesse an einem Austausch? Dann kontaktiere mich!"
       }
     },
     "projects": {
       "title": "Projekte",
-      "subtitle": "Entdecke eine Auswahl meiner Programmierprojekte, von dynamischen E-Commerce-Sites bis hin zu kleineren Tools. Jedes Projekt zeigt meine Expertise in der Erstellung funktionaler und benutzerfreundlicher Lösungen."
+      "subtitle": "Eine Auswahl meiner Programmierprojekte, von dynamischen E-Commerce-Sites bis hin zu kleineren Tools. Jedes Projekt zeigt meine Expertise in der Erstellung funktionaler und benutzerfreundlicher Lösungen."
     },
     "blog": {
       "title": "Blog",
-      "subtitle": "Entdecke eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleite mich auf meine Reise in die Informatik."
+      "subtitle": "Eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleite mich auf meine Reise in die Informatik."
     },
     "contact": {
       "title": "Kontakt",
