@@ -11,6 +11,9 @@ techstack:
   - Authentik
   - Grafana
   - Home Assistant
+  - Loki
+  - Prometheus
+  - Crowdsec
 tags:
   - Homelab
   - Network
@@ -95,7 +98,7 @@ Central components: **Authentik for SSO**, **Caddy as reverse proxy**, and a **m
 
 #### 3D Printing Stack  
 - **Klipper** + **Mainsail**:  
-  - High-precision print control on my Ender 3 V2.  
+  - High-precision printing control on my Ender 3 V2.  
   - G-code optimizations for faster prints.  
 
 ---
@@ -121,7 +124,7 @@ Central components: **Authentik for SSO**, **Caddy as reverse proxy**, and a **m
 Ancoris is more than just “hosting services” – it’s my **learning environment for DevOps practices**:  
 - **Infrastructure-as-Code**: Docker Compose files are versioned and documented.  
 - **Problem-solving**: Troubleshooting in distributed systems (e.g., Prometheus alerts).  
-- **Enabler for family**: Self-hosting as a privacy alternative to Google & Co.  
+- **Enabling for family**: Self-hosting as a privacy alternative to Google & Co.  
 
 🔗 **GitHub repo**: [ancoris-docker](https://github.com/...)  
 

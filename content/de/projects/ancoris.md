@@ -11,6 +11,9 @@ techstack:
   - Authentik
   - Grafana
   - Home Assistant
+  - Loki
+  - Prometheus
+  - Crowdsec
 tags:
   - Homelab
   - Netzwerk
