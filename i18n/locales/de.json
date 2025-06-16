@@ -1,4 +1,28 @@
 {
+  "common": {
+    "databases": "Datenbanken",
+    "webdev": "Webentwicklung",
+    "teamleading": "Teamleitung",
+    "process_optimization": "Prozessoptimierung",
+    "project_management": "Projekt Management",
+    "warehouse_operations": "Lagerlogistik",
+    "troubleshooting": "Fehlerbehebung",
+    "data_maintenance": "Datenpflege",
+    "inventory_management": "Bestandverwaltung",
+    "retail_logistics": "Einzelhandelslogistik",
+    "customer_service": "Kundenservice",
+    "self_improvement": "Weiterentwicklung",
+    "education": "Weiterbildung",
+    "analyze": "Analyse",
+    "audio_production": "Audioproduktion",
+    "video_production": "Videoproduktion",
+    "sound_design": "Sounddesign",
+    "motion_graphics": "Motion Graphics",
+    "graphic_design": "Grafikdesign",
+    "digital_media": "Digitale Medien",
+    "secondary_school_diploma": "Realschulabschluss",
+    "elementary_school_diploma": "Grundschulabschluss"
+  },
   "navigation": {
     "home": "Startseite",
     "about": "Über mich",
@@ -188,11 +212,11 @@
       },
       "medienkolleg": {
         "title": "Medienkolleg Rostock",
-        "description": "Ausbildung zum Mediengestalter für Digital- und Printmedien"
+        "description": "Ausbildung zum Mediengestalter für Bild und Ton"
       },
       "persch": {
         "title": "Designbüro Persch",
-        "description": "Ausbildung zum Mediengestalter für Digital- und Printmedien"
+        "description": "Mediengestalter für Digital- und Printmedien"
       },
       "ups": {
         "title": "United Parcel Service",

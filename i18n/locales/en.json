@@ -1,4 +1,28 @@
 {
+  "common": {
+    "databases": "Databases",
+    "webdev": "Webdevelopment",
+    "teamleading": "Teamlead",
+    "process_optimization": "Process Optimization",
+    "project_management": "Project Management",
+    "warehouse_operations": "Warehouse Operations",
+    "troubleshooting": "Troubleshooting",
+    "data_maintenance": "Data Maintenance",
+    "inventory_management": "Inventory Management",
+    "retail_logistics": "Retail Logistics",
+    "customer_service": "Customer Service",
+    "self_improvement": "Self Improvement",
+    "education": "Education",
+    "analyze": "Analyzing",
+    "audio_production": "Audio Production",
+    "video_production": "Video Production",
+    "sound_design": "Sounddesign",
+    "motion_graphics": "Motion Graphics",
+    "graphic_design": "Graphic Design",
+    "digital_media": "Digital Media",
+    "secondary_school_diploma": "Secondary School Diploma",
+    "elementary_school_diploma": "Elementary School Diploma"
+  },
   "navigation": {
     "home": "Home",
     "about": "About",
@@ -188,11 +212,11 @@
       },
       "medienkolleg": {
         "title": "Medienkolleg Rostock",
-        "description": "Training as a Media Designer for Digital and Print Media"
+        "description": "Training as a Media Designer for Visual and Audio"
       },
       "persch": {
         "title": "Designbüro Persch",
-        "description": "Training as a Media Designer for Digital and Print Media"
+        "description": "Media Designer for Digital and Print Media"
       },
       "ups": {
         "title": "United Parcel Service",
