@@ -84,7 +84,7 @@ Central components: **Authentik for SSO**, **Caddy as reverse proxy**, and a **m
 #### Home Automation  
 - **Home Assistant**:  
   - Controls 50+ devices (lights, sensors, cameras) via Zigbee2MQTT.  
-  - Automations like “lights at sunset” or heating control.  
+  - Automations like "lights at sunset" or heating control.  
 - **ESPHome**: Firmware for DIY smart home devices (e.g., temperature sensors).  
 - **Mosquitto MQTT**: Message broker for IoT communication.  
 
@@ -121,12 +121,12 @@ Central components: **Authentik for SSO**, **Caddy as reverse proxy**, and a **m
 ---
 
 ## Why this project?  
-Ancoris is more than just “hosting services” – it’s my **learning environment for DevOps practices**:  
+Ancoris is more than just "hosting services" – it is my **learning environment for DevOps practices**:  
 - **Infrastructure-as-Code**: Docker Compose files are versioned and documented.  
 - **Problem-solving**: Troubleshooting in distributed systems (e.g., Prometheus alerts).  
-- **Enabling for family**: Self-hosting as a privacy alternative to Google & Co.  
+- **Enabler for family**: Self-hosting as a privacy alternative to Google & Co.  
 
-🔗 **GitHub repo**: [ancoris-docker](https://github.com/...)  
+🔗 **GitHub Repo**: [ancoris-docker](https://github.com/...)  
 
 ---
 
@@ -139,4 +139,4 @@ Ancoris is more than just “hosting services” – it’s my **learning enviro
 
 ## Screenshots & Diagrams  
 ![Network Architecture](/img/ancoris-diagram.png) *Simplified overview of services*  
-![Grafana Dashboard](/img/grafana-overview.png) *Live metrics of servers*
+![Grafana Dashboard](/img/grafana.jpg) *Live metrics of servers*

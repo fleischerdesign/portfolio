@@ -139,4 +139,4 @@ Ancoris ist mehr als nur „Dienste hosten“ – es ist mein **Lernfeld für De
 
 ## Screenshots & Diagramme  
 ![Netzwerk-Architektur](/img/ancoris-diagram.png) *Vereinfachte Übersicht der Dienste*  
-![Grafana-Dashboard](/img/grafana-overview.png) *Live-Metriken der Server*  
+![Grafana-Dashboard](/img/grafana.jpg) *Live-Metriken der Server*  
