@@ -262,7 +262,6 @@ useSeoMeta({
     twitterTitle: t("navigation.about"),
     twitterCard: 'summary_large_image',
     twitterDescription: t("about.subtitle"),
-    twitterImage: 'https://example.com/image.png',
     robots: 'index, follow',
 })
 

@@ -90,14 +90,12 @@ useSeoMeta({
     ogTitle: project.value?.title || 'Blog Post',
     description: project.value?.subtitle || 'Blog Post Description',
     ogDescription: project.value?.subtitle || 'Blog Post Description',
-    ogImage: project.value?.image || 'https://example.com/image.png',
     ogUrl: route.fullPath,
     ogType: 'website',
     ogLocale: locale.value,
     twitterTitle: project.value?.title || 'Blog Post',
     twitterCard: 'summary_large_image',
     twitterDescription: project.value?.subtitle || 'Blog Post Description',
-    twitterImage: 'https://example.com/image.png',
     robots: 'index, follow',
 })
 

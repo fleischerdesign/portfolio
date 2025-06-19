@@ -16,14 +16,12 @@ useSeoMeta({
   ogTitle: t("navigation.store"),
   description: t("store.subtitle"),
   ogDescription: t("store.subtitle"),
-  ogImage: 'https://example.com/image.png',
   ogUrl: route.fullPath,
   ogType: 'website', 
   ogLocale: locale.value,
   twitterTitle: t("navigation.store"),
   twitterCard: 'summary_large_image',
   twitterDescription: t("store.subtitle"),
-  twitterImage: 'https://example.com/image.png',
   robots: 'index, follow',
 })
 </script>
