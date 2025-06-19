@@ -11,13 +11,13 @@ tags:
   - ci-cd
 image:
   src: /img/alvaro-reyes-fSWOVc3e06w-unsplash.jpg
-  alt: "Zwei 2 Entwickler, die gemeinsam an einem Projekt arbeiten – Symbol für DevOps-Zusammenarbeit"
+  alt: "Zwei Entwickler, die gemeinsam an einem Projekt arbeiten – Symbol für DevOps-Zusammenarbeit"
 readingTime: 15
 author:
   name: Philipp Fleischer
   avatar: /img/profile.jpg
 draft: false
-description: "DevOps für Einsteiger: Was bedeutet DevOps, warum ist es wichtig und wie funktioniert der DevOps-Lebenszyklus? Alles über Kultur, Automatisierung und die wichtigsten Tools."
+description: "Was bedeutet DevOps, warum ist es wichtig und wie funktioniert der DevOps-Lebenszyklus? Alles über Kultur, Automatisierung und die wichtigsten Tools."
 locale: de
 title: "DevOps für Einsteiger: Was es ist und warum es wichtig ist"
 ---
@@ -41,7 +41,7 @@ Diese Prinzipien zielen darauf ab, Silos zwischen Abteilungen abzubauen und eine
 ## Der DevOps-Lebenszyklus
 Der DevOps-Lebenszyklus ist ein kontinuierlicher Prozess, der aus mehreren Phasen besteht. Je nach Quelle werden zwischen sieben und acht Phasen unterschieden. Diese Phasen greifen fließend ineinander und bilden einen geschlossenen Kreislauf:
 
-```mermaid
+<Mermaid>
 flowchart LR
     Plan[Plan] --> Code[Code]
     Code --> Build[Build]
@@ -51,13 +51,14 @@ flowchart LR
     Deploy --> Operate[Operate]
     Operate --> Monitor[Monitor]
     Monitor --> Plan
-```
+</Mermaid>
+
 Dieser Kreislauf ermöglicht eine kontinuierliche Verbesserung der Software, indem Feedback aus dem Betrieb direkt in die Planung neuer Features einfließt.
 
 ## Continuous Integration und Continuous Delivery/Deployment (CI/CD)
 Ein zentrales Element von DevOps ist die Implementierung von CI/CD-Pipelines, die den Prozess der Softwareentwicklung und -bereitstellung automatisieren:
 
-```mermaid
+<Mermaid>
 sequenceDiagram
     participant Dev as Entwickler
     participant Repo as Repository
@@ -70,8 +71,8 @@ sequenceDiagram
     CI ->> Test: Automatische Tests
     Test ->> CI: Test-Ergebnis
     CI ->> Prod: Automatisches Deployment (bei Erfolg)
+</Mermaid>
 
-```
 ### Continuous Integration (CI)
 Bei der Continuous Integration werden Codeänderungen regelmäßig in ein zentrales Repository integriert, wobei automatisierte Builds und Tests durchgeführt werden. Dies hilft, Integrationsprobleme frühzeitig zu erkennen und zu beheben, anstatt erst am Ende eines Entwicklungszyklus damit konfrontiert zu werden.
 
@@ -102,7 +103,7 @@ DevOps-Teams können durch agile Arbeitsweisen schneller auf Veränderungen reag
 ## DevOps vs. traditionelle Entwicklung
 Im Vergleich zur traditionellen Softwareentwicklung bietet DevOps deutliche Vorteile:
 
-```mermaid
+<Mermaid>
 flowchart TD
     subgraph DevOps
         Plan --> Code --> Build --> Test --> Release --> Deploy --> Operate --> Monitor
@@ -112,8 +113,7 @@ flowchart TD
     subgraph Traditionell
         Anforderung --> Design --> Implementierung --> Test --> Wartung
     end
-
-```
+</Mermaid>
 ### Zusammenarbeit statt Silos
 In der klassischen Entwicklung arbeiten Entwicklungs- und Betriebsteams getrennt voneinander, was zu Kommunikationsproblemen und Verzögerungen führt. DevOps hingegen fördert eine enge Zusammenarbeit und Integration dieser Teams, wodurch Silos abgebaut werden.
 
@@ -171,13 +171,13 @@ DevOps entwickelt sich ständig weiter. Für 2025 zeichnen sich folgende Trends 
 Künstliche Intelligenz wird zunehmend in DevOps-Prozesse integriert, um autonome Pipelines zu schaffen, die nicht nur Daten analysieren, sondern auch Echtzeit-Entscheidungen treffen können. Dies führt zu selbstheilenden Systemen, die Probleme erkennen und beheben, bevor sie kritisch werden.
 
 ### DevSecOps wird zum Standard
-```mermaid
+<Mermaid>
 flowchart TD
     subgraph DevSecOps
         Dev[Development] & Ops[Operations] & Sec[Security]
     end
+</Mermaid>
 
-```
 Die Integration von Sicherheit in den DevOps-Prozess (DevSecOps) wird 2025 nicht mehr optional, sondern zur Notwendigkeit. Sicherheitsaspekte werden von Anfang an in den Entwicklungsprozess eingebunden, anstatt erst nachträglich berücksichtigt zu werden.
 
 
