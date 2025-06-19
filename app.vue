@@ -24,7 +24,7 @@ useHead({
   }
 })
 
-
+defineOgImageComponent('Default')
 </script>
 
 

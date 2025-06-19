@@ -27,7 +27,7 @@ const { t } = useI18n()
 useSeoMeta({
   title: t("navigation.projects"),
   ogTitle: t("navigation.projects"),
-  description: t("projects.title"),
+  description: t("projects.subtitle"),
   ogDescription: t("projects.subtitle"),
   ogImage: 'https://example.com/image.png',
   ogUrl: route.fullPath,

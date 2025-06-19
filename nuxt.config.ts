@@ -18,7 +18,8 @@ export default defineNuxtConfig({
     '@nuxtjs/plausible',
     './modules/autoTranslate',
     '@nuxtjs/robots',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    'nuxt-og-image'
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },

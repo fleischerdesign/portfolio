@@ -14,7 +14,7 @@ const { locale } = useI18n();
 useSeoMeta({
   title: t("navigation.store"),
   ogTitle: t("navigation.store"),
-  description: t("store.title"),
+  description: t("store.subtitle"),
   ogDescription: t("store.subtitle"),
   ogImage: 'https://example.com/image.png',
   ogUrl: route.fullPath,
