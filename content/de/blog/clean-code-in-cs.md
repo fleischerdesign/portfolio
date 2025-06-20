@@ -25,20 +25,16 @@ title: "Clean Code für Fachinformatiker: Sauber programmieren von Anfang an"
 Als angehender Fachinformatiker für Anwendungsentwicklung habe ich mich oft in folgender Situation wiedergefunden: Ich schreibe Code, der funktioniert, aber nach ein paar Wochen verstehe ich selbst nicht mehr, was ich da eigentlich gemacht habe. Genau hier kommt Clean Code ins Spiel – ein Konzept, das nicht nur unsere Programmierfähigkeiten auf das nächste Level bringt, sondern auch entscheidend für die berufliche Zukunft ist.
 
 ## Was ist Clean Code eigentlich?
-
 Clean Code bezeichnet Code, der leicht zu verstehen, zu ändern, zu erweitern und zu warten ist. Es geht dabei nicht nur darum, dass der Code funktioniert, sondern dass er auch für Menschen lesbar und verständlich ist. Robert Cecil Martin, bekannt als "Uncle Bob", hat diesen Begriff in seinem gleichnamigen Buch geprägt und zu einem Standard in der Softwareentwicklung gemacht.
 
 Die Grundidee ist einfach: Du schreibst Code nicht nur für Maschinen, sondern vor allem für Menschen – einschließlich deines zukünftigen Ichs. Sauberer Code zeichnet sich durch mehrere Eigenschaften aus:
-
 - **Intuitiv verständlich**: Jeder geschulte Entwickler kann den Code auf Anhieb erfassen 
 - **Leicht zu ändern**: Klassen und Methoden sind klein und haben eine eindeutige Aufgabe 
 - **Wartungsfreundlich**: Fehler lassen sich einfach beheben und neue Features problemlos hinzufügen 
 - **Selbstdokumentierend**: Der Code erklärt sich durch aussagekräftige Namen und klare Struktur selbst 
 
 ## Die Grundprinzipien von Clean Code
-
 ### 1. Aussagekräftige Namen verwenden
-
 Einer der wichtigsten Aspekte von Clean Code ist die Namensgebung. Namen sollten sofort kommunizieren, wofür eine Variable, Funktion oder Klasse verwendet wird. 
 
 **Schlecht:**
@@ -58,7 +54,6 @@ Die Regeln für gute Namen sind klar definiert :
 - Verwende suchbare Namen für wichtige Konzepte
 
 ### 2. Funktionen klein und fokussiert halten
-
 Funktionen sollten klein sein und nur eine Sache tun – und das richtig gut. Eine Funktion sollte idealerweise nicht mehr als 20 Zeilen haben und nur eine Abstraktionsebene behandeln.
 
 **Prinzipien für saubere Funktionen:**
@@ -68,7 +63,6 @@ Funktionen sollten klein sein und nur eine Sache tun – und das richtig gut. Ei
 - Aussagekräftige Namen mit Verben für Aktionen 
 
 ### 3. Kommentare sparsam und sinnvoll einsetzen
-
 Hier wird es kontrovers: Die Clean-Code-Philosophie besagt, dass guter Code keine Kommentare braucht. Kommentare sind oft ein Zeichen dafür, dass der Code nicht klar genug geschrieben ist.
 
 **Wann Kommentare sinnvoll sind:**
@@ -80,16 +74,13 @@ Hier wird es kontrovers: Die Clean-Code-Philosophie besagt, dass guter Code kein
 **Besser als Kommentare:** Verwende aussagekräftige Funktionsnamen, die erklären, was passiert.
 
 ### 4. Formatierung und Struktur
-
 Konsistente Formatierung ist entscheidend für die Lesbarkeit. Dein Code sollte wie ein gut strukturierter Text aussehen:
-
 - Einheitliche Einrückung
 - Logische Gruppierung von zusammengehörigem Code
 - Sinnvolle Verwendung von Leerzeilen
 - Konsistente Namenskonventionen 
 
 ## Die SOLID-Prinzipien: Das Fundament für sauberen Code
-
 Die SOLID-Prinzipien sind fünf Grundregeln, die dir helfen, wartbaren und erweiterbaren Code zu schreiben. Sie bilden das Rückgrat der objektorientierten Programmierung:
 
 ### S - Single Responsibility Principle (SRP)
@@ -108,9 +99,7 @@ Erstelle kleine, spezifische Interfaces statt großer, allgemeiner. Klassen soll
 Abhängigkeiten sollten auf Abstraktionen basieren, nicht auf konkreten Implementierungen. High-Level-Module sollten nicht von Low-Level-Modulen abhängen.
 
 ## Praktische Beispiele für Clean Code
-
 ### Beispiel 1: Bessere Namensgebung
-
 **Vorher (Dirty Code):**
 ```java
 public class CustomerProcessor {
@@ -121,7 +110,6 @@ public class CustomerProcessor {
     }
 }
 ```
-
 **Nachher (Clean Code):**
 ```java
 public class ActiveCustomerProcessor {
@@ -133,9 +121,7 @@ public class ActiveCustomerProcessor {
     }
 }
 ```
-
 ### Beispiel 2: Funktionen aufteilen
-
 **Vorher:**
 ```java
 public void processOrder(Order order) {
@@ -159,7 +145,6 @@ public void processOrder(Order order) {
     database.save(order);
 }
 ```
-
 **Nachher:**
 ```java
 public void processOrder(Order order) {
@@ -187,9 +172,7 @@ private double applyDiscounts(Order order, double total) {
 ```
 
 ## Clean Code in verschiedenen Programmiersprachen
-
 ### Python-spezifische Clean Code Praktiken
-
 Python hat mit dem "Zen of Python" bereits eingebaute Design-Prinzipien :
 - Beautiful is better than ugly
 - Explicit is better than implicit
@@ -208,16 +191,13 @@ def calculate_total_price(base_price, quantity, tax_rate):
 ```
 
 ### Java Clean Code Praktiken
-
 Java bietet durch seine Typisierung bereits gute Unterstützung für Clean Code :
 - Verwende aussagekräftige Klassennamen
 - Nutze Interfaces für Abstraktion
 - Vermeide Magic Numbers durch Konstanten 
 
 ## Tools für Clean Code
-
 ### Statische Code-Analyse mit SonarQube
-
 SonarQube ist eines der wichtigsten Tools für Clean Code. Es analysiert deinen Code automatisch und identifiziert:
 - Code Smells (Anzeichen für schlechten Code)
 - Bugs und Sicherheitslücken
@@ -231,14 +211,12 @@ SonarQube ist eines der wichtigsten Tools für Clean Code. Es analysiert deinen 
 - "Clean as You Code"-Methodologie 
 
 ### Weitere nützliche Tools
-
 - **SonarLint**: IDE-Plugin für sofortige Code-Analyse während der Entwicklung 
 - **Checkstyle**: Überprüfung von Coding-Standards
 - **PMD**: Erkennung von Code-Problemen
 - **SpotBugs**: Automatische Bug-Erkennung
 
 ## Refactoring: Bestehenden Code verbessern
-
 Refactoring ist der Prozess, bestehenden Code zu verbessern, ohne seine Funktionalität zu ändern. Die goldene Regel dabei: "Hinterlasse den Code sauberer, als du ihn vorgefunden hast".
 
 **Wichtige Refactoring-Regeln:**
@@ -254,9 +232,7 @@ Refactoring ist der Prozess, bestehenden Code zu verbessern, ohne seine Funktion
 - Simplify Conditionals: Komplexe Bedingungen vereinfachen 
 
 ## Metriken für Clean Code
-
 Um die Qualität deines Codes zu messen, gibt es verschiedene Metriken :
-
 ### Quantitative Metriken
 - **Lines of Code (LOC)**: Anzahl der Codezeilen
 - **Cyclomatic Complexity**: Komplexität der Kontrollstrukturen
@@ -270,7 +246,6 @@ Um die Qualität deines Codes zu messen, gibt es verschiedene Metriken :
 - **Cohesion**: Zusammenhalt innerhalb von Klassen 
 
 ## Vorteile von Clean Code für Fachinformatiker
-
 ### Berufliche Vorteile
 - **Bessere Karrierechancen**: Arbeitgeber schätzen Entwickler, die wartbaren Code schreiben 
 - **Effizientere Teamarbeit**: Sauberer Code erleichtert die Zusammenarbeit 
@@ -284,10 +259,8 @@ Um die Qualität deines Codes zu messen, gibt es verschiedene Metriken :
 - **Höhere Codequalität**: Weniger Bugs und Sicherheitslücken
 
 ## Clean Code in der Ausbildung und im Beruf
-
 ### Während der Ausbildung
 Clean Code sollte eigentlich Teil jeder Ausbildung zum Fachinformatiker sein. Leider wird oft mehr Wert auf funktionierenden Code gelegt als auf sauberen Code. Hier sind einige Tipps:
-
 - **Übe Clean Code von Anfang an**: Gewöhne dir gute Praktiken früh an
 - **Code-Reviews mit Kollegen**: Lass anderen deinen Code bewerten
 - **Verwende Tools**: Nutze Linter und Code-Analyse-Tools
@@ -301,7 +274,6 @@ Im Berufsleben wird Clean Code noch wichtiger:
 - **Qualität**: Kunden erwarten zuverlässige Software
 
 ## Häufige Clean Code Antipatterns vermeiden
-
 ### Code Smells erkennen
 - **Long Method**: Methoden mit zu vielen Zeilen
 - **Large Class**: Klassen mit zu vielen Verantwortlichkeiten
@@ -310,7 +282,6 @@ Im Berufsleben wird Clean Code noch wichtiger:
 - **Magic Numbers**: Fest codierte Zahlen ohne Erklärung
 
 ### Dirty Code vs. Clean Code
-
 **Dirty Code Charakteristika:**
 - Schwer zu lesen und zu verstehen
 - Hohe Komplexität
@@ -326,7 +297,6 @@ Im Berufsleben wird Clean Code noch wichtiger:
 - Gute Testabdeckung
 
 ## Praktische Tipps für den Alltag
-
 ### 1. Denke vor dem Programmieren
 Bevor du anfängst zu coden, überlege dir:
 - Was genau soll die Funktion tun?
@@ -347,7 +317,6 @@ IDEs wie IntelliJ IDEA, Visual Studio Code oder Eclipse bieten viele Funktionen,
 - Intelligente Code-Completion
 
 ## Clean Code in verschiedenen Kontexten
-
 ### Web-Entwicklung
 In der Web-Entwicklung gelten besondere Clean Code Regeln:
 - **Komponenten-basierte Architektur**: Kleine, wiederverwendbare Komponenten
@@ -369,7 +338,6 @@ Im Backend steht Skalierbarkeit im Vordergrund:
 - **Security**: Sauberer Code reduziert Sicherheitslücken
 
 ## Fazit: Clean Code als Investition in die Zukunft
-
 Clean Code ist mehr als nur ein Programmierstil – es ist eine Investition in deine berufliche Zukunft. Als Fachinformatiker für Anwendungsentwicklung wirst du täglich mit Code arbeiten, ihn erweitern, debuggen und warten. Je sauberer dein Code ist, desto effizienter und erfolgreicher wirst du in deinem Beruf sein.
 
 Die wichtigsten Erkenntnisse im Überblick:
