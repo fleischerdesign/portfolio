@@ -13,7 +13,7 @@
             <span>{{ $t("blogPost.date.on") }} {{ formattedDate }}</span>
           </div>
 <HeadingSite :title="post!.title" :subtitle="post!.description!" class="!mb-0"/>
-          <div class="flex gap-2">
+          <div class="flex gap-2 flex-wrap">
             <tag class="drop-shadow-md" gradient hover v-for="(tag, index) in post?.tags" :key="index">
               {{ tag }}
             </tag>
