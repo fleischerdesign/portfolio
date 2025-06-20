@@ -32,7 +32,7 @@
           <CardContainer class="flex-col">
             <h3 class="text-3xl font-medium">{{ $t("home.overview.techstack.title") }}</h3>
             <p class="dark:text-neutral-400 text-neutral-600">{{ $t("home.overview.techstack.subtitle") }}</p>
-            <TechstackList :items="['Typescript', 'React', 'Git', 'Docker', 'Dart', 'Rust', 'Tailwind', 'Vue', 'Flutter']" />
+            <TechstackList scroll :rows="3" :items="['Typescript', 'React', 'Git', 'Docker', 'Dart', 'Rust', 'Tailwind', 'Vue', 'Flutter', 'Node.js', 'Deno', 'Python', 'PostgreSQL', 'MongoDB', 'REST', 'GraphQL']" />
           </CardContainer>
         </Card>
         <Card class="flex flex-col col-span-1">
