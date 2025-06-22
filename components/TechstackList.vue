@@ -6,7 +6,6 @@
         v-for="(row, rowIndex) in rowItems"
         :key="'marquee-row-' + rowIndex"
         class="marquee-row w-full overflow-hidden"
-        :style="{ height: '40px' }"
       >
         <div
           class="marquee flex gap-2 whitespace-nowrap"
