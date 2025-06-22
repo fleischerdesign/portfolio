@@ -10,7 +10,7 @@
         <div
           class="marquee flex gap-2 whitespace-nowrap"
           :style="{ animationDuration: animationDurations[rowIndex] + 's' }"
-          :ref="el => setMarqueeRef(el, rowIndex)"
+          :ref="el => setMarqueeRef(el as HTMLElement | null, rowIndex)"
         >
           <Tag v-for="(item, index) in [...row, ...row]" :key="index" fill>
             <Icon v-if="techIcons[item]" :name="techIcons[item]" class="text-xl" />
