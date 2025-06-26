@@ -25,3 +25,6 @@ logs
 
 # Docker volume
 data
+
+nix-direnv-reload
+.direnv
