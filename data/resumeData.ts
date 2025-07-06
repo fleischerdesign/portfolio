@@ -5,10 +5,14 @@ export const resumeData = {
     location: (t: any) => t("resume.personal.location"),
     internshipStatus: (t: any) => t("resume.personal.internshipStatus"),
   },
-  summary: (t: any) => t("resume.summary"),
+  summary: (t: any) => t("home.hero.summary"),
   techStack: [
     'Typescript', 'React', 'Git', 'Docker', 'Dart', 'Rust', 'Tailwind', 'Vue', 'Flutter', 
     'Node.js', 'Deno', 'Python', 'PostgreSQL', 'MongoDB', 'REST', 'GraphQL'
+  ],
+  softSkills: [
+    'Leadership', 'Teamwork', 'Problem Solving', 'Communication', 'Adaptability', 
+    'Time Management', 'Critical Thinking', 'Creativity', 'Attention to Detail'
   ],
   careerTimeline: (t: any) => [
     {
@@ -16,6 +20,7 @@ export const resumeData = {
       title: t("cv.timeline.wbs.title"),
       description: t("cv.timeline.wbs.description"),
       icon: "heroicons:academic-cap",
+      type: "education",
       skills: ["Java", "Python", "C#", t("common.webdev"), "DevOps", t("common.databases")]
     },
     {
@@ -23,6 +28,7 @@ export const resumeData = {
       title: t("cv.timeline.ups.title"),
       description: t("cv.timeline.ups.description"),
       icon: "heroicons:briefcase",
+      type: "career",
       skills: [t("common.teamleading"), t("common.process_optimization"), t("common.project_management"), t("common.warehouse_operations"), t("common.troubleshooting")]
     },
     {
@@ -30,6 +36,7 @@ export const resumeData = {
       title: t("cv.timeline.lidl.title"),
       description: t("cv.timeline.lidl.description"),
       icon: "heroicons:briefcase",
+      type: "career",
       skills: [t("common.data_maintenance"), t("common.inventory_management"), t("common.retail_logistics"), t("common.customer_service"), t("common.process_optimization")]
     },
     {
@@ -37,6 +44,7 @@ export const resumeData = {
       title: t("cv.timeline.timeoff.title"),
       description: t("cv.timeline.timeoff.description"),
       icon: "mage:eye-closed",
+      type: "career",
       skills: [t("common.self_improvement"), t("common.education"), t("common.analyze")]
     },
     {
@@ -44,6 +52,7 @@ export const resumeData = {
       title: t("cv.timeline.medienkolleg.title"),
       description: t("cv.timeline.medienkolleg.description"),
       icon: "heroicons:academic-cap",
+      type: "education",
       skills: [t("common.audio_production"), t("common.video_production"), t("common.sound_design"), t("common.motion_graphics"), "Adobe Creative Cloud"]
     },
     {
@@ -51,6 +60,7 @@ export const resumeData = {
       title: t("cv.timeline.persch.title"),
       description: t("cv.timeline.persch.description"),
       icon: "heroicons:briefcase",
+      type: "career",
       skills: ["Printdesign", t("common.digital_media"), t("common.graphic_design"), "Layoutdesign", "Brand Identity", "Typography", "Webdesign"]
     },
     {
@@ -58,6 +68,7 @@ export const resumeData = {
       title: t("cv.timeline.putbus.title"),
       description: t("cv.timeline.putbus.description"),
       icon: "heroicons:academic-cap",
+      type: "education",
       skills: ["Printdesign", t("common.digital_media"), "Layoutdesign", "Typography", "Webdesign"]
     },
     {
@@ -65,6 +76,7 @@ export const resumeData = {
       title: t("cv.timeline.secschool.title"),
       description: t("cv.timeline.secschool.description"),
       icon: "heroicons:academic-cap",
+      type: "education",
       skills: []
     },
     {
@@ -72,6 +84,7 @@ export const resumeData = {
       title: t("cv.timeline.elementary.title"),
       description: t("cv.timeline.elementary.description"),
       icon: "heroicons:academic-cap",
+      type: "education",
       skills: []
     }
   ]

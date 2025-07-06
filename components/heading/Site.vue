@@ -3,7 +3,10 @@
     <NuxtLinkLocale v-if="link" :to="link" class="self-start">
       <h1 class="text-5xl font-semibold">{{ title }}</h1>
     </NuxtLinkLocale>
-    <h1 v-else class="text-5xl font-semibold">{{ title }}</h1>
+    <div class="flex gap-2">
+    <icon v-if="symbol" :name="symbol" class="w-10 h-10 fill-secondary-400" mode="svg" />
+    <h1 v-if="!link" class="text-5xl font-semibold">{{ title }}</h1>
+    </div>
     <p class="border-l-4 border-secondary-400 pl-4 dark:text-neutral-400 text-neutral-600 w-full lg:w-2/3">
       {{ subtitle }}
     </p>
@@ -15,7 +18,8 @@ interface Props {
   title: string
   subtitle: string
   link?: string
+  symbol?: string
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 </script>
