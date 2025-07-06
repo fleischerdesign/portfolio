@@ -1,5 +1,5 @@
 <template>
-    <div class="flex fixed bottom-0 my-2 w-full z-20">
+    <div class="flex fixed bottom-0 my-2 w-full z-20 print:hidden">
         <div class="m-auto flex gap-2">
             <div @click="$toggleDarkMode()"
                 class="shadow-sm cursor-pointer group p-3 flex backdrop-blur-md bg-gradient-to-br dark:from-neutral-900/40 from-neutral-100/40 dark:to-neutral-800/40 to-neutral-200/40 border rounded-lg dark:border-neutral-700/40 border-neutral-300/40 hover:bg-gradient-to-br dark:hover:from-neutral-800/40 hover:from-neutral-200/40 dark:hover:to-neutral-900/40 hover:to-neutral-100/40 dark:hover:border-neutral-600/40 hover:border-neutral-400/40 hover:shadow-inner transition">

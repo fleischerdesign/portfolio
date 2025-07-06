@@ -1,5 +1,5 @@
 <template>
-  <footer class="py-5 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 border-t dark:border-neutral-700 border-neutral-300">
+  <footer class="print:hidden py-5 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 border-t dark:border-neutral-700 border-neutral-300">
     <div class="container max-w-screen-xl">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="flex flex-col gap-4">

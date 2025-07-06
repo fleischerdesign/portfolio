@@ -1,36 +1,45 @@
 <template>
   <div class="relative">
     <!-- Vertical line - mobile -->
-    <div class="absolute left-5 top-0 h-full w-0.5 bg-secondary-400 md:hidden"></div>
+    <div class="absolute left-5 top-0 h-full w-0.5 bg-secondary-400" :class="{'md:hidden': !isPrintView, 'hidden': isPrintView}"></div>
     
     <!-- Vertical line - desktop -->
-    <div class="absolute left-1/2 top-0 hidden h-full w-0.5 bg-secondary-400 md:block transform -translate-x-1/2"></div>
+    <div class="absolute left-1/2 top-0 h-full w-0.5 bg-secondary-400 transform -translate-x-1/2" :class="{'hidden': isPrintView, 'md:block': !isPrintView}"></div>
 
-    <div v-for="(item, index) in items" :key="index" class="relative mb-12">
+    <div v-for="(item, index) in items" :key="index" class="relative" :class="isPrintView ? 'mb-6' : 'mb-12'">
       <div class="flex">
         <!-- Mobile circle with icon -->
-        <div class="absolute left-5 flex justify-center items-center w-10 h-10 rounded-full bg-secondary-400 z-10 transform -translate-x-1/2 md:hidden">
+        <div class="absolute left-5 flex justify-center items-center w-10 h-10 rounded-full bg-secondary-400 z-10 transform -translate-x-1/2" :class="{'md:hidden': !isPrintView, 'hidden': isPrintView}">
           <Icon :name="item.icon" size="20" class="text-white dark:text-gray-900" />
         </div>
         
         <!-- Desktop circle with icon -->
-        <div class="absolute left-1/2 hidden justify-center items-center w-10 h-10 rounded-full bg-secondary-400 z-10 md:flex transform -translate-x-1/2">
+        <div class="absolute left-1/2 justify-center items-center w-10 h-10 rounded-full bg-secondary-400 z-10 transform -translate-x-1/2" :class="{'hidden': isPrintView, 'md:flex': !isPrintView}">
           <Icon :name="item.icon" size="20" class="text-white dark:text-gray-900" />
         </div>
         
         <!-- Content container -->
         <Card :class="[
-          'flex-col content-end ml-12 w-full p-5 md:ml-0 md:w-5/12',
-          index % 2 === 0 ? 'md:mr-auto md:text-right justify-end' : 'md:ml-auto md:text-left',
+          'flex-col content-end p-5',
+          // Base mobile classes
+          isPrintView ? 'ml-0' : 'ml-12', // Conditional margin-left
+          'w-full',
+          // Desktop overrides, only if not in print view
+          {'md:ml-0': !isPrintView},
+          {'md:w-5/12': !isPrintView},
+          // Alignment classes
+          index % 2 === 0
+            ? (isPrintView ? 'text-left justify-start' : 'md:mr-auto md:text-right justify-end')
+            : (isPrintView ? 'text-left justify-start' : 'md:ml-auto md:text-left'),
           'transition-all hover:scale-[1.02]'
         ]">
           <span class="text-sm font-semibold text-secondary-400">{{ item.date }}</span>
-          <h3 class="text-xl font-bold mt-1 flex gap-2" :class="index % 2 === 0 ? 'md:ml-auto' : 'la'">
-            <Icon :name="item.icon" size="24" class="text-secondary-400 md:hidden" />
+          <h3 class="text-xl font-bold mt-1 flex gap-2" :class="{'md:ml-auto': !isPrintView && index % 2 === 0}">
+            <Icon :name="item.icon" size="24" class="text-secondary-400" :class="{'md:hidden': !isPrintView, 'block': isPrintView}" />
             {{ item.title }}
           </h3>
           <p class="mt-2 text-gray-600 dark:text-gray-300">{{ item.description }}</p>
-          <div v-if="item.skills" class="mt-3 flex flex-wrap gap-2" :class="index % 2 === 0 ? 'md:justify-end' : 'justify-start'">
+          <div v-if="item.skills && item.skills.length && !isPrintView" class="mt-3 flex flex-wrap gap-2" :class="index % 2 === 0 ? (isPrintView ? 'justify-start' : 'md:justify-end') : 'justify-start'">
             <Tag v-for="(skill, skillIndex) in item.skills" :key="skillIndex">
               {{ skill }}
           </Tag>
@@ -55,6 +64,10 @@ const props = defineProps({
   items: {
     type: Array as PropType<TimelineItem[]>,
     required: true
+  },
+  isPrintView: {
+    type: Boolean,
+    default: false
   }
 })
 </script>
