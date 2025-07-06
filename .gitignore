@@ -23,8 +23,5 @@ logs
 .env.*
 !.env.example
 
-# Docker volume
-data
-
 nix-direnv-reload
 .direnv
