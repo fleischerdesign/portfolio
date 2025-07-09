@@ -34,3 +34,37 @@ This list tracks potential improvements for the portfolio website.
 - [ ] **Implement a Testing Strategy:** Introduce a testing framework to improve code quality and long-term maintainability.
   - [ ] Integrate `vitest` for fast and modern unit/component testing that works well with Nuxt 3.
   - [ ] Write initial tests for critical utilities (e.g., `utils/formatDate.ts`) or components (e.g., `ContactForm.vue`).
+
+## Refactoring
+- [ ] **Abstract SEO Metadata (`useSeoMeta`):**
+  - **Problem:** The `useSeoMeta` blocks in many pages (`pages/blog/index.vue`, `pages/projects/index.vue`, `pages/about.vue`, `pages/contact.vue`, `pages/legal.vue`, `pages/store.vue`, `pages/blog/[slug].vue`, `pages/projects/[slug].vue`) are very similar and repetitive.
+  - **Solution:** Create a Nuxt composable (e.g., `composables/usePageSeo.ts`) that encapsulates the common logic and accepts dynamic values (title, description, etc.) as arguments.
+  - **Benefit:** Reduces boilerplate code, centralizes SEO logic, and simplifies maintenance.
+- [ ] **Generic Layout for Detail Pages (`[slug].vue`):**
+  - **Problem:** `pages/blog/[slug].vue` and `pages/projects/[slug].vue` are almost identical in their template and script structure.
+  - **Solution:** Create a component (e.g., `components/ContentDetailLayout.vue`) or a composable that handles the `ContentDoc` slot, `HeadingSite`, `NuxtImg`, and `ContentRenderer`. It would receive props for the content type (`blog` or `projects`) and the slug.
+  - **Benefit:** Eliminates duplicates and simplifies the addition of new content types.
+- [ ] **Consolidate Heading Components (`HeadingSection` and `HeadingSite`):**
+  - **Problem:** There are two very similar heading components.
+  - **Solution:** Merge them into a single component (e.g., `components/BaseHeading.vue`). This component could accept a `level` prop (e.g., 'h1', 'h2') or a `type` prop (e.g., 'page', 'section') to control the HTML tag and styling. The `symbol` prop from `HeadingSite` and the `link` prop from `HeadingSection` would be optional props.
+  - **Benefit:** Reduces the number of components, improves consistency, and simplifies heading style management.
+- [ ] **Generic Page Wrapper (`PageWrapper`):**
+  - **Problem:** Many pages (`pages/blog/index.vue`, `pages/projects/index.vue`, `pages/about.vue`, `pages/contact.vue`, `pages/legal.vue`, `pages/store.vue`) start with the same outer container classes (`<div class="container max-w-screen-xl mx-auto py-16">` and `<div class="mb-24">`).
+  - **Solution:** Create a simple `components/PageWrapper.vue` component that provides these common container classes and includes a `<slot />`.
+  - **Benefit:** Reduces HTML boilerplate in pages and centralizes common page layout.
+- [ ] **Break down `pages/about.vue` into smaller components:**
+  - **Problem:** `pages/about.vue` is a very large file containing multiple distinct sections (Overview, Early Life, Career Path, Personal Life).
+  - **Solution:** Extract each of these sections into its own dedicated component (e.g., `components/about/OverviewSection.vue`, `components/about/EarlyLifeSection.vue`, etc.).
+  - **Benefit:** Significantly improves readability, maintainability, and reusability of the `about` page.
+- [ ] **Centralize `careerTimeline` data:**
+  - **Problem:** The `careerTimeline` data is currently defined directly within `pages/about.vue`, but a similar timeline is also used in `pages/resume.vue` via `resumeData.ts`. This creates a potential for data duplication and inconsistency.
+  - **Solution:** Move the `careerTimeline` definition from `pages/about.vue` into `data/resumeData.ts` (or a new dedicated data file if `resumeData.ts` becomes too large), and ensure both `about.vue` and `resume.vue` consume the data from this single source.
+  - **Benefit:** Establishes a single source of truth for career timeline data, preventing inconsistencies and simplifying updates.
+- [ ] **Correct `pages/contact.vue` to use `ContactForm` component:**
+  - **Problem:** `pages/contact.vue` currently contains placeholder text for contact information instead of utilizing the existing `ContactForm.vue` component.
+  - **Solution:** Replace the static placeholder content in `pages/contact.vue` with an instance of the `ContactForm` component.
+  - **Benefit:** Ensures consistent use of the contact form UI and logic, and removes redundant HTML.
+- [ ] **Decouple `resumeData.ts` from i18n translation:**
+  - **Problem:** `resumeData.ts` directly uses the `t` (i18n translation) function within its data definitions (e.g., `subtitle: (t: any) => t("home.hero.summary")`, `careerTimeline: (t: any) => [...]`). This couples the data directly to the translation logic.
+  - **Solution:** Modify `resumeData.ts` to store raw, untranslated strings. Components consuming this data (`pages/resume.vue`, `pages/about.vue`) should then apply the translation using `useI18n` where necessary.
+  - **Benefit:** Makes the data truly independent and reusable in different contexts, even if i18n is not available or a different translation approach is used. It also better adheres to the principle of separation of concerns.
