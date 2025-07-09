@@ -3,6 +3,38 @@
 This list tracks potential improvements for the portfolio website.
 
 ## 🚀 Performance
+Consider Static Site Generation (SSG):
+       * Problem: Dein Projekt nutzt derzeit Server-Side Rendering (SSR) als Standard. Für eine
+         Portfolio-Website, deren Inhalte sich nicht ständig ändern, ist SSR oft nicht die performanteste Option
+         für die initiale Ladezeit.
+       * Solution: Konfiguriere Nuxt für Static Site Generation (SSG). Dabei werden alle Seiten während des
+         Build-Prozesses in statische HTML-Dateien umgewandelt. Diese können dann von einem CDN ausgeliefert
+         werden, was zu extrem schnellen Ladezeiten führt, da kein Server zur Laufzeit die Seite rendern muss.
+       * Benefit: Deutlich schnellere Time-to-First-Byte (TTFB) und First Contentful Paint (FCP), geringere
+         Serverlast und einfachere Skalierung.
+       * Implementation Hint: Dies würde die Anpassung der nuxt.config.ts erfordern, um ssr: true (Standard)
+         beizubehalten, aber zusätzlich Routen für das Prerendering zu definieren oder den Output-Modus auf
+         static zu setzen.
+
+
+   2. Optimize Image Quality for `NuxtImg`:
+       * Problem: In pages/index.vue wird das Profilbild mit quality: 100 geladen ($img('/img/profile.jpg', {
+         width: 800, quality: 100 })). Eine Qualität von 100% ist oft unnötig und führt zu größeren Dateigrößen,
+         ohne einen sichtbaren Qualitätsgewinn für den Endnutzer.
+       * Solution: Reduziere die quality-Einstellung für Bilder, insbesondere für solche, die nicht die absolute
+         höchste Detailtreue benötigen. Ein Wert zwischen 75 und 90 ist oft ein guter Kompromiss.
+       * Benefit: Reduziert die Dateigröße von Bildern, was die Ladezeiten verbessert.
+
+
+   3. Lazy Load Non-Critical Components:
+       * Problem: Obwohl ClientOnly für GithubChart verwendet wird, könnten andere Komponenten, die nicht sofort
+         im Viewport sichtbar sind (z.B. weiter unten auf der Seite oder in Tabs/Akkordeons), ebenfalls von Lazy
+         Loading profitieren.
+       * Solution: Identifiziere Komponenten, die nicht für den initialen Viewport benötigt werden, und lade sie
+         dynamisch mit defineAsyncComponent oder durch bedingtes Rendern, wenn sie in den Viewport kommen (z.B.
+         mit Intersection Observer).
+       * Benefit: Reduziert die initiale JavaScript-Bundle-Größe und die Zeit bis zur Interaktivität (Time to
+         Interactive - TTI).
 
 ## 🧹 Code Quality
 - [ ] Integrate ESLint with `@nuxt/eslint-config` to enforce a consistent code style and catch potential errors early.
@@ -68,3 +100,20 @@ This list tracks potential improvements for the portfolio website.
   - **Problem:** `resumeData.ts` directly uses the `t` (i18n translation) function within its data definitions (e.g., `subtitle: (t: any) => t("home.hero.summary")`, `careerTimeline: (t: any) => [...]`). This couples the data directly to the translation logic.
   - **Solution:** Modify `resumeData.ts` to store raw, untranslated strings. Components consuming this data (`pages/resume.vue`, `pages/about.vue`) should then apply the translation using `useI18n` where necessary.
   - **Benefit:** Makes the data truly independent and reusable in different contexts, even if i18n is not available or a different translation approach is used. It also better adheres to the principle of separation of concerns.
+- [ ] **Centralize API Error Handling:**
+  - **Problem:** Error handling (e.g., `createError({ statusCode: 400, statusMessage: '...' })`) is repeated across multiple API endpoints (`contact.post.ts`, `now/index.get.ts`, `now/index.post.ts`).
+  - **Solution:** Create a utility function or a custom `defineEventHandler` wrapper that centralizes common error handling logic. This could involve a function like `handleApiError(statusCode, message)` that consistently formats and throws errors.
+  - **Benefit:** Reduces code duplication, ensures consistent error responses, and makes it easier to modify error handling globally.
+- [ ] **Abstract Environment Variable Access:**
+  - **Problem:** Environment variables (e.g., `process.env.SMTP_HOST`, `process.env.GITHUB_TOKEN`) are accessed directly within the API handlers. While this is common, for larger applications, centralizing access can be beneficial.
+  - **Solution:** Create a `server/utils/config.ts` file that exports a configuration object with validated environment variables. For example, `getConfig().smtpHost`. This could also include checks for missing variables.
+  - **Benefit:** Improves testability, provides a single place to manage and validate environment variables, and makes the code cleaner.
+- [ ] **Consider a dedicated service layer for external API calls (GitHub, Nodemailer):**
+  - **Problem:** The GitHub API call in `contributions/index.get.ts` and Nodemailer logic in `contact.post.ts` are directly embedded in the API handlers.
+  - **Solution:** Create `server/services/github.ts` and `server/services/email.ts` (or similar) that encapsulate the logic for interacting with these external services. The API handlers would then simply call these service functions.
+  - **Benefit:** Decouples external dependencies from API routes, improves testability of the API handlers, and makes it easier to swap out or modify external service integrations.
+- [ ] **Refactor Hardcoded Configuration in `scripts/generate-pdf.ts`:**
+  - **Problem:** `apiBaseUrl` and `executablePath` are hardcoded, making the script less portable.
+  - **Solution:** Make these values configurable via environment variables or command-line arguments.
+  - **Benefit:** Increases flexibility and allows the script to run in different environments (e.g., CI/CD).
+  - **Further Consideration:** If PDF generation becomes a dynamic feature (e.g., triggered by an API endpoint), consider moving this logic to a Nuxt server API route to leverage Nuxt's environment management and server utilities.
