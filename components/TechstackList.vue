@@ -2,16 +2,11 @@
   <div class="overflow-hidden flex flex-col gap-2">
     <!-- Mit Scroll-Effekt -->
     <template v-if="scroll">
-      <div
-        v-for="(row, rowIndex) in rowItems"
-        :key="'marquee-row-' + rowIndex"
-        class="marquee-row w-full overflow-hidden"
-      >
-        <div
-          class="marquee flex gap-2 whitespace-nowrap"
+      <div v-for="(row, rowIndex) in rowItems" :key="'marquee-row-' + rowIndex"
+        class="marquee-row w-full overflow-hidden">
+        <div class="marquee flex gap-2 whitespace-nowrap"
           :style="{ animationDuration: animationDurations[rowIndex] + 's' }"
-          :ref="el => setMarqueeRef(el as HTMLElement | null, rowIndex)"
-        >
+          :ref="el => setMarqueeRef(el as HTMLElement | null, rowIndex)">
           <Tag v-for="(item, index) in [...row, ...row]" :key="index" fill>
             <Icon v-if="techIcons[item]" :name="techIcons[item]" class="text-xl" />
             <span>{{ item }}</span>
@@ -21,11 +16,7 @@
     </template>
     <!-- Ohne Scroll-Effekt -->
     <template v-else>
-      <div
-        v-for="(row, rowIndex) in rowItems"
-        :key="'static-row-' + rowIndex"
-        class="flex flex-wrap gap-2"
-      >
+      <div v-for="(row, rowIndex) in rowItems" :key="'static-row-' + rowIndex" class="flex flex-wrap gap-2">
         <Tag v-for="(item, index) in row" :key="index" fill>
           <Icon v-if="techIcons[item]" :name="techIcons[item]" class="text-xl" />
           <span>{{ item }}</span>
@@ -134,10 +125,17 @@ watch([rowItems, scroll], () => {
   will-change: transform;
   backface-visibility: hidden;
 }
+
 @keyframes marquee-scroll {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-50%, 0, 0); }
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
+
 .marquee-row {
   width: 100%;
   overflow: hidden;

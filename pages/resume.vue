@@ -2,8 +2,9 @@
   <div class="pdf-resume-container font-sans text-primary-950">
     <!-- Cover Page -->
     <div class="cover-page w-full h-[370mm] flex flex-col justify-between px-20 py-10">
-      <Card class="w-full h-auto flex-grow rounded-lg overflow-hidden shadow-lg">
+      <Card class="w-full h-auto flex-grow rounded-lg overflow-hidden shadow-lg relative">
         <img src="/img/profile.jpg" alt="Profile Picture" class="w-full h-full object-cover" />
+        <!-- <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4 text-white opacity-100 transition-opacity"></div> -->
       </Card>
       <HeadingSite symbol="logo:fleischerdesign" :title="resumeData.personal.name" :subtitle="resumeData.personal.subtitle($t)" class="!mb-0 mt-10"/>
     </div>
