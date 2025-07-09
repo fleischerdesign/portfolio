@@ -3,7 +3,6 @@
 This list tracks potential improvements for the portfolio website.
 
 ## 🚀 Performance
-- [ ] Replace `@nuxtjs/google-fonts` with a self-hosted font solution (e.g., `nuxt-font-loader`) to improve initial load times and enhance privacy by avoiding external requests.
 
 ## 🧹 Code Quality
 - [ ] Integrate ESLint with `@nuxt/eslint-config` to enforce a consistent code style and catch potential errors early.
@@ -24,6 +23,8 @@ This list tracks potential improvements for the portfolio website.
 
 ## ✨ User Experience (UX)
 - [ ] Implement scroll-reveal animations for elements like project cards, headlines, or images to make the page feel more dynamic and polished. This can be achieved using the `Intersection Observer` API, either via a custom composable or a library like `motion`.
+- [ ] **Create a Custom Error Page:** Design and implement a custom `error.vue` to provide a branded, user-friendly experience for 404s and other errors, guiding users back to relevant content instead of a generic error screen.
+- [ ] **Implement Client-Side Search:** Add a real-time search/filter input on the blog and project overview pages to allow users to easily find content. This can be implemented efficiently using Nuxt Content's query features and Vue's computed properties.
 
 ## ⚙️ Engineering & CI/CD
 - [ ] **Modernize CI/CD Pipeline:** Refactor the `deploy.yml` workflow to be more efficient.

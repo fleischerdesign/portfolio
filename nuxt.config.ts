@@ -85,6 +85,7 @@ export default defineNuxtConfig({
     }]
   },
   googleFonts: {
+    download: true,
     families: {
       Roboto: true,
     }
