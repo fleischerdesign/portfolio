@@ -1,9 +1,6 @@
 <template>
     <div class="container max-w-screen-xl mx-auto py-16">
-    <HeadingSite :title="$t('home.contact.title')" :subtitle="$t('home.contact.subtitle')" />
-        <div class="mt-8">
-            <ContactForm />
-        </div>
+        <ContactSection headingType="page" />
     </div>
 </template>
 

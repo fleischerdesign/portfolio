@@ -186,6 +186,8 @@
   },
   "contact": {
     "form": {
+      "title": "Send me a message",
+      "description": "Fill out the form, and I'll get back to you as soon as possible.",
       "label": {
         "name": "Name",
         "email": "E-mail",
@@ -198,7 +200,35 @@
         "email": "{'your@mail.com'}",
         "message": "Your Message",
         "subject": "Subject of your message"
-      }
+      },
+      "validation": {
+        "name": "Name is required",
+        "email": "E-mail is required",
+        "email_invalid": "Please provide a valid email address",
+        "subject": "Subject is required",
+        "message": "Message is required"
+      },
+      "success": "Thank you for your message!",
+      "error": "Failed to send message. Please try again."
+    },
+    "social": {
+      "title": "Find me on Social Media",
+      "description": "Connect with me on various platforms."
+    },
+    "email": {
+      "title": "Direct E-Mail",
+      "description": "Send me an e-mail to the address below.",
+      "copy": "Copy E-Mail"
+    },
+    "meeting": {
+      "title": "Let's talk",
+      "description": "Book an appointment in my calendar.",
+      "button": "Book appointment"
+    },
+    "phone": {
+      "title": "Phone",
+      "description": "Call me or send a message.",
+      "copy": "Copy phone number"
     }
   },
   "legal": {
