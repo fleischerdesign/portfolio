@@ -14,7 +14,7 @@
                 class="peer placeholder-transparent w-full px-4 py-3 shadow-sm dark:focus:placeholder-neutral-600 focus:placeholder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400  transition placeholder-opacity-0 peer-focus:placeholder-opacity-100"
                 :class="{ 'border-red-500': errors.name }" placeholder="Name" required />
             <label for="name"
-                class="absolute left-4 -top-2.5 text-sm text-neutral-400 dark:bg-neutral-900 bg-neutral-50 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-secondary-400">
+                class="absolute left-4 -top-2.5 text-sm text-neutral-400 dark:peer-focus:bg-neutral-900 peer-focus:bg-neutral-50 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-secondary-400">
                 {{ $t("contact.form.label.name") }}
             </label>
             <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</p>
@@ -25,7 +25,7 @@
                 class="peer placeholder-transparent w-full px-4 py-3 shadow-sm dark:focus:placeholder-neutral-600 focus:placeholder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400  transition placeholder-opacity-0 peer-focus:placeholder-opacity-100"
                 :class="{ 'border-red-500': errors.email }" placeholder="E-Mail" required />
             <label for="email"
-                class="absolute left-4 -top-2.5 text-sm text-neutral-400 dark:bg-neutral-900 bg-neutral-50 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-secondary-400">
+                class="absolute left-4 -top-2.5 text-sm text-neutral-400 dark:peer-focus:bg-neutral-900 peer-focus:bg-neutral-50 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-secondary-400">
                 {{ $t("contact.form.label.email") }}
             </label>
             <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email }}</p>
@@ -37,7 +37,7 @@
                 :class="{ 'border-red-500': errors.subject }" :placeholder="$t('contact.form.placeholder.subject')"
                 required />
             <label for="subject"
-                class="absolute left-4 -top-2.5 text-sm text-neutral-400 dark:bg-neutral-900 bg-neutral-50 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-secondary-400">
+                class="absolute left-4 -top-2.5 text-sm text-neutral-400 dark:peer-focus:bg-neutral-900 peer-focus:bg-neutral-50 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-secondary-400">
                 {{ $t("contact.form.label.subject") }}
             </label>
             <p v-if="errors.subject" class="text-red-500 text-sm mt-1">{{ errors.subject }}</p>
@@ -48,7 +48,7 @@
                 class="peer placeholder-transparent w-full px-4 py-3 shadow-sm dark:focus:placeholder-neutral-600 focus:placeholder-neutral-400 bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 border dark:border-neutral-700 border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-400 transition placeholder-opacity-0 peer-focus:placeholder-opacity-100"
                 :class="{ 'border-red-500': errors.name }" placeholder="Message" required />
             <label for="message"
-                class="absolute left-4 -top-2.5 text-sm text-neutral-400 dark:bg-neutral-900 bg-neutral-50 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-secondary-400">
+                class="absolute left-4 -top-2.5 text-sm text-neutral-400 dark:peer-focus:bg-neutral-900 peer-focus:bg-neutral-50 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-secondary-400">
                 {{ $t("contact.form.label.message") }}
             </label>
             <p v-if="errors.message" class="text-red-500 text-sm mt-1">{{ errors.message }}</p>
