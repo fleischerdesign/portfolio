@@ -19,7 +19,8 @@ export default defineNuxtConfig({
     './modules/autoTranslate',
     '@nuxtjs/robots',
     '@nuxtjs/google-fonts',
-    'nuxt-og-image'
+    'nuxt-og-image',
+    '@nuxt/eslint'
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
