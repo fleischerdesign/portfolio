@@ -81,7 +81,7 @@ export default defineNuxtConfig({
   icon: {
     customCollections: [{
       prefix: 'logo',
-      dir: './assets/logo'
+      dir: 'app/assets/logo'
     }]
   },
   googleFonts: {
