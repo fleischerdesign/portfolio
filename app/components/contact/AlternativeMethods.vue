@@ -1,28 +1,28 @@
 <template>
     <div class="space-y-8">
         <div>
-            <h3 class="text-2xl font-semibold mb-2">{{ $t('contact.social.title') }}</h3>
-            <p class="text-neutral-400 mb-4">{{ $t('contact.social.description') }}</p>
+            <h3 class="mb-2 text-2xl font-semibold">{{ $t('contact.social.title') }}</h3>
+            <p class="mb-4 text-neutral-400">{{ $t('contact.social.description') }}</p>
             <SocialLinks />
         </div>
         <div>
-            <h3 class="text-2xl font-semibold mb-2">{{ $t('contact.email.title') }}</h3>
-            <p class="text-neutral-400 mb-4">{{ $t('contact.email.description') }}</p>
-            <div class="flex items-center gap-4 w-full px-4 py-3 shadow-sm bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 border dark:border-neutral-700 border-neutral-300 rounded-lg">
+            <h3 class="mb-2 text-2xl font-semibold">{{ $t('contact.email.title') }}</h3>
+            <p class="mb-4 text-neutral-400">{{ $t('contact.email.description') }}</p>
+            <div class="flex w-full items-center gap-4 rounded-lg border border-neutral-300 bg-gradient-to-br from-neutral-100 to-neutral-200 px-4 py-3 shadow-sm dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800">
                 <Icon name="mdi:email-outline" class="text-2xl text-neutral-400" />
                 <span class="text-lg">hello@fleischer.design</span>
-                <Button @click="copyEmail" class="ml-auto" :aria-label="$t('contact.email.copy')">
+                <Button class="ml-auto" :aria-label="$t('contact.email.copy')" @click="copyEmail">
                     <Icon :name="copyIcon" class="text-xl" />
                 </Button>
             </div>
         </div>
         <div>
-            <h3 class="text-2xl font-semibold mb-2">{{ $t('contact.phone.title') }}</h3>
-            <p class="text-neutral-400 mb-4">{{ $t('contact.phone.description') }}</p>
-            <div class="flex items-center gap-4 w-full px-4 py-3 shadow-sm bg-gradient-to-br dark:from-neutral-900 from-neutral-100 dark:to-neutral-800 to-neutral-200 border dark:border-neutral-700 border-neutral-300 rounded-lg">
+            <h3 class="mb-2 text-2xl font-semibold">{{ $t('contact.phone.title') }}</h3>
+            <p class="mb-4 text-neutral-400">{{ $t('contact.phone.description') }}</p>
+            <div class="flex w-full items-center gap-4 rounded-lg border border-neutral-300 bg-gradient-to-br from-neutral-100 to-neutral-200 px-4 py-3 shadow-sm dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800">
                 <Icon name="mdi:phone-outline" class="text-2xl text-neutral-400" />
                 <span class="text-lg">+49 176 31099324</span>
-                <Button @click="copyPhone" class="ml-auto" :aria-label="$t('contact.phone.copy')">
+                <Button class="ml-auto" :aria-label="$t('contact.phone.copy')" @click="copyPhone">
                     <Icon :name="phoneCopyIcon" class="text-xl" />
                 </Button>
             </div>

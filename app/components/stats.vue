@@ -32,10 +32,11 @@ const stats = [
 
 <template>
   <div class="flex flex-col gap-2">
-    <Tag fill
-      v-for="(stat, index) in stats" 
-      :key="index"
-      class="flex items-center justify-between p-2 rounded-md"
+    <Tag
+v-for="(stat, index) in stats"
+      :key="index" 
+      fill
+      class="flex items-center justify-between rounded-md p-2"
     >
       <div class="flex items-center gap-2">
           <Icon :name="stat.icon" size="16" class="dark:text-white" />

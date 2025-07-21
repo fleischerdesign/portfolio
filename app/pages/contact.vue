@@ -1,6 +1,6 @@
 <template>
-    <div class="container max-w-screen-xl mx-auto py-16">
-        <ContactSection headingType="page" />
+    <div class="container mx-auto max-w-screen-xl py-16">
+        <ContactSection heading-type="page" />
     </div>
 </template>
 

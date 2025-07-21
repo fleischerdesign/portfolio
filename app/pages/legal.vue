@@ -1,5 +1,5 @@
 <template>
-    <div class="container max-w-screen-xl mx-auto py-16">
+    <div class="container mx-auto max-w-screen-xl py-16">
     <HeadingSite :title="$t('legal.title')" :subtitle="$t('legal.subtitle')" />
 <p>Angaben gemäß § 5 DDG</p><p>Philipp Fleischer<br> 
 <br> 

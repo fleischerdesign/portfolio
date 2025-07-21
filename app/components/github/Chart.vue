@@ -1,5 +1,5 @@
 <template>
-  <div ref="container" class="w-full overflow-visible relative">
+  <div ref="container" class="relative w-full overflow-visible">
     <svg
       v-if="contributions && contributions.length"
       ref="svg"
@@ -33,7 +33,7 @@
     <div
       v-if="tooltip.visible"
       :style="{ left: tooltip.x + 'px', top: tooltip.y + 'px' }"
-      class="shadow-lg absolute z-50 pointer-events-none px-3 py-2 bg-gradient-to-br dark:from-neutral-900/40 from-neutral-100/40 dark:to-neutral-800/40 to-neutral-200/40 border rounded-lg dark:border-neutral-700/40 border-neutral-300/40 dark:text-white text-neutral-950 backdrop-blur-md transition-opacity duration-200"
+      class="pointer-events-none absolute z-50 rounded-lg border border-neutral-300/40 bg-gradient-to-br from-neutral-100/40 to-neutral-200/40 px-3 py-2 text-neutral-950 shadow-lg backdrop-blur-md transition-opacity duration-200 dark:border-neutral-700/40 dark:from-neutral-900/40 dark:to-neutral-800/40 dark:text-white"
     >
       {{ tooltip.content }}
     </div>

@@ -4,22 +4,23 @@
     <div class="absolute left-5 top-0 h-full w-0.5 bg-secondary-400" :class="{'md:hidden': !isPrintView, 'hidden': isPrintView}"></div>
     
     <!-- Vertical line - desktop -->
-    <div class="absolute left-1/2 top-0 h-full w-0.5 bg-secondary-400 transform -translate-x-1/2" :class="{'hidden': isPrintView, 'md:block': !isPrintView}"></div>
+    <div class="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 transform bg-secondary-400" :class="{'hidden': isPrintView, 'md:block': !isPrintView}"></div>
 
     <div v-for="(item, index) in items" :key="index" class="relative" :class="isPrintView ? 'mb-6' : 'mb-12'">
       <div class="flex">
         <!-- Mobile circle with icon -->
-        <div class="absolute left-5 flex justify-center items-center w-10 h-10 rounded-full bg-secondary-400 z-10 transform -translate-x-1/2" :class="{'md:hidden': !isPrintView, 'hidden': isPrintView}">
+        <div class="absolute left-5 z-10 flex h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-full bg-secondary-400" :class="{'md:hidden': !isPrintView, 'hidden': isPrintView}">
           <Icon :name="item.icon" size="20" class="text-white dark:text-gray-900" />
         </div>
         
         <!-- Desktop circle with icon -->
-        <div class="absolute left-1/2 justify-center items-center w-10 h-10 rounded-full bg-secondary-400 z-10 transform -translate-x-1/2" :class="{'hidden': isPrintView, 'md:flex': !isPrintView}">
+        <div class="absolute left-1/2 z-10 h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-full bg-secondary-400" :class="{'hidden': isPrintView, 'md:flex': !isPrintView}">
           <Icon :name="item.icon" size="20" class="text-white dark:text-gray-900" />
         </div>
         
         <!-- Content container -->
-        <Card :class="[
+        <Card
+:class="[
           'flex-col content-end p-5',
           // Base mobile classes
           isPrintView ? 'ml-0' : 'ml-12', // Conditional margin-left
@@ -29,12 +30,12 @@
           {'md:w-5/12': !isPrintView},
           // Alignment classes
           index % 2 === 0
-            ? (isPrintView ? 'text-left justify-start' : 'md:mr-auto md:text-right justify-end')
-            : (isPrintView ? 'text-left justify-start' : 'md:ml-auto md:text-left'),
+            ? (isPrintView ? 'justify-start text-left' : 'justify-end md:mr-auto md:text-right')
+            : (isPrintView ? 'justify-start text-left' : 'md:ml-auto md:text-left'),
           'transition-all hover:scale-[1.02]'
         ]">
           <span class="text-sm font-semibold text-secondary-400">{{ item.date }}</span>
-          <h3 class="text-xl font-bold mt-1 flex gap-2" :class="{'md:ml-auto': !isPrintView && index % 2 === 0}">
+          <h3 class="mt-1 flex gap-2 text-xl font-bold" :class="{'md:ml-auto': !isPrintView && index % 2 === 0}">
             <Icon :name="item.icon" size="24" class="text-secondary-400" :class="{'md:hidden': !isPrintView, 'block': isPrintView}" />
             {{ item.title }}
           </h3>

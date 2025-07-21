@@ -1,5 +1,5 @@
 <template>
-    <div class="container max-w-screen-xl mx-auto py-16">
+    <div class="container mx-auto max-w-screen-xl py-16">
         <div class="mb-24">
             <HeadingSite :title="$t('store.title')" :subtitle="$t('store.subtitle')" />
         </div>

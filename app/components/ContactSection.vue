@@ -3,7 +3,7 @@
         <HeadingSite v-if="headingType === 'page'" :title="$t('home.contact.title')" :subtitle="$t('home.contact.subtitle')" />
         <HeadingSection v-else :title="$t('home.contact.title')" :subtitle="$t('home.contact.subtitle')" link="/contact" />
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mt-12">
+        <div class="mt-12 grid grid-cols-1 gap-16 md:grid-cols-2">
             <ContactForm />
             <AlternativeMethods />
         </div>

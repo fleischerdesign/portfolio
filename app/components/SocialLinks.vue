@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-3 w-full">
+    <div class="flex w-full gap-3">
         <Button to="https://www.linkedin.com/in/philipp-fleischer-95ba23369/" target="_blank">
             <Icon name="mdi:linkedin" size="30" />
         </Button>

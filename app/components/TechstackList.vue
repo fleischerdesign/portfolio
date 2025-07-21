@@ -1,12 +1,14 @@
 <template>
-  <div class="overflow-hidden flex flex-col gap-2">
+  <div class="flex flex-col gap-2 overflow-hidden">
     <!-- Mit Scroll-Effekt -->
     <template v-if="scroll">
-      <div v-for="(row, rowIndex) in rowItems" :key="'marquee-row-' + rowIndex"
+      <div
+v-for="(row, rowIndex) in rowItems" :key="'marquee-row-' + rowIndex"
         class="marquee-row w-full overflow-hidden">
-        <div class="marquee flex gap-2 whitespace-nowrap"
-          :style="{ animationDuration: animationDurations[rowIndex] + 's' }"
-          :ref="el => setMarqueeRef(el as HTMLElement | null, rowIndex)">
+        <div
+:ref="el => setMarqueeRef(el as HTMLElement | null, rowIndex)"
+          class="marquee flex gap-2 whitespace-nowrap"
+          :style="{ animationDuration: animationDurations[rowIndex] + 's' }">
           <Tag v-for="(item, index) in [...row, ...row]" :key="index" fill>
             <Icon v-if="techIcons[item]" :name="techIcons[item]" class="text-xl" />
             <span>{{ item }}</span>

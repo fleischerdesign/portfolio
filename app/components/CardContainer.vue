@@ -1,6 +1,6 @@
 <template>
     <div
-        class="p-5 flex gap-1 w-full">
+        class="flex w-full gap-1 p-5">
         <slot />
     </div>
 </template>

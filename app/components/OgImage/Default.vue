@@ -81,9 +81,9 @@ const IconComponent = runtimeConfig.hasNuxtIcon
         return h('div', 'missing @nuxt/icon')
       },
     })
-if (typeof props.icon === 'string' && !runtimeConfig.hasNuxtIcon && process.dev) {
+if (typeof props.icon === 'string' && !runtimeConfig.hasNuxtIcon && import.meta.dev) {
   console.warn('Please install `@nuxt/icon` to use icons with the fallback OG Image component.')
-  // eslint-disable-next-line no-console
+   
   console.log('\nnpx nuxi module add icon\n')
   // create simple div renderer component
 }
@@ -91,27 +91,27 @@ if (typeof props.icon === 'string' && !runtimeConfig.hasNuxtIcon && process.dev)
 
 <template>
   <div
-    class="w-full h-full flex justify-between relative p-[60px]"
+    class="relative flex h-full w-full justify-between p-[60px]"
     :class="[
       colorMode === 'light' ? ['bg-white', 'text-gray-900'] : ['bg-gray-900', 'text-white'],
     ]"
   >
     <div
-      class="flex absolute top-0 right-[-100%]" :style="{
+      class="absolute right-[-100%] top-0 flex" :style="{
         width: '200%',
         height: '200%',
         backgroundImage: `radial-gradient(circle, rgba(${themeRgb}, 0.5) 0%,  ${colorMode === 'dark' ? 'rgba(5, 5, 5,0.3)' : 'rgba(255, 255, 255, 0.7)'} 50%, ${props.colorMode === 'dark' ? 'rgba(5, 5, 5,0)' : 'rgba(255, 255, 255, 0)'} 70%)`,
       }"
     />
-    <div class="h-full w-full justify-between relative">
-      <div class="flex flex-row justify-between items-start">
-        <div class="flex flex-col w-full max-w-[65%]">
-          <h1 class="m-0 font-bold mb-[30px] text-[75px]" style="display: block; text-overflow: ellipsis;" :style="{ lineClamp: description ? 2 : 3 }">
+    <div class="relative h-full w-full justify-between">
+      <div class="flex flex-row items-start justify-between">
+        <div class="flex w-full max-w-[65%] flex-col">
+          <h1 class="m-0 mb-[30px] text-[75px] font-bold" style="display: block; text-overflow: ellipsis;" :style="{ lineClamp: description ? 2 : 3 }">
             {{ title }}
           </h1>
           <p
             v-if="description"
-            class="text-[35px] leading-12 border-l-8 border-secondary-400 pl-6"
+            class="leading-12 border-l-8 border-secondary-400 pl-6 text-[35px]"
             :class="[
               colorMode === 'light' ? ['text-gray-700'] : ['text-gray-300'],
             ]"
@@ -124,10 +124,10 @@ if (typeof props.icon === 'string' && !runtimeConfig.hasNuxtIcon && process.dev)
           <IconComponent :name="icon" size="250px" style="margin: 0 auto; opacity: 0.7;" />
         </div>
       </div>
-      <div class="flex flex-row justify-center items-center text-left w-full">
+      <div class="flex w-full flex-row items-center justify-center text-left">
         <img v-if="siteLogo" :src="siteLogo" height="30">
         <template v-else>
-          <Icon name="logo:fleischerdesign" class="h-8 w-6 mr-4" mode="svg"/>
+          <Icon name="logo:fleischerdesign" class="mr-4 h-8 w-6" mode="svg"/>
           <p v-if="siteName" style="font-size: 25px;" class="font-bold">
             Fleischer Design
           </p>

@@ -1,8 +1,8 @@
 <template>
-    <div class="container max-w-screen-xl mx-auto py-16">
+    <div class="container mx-auto max-w-screen-xl py-16">
         <div class="mb-24">
             <HeadingSite :title="$t('projects.title')" :subtitle="$t('projects.subtitle')" />
-            <div class="grid grid-cols-1 gap-3 mt-4">
+            <div class="mt-4 grid grid-cols-1 gap-3">
             <ProjectCard
                 v-for="(project, index) in data"
                 :key="index"

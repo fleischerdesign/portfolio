@@ -1,37 +1,38 @@
 <template>
-  <div id="overview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-24">
-    <Card class="flex flex-col col-span-1 md:col-span-2 gap-1">
+  <div id="overview" class="mb-24 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+    <Card class="col-span-1 flex flex-col gap-1 md:col-span-2">
       <CardContainer class="flex-col">
         <h3 class="text-3xl font-medium">{{ $t("home.overview.github.title") }}</h3>
-        <p class="dark:text-neutral-400 text-neutral-600">{{ subtitle }}</p>
+        <p class="text-neutral-600 dark:text-neutral-400">{{ subtitle }}</p>
         <ClientOnly>
-          <GithubChart :contributions="contributions" @displayedWeeksCountChanged="onDisplayedWeeksCountChanged" />
+          <GithubChart :contributions="contributions" @displayed-weeks-count-changed="onDisplayedWeeksCountChanged" />
         </ClientOnly>
       </CardContainer>
     </Card>
-    <Card class="!p-0 overflow-hidden min-h-60 group">
-      <div :style="`background-image: url('${profilePicUrl}')`"
-        class="bg-center bg-cover w-full h-full transition duration-500 group-hover:scale-110">
+    <Card class="group min-h-60 overflow-hidden !p-0">
+      <div
+:style="`background-image: url('${profilePicUrl}')`"
+        class="h-full w-full bg-cover bg-center transition duration-500 group-hover:scale-110">
       </div>
     </Card>
-    <Card class="flex flex-col col-span-1">
+    <Card class="col-span-1 flex flex-col">
       <CardContainer class="flex-col">
         <h3 class="text-3xl font-medium">{{ $t("home.overview.techstack.title") }}</h3>
-        <p class="dark:text-neutral-400 text-neutral-600">{{ $t("home.overview.techstack.subtitle") }}</p>
+        <p class="text-neutral-600 dark:text-neutral-400">{{ $t("home.overview.techstack.subtitle") }}</p>
         <TechstackList scroll :rows="3" :items="['Typescript', 'React', 'Git', 'Docker', 'Dart', 'Rust', 'Tailwind', 'Vue', 'Flutter', 'Node.js', 'Deno', 'Python', 'PostgreSQL', 'MongoDB', 'REST', 'GraphQL']" />
       </CardContainer>
     </Card>
-    <Card class="flex flex-col col-span-1">
+    <Card class="col-span-1 flex flex-col">
       <CardContainer class="flex-col">
         <h3 class="text-3xl font-medium">{{ $t("home.overview.statistics.title") }}</h3>
-        <p class="dark:text-neutral-400 text-neutral-600">{{ $t("home.overview.statistics.subtitle") }}</p>
+        <p class="text-neutral-600 dark:text-neutral-400">{{ $t("home.overview.statistics.subtitle") }}</p>
         <stats />
       </CardContainer>
     </Card>
-    <Card hover class="flex flex-col col-span-1">
+    <Card hover class="col-span-1 flex flex-col">
       <CardContainer class="flex-col">
         <h3 class="text-3xl font-medium">{{ $t("home.overview.searching.title") }}</h3>
-        <p class="dark:text-neutral-400 text-neutral-600">{{ $t("home.overview.searching.subtitle") }}</p>
+        <p class="text-neutral-600 dark:text-neutral-400">{{ $t("home.overview.searching.subtitle") }}</p>
       </CardContainer>
     </Card>
   </div>

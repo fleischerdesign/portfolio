@@ -1,9 +1,10 @@
 <template>
     <Chip class="flex flex-row gap-9">
-        <div class="flex overflow-visible relative items-center justify-center drop-shadow-emit-lg">
-            <Icon :name="now?.icon || 'mage:clock'" size="24" class="text-secondary-400 inset-0 absolute" />
-            <Icon :name="now?.icon || 'mage:clock'" size="24"
-                class="text-secondary-400 animate-ping origin-center inset-0 absolute" />
+        <div class="relative flex items-center justify-center overflow-visible drop-shadow-emit-lg">
+            <Icon :name="now?.icon || 'mage:clock'" size="24" class="absolute inset-0 text-secondary-400" />
+            <Icon
+:name="now?.icon || 'mage:clock'" size="24"
+                class="absolute inset-0 origin-center animate-ping text-secondary-400" />
         </div><span v-if="now?.status">{{ now?.status }}</span>
     </Chip>
 </template>
