@@ -26,7 +26,7 @@ async function generatePdf() {
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    const outputPath = path.resolve(__dirname, '../static/resume.pdf');
+    const outputPath = path.resolve(__dirname, '../app/public/resume.pdf');
 
     const outputDir = path.dirname(outputPath);
     if (!fs.existsSync(outputDir)) {
