@@ -1,75 +1,84 @@
-# Nuxt Minimal Starter
+# Personal Portfolio & Blog
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Welcome to the official repository for my personal portfolio website, [fleischer.design](https://fleischer.design). This project serves as a central hub to showcase my work, share my thoughts through blog articles, and provide insights into my technical skills. It is built with a modern, content-driven technology stack to ensure a great developer and user experience.
 
-## Setup
+## ✨ Features
 
-Make sure to install dependencies:
+*   **Nuxt 4:** Built with the latest version of the intuitive Vue framework.
+*   **Content-Driven:** Uses `@nuxt/content` for managing blog posts and project descriptions with Markdown.
+*   **Bilingual Content:** Fully internationalized (i18n) for German and English.
+*   **Component-Based:** A modular and reusable component library built with Vue.
+*   **Styling with Tailwind CSS:** Modern and utility-first CSS for a clean and responsive design.
+*   **Dark & Light Mode:** Theme switcher for user preference.
+*   **SEO Optimized:** Configured with `@nuxt/seo` for best search engine visibility.
+*   **Dockerized Environment:** Comes with a `Dockerfile` and `compose.yaml` for easy and consistent deployment.
+*   **Nix Flake:** A `flake.nix` file is included for a reproducible development environment using Nix.
 
-```bash
-# npm
-npm install
+## 🚀 Tech Stack
 
-# pnpm
-pnpm install
+*   **Framework:** [Nuxt.js](https://nuxt.com/)
+*   **UI Framework:** [Vue.js](https://vuejs.org/)
+*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+*   **Language:** [TypeScript](https://www.typescriptlang.org/)
+*   **Content:** [@nuxt/content](https://content.nuxt.com/) (Markdown-based)
+*   **Internationalization:** [@nuxtjs/i18n](https://i18n.nuxtjs.org/)
+*   **Deployment:** [Docker](https://www.docker.com/), [GitHub Actions](https://github.com/features/actions)
 
-# yarn
-yarn install
+## 📂 Project Structure
 
-# bun
-bun install
-```
+The repository is structured to follow Nuxt conventions, keeping a clean separation of concerns:
 
-## Development Server
+-   `app/`: The main application source, including pages, components, and layouts.
+-   `components/`: Reusable Vue components.
+-   `content/`: Markdown files for blog posts and project details (in `en` and `de`).
+-   `composables/`: Reusable Vue composables (e.g., for SEO configuration).
+-   `data/`: Static data, like my resume information.
+-   `i18n/`: Locale files for translation.
+-   `public/`: Static assets that are publicly available.
+-   `server/`: Nitro server routes for API endpoints (e.g., contact form).
+-   `.github/workflows/`: CI/CD pipeline for automated deployments.
+
+## 🛠️ Getting Started
+
+### Prerequisites
+
+Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
+
+### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/fleischer-design/portfolio.git
+    cd portfolio
+    ```
+
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+### Development Server
 
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+### Production
 
 Build the application for production:
 
 ```bash
-# npm
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+Locally preview the production build:
 
 ```bash
-# npm
 npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Contact
+
+If you have any questions or want to connect, feel free to reach out!
