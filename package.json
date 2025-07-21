@@ -27,7 +27,6 @@
     "@tailwindcss/typography": "^0.5.16",
     "@unhead/vue": "^2.0.10",
     "better-sqlite3": "^12.2.0",
-    "eslint": "^9.31.0",
     "jspdf": "^3.0.1",
     "mermaid": "^11.6.0",
     "nodemailer": "^7.0.3",
@@ -40,7 +39,13 @@
   },
   "devDependencies": {
     "@types/nodemailer": "^6.4.17",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.3",
+    "eslint-plugin-tailwindcss": "^3.18.2",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.14",
     "puppeteer": "^24.11.2",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "eslint": "^9.31.0"
   }
 }
