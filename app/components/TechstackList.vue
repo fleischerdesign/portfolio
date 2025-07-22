@@ -75,7 +75,7 @@ const rows = computed(() => props.rows ?? 1);
 function chunkArray<T>(arr: T[], chunkCount: number): T[][] {
   const result: T[][] = Array.from({ length: chunkCount }, () => []);
   arr.forEach((item, idx) => {
-    result[idx % chunkCount].push(item);
+    result[idx % chunkCount]!.push(item);
   });
   return result;
 }
