@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto max-w-screen-xl py-16">
-        <ContactSection heading-type="page" />
+        <SectionContact heading-type="page" />
     </div>
 </template>
 

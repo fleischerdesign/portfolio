@@ -31,6 +31,7 @@ export default cachedEventHandler(async (event) => {
       updatedAt: data.updatedAt
     }
   } catch (error) {
+    console.error('Failed to read or parse now.json:', error)
     throw createError({
       statusCode: 500,
       statusMessage: 'Could not read or parse now.json',

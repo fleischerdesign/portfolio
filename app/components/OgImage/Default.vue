@@ -19,6 +19,11 @@ const props = withDefaults(defineProps<{
 }>(), {
   theme: '#00dc82',
   title: 'title',
+  colorMode: 'light',
+  description: '',
+  icon: false,
+  siteName: '',
+  siteLogo: '',
 })
 
 const HexRegex = /^#(?:[0-9a-f]{3}){1,2}$/i

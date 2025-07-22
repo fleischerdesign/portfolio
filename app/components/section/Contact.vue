@@ -5,14 +5,12 @@
 
         <div class="mt-12 grid grid-cols-1 gap-16 md:grid-cols-2">
             <ContactForm />
-            <AlternativeMethods />
+            <ContactAlternativeMethods />
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import AlternativeMethods from './contact/AlternativeMethods.vue';
-
 interface Props {
     headingType?: 'page' | 'section';
 }

@@ -1,11 +1,13 @@
+type TFunction = (key: string) => string;
+
 export const resumeData = {
   personal: {
     name: "Philipp Fleischer",
-    subtitle: (t: any) => t("home.hero.summary"),
-    location: (t: any) => t("resume.personal.location"),
-    internshipStatus: (t: any) => t("resume.personal.internshipStatus"),
+    subtitle: (t: TFunction) => t("home.hero.summary"),
+    location: (t: TFunction) => t("resume.personal.location"),
+    internshipStatus: (t: TFunction) => t("resume.personal.internshipStatus"),
   },
-  summary: (t: any) => t("home.hero.summary"),
+  summary: (t: TFunction) => t("home.hero.summary"),
   techStack: [
     'Typescript', 'React', 'Git', 'Docker', 'Dart', 'Rust', 'Tailwind', 'Vue', 'Flutter', 
     'Node.js', 'Deno', 'Python', 'PostgreSQL', 'MongoDB', 'REST', 'GraphQL'
@@ -14,7 +16,7 @@ export const resumeData = {
     'Leadership', 'Teamwork', 'Problem Solving', 'Communication', 'Adaptability', 
     'Time Management', 'Critical Thinking', 'Creativity', 'Attention to Detail'
   ],
-  careerTimeline: (t: any) => [
+  careerTimeline: (t: TFunction) => [
     {
       date: "2025 - 2027",
       title: t("cv.timeline.wbs.title"),

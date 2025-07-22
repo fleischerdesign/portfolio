@@ -2,10 +2,10 @@
   <div class="pdf-resume-container text-primary-950 font-sans">
     <!-- Cover Page -->
     <div class="cover-page flex h-[370mm] w-full flex-col justify-between px-20 py-10">
-      <Card class="relative h-auto w-full flex-grow overflow-hidden rounded-lg shadow-lg">
+      <UiCard class="relative h-auto w-full flex-grow overflow-hidden rounded-lg shadow-lg">
         <img src="/img/profile.jpg" alt="Profile Picture" class="h-full w-full object-cover" />
         <!-- <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4 text-white opacity-100 transition-opacity"></div> -->
-      </Card>
+      </UiCard >
       <HeadingSite symbol="logo:fleischerdesign" :title="resumeData.personal.name" :subtitle="resumeData.personal.subtitle($t)" class="!mb-0 mt-10"/>
     </div>
 
@@ -22,9 +22,9 @@
       <div class="flex gap-10">
         <div class="w-1/3">
           <section class="mb-8">
-      <Card class="h-[230px] w-full overflow-hidden rounded-lg shadow-lg">
+      <UiCard class="h-[230px] w-full overflow-hidden rounded-lg shadow-lg">
         <img src="/img/profile.jpg" alt="Profile Picture" class="h-full w-full object-cover" />
-      </Card>
+      </UiCard >
       </section>
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Philipp Fleischer</h3>
@@ -77,5 +77,5 @@
 <script lang="ts" setup>
 import { resumeData } from '~/data/resumeData';
 
-const route = useRoute();
+
 </script>

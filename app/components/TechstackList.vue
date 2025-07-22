@@ -9,20 +9,20 @@ v-for="(row, rowIndex) in rowItems" :key="'marquee-row-' + rowIndex"
 :ref="el => setMarqueeRef(el as HTMLElement | null, rowIndex)"
           class="marquee flex gap-2 whitespace-nowrap"
           :style="{ animationDuration: animationDurations[rowIndex] + 's' }">
-          <Tag v-for="(item, index) in [...row, ...row]" :key="index" fill>
+          <UiTag v-for="(item, index) in [...row, ...row]" :key="index" fill>
             <Icon v-if="techIcons[item]" :name="techIcons[item]" class="text-xl" />
             <span>{{ item }}</span>
-          </Tag>
+          </UiTag>
         </div>
       </div>
     </template>
     <!-- Ohne Scroll-Effekt -->
     <template v-else>
       <div v-for="(row, rowIndex) in rowItems" :key="'static-row-' + rowIndex" class="flex flex-wrap gap-2">
-        <Tag v-for="(item, index) in row" :key="index" fill>
+        <UiTag v-for="(item, index) in row" :key="index" fill>
           <Icon v-if="techIcons[item]" :name="techIcons[item]" class="text-xl" />
           <span>{{ item }}</span>
-        </Tag>
+        </UiTag>
       </div>
     </template>
   </div>

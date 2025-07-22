@@ -19,7 +19,7 @@ type GitHubResponse = {
   }
 }
 
-export default cachedEventHandler(async (event) => {
+export default cachedEventHandler(async (_event) => {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN || ''
     const GITHUB_USERNAME = process.env.GITHUB_USERNAME || ''
 

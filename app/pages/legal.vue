@@ -9,7 +9,7 @@ Hufelandstraße 55<br>
 Philipp Fleischer<br>
 </p><p><strong>Kontakt:</strong> <br>
 Telefon: 0176-31099324<br>
-E-Mail: <a href='mailto:legal@fleischer.design'>legal@fleischer.design</a></br></p><p><strong>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:</strong><br>
+E-Mail: <a href='mailto:legal@fleischer.design'>legal@fleischer.design</a><br></p><p><strong>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:</strong><br>
 Philipp Fleischer <br> 
 Hufelandstraße 55<br> 
 17036 Neubrandenburg <br></p> <p><strong>Haftungsausschluss: </strong><br><br><strong>Haftung für Inhalte</strong><br><br>

@@ -62,7 +62,7 @@ for="message"
             <p v-if="errors.message" class="mt-1 text-sm text-red-500">{{ errors.message }}</p>
         </div>
 
-        <Button type="submit" variant="secondary" class="flex w-full items-center justify-center py-4" :disabled="loading">
+        <UiButton type="submit" variant="secondary" class="flex w-full items-center justify-center py-4" :disabled="loading">
             <span v-if="!loading">{{ $t('contact.form.label.submit') }}</span>
             <svg
 v-else class="h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -73,11 +73,13 @@ class="opacity-75" fill="currentColor"
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                 </path>
             </svg>
-        </Button>
+        </UiButton>
     </form>
 </template>
 
 <script setup lang="ts">
+import { UiButton } from '#components';
+
 const { t } = useI18n();
 
 const form = ref({
@@ -121,7 +123,8 @@ async function onSubmit() {
         form.value = { name: '', email: '', subject: '', message: '' };
         // Hide success message after 5 seconds
         setTimeout(() => success.value = false, 5000);
-    } catch (e) {
+    } catch (error) {
+        console.error('Form submission failed:', error);
         submitError.value = true;
         // Hide error message after 5 seconds
         setTimeout(() => submitError.value = false, 5000);

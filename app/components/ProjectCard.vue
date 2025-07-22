@@ -1,6 +1,6 @@
 <template>
     <NuxtLink :to="$localePath(`/projects/${project?.slug}`)" class="group">
-        <Card hover class="overflow-hidden">
+        <UiCard hover class="overflow-hidden">
             <div class="relative w-1/3 overflow-hidden">
                 <NuxtImg
 :src="project.image?.src" :alt="project.image?.alt || project.title" sizes="600px"
@@ -9,16 +9,16 @@
                     <Icon :name="'logo:'+project!.slug" class="h-24 w-24 fill-emerald-400 drop-shadow-xl" mode="svg" />
                 </div>
             </div>
-            <CardContainer class="flex-col">
+            <UiCardContainer class="flex-col">
                 <h3 class="text-3xl font-medium">{{ project.title }}</h3>
                 <p class="text-neutral-600 dark:text-neutral-400">{{ project.subtitle }}</p>
-            </CardContainer>
-        </Card>
+            </UiCardContainer>
+        </UiCard >
     </NuxtLink>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
     project: {
         title: string
         subtitle?: string

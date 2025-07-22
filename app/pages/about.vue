@@ -3,7 +3,7 @@
         <HeadingSite :title="$t('about.title')" :subtitle="$t('about.subtitle')" />
         <div
             class="mb-24 mt-4 grid grid-cols-1 grid-rows-1 items-stretch gap-4 md:grid-cols-2 md:grid-rows-2 lg:grid-cols-3">
-            <Card class="group relative row-span-2 overflow-hidden">
+            <UiCard class="group relative row-span-2 overflow-hidden">
                 <div class="h-full max-h-[500px] w-full overflow-hidden">
                     <NuxtImg
 sizes="300px sm:100vw" src="/img/profile.jpg" placeholder
@@ -15,18 +15,18 @@ sizes="300px sm:100vw" src="/img/profile.jpg" placeholder
                     <div class="text-xl font-semibold">Philipp Fleischer, 29</div>
                     <div class="">Angehender <span class="text-secondary-400">Fachinformatiker</span> für Anwendungsentwicklung</div>
                     <div class="mt-2 flex flex-wrap gap-2 text-sm">
-                        <Tag class="border-0 bg-black/40 shadow-md backdrop-blur-md">
+                        <UiTag class="border-0 bg-black/40 shadow-md backdrop-blur-md">
                             <Icon name="mage:map-marker" /> Neubrandenburg, DE
-                        </Tag>
-                        <Tag class="border-0 bg-black/40 shadow-md backdrop-blur-md">
+                        </UiTag>
+                        <UiTag class="border-0 bg-black/40 shadow-md backdrop-blur-md">
                             <Icon name="mage:briefcase" /> Suche Praktikum
-                        </Tag>
+                        </UiTag>
                     </div>
                 </div>
-            </Card>
-            <Card hover class="group">
+            </UiCard >
+            <UiCard hover class="group">
                 <NuxtLink to="#early_life">
-                    <CardContainer class="flex flex-col">
+                    <UiCardContainer class="flex flex-col">
                         <div class="flex items-center gap-2">
                             <div class="flex">
                                 <Icon
@@ -40,12 +40,12 @@ name="mage:rocket-fill" size="30"
                         </div>
                         <p class="text-neutral-600 dark:text-neutral-400">{{ $t("about.overview.earlyLife.subtitle") }}
                         </p>
-                    </CardContainer>
+                    </UiCardContainer>
                 </NuxtLink>
-            </Card>
-            <Card hover class="group">
+            </UiCard >
+            <UiCard hover class="group">
                 <NuxtLink to="#career_path">
-                    <CardContainer class="flex flex-col">
+                    <UiCardContainer class="flex flex-col">
                         <div class="flex items-center gap-2">
                             <div class="flex">
                                 <Icon
@@ -59,12 +59,12 @@ name="mage:cup-hot-fill" size="30"
                         </div>
                         <p class="text-neutral-600 dark:text-neutral-400">{{ $t("about.overview.careerPath.subtitle") }}
                         </p>
-                    </CardContainer>
+                    </UiCardContainer>
                 </NuxtLink>
-            </Card>
-            <Card hover class="group">
+            </UiCard >
+            <UiCard hover class="group">
                 <NuxtLink to="#personal_life">
-                    <CardContainer class="flex flex-col">
+                    <UiCardContainer class="flex flex-col">
                         <div class="flex items-center gap-2">
                             <div class="flex">
                                 <Icon
@@ -78,12 +78,12 @@ name="mage:heart-fill" size="30"
                         </div>
                         <p class="text-neutral-600 dark:text-neutral-400">{{ $t("about.overview.personalLife.subtitle")
                             }}</p>
-                    </CardContainer>
+                    </UiCardContainer>
                 </NuxtLink>
-            </Card>
-            <Card hover class="group">
+            </UiCard >
+            <UiCard hover class="group">
                 <NuxtLink to="#resume">
-                    <CardContainer class="flex flex-col">
+                    <UiCardContainer class="flex flex-col">
                         <div class="flex items-center gap-2">
                             <div class="flex">
                                 <Icon
@@ -96,9 +96,9 @@ name="mage:checklist-note-fill" size="30"
                             <h3 class="text-3xl font-medium">{{ $t("about.overview.resume.title") }}</h3>
                         </div>
                         <p class="text-neutral-600 dark:text-neutral-400">{{ $t("about.overview.resume.subtitle") }}</p>
-                    </CardContainer>
+                    </UiCardContainer>
                 </NuxtLink>
-            </Card>
+            </UiCard >
         </div>
         
         <div>

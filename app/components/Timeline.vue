@@ -19,7 +19,7 @@
         </div>
         
         <!-- Content container -->
-        <Card
+        <UiCard
 :class="[
           'flex-col content-end p-5',
           // Base mobile classes
@@ -41,11 +41,11 @@
           </h3>
           <p class="mt-2 text-gray-600 dark:text-gray-300">{{ item.description }}</p>
           <div v-if="item.skills && item.skills.length && !isPrintView" class="mt-3 flex flex-wrap gap-2" :class="index % 2 === 0 ? (isPrintView ? 'justify-start' : 'md:justify-end') : 'justify-start'">
-            <Tag v-for="(skill, skillIndex) in item.skills" :key="skillIndex">
+            <UiTag v-for="(skill, skillIndex) in item.skills" :key="skillIndex">
               {{ skill }}
-          </Tag>
+          </UiTag>
           </div>
-        </Card>
+        </UiCard >
       </div>
     </div>
   </div>
@@ -61,7 +61,7 @@ interface TimelineItem {
   skills?: string[]
 }
 
-const props = defineProps({
+defineProps({
   items: {
     type: Array as PropType<TimelineItem[]>,
     required: true

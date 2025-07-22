@@ -19,20 +19,7 @@ interface TranslationConfig {
   paths: PathConfig[]
 }
 
-const defaultConfig: TranslationConfig = {
-  apiProvider: 'openai',
-  model: 'gpt-4',
-  maxChunkSize: 2000,
-  sourceLocale: 'de',
-  targetLocale: 'en',
-  fieldsToTranslate: ['title', 'description', 'tags'],
-  paths: [
-    {
-      sourcePath: 'posts', // Relativer Pfad unterhalb des Locale-Ordners
-      targetPath: 'posts'  // Zielpfad (kann anders sein)
-    }
-  ]
-}
+
 
 export default defineNuxtModule<TranslationConfig>({
   meta: {

@@ -1,11 +1,11 @@
 <template>
   <div class="container max-w-screen-xl">
     <div>
-      <HeroSection />
-      <OverviewSection />
-      <ProjectsSection />
-      <BlogSection />
-      <ContactSection />
+      <SectionHero />
+      <SectionOverview />
+      <SectionProjects />
+      <SectionBlog />
+      <SectionContact />
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-    <Card hover class="group !flex-col overflow-hidden">
+    <UiCard hover class="group !flex-col overflow-hidden">
         <NuxtLink :to="$localePath(`/blog/${post?.slug}`)" class="h-full w-full">
             <div class="relative h-60 w-full overflow-hidden">
                 <div
@@ -14,12 +14,12 @@ sizes="600px" :src="post?.image?.src"
                     class="h-full w-full object-cover transition duration-500 group-hover:scale-110"
                     :alt="post?.image?.alt" />
             </div>
-            <CardContainer class="flex-col">
+            <UiCardContainer class="flex-col">
                 <h3 class="text-3xl font-medium">{{ post?.title }}</h3>
                 <p class="text-neutral-600 dark:text-neutral-400">{{ post?.description }}</p>
-            </CardContainer>
+            </UiCardContainer>
         </NuxtLink>
-    </Card>
+    </UiCard >
 </template>
 
 <script setup lang="ts">

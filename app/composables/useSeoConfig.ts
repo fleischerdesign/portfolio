@@ -1,4 +1,4 @@
-export const useSeoConfig = (route, meta) => {
+export const useSeoConfig = (route, _meta) => {
   useSeoMeta({
   title: t("navigation.home"),
   ogTitle: t("navigation.home"),

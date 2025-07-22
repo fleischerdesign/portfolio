@@ -3,16 +3,16 @@
         <div class="mb-24">
             <HeadingSite :title="project!.title" :subtitle="project!.subtitle" />
             <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-                <Card class="relative col-span-1 row-span-2 overflow-hidden md:col-span-2">
+                <UiCard class="relative col-span-1 row-span-2 overflow-hidden md:col-span-2">
                     <NuxtImg
 sizes="100vw sm:100vw" :placeholder="[50, 25, 75, 5]" :src="project?.image?.src"
                         class="aspect-[4/3] h-full w-full object-cover" :alt="project?.title || 'Project Background'" />
                 <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
                     <Icon :name="'logo:'+project!.slug" class="h-40 w-40 fill-emerald-400 drop-shadow-xl" mode="svg" />
                 </div>
-                </Card>
-                <Card>
-                    <CardContainer class="flex h-full flex-col gap-2">
+                </UiCard >
+                <UiCard >
+                    <UiCardContainer class="flex h-full flex-col gap-2">
                         <h3 class="text-3xl font-medium">Details</h3>
                         <div class="flex flex-col gap-2">
                             <div v-for="item in details" :key="item.label" class="flex items-center justify-between rounded-md border border-neutral-300 bg-neutral-100 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-900">
@@ -20,16 +20,16 @@ sizes="100vw sm:100vw" :placeholder="[50, 25, 75, 5]" :src="project?.image?.src"
                                 <span class="font-medium text-neutral-800 dark:text-white">{{ item.value }}</span>
                             </div>
                         </div>
-                    </CardContainer>
-                </Card>
-                <Card>
-                    <CardContainer class="flex flex-col gap-2">
+                    </UiCardContainer>
+                </UiCard >
+                <UiCard >
+                    <UiCardContainer class="flex flex-col gap-2">
                         <h3 class="text-3xl font-medium">{{ $t("home.overview.techstack.title") }}</h3>
                         <TechstackList :items="project?.techstack" />
-                    </CardContainer>
-                </Card>
-                <Card>
-                    <CardContainer class="flex h-full flex-col gap-2">
+                    </UiCardContainer>
+                </UiCard >
+                <UiCard >
+                    <UiCardContainer class="flex h-full flex-col gap-2">
                         <h3 class="text-3xl font-medium">{{ $t("project.challenges") }}</h3>
                         <ul class="space-y-2">
                             <li
@@ -41,10 +41,10 @@ name="mage:exclamation-circle"
                                 <span>{{ challenge }}</span>
                             </li>
                         </ul>
-                    </CardContainer>
-                </Card>
-                <Card>
-                    <CardContainer class="flex h-full flex-col gap-2">
+                    </UiCardContainer>
+                </UiCard >
+                <UiCard >
+                    <UiCardContainer class="flex h-full flex-col gap-2">
                         <h3 class="text-3xl font-medium">Features</h3>
                         <ul class="space-y-2">
                             <li
@@ -56,10 +56,10 @@ name="heroicons:check-circle"
                                 <span>{{ feature }}</span>
                             </li>
                         </ul>
-                    </CardContainer>
-                </Card>
-                <Card>
-                    <CardContainer class="flex h-full flex-col gap-2">
+                    </UiCardContainer>
+                </UiCard >
+                <UiCard >
+                    <UiCardContainer class="flex h-full flex-col gap-2">
                         <h3 class="text-3xl font-medium">{{ $t("project.learned") }}</h3>
                         <ul class="space-y-2">
                             <li
@@ -71,8 +71,8 @@ name="mage:information-circle"
                                 <span>{{ learning }}</span>
                             </li>
                         </ul>
-                    </CardContainer>
-                </Card>
+                    </UiCardContainer>
+                </UiCard >
             </div>
             <div
                 class="prose prose-neutral my-8 max-w-none dark:prose-invert prose-h1:text-4xl prose-h2:border-l-4 prose-h2:border-secondary-400 prose-h2:pl-4 prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl prose-a:prose-headings:no-underline">

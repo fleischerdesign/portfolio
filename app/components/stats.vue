@@ -32,7 +32,7 @@ const stats = [
 
 <template>
   <div class="flex flex-col gap-2">
-    <Tag
+    <UiTag
 v-for="(stat, index) in stats"
       :key="index" 
       fill
@@ -45,6 +45,6 @@ v-for="(stat, index) in stats"
       <span class="text-primary-500">
         {{ stat.value }}
       </span>
-    </tag>
+    </UiTag>
   </div>
 </template>

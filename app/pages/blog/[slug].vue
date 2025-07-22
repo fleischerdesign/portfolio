@@ -7,17 +7,17 @@ sizes="100vw sm:100vw" :placeholder="[50, 25, 75, 5]" :src="post?.image?.src" cl
           :alt="post?.title || 'Post Background'" />
         <div class="z-1 container relative flex max-w-screen-xl flex-col items-start gap-4">
           <div class="flex items-center gap-2 drop-shadow-md">
-            <chip>
+            <UiChip>
               <NuxtLink class="flex gap-2"><NuxtImg :src="post?.author.avatar" class="h-6 w-6 rounded-full" alt="Avatar" />Philipp
                 Fleischer</NuxtLink>
-            </chip>
+            </UiChip>
             <span>{{ $t("blogPost.date.on") }} {{ formattedDate }}</span>
           </div>
 <HeadingSite :title="post!.title" :subtitle="post!.description!" class="!mb-0"/>
           <div class="flex flex-wrap gap-2">
-            <tag v-for="(tag, index) in post?.tags" :key="index" class="drop-shadow-md" gradient hover>
+            <Uitag v-for="(tag, index) in post?.tags" :key="index" class="drop-shadow-md" gradient hover>
               {{ tag }}
-            </tag>
+            </UiTag>
           </div>
         </div>
       </div>

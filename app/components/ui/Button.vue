@@ -2,7 +2,7 @@
     <NuxtLink v-if="to" :to="to" :class="buttonClasses">
         <slot />
     </NuxtLink>
-    <button v-else :type="type" :class="buttonClasses" :disabled="$attrs.disabled as boolean | undefined">
+    <button v-else :type="type" :class="buttonClasses" :disabled="isDisabled">
         <slot />
     </button>
 </template>
@@ -21,6 +21,10 @@ const props = withDefaults(defineProps<Props>(), {
     variant: 'default',
     type: 'button',
 });
+
+const attrs = useAttrs();
+
+const isDisabled = computed(() => !!attrs.disabled);
 
 const baseClasses = 'shadow-sm rounded-lg py-2 px-4 flex justify-center gap-3 hover:shadow-inner transition cursor-pointer';
 

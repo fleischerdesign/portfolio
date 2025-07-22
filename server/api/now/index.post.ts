@@ -38,6 +38,7 @@ export default defineEventHandler(async (event) => {
     writeFileSync(DATA_PATH, JSON.stringify(newData, null, 2), 'utf-8')
     return { success: true, updatedAt: newData.updatedAt }
   } catch (error) {
+    console.error('Failed to write now.json:', error)
     throw createError({
       statusCode: 500,
       statusMessage: 'Could not write now.json'

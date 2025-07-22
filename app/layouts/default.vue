@@ -1,7 +1,9 @@
 <template>
-  <div class="">
-    <slot />
+  <div>
+    <div class="">
+      <slot />
+    </div>
+    <Navigation />
+    <Footer />
   </div>
-  <Navigation />
-  <Footer />
 </template>
