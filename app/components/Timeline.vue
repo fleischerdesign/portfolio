@@ -4,7 +4,7 @@
     <div class="absolute left-5 top-0 h-full w-0.5 bg-secondary-400" :class="{'md:hidden': !isPrintView, 'hidden': isPrintView}"></div>
     
     <!-- Vertical line - desktop -->
-    <div class="hidden absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 transform bg-secondary-400" :class="{'hidden': isPrintView, 'md:block': !isPrintView}"></div>
+    <div class="absolute left-1/2 top-0 hidden h-full w-0.5 -translate-x-1/2 transform bg-secondary-400" :class="{'hidden': isPrintView, 'md:block': !isPrintView}"></div>
 
     <div v-for="(item, index) in items" :key="index" class="relative" :class="isPrintView ? 'mb-6' : 'mb-12'">
       <div class="flex">
@@ -14,7 +14,7 @@
         </div>
         
         <!-- Desktop circle with icon -->
-        <div class="hidden absolute left-1/2 z-10 h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-full bg-secondary-400" :class="{'hidden': isPrintView, 'md:flex': !isPrintView}">
+        <div class="absolute left-1/2 z-10 hidden h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-full bg-secondary-400" :class="{'hidden': isPrintView, 'md:flex': !isPrintView}">
           <Icon :name="item.icon" size="20" class="text-white dark:text-gray-900" />
         </div>
         
