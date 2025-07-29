@@ -4,7 +4,7 @@
     <div class="absolute left-5 top-0 h-full w-0.5 bg-secondary-400" :class="{'md:hidden': !isPrintView, 'hidden': isPrintView}"></div>
     
     <!-- Vertical line - desktop -->
-    <div class="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 transform bg-secondary-400" :class="{'hidden': isPrintView, 'md:block': !isPrintView}"></div>
+    <div class="hidden absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 transform bg-secondary-400" :class="{'hidden': isPrintView, 'md:block': !isPrintView}"></div>
 
     <div v-for="(item, index) in items" :key="index" class="relative" :class="isPrintView ? 'mb-6' : 'mb-12'">
       <div class="flex">
@@ -14,7 +14,7 @@
         </div>
         
         <!-- Desktop circle with icon -->
-        <div class="absolute left-1/2 z-10 h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-full bg-secondary-400" :class="{'hidden': isPrintView, 'md:flex': !isPrintView}">
+        <div class="hidden absolute left-1/2 z-10 h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-full bg-secondary-400" :class="{'hidden': isPrintView, 'md:flex': !isPrintView}">
           <Icon :name="item.icon" size="20" class="text-white dark:text-gray-900" />
         </div>
         
@@ -36,7 +36,7 @@
         ]">
           <span class="text-sm font-semibold text-secondary-400">{{ item.date }}</span>
           <h3 class="mt-1 flex gap-2 text-xl font-bold" :class="{'md:ml-auto': !isPrintView && index % 2 === 0}">
-            <Icon :name="item.icon" size="24" class="text-secondary-400" :class="{'md:hidden': !isPrintView, 'block': isPrintView}" />
+            <Icon :name="item.icon" size="24" class="text-secondary-400" :class="{'hidden': !isPrintView, 'block': isPrintView}" />
             {{ item.title }}
           </h3>
           <p class="mt-2 text-gray-600 dark:text-gray-300">{{ item.description }}</p>
