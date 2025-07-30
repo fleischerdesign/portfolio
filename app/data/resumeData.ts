@@ -1,13 +1,14 @@
-type TFunction = (key: string) => string;
+
+import type { ComposerTranslation } from "#i18n"
 
 export const resumeData = {
   personal: {
     name: "Philipp Fleischer",
-    subtitle: (t: TFunction) => t("home.hero.summary"),
-    location: (t: TFunction) => t("resume.personal.location"),
-    internshipStatus: (t: TFunction) => t("resume.personal.internshipStatus"),
+    subtitle: (t: ComposerTranslation) => t("home.hero.summary"),
+    location: (t: ComposerTranslation) => t("resume.personal.location"),
+    internshipStatus: (t: ComposerTranslation) => t("resume.personal.internshipStatus"),
   },
-  summary: (t: TFunction) => t("home.hero.summary"),
+  summary: (t: ComposerTranslation) => t("home.hero.summary"),
   techStack: [
     'Typescript', 'React', 'Git', 'Docker', 'Dart', 'Rust', 'Tailwind', 'Vue', 'Flutter', 
     'Node.js', 'Deno', 'Python', 'PostgreSQL', 'MongoDB', 'REST', 'GraphQL'
@@ -16,7 +17,7 @@ export const resumeData = {
     'Leadership', 'Teamwork', 'Problem Solving', 'Communication', 'Adaptability', 
     'Time Management', 'Critical Thinking', 'Creativity', 'Attention to Detail'
   ],
-  careerTimeline: (t: TFunction) => [
+  careerTimeline: (t: ComposerTranslation) => [
     {
       date: "2025 - 2027",
       title: t("cv.timeline.wbs.title"),
