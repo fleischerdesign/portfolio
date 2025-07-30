@@ -16,16 +16,6 @@ Consider Static Site Generation (SSG):
          beizubehalten, aber zusätzlich Routen für das Prerendering zu definieren oder den Output-Modus auf
          static zu setzen.
 
-
-   2. Optimize Image Quality for `NuxtImg`:
-       * Problem: In pages/index.vue wird das Profilbild mit quality: 100 geladen ($img('/img/profile.jpg', {
-         width: 800, quality: 100 })). Eine Qualität von 100% ist oft unnötig und führt zu größeren Dateigrößen,
-         ohne einen sichtbaren Qualitätsgewinn für den Endnutzer.
-       * Solution: Reduziere die quality-Einstellung für Bilder, insbesondere für solche, die nicht die absolute
-         höchste Detailtreue benötigen. Ein Wert zwischen 75 und 90 ist oft ein guter Kompromiss.
-       * Benefit: Reduziert die Dateigröße von Bildern, was die Ladezeiten verbessert.
-
-
    3. Lazy Load Non-Critical Components:
        * Problem: Obwohl ClientOnly für GithubChart verwendet wird, könnten andere Komponenten, die nicht sofort
          im Viewport sichtbar sind (z.B. weiter unten auf der Seite oder in Tabs/Akkordeons), ebenfalls von Lazy

@@ -73,6 +73,7 @@ export default defineNuxtConfig({
     ipx: {
       modifiers: {
         format: "webp",
+        quality: 80
       },
     },
   },
