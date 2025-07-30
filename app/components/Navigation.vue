@@ -11,7 +11,7 @@ name="mage:moon" size="30"
                             class="opacity-40 transition hover:-translate-y-1 group-hover:opacity-0" />
                         <Icon
 name="mage:moon-fill" size="30"
-                            class="absolute opacity-0 transition group-hover:opacity-100" />
+                            class="absolute opacity-0 transition group-hover:opacity-40" />
                     </template>
                     <template v-else>
                         <Icon
@@ -19,7 +19,7 @@ name="mage:sun" size="30"
                             class="opacity-40 transition hover:-translate-y-1 group-hover:opacity-0" />
                         <Icon
 name="mage:sun-fill" size="30"
-                            class="absolute opacity-0 transition group-hover:opacity-100" />
+                            class="absolute opacity-0 transition group-hover:opacity-40" />
                     </template>
                     <template #fallback>
                         <!-- Fallback für SSR - zeigt ein neutrales Icon -->
