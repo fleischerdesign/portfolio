@@ -1,23 +1,23 @@
 
 import type { ComposerTranslation } from "#i18n"
 
-export const resumeData = {
+export const getResumeData = (t: ComposerTranslation) => ({
   personal: {
     name: "Philipp Fleischer",
-    subtitle: (t: ComposerTranslation) => t("home.hero.summary"),
-    location: (t: ComposerTranslation) => t("resume.personal.location"),
-    internshipStatus: (t: ComposerTranslation) => t("resume.personal.internshipStatus"),
+    subtitle: t("home.hero.summary"),
+    location: t("resume.personal.location"),
+    internshipStatus: t("resume.personal.internshipStatus"),
   },
-  summary: (t: ComposerTranslation) => t("home.hero.summary"),
+  summary: t("home.hero.summary"),
   techStack: [
-    'Typescript', 'React', 'Git', 'Docker', 'Dart', 'Rust', 'Tailwind', 'Vue', 'Flutter', 
+    'Typescript', 'React', 'Git', 'Docker', 'Dart', 'Rust', 'Tailwind', 'Vue', 'Flutter',
     'Node.js', 'Deno', 'Python', 'PostgreSQL', 'MongoDB', 'REST', 'GraphQL'
   ],
   softSkills: [
-    'Leadership', 'Teamwork', 'Problem Solving', 'Communication', 'Adaptability', 
+    'Leadership', 'Teamwork', 'Problem Solving', 'Communication', 'Adaptability',
     'Time Management', 'Critical Thinking', 'Creativity', 'Attention to Detail'
   ],
-  careerTimeline: (t: ComposerTranslation) => [
+  careerTimeline: [
     {
       date: "2025 - 2027",
       title: t("cv.timeline.wbs.title"),
@@ -91,4 +91,4 @@ export const resumeData = {
       skills: []
     }
   ]
-};
+});

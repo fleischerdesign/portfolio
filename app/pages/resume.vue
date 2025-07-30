@@ -6,7 +6,7 @@
         <img src="/img/profile.jpg" alt="Profile Picture" class="h-full w-full object-cover" />
         <!-- <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4 text-white opacity-100 transition-opacity"></div> -->
       </UiCard >
-      <HeadingSite symbol="logo:fleischerdesign" :title="resumeData.personal.name" :subtitle="resumeData.personal.subtitle($t)" class="!mb-0 mt-10"/>
+      <HeadingSite symbol="logo:fleischerdesign" :title="resumeData.personal.name" :subtitle="resumeData.personal.subtitle" class="!mb-0 mt-10"/>
     </div>
 
     <!-- Main Content Pages -->
@@ -44,12 +44,12 @@
         <div class="w-2/3">
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('common.summary') }}</h3>
-            <p class="text-base leading-relaxed">{{ resumeData.summary($t) }}</p>
+            <p class="text-base leading-relaxed">{{ resumeData.summary }}</p>
           </section>
           <!-- Career Timeline Section -->
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('about.overview.careerPath.title') }}</h3>
-            <Timeline :items="resumeData.careerTimeline($t).filter(item => item.type === 'career')" :is-print-view="true" />
+            <Timeline :items="resumeData.careerTimeline.filter(item => item.type === 'career')" :is-print-view="true" />
           </section>
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('home.overview.techstack.title') }}</h3>
@@ -66,7 +66,7 @@
         <div class="w-2/3">
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Bildungsweg</h3>
-            <Timeline :items="resumeData.careerTimeline($t).filter(item => item.type === 'education')" :is-print-view="true" />
+            <Timeline :items="resumeData.careerTimeline.filter(item => item.type === 'education')" :is-print-view="true" />
           </section>
         </div>
       </div>
@@ -75,7 +75,9 @@
 </template>
 
 <script lang="ts" setup>
-import { resumeData } from '~/data/resumeData';
+import { getResumeData } from '~/data/resumeData';
+import { useI18n } from '#imports';
 
-
+const { t } = useI18n();
+const resumeData = getResumeData(t);
 </script>
