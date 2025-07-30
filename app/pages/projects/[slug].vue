@@ -37,7 +37,7 @@ v-for="challenge in project?.challenges?.slice(0, 2)" :key="challenge"
                                 class="flex items-start gap-2">
                                 <Icon
 name="mage:exclamation-circle"
-                                    class="mt-0.5 h-4 w-4 flex-shrink-0 text-secondary-400" />
+                                    class="mt-0.5 flex-shrink-0 text-secondary-400" size="18"/>
                                 <span>{{ challenge }}</span>
                             </li>
                         </ul>
@@ -52,7 +52,7 @@ v-for="feature in project?.features?.slice(0, 3)" :key="feature"
                                 class="flex items-start gap-2">
                                 <Icon
 name="heroicons:check-circle"
-                                    class="mt-0.5 h-4 w-4 flex-shrink-0 text-secondary-400" />
+                                    class="mt-0.5 flex-shrink-0 text-secondary-400" size="18"/>
                                 <span>{{ feature }}</span>
                             </li>
                         </ul>
@@ -67,7 +67,7 @@ v-for="learning in project?.learned?.slice(0, 2)" :key="learning"
                                 class="flex items-start gap-2">
                                 <Icon
 name="mage:information-circle"
-                                    class="mt-0.5 h-4 w-4 flex-shrink-0 text-secondary-400" />
+                                    class="mt-0.5 flex-shrink-0 text-secondary-400" size="18"/>
                                 <span>{{ learning }}</span>
                             </li>
                         </ul>
