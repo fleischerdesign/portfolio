@@ -4,13 +4,13 @@
       :is="as"
       :id="id"
       :value="model"
-      @input="model = ($event.target as HTMLInputElement).value"
-      :type="type"
-      :required="required"
       class="peer w-full rounded-lg border border-neutral-300 bg-gradient-to-br from-neutral-100 to-neutral-200 px-4 py-3 placeholder-transparent placeholder-opacity-0 shadow-sm transition focus:placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-secondary-400 peer-focus:placeholder-opacity-100 dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800 dark:focus:placeholder-neutral-600"
-      :class="{ 'border-red-500': error }"
+      :required="required"
       :placeholder="label"
+      :class="{ 'border-red-500': error }"
+      :type="type"
       :rows="as === 'textarea' ? 5 : undefined"
+      @input="model = ($event.target as HTMLInputElement).value"
     />
     <label
       :for="id"
