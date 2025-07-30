@@ -8,7 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted } from 'vue'
 import mermaid from 'mermaid'
 
 const container = ref<HTMLDivElement | null>(null)
