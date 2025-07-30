@@ -27,9 +27,6 @@ Consider Static Site Generation (SSG):
          Interactive - TTI).
 
 ## 🧹 Code Quality
-- [ ] Integrate ESLint with `@nuxt/eslint-config` to enforce a consistent code style and catch potential errors early.
-- [ ] Add a `lint` script to `package.json` to easily run the linter from the command line.
-- [ ] Consider adding Prettier for automated code formatting to work alongside ESLint.
 - [ ] **Refactor Large Components:** Identify large Vue components (e.g., in `pages/`) and break them down into smaller, more focused, and reusable child components to improve readability, maintainability, and testability.
 
 ## SEO
