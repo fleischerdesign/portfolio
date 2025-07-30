@@ -1,6 +1,6 @@
 <template>
   <div class="mb-24">
-    <HeadingSection :title="$t('home.blog.title')" :subtitle="$t('home.blog.subtitle')" link="/blog" />
+      <UiHeading :title="$t('home.blog.title')" :subtitle="$t('home.blog.subtitle')" link="/blog" />
     <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
       <BlogPostCard v-for="(post, index) in posts" :key="index" :post="post" />
     </div>

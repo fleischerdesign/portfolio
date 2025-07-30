@@ -13,7 +13,7 @@ sizes="100vw sm:100vw" :placeholder="[50, 25, 75, 5]" :src="post?.image?.src" cl
             </UiChip>
             <span>{{ $t("blogPost.date.on") }} {{ formattedDate }}</span>
           </div>
-<HeadingSite :title="post!.title" :subtitle="post!.description!" class="!mb-0"/>
+    <UiHeading :level="1" :title="post!.title" :subtitle="post!.description!" class="!mb-0"/>
           <div class="flex flex-wrap gap-2">
             <UiTag v-for="(tag, index) in post?.tags" :key="index" class="drop-shadow-md" gradient hover>
               {{ tag }}
