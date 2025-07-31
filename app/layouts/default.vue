@@ -3,7 +3,7 @@
     <div class="">
       <slot />
     </div>
-    <Navigation />
-    <Footer />
+    <TheNavigation />
+    <TheFooter />
   </div>
 </template>

@@ -41,7 +41,7 @@ Diese Prinzipien zielen darauf ab, Silos zwischen Abteilungen abzubauen und eine
 ## Der DevOps-Lebenszyklus
 Der DevOps-Lebenszyklus ist ein kontinuierlicher Prozess, der aus mehreren Phasen besteht. Je nach Quelle werden zwischen sieben und acht Phasen unterschieden. Diese Phasen greifen fließend ineinander und bilden einen geschlossenen Kreislauf:
 
-<Mermaid>
+<BaseMermaid>
 flowchart LR
     Plan[Plan] --> Code[Code]
     Code --> Build[Build]
@@ -58,7 +58,7 @@ Dieser Kreislauf ermöglicht eine kontinuierliche Verbesserung der Software, ind
 ## Continuous Integration und Continuous Delivery/Deployment (CI/CD)
 Ein zentrales Element von DevOps ist die Implementierung von CI/CD-Pipelines, die den Prozess der Softwareentwicklung und -bereitstellung automatisieren:
 
-<Mermaid>
+<BaseMermaid>
 sequenceDiagram
     participant Dev as Entwickler
     participant Repo as Repository
@@ -103,7 +103,7 @@ DevOps-Teams können durch agile Arbeitsweisen schneller auf Veränderungen reag
 ## DevOps vs. traditionelle Entwicklung
 Im Vergleich zur traditionellen Softwareentwicklung bietet DevOps deutliche Vorteile:
 
-<Mermaid>
+<BaseMermaid>
 flowchart TD
     subgraph DevOps
         Plan --> Code --> Build --> Test --> Release --> Deploy --> Operate --> Monitor
@@ -171,7 +171,7 @@ DevOps entwickelt sich ständig weiter. Für 2025 zeichnen sich folgende Trends 
 Künstliche Intelligenz wird zunehmend in DevOps-Prozesse integriert, um autonome Pipelines zu schaffen, die nicht nur Daten analysieren, sondern auch Echtzeit-Entscheidungen treffen können. Dies führt zu selbstheilenden Systemen, die Probleme erkennen und beheben, bevor sie kritisch werden.
 
 ### DevSecOps wird zum Standard
-<Mermaid>
+<BaseMermaid>
 flowchart TD
     subgraph DevSecOps
         Dev[Development] & Ops[Operations] & Sec[Security]

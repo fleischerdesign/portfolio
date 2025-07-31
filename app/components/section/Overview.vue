@@ -26,7 +26,7 @@
       <UiCardContainer class="flex-col">
         <h3 class="text-3xl font-medium">{{ $t("home.overview.statistics.title") }}</h3>
         <p class="text-neutral-600 dark:text-neutral-400">{{ $t("home.overview.statistics.subtitle") }}</p>
-        <stats />
+        <BaseStats />
       </UiCardContainer>
     </UiCard >
     <UiCard hover class="col-span-1 flex flex-col">

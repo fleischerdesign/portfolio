@@ -49,7 +49,7 @@
           <!-- Career Timeline Section -->
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('about.overview.careerPath.title') }}</h3>
-            <Timeline :items="resumeData.careerTimeline.filter(item => item.type === 'career')" :is-print-view="true" />
+            <BaseTimeline :items="resumeData.careerTimeline.filter(item => item.type === 'career')" :is-print-view="true" />
           </section>
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('home.overview.techstack.title') }}</h3>
@@ -66,7 +66,7 @@
         <div class="w-2/3">
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Bildungsweg</h3>
-            <Timeline :items="resumeData.careerTimeline.filter(item => item.type === 'education')" :is-print-view="true" />
+            <BaseTimeline :items="resumeData.careerTimeline.filter(item => item.type === 'education')" :is-print-view="true" />
           </section>
         </div>
       </div>

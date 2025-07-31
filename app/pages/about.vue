@@ -180,7 +180,7 @@ sizes="100vw lg:600px" src="/img/child.jpg"
                                 <p class="mt-1">{{ $t("about.careerPath.content.paragraph2") }}</p>
                             </div>
                         </div>
-            <Timeline :items="careerTimeline" />
+            <BaseTimeline :items="careerTimeline" />
 
                         <div class="flex items-start gap-4">
                             <div>

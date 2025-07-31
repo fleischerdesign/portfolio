@@ -36,5 +36,6 @@ withDefaults(defineProps<{
   as: 'input',
   type: 'text',
   required: false,
+  error: '',
 });
 </script>
