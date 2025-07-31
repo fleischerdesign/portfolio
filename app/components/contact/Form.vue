@@ -1,5 +1,5 @@
 <template>
-    <form class="space-y-6" @submit.prevent="onSubmit">
+    <form class="flex h-full flex-col space-y-6" @submit.prevent="onSubmit">
         <!-- Success and Error Messages -->
         <div v-if="success" class="rounded-lg border border-green-700 bg-green-900/50 p-4 text-center text-green-400">
             {{ $t('contact.form.success') }}
@@ -34,6 +34,7 @@
             as="textarea" 
             :label="$t('contact.form.label.message')" 
             :error="errors.message"
+            class="flex-grow"
             required />
 
         <UiButton type="submit" variant="secondary" class="flex w-full items-center justify-center py-4" :disabled="loading">

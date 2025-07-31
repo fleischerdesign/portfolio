@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-auto max-w-screen-xl py-16">
         <div class="mb-24">
-            <HeadingSite :title="$t('store.title')" :subtitle="$t('store.subtitle')" />
+             <UiHeading :level="1" :title="$t('store.title')" :subtitle="$t('store.subtitle')" />
         </div>
     </div>
 </template>

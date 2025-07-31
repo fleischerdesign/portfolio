@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-auto max-w-screen-xl py-16">
         <div class="mb-24">
-            <HeadingSection :title="$t('blog.title')" :subtitle="$t('blog.subtitle')" />
+              <UiHeading :title="$t('blog.title')" :subtitle="$t('blog.subtitle')" />
             <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
                 <BlogPostCard v-for="(post, index) in data" :key="index" :post="post" />
             </div>
