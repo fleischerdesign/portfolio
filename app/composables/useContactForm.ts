@@ -1,3 +1,5 @@
+const TIMEOUT_DURATION = 5000;
+
 export function useContactForm() {
   const { t } = useI18n();
 
@@ -18,7 +20,7 @@ export function useContactForm() {
     if (!form.value.name) errors.value.name = t('contact.form.validation.name');
     if (!form.value.email) {
       errors.value.email = t('contact.form.validation.email');
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.value.email)) {
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(form.value.email)) {
       errors.value.email = t('contact.form.validation.email_invalid');
     }
     if (!form.value.subject) errors.value.subject = t('contact.form.validation.subject');
@@ -43,11 +45,11 @@ export function useContactForm() {
       form.value.email = '';
       form.value.subject = '';
       form.value.message = '';
-      setTimeout(() => success.value = false, 5000);
+      setTimeout(() => success.value = false, TIMEOUT_DURATION);
     } catch (error) {
       console.error('Form submission failed:', error);
       submitError.value = true;
-      setTimeout(() => submitError.value = false, 5000);
+      setTimeout(() => submitError.value = false, TIMEOUT_DURATION);
     } finally {
       loading.value = false;
     }
