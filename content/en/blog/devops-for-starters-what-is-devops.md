@@ -41,7 +41,7 @@ These principles aim to break down silos between departments and create an envir
 ## The DevOps Lifecycle  
 The DevOps lifecycle is a continuous process consisting of several phases. Depending on the source, seven or eight phases are distinguished. These phases flow seamlessly into each other, forming a closed loop:
 
-<BaseMermaid>
+::BaseMermaid
 flowchart LR
     Plan[Plan] --> Code[Code]
     Code --> Build[Build]
@@ -51,14 +51,14 @@ flowchart LR
     Deploy --> Operate[Operate]
     Operate --> Monitor[Monitor]
     Monitor --> Plan
-</Mermaid>
+::
 
 This cycle enables continuous improvement of the software by incorporating feedback from operations directly into the planning of new features.
 
 ## Continuous Integration and Continuous Delivery/Deployment (CI/CD)  
 A central element of DevOps is the implementation of CI/CD pipelines that automate the software development and deployment process:
 
-<BaseMermaid>
+::BaseMermaid
 sequenceDiagram
     participant Dev as Developer
     participant Repo as Repository
@@ -71,7 +71,7 @@ sequenceDiagram
     CI ->> Test: Automated Tests
     Test ->> CI: Test Results
     CI ->> Prod: Automatic Deployment (if successful)
-</Mermaid>
+::
 
 ### Continuous Integration (CI)  
 In Continuous Integration, code changes are regularly integrated into a central repository, with automated builds and tests performed. This helps identify and fix integration issues early, rather than confronting them only at the end of a development cycle.
@@ -103,17 +103,17 @@ DevOps teams can respond more quickly to changes through agile working methods, 
 ## DevOps vs. Traditional Development  
 Compared to traditional software development, DevOps offers clear advantages:
 
-<BaseMermaid>
+::BaseMermaid
 flowchart TD
     subgraph DevOps
         Plan --> Code --> Build --> Test --> Release --> Deploy --> Operate --> Monitor
         Monitor --> Plan
     end
-
     subgraph Traditional
         Requirements --> Design --> Implementation --> Test --> Maintenance
     end
-</Mermaid>
+::
+
 ### Collaboration Instead of Silos  
 In traditional development, development and operations teams work separately, leading to communication problems and delays. DevOps promotes close collaboration and integration of these teams, breaking down silos.
 
@@ -171,12 +171,12 @@ DevOps is constantly evolving. The following trends are expected for 2025:
 Artificial intelligence will increasingly be integrated into DevOps processes to create autonomous pipelines that not only analyze data but also make real-time decisions. This leads to self-healing systems that detect and resolve issues before they become critical.
 
 ### DevSecOps Becomes Standard  
-<BaseMermaid>
+::BaseMermaid
 flowchart TD
     subgraph DevSecOps
         Dev[Development] & Sec[Security] & Ops[Operations]
     end
-</Mermaid>
+::
 
 Integrating security into the DevOps process (DevSecOps) will no longer be optional but a necessity in 2025. Security considerations will be embedded from the outset of development rather than added later.
 
