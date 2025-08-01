@@ -12,7 +12,6 @@ tags:
 image:
   src: /img/wonderlane-6jA6eVsRJ6Q-unsplash.jpg
   alt: "Chaotic developer workspace vs. organized code"
-readingTime: 10
 author:
   name: Philipp Fleischer
   avatar: /img/profile.jpg

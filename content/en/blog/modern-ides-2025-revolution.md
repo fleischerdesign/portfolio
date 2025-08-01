@@ -10,7 +10,6 @@ tags:
 image:
   src: /img/safar-safarov-LKsHwgzyk7c-unsplash.jpg
   alt: "Keyboard with Linux, Windows, and macOS keys"
-readingTime: 15
 author:
   name: Philipp Fleischer
   avatar: /img/profile.jpg

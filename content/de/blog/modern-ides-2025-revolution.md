@@ -10,7 +10,6 @@ tags:
 image:
   src: /img/safar-safarov-LKsHwgzyk7c-unsplash.jpg
   alt: "Tastatur mit Linux, Windows und macOS-Tasten"
-readingTime: 15
 author:
   name: Philipp Fleischer
   avatar: /img/profile.jpg

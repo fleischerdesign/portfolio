@@ -15,7 +15,6 @@ tags:
 image:
   src: /img/luca-upper-uQR1eEZBMYY-unsplash.jpg
   alt: "Vergleich verschiedener Frontend-Framework-Logos auf einem Monitor"
-readingTime: 14
 author:
   name: Philipp Fleischer
   avatar: /img/profile.jpg

@@ -15,7 +15,6 @@ tags:
 image:
   src: /img/luca-upper-uQR1eEZBMYY-unsplash.jpg
   alt: "Comparison of different frontend framework logos on a monitor"
-readingTime: 14
 author:
   name: Philipp Fleischer
   avatar: /img/profile.jpg

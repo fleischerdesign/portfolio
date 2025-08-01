@@ -30,6 +30,17 @@ export default defineNuxtConfig({
       ]
     }
   },
+  hooks: {
+    'content:file:afterParse'(ctx) {
+      const { file, content } = ctx;
+
+      const wordsPerMinute = 180;
+      const text = typeof file.body === 'string' ? file.body : '';
+      const wordCount = text.split(/\s+/).length;
+
+      content.readingTime = Math.ceil(wordCount / wordsPerMinute);
+    }
+  },
   autoTranslate: {
     apiProvider: 'openai', // oder 'anthropic', 'google'
     model: 'gpt-4.1-nano', // Modell je nach Provider

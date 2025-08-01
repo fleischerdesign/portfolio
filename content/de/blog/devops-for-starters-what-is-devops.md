@@ -12,7 +12,6 @@ tags:
 image:
   src: /img/alvaro-reyes-fSWOVc3e06w-unsplash.jpg
   alt: "Zwei Entwickler, die gemeinsam an einem Projekt arbeiten – Symbol für DevOps-Zusammenarbeit"
-readingTime: 15
 author:
   name: Philipp Fleischer
   avatar: /img/profile.jpg
