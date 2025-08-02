@@ -12,7 +12,6 @@ tags:
 image:
   src: /img/wonderlane-6jA6eVsRJ6Q-unsplash.jpg
   alt: "Chaotischer Entwickler-Arbeitsplatz vs. aufgeräumter Code"
-readingTime: 10
 author:
   name: Philipp Fleischer
   avatar: /img/profile.jpg
