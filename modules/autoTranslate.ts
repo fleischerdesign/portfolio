@@ -67,13 +67,15 @@ async function translateMarkdownFiles(config: TranslationConfig) {
         
         if (await needsTranslation(sourcePath, targetPath)) {
           console.log(`🔄 Translating: ${file}`)
-          await translateFile(sourcePath, targetPath, mergedConfig) // mergedConfig verwenden
+          // Fehler wird jetzt in translateFile behandelt und nicht mehr geworfen
+          await translateFile(sourcePath, targetPath, mergedConfig)
         }
       }
     }
   } catch (error) {
-    console.error('❌ Translation error:', error)
-    throw error
+    // Kritische Fehler im Dateisystem etc. werden hier noch geloggt
+    console.error('❌ A critical error occurred during the file processing loop:', error)
+    // Wichtig: Wir werfen den Fehler hier nicht erneut, um den Build nicht zu blockieren
   }
 }
 
@@ -105,8 +107,9 @@ async function translateFile(
     
     console.log(`✅ Translated: ${path.basename(sourcePath)}`)
   } catch (error) {
-    console.error(`❌ Error translating ${sourcePath}:`, error)
-    throw error
+    // Fehler bei der Übersetzung protokollieren, aber den Prozess nicht anhalten
+    console.error(`❌ Error translating ${path.basename(sourcePath)}: ${error.message}`)
+    // Wichtig: Der Fehler wird hier nicht weitergeworfen
   }
 }
 
