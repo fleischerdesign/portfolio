@@ -1,33 +1,13 @@
 import nodemailer from 'nodemailer'
-
-interface ContactForm {
-    name: string
-    email: string
-    subject: string
-    message: string
-}
+import { z } from 'zod'
+import { ContactFormSchema } from '~/utils/schemas/contact'
 
 export default defineEventHandler(async (event) => {
     try {
-        // Request Body parsen
-        const body = await readBody<ContactForm>(event)
+        const body = await readBody(event)
 
-        // Validation
-        if (!body.name || !body.email || !body.message) {
-            throw createError({
-                statusCode: 400,
-                statusMessage: 'Name, Email und Nachricht sind erforderlich'
-            })
-        }
-
-        // Email validation (basic)
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-        if (!emailRegex.test(body.email)) {
-            throw createError({
-                statusCode: 400,
-                statusMessage: 'Ungültige Email-Adresse'
-            })
-        }
+        // Validiere den Body mit dem zentralen Zod-Schema
+        const { name, email, subject, message } = ContactFormSchema.parse(body)
 
         // Nodemailer Transporter konfigurieren
         const transporter = nodemailer.createTransport({
@@ -36,34 +16,34 @@ export default defineEventHandler(async (event) => {
             secure: process.env.SMTP_SECURE === 'true',
             auth: {
                 user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS
-            }
+                pass: process.env.SMTP_PASS,
+            },
         })
 
         // Email Optionen
         const mailOptions = {
-            from: `"${body.name}" <${process.env.SMTP_FROM}>`,
+            from: `"${name}" <${process.env.SMTP_FROM}>`,
             to: process.env.CONTACT_EMAIL,
-            replyTo: body.email,
-            subject: body.subject || 'Neue Kontaktanfrage',
+            replyTo: email,
+            subject: subject || 'Neue Kontaktanfrage',
             html: `
         <h3>Neue Kontaktanfrage</h3>
-        <p><strong>Name:</strong> ${body.name}</p>
-        <p><strong>Email:</strong> ${body.email}</p>
-        <p><strong>Betreff:</strong> ${body.subject || 'Kein Betreff'}</p>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Betreff:</strong> ${subject || 'Kein Betreff'}</p>
         <p><strong>Nachricht:</strong></p>
-        <p>${body.message.replace(/\n/g, '<br>')}</p>
+        <p>${message.replace(/\n/g, '<br>')}</p>
       `,
             text: `
 Neue Kontaktanfrage
 
-Name: ${body.name}
-Email: ${body.email}
-Betreff: ${body.subject || 'Kein Betreff'}
+Name: ${name}
+Email: ${email}
+Betreff: ${subject || 'Kein Betreff'}
 
 Nachricht:
-${body.message}
-      `
+${message}
+      `,
         }
 
         // Email senden
@@ -71,15 +51,25 @@ ${body.message}
 
         return {
             success: true,
-            message: 'Email wurde erfolgreich gesendet'
+            message: 'Email wurde erfolgreich gesendet',
+        }
+    }
+    catch (error) {
+        if (error instanceof z.ZodError) {
+            // Spezifischer Fehler für ungültige Daten
+            throw createError({
+                statusCode: 400,
+                statusMessage: 'Validierungsfehler',
+                data: error.errors,
+            })
         }
 
-    } catch (error) {
         console.error('Email sending error:', error)
 
+        // Allgemeiner Serverfehler
         throw createError({
             statusCode: 500,
-            statusMessage: 'Fehler beim Senden der Email'
+            statusMessage: 'Fehler beim Senden der Email',
         })
     }
 })
