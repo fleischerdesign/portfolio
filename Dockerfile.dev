@@ -1,0 +1,30 @@
+# Stage 1: Build the development environment using Nix
+FROM nixos/nix:latest AS development
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the flake files first to leverage Docker layer caching
+COPY flake.nix flake.lock ./
+
+# Install all development dependencies from the flake.
+# This will populate the Nix store inside the container.
+# We run a simple command like "true" to trigger the shell creation.
+RUN nix develop --extra-experimental-features "nix-command flakes" --command true
+
+# Copy the rest of the application code
+COPY . .
+
+# Mark the repository directory as safe for git operations
+# This prevents errors when the container user doesn't match the host user's UID
+RUN git config --global --add safe.directory /app
+
+# Install node modules. This should use the node/npm version provided by Nix.
+RUN nix develop --extra-experimental-features "nix-command flakes" --command npm install
+
+# Expose the Nuxt development port
+EXPOSE 3000
+
+# The command to run when the container starts.
+# This will start the Nuxt dev server inside the Nix environment.
+CMD ["nix", "develop", "--extra-experimental-features", "nix-command flakes", "--command", "npm", "run", "dev"]

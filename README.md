@@ -63,13 +63,44 @@ Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.co
     npm install
     ```
 
-### Development Server
+### Running the Development Server
+
+There are three recommended ways to run the development environment. Choose the one that best fits your workflow.
+
+#### 1. Standard (npm)
+
+This is the standard method if you have a suitable version of [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed locally.
 
 Start the development server on `http://localhost:3000`:
-
 ```bash
 npm run dev
 ```
+
+#### 2. Using Nix
+
+If you have [Nix](https://nixos.org/) installed, you can use the `flake.nix` file to create a reproducible shell with all the exact dependencies.
+
+1.  Enter the development shell:
+    ```bash
+    nix develop
+    ```
+2.  Once inside the shell, start the server:
+    ```bash
+    npm run dev
+    ```
+
+#### 3. Using Docker
+
+For a fully containerized environment that uses Nix under the hood, you can use the provided Docker setup. This is ideal if you prefer Docker or don't have Nix/Node.js on your host machine.
+
+**Prerequisites:**
+- [Docker](https.www.docker.com/) installed and running.
+
+**Instructions:**
+```bash
+docker compose -f compose.dev.yaml up --build
+```
+The server will be available at `http://localhost:3000`. Hot-reloading is enabled.
 
 ### Production
 
