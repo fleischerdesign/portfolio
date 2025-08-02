@@ -60,6 +60,9 @@ export default defineNuxtConfig({
     targetLocale: 'en',
   },
   i18n: {
+    bundle: {
+      optimizeTranslationDirective: false
+    },
     strategy: 'prefix',
     detectBrowserLanguage: {
       useCookie: true,

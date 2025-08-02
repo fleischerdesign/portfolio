@@ -52,7 +52,13 @@ Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.co
     cd portfolio
     ```
 
-2.  Install dependencies:
+2.  Set up your environment variables:
+    ```bash
+    cp .env.example .env
+    ```
+    Now, open the `.env` file and fill in your credentials for the mail server and translation APIs.
+
+3.  Install dependencies:
     ```bash
     npm install
     ```
