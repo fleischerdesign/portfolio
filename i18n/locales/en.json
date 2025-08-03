@@ -79,11 +79,13 @@
     },
     "projects": {
       "title": "Projects",
-      "subtitle": "Explore a collection of my web development projects, ranging from dynamic e-commerce sites to custom tools. Each showcases my expertise in creating functional and user-friendly solutions."
+      "subtitle": "Explore a collection of my web development projects, ranging from dynamic e-commerce sites to custom tools. Each showcases my expertise in creating functional and user-friendly solutions.",
+      "view_all": "All Projects"
     },
     "blog": {
       "title": "Blog",
-      "subtitle": "Discover a collection of my blog posts where I share learnings, experiences, and practical advice related to Coding, Hacking, UI & UX. Join me as I explore and document my journey in Computer Science."
+      "subtitle": "Discover a collection of my blog posts where I share learnings, experiences, and practical advice related to Coding, Hacking, UI & UX. Join me as I explore and document my journey in Computer Science.",
+      "view_all": "All Articles"
     },
     "contact": {
       "title": "Contact",

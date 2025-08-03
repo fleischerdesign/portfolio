@@ -79,11 +79,13 @@
     },
     "projects": {
       "title": "Projekte",
-      "subtitle": "Eine Auswahl meiner Programmierprojekte, von dynamischen E-Commerce-Sites bis hin zu kleineren Tools. Jedes Projekt zeigt meine Expertise in der Erstellung funktionaler und benutzerfreundlicher Lösungen."
+      "subtitle": "Eine Auswahl meiner Programmierprojekte, von dynamischen E-Commerce-Sites bis hin zu kleineren Tools. Jedes Projekt zeigt meine Expertise in der Erstellung funktionaler und benutzerfreundlicher Lösungen.",
+      "view_all": "Alle Projekte"
     },
     "blog": {
       "title": "Blog",
-      "subtitle": "Eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleite mich auf meine Reise in die Informatik."
+      "subtitle": "Eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleite mich auf meine Reise in die Informatik.",
+      "view_all": "Alle Artikel"
     },
     "contact": {
       "title": "Kontakt",

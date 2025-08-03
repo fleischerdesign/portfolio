@@ -4,6 +4,13 @@
     <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
       <BlogPostCard v-for="(post, index) in posts" :key="index" :post="post" />
     </div>
+    <div class="mt-8 text-center">
+      <NuxtLink to="/blog" class="block w-full md:inline-block md:w-auto">
+        <UiButton variant="secondary" class="w-full">
+          {{ $t('home.blog.view_all') }}
+        </UiButton>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 

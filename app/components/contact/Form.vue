@@ -37,7 +37,7 @@
             class="flex-grow"
             required />
 
-        <UiButton type="submit" variant="secondary" class="flex w-full items-center justify-center py-4" :disabled="loading">
+        <UiButton type="submit" variant="secondary" class="flex w-full items-center justify-center" :disabled="loading">
             <span v-if="!loading">{{ $t('contact.form.label.submit') }}</span>
             <svg
 v-else class="h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
