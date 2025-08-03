@@ -9,7 +9,7 @@
         </div>
         <div class="md:ml-auto lg:mx-auto">
           <h3 class="pb-4 text-xl font-medium">{{ $t("footer.contact") }}</h3>
-          <p class="text-neutral-600 dark:text-neutral-400">+49 123 456789</p>
+          <p class="text-neutral-600 dark:text-neutral-400">+49 176 31099324</p>
           <p class="text-neutral-600 dark:text-neutral-400">hello@fleischer.design</p>
           <p class="text-neutral-600 dark:text-neutral-400">17036 Neubrandenburg</p>
         </div>
