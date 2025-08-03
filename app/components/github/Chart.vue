@@ -198,10 +198,10 @@ function getColorClass(count: number) {
   const level = getColorLevel(count)
   const colors = [
     'dark:fill-neutral-900 fill-neutral-100 dark:stroke-neutral-800 stroke-neutral-200',
-    'dark:fill-secondary-300 fill-secondary-700 hover:scale-125 hover:shadow-lg transition-transform origin-center',
-    'dark:fill-secondary-400 fill-secondary-600 hover:scale-125 hover:shadow-lg transition-transform origin-center',
-    'dark:fill-secondary-500 fill-secondary-500 yhover:scale-125 hover:shadow-lg transition-transform origin-center',
-    'dark:fill-secondary-600 fill-secondary-400 hover:scale-125 hover:shadow-lg transition-transform origin-center',
+    'dark:fill-secondary-300 fill-secondary-700 hover:scale-125 transition-transform origin-center',
+    'dark:fill-secondary-400 fill-secondary-600 hover:scale-125 transition-transform origin-center',
+    'dark:fill-secondary-500 fill-secondary-500 hover:scale-125 transition-transform origin-center',
+    'dark:fill-secondary-600 fill-secondary-400 hover:scale-125 transition-transform origin-center',
   ]
   return colors[level]
 }
