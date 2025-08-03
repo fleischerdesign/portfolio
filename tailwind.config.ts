@@ -28,9 +28,7 @@ export default <Partial<Config>>{
       dropShadow: {
         'emit': '0px 0px 5px ' + secondary['500'],
         'emit-lg': '0px 0px 10px ' + secondary['500'],
-      },
-      boxShadow: {
-        glow: '0 0 10px ' + secondary['400'],
+        glow: '0px 0px 10px ' + secondary['400'],
       },
       colors: {
         neutral: primary,
