@@ -1,6 +1,5 @@
 import nodemailer from 'nodemailer'
 import { z } from 'zod'
-import { ContactFormSchema } from '~/utils/schemas/contact'
 
 export default defineEventHandler(async (event) => {
     try {

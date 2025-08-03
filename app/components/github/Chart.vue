@@ -132,6 +132,12 @@ const allWeeksData = computed(() => {
     for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
       const currentDate = new Date(weekStart)
       currentDate.setDate(currentDate.getDate() + dayIndex)
+
+      // Nur Tage bis zum heutigen Datum in der letzten Woche hinzufügen
+      if (weekIndex === 51 && currentDate > today) {
+        break;
+      }
+
       const isoDate = currentDate.toISOString().slice(0, 10)
       week.push({
         date: isoDate,

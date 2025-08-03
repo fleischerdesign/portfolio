@@ -1,6 +1,5 @@
 import { ref } from 'vue'
 import { z } from 'zod'
-import { ContactFormSchema, type ContactForm } from '~/utils/schemas/contact'
 
 const TIMEOUT_DURATION = 5000
 
