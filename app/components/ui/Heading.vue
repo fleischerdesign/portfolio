@@ -1,9 +1,6 @@
 <template>
   <div class="mb-10 flex flex-col gap-4">
-    <NuxtLinkLocale v-if="link" :to="link" class="self-start">
-      <component :is="tag" class="text-5xl font-semibold">{{ title }}</component>
-    </NuxtLinkLocale>
-    <div v-else class="flex items-center gap-2">
+    <div class="flex items-center gap-2">
       <Icon v-if="symbol" :name="symbol" class="h-10 w-10 shrink-0 fill-secondary-400" mode="svg" />
       <component :is="tag" class="text-5xl font-semibold">{{ title }}</component>
     </div>
@@ -17,12 +14,10 @@
 const props = withDefaults(defineProps<{
   title: string
   subtitle: string
-  link?: string
   symbol?: string
   level?: 1 | 2
 }>(), {
   level: 2,
-  link: undefined,
   symbol: undefined,
 })
 
