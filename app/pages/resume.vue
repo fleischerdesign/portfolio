@@ -38,7 +38,7 @@
           <!-- Tech Stack Section -->
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Softskills</h3>
-            <TechstackList :items="resumeData.softSkills" :scroll="false" />
+            <TechstackList :items="resumeData.softSkills" :scroll="false" :gradient="true" />
           </section>
         </div>
         <div class="w-2/3">
@@ -48,7 +48,7 @@
           </section>
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('home.overview.techstack.title') }}</h3>
-            <TechstackList :items="resumeData.techStack" :scroll="false" />
+            <TechstackList :items="resumeData.techStack" :scroll="false" :gradient="true" />
           </section>
           <!-- Career Timeline Section -->
           <section class="mb-8">
@@ -85,7 +85,7 @@
           </section>
             <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Kurse</h3>
-            <TechstackList :items="resumeData.softSkills" :scroll="false" />
+            <TechstackList :items="resumeData.softSkills" :scroll="false" :gradient="true" />
             </section>
             <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Projekte</h3>

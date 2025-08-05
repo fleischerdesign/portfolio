@@ -9,7 +9,7 @@ v-for="(row, rowIndex) in rowItems" :key="'marquee-row-' + rowIndex"
 :ref="el => setMarqueeRef(el as HTMLElement | null, rowIndex)"
           class="marquee flex gap-2 whitespace-nowrap"
           :style="{ animationDuration: animationDurations[rowIndex] + 's' }">
-          <UiTag v-for="(item, index) in [...row, ...row]" :key="index" fill>
+          <UiTag v-for="(item, index) in [...row, ...row]" :key="index" :gradient="gradient" fill>
             <Icon v-if="techIcons[item]" :name="techIcons[item]" class="text-xl" />
             <span>{{ item }}</span>
           </UiTag>
@@ -19,7 +19,7 @@ v-for="(row, rowIndex) in rowItems" :key="'marquee-row-' + rowIndex"
     <!-- Ohne Scroll-Effekt -->
     <template v-else>
       <div v-for="(row, rowIndex) in rowItems" :key="'static-row-' + rowIndex" class="flex flex-wrap gap-2">
-        <UiTag v-for="(item, index) in row" :key="index" fill>
+        <UiTag v-for="(item, index) in row" :key="index" :gradient="gradient" fill>
           <Icon v-if="techIcons[item]" :name="techIcons[item]" class="text-xl" />
           <span>{{ item }}</span>
         </UiTag>
@@ -65,11 +65,13 @@ const techIcons: Record<string, string> = {
 const props = defineProps<{
   items: string[],
   scroll?: boolean,
-  rows?: number
+  rows?: number,
+  gradient?: boolean
 }>();
 
 const scroll = computed(() => props.scroll ?? false);
 const rows = computed(() => props.rows ?? 1);
+const gradient = computed(() => props.gradient ?? false);
 
 // Items gleichmäßig auf Zeilen verteilen
 function chunkArray<T>(arr: T[], chunkCount: number): T[][] {
