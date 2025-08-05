@@ -34,12 +34,18 @@
             <div><span class="font-bold">Führerschein:</span> Klasse B</div>
             <div><span class="font-bold">Wohnort:</span> Hufelandstr. 55, 17036 Neubrandenburg</div>
           </section>
-
           <!-- Tech Stack Section -->
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Softskills</h3>
             <TechstackList :items="resumeData.softSkills" :scroll="false" :gradient="true" />
           </section>
+            <section class="mb-8">
+            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Sprachen</h3>
+            <ul>
+              <li><b>Deutsch:</b> Muttersprache</li>
+              <li><b>Englisch:</b> C1 Niveau</li>
+            </ul>
+            </section>
         </div>
         <div class="w-2/3">
           <section class="mb-8">
@@ -68,13 +74,6 @@
               <li><b>Kultur:</b> Bücher, Musik, Cuisine, Natur, Kunst, Design, Film</li>
               <li><b>Gesundheit:</b> Laufen, Fitness, Mental, Ernährung</li>
               <li><b>Bildung:</b> MINT, Psychologie, Geschichte, Politik, Biologie</li>
-            </ul>
-            </section>
-            <section class="mb-8">
-            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Sprachen</h3>
-            <ul>
-              <li><b>Deutsch:</b> Muttersprachler</li>
-              <li><b>Englisch:</b> C1 Niveau</li>
             </ul>
             </section>
         </div>

@@ -59,7 +59,8 @@ const techIcons: Record<string, string> = {
   'PostgreSQL': 'simple-icons:postgresql',
   'MongoDB': 'simple-icons:mongodb',
   'REST': 'mdi:api',
-  'GraphQL': 'simple-icons:graphql'
+  'GraphQL': 'simple-icons:graphql',
+  'Java': 'devicon-plain:java',
 };
 
 const props = defineProps<{

@@ -11,7 +11,7 @@ export const getResumeData = (t: ComposerTranslation) => ({
   summary: t("home.hero.summary"),
   techStack: [
     'Typescript', 'React', 'Git', 'Docker', 'Dart', 'Rust', 'Tailwind', 'Vue', 'Flutter',
-    'Node.js', 'Deno', 'Python', 'PostgreSQL', 'MongoDB', 'REST', 'GraphQL'
+    'Node.js', 'Deno', 'Python', 'PostgreSQL', 'MongoDB', 'Java', 'GraphQL', 'Linux'
   ],
   softSkills: [
     'Leadership', 'Teamwork', 'Problem Solving', 'Communication', 'Adaptability',
