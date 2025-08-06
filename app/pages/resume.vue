@@ -56,17 +56,23 @@
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('home.overview.techstack.title') }}</h3>
             <TechstackList :items="resumeData.techStack" :scroll="false" :gradient="true" />
           </section>
-          <!-- Career Timeline Section -->
-          <section class="mb-8">
-            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('about.overview.careerPath.title') }}</h3>
-            <BaseTimeline :items="resumeData.careerTimeline.filter(item => item.type === 'career')" :is-print-view="true" />
-          </section>
+            <section v-if="projects" class="mb-8">
+            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Projekte</h3>
+            <div class="grid grid-cols-1 gap-4">
+              <ProjectCard v-for="project in projects" :key="project.slug" :project="project" :compact="true" />
+            </div>
+            </section>
         </div>
       </div>
     </div>
       <div class="main-content-pages break-inside-avoid-page px-20 py-10">
       <div class="flex gap-10">
         <div class="w-1/3">
+          <!-- Career Timeline Section -->
+          <section class="mb-8">
+            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('about.overview.careerPath.title') }}</h3>
+            <BaseTimeline :items="resumeData.careerTimeline.filter(item => item.type === 'career')" :is-print-view="true" />
+          </section>
             <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Interessen</h3>
             <ul>
@@ -86,15 +92,6 @@
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Kurse</h3>
             <TechstackList :items="resumeData.softSkills" :scroll="false" :gradient="true" />
             </section>
-            <section v-if="projects" class="mb-8">
-            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Projekte</h3>
-            <div class="grid grid-cols-1 gap-4">
-              <div v-for="project in projects" :key="project.slug" class="block p-2">
-                <h4 class="font-bold text-lg">{{ project.title }}</h4>
-                <p class="text-sm text-neutral-600 dark:text-neutral-400">{{ project.subtitle }}</p>
-              </div>
-            </div>
-            </section>
         </div>
       </div>
       </div>
@@ -110,7 +107,7 @@ const resumeData = getResumeData(t);
 const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`, () =>
   queryCollection('projects')
     .where('locale', '=', locale.value)
-    .select('title', 'subtitle', 'slug')
+    .select('title', 'subtitle', 'slug', 'image')
     .all()
 );
 </script>

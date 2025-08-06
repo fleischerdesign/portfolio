@@ -10,7 +10,7 @@
                 </div>
             </div>
             <UiCardContainer class="flex-col">
-                <h3 class="text-3xl font-medium">{{ project.title }}</h3>
+                <h3 :class="compact ? 'text-xl font-bold' : 'text-3xl font-medium'">{{ project.title }}</h3>
                 <p class="text-neutral-600 dark:text-neutral-400">{{ project.subtitle }}</p>
             </UiCardContainer>
         </UiCard >
@@ -24,6 +24,7 @@ defineProps<{
         subtitle?: string
         image?: { src: string, alt?: string }
         slug: string
-    }
+    },
+    compact?: boolean
 }>()
 </script>
