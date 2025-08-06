@@ -1,7 +1,7 @@
 <template>
   <div class="pdf-resume-container text-primary-950 font-sans">
     <!-- Cover Page -->
-    <div class="cover-page flex h-[370mm] w-full flex-col justify-between px-20 py-10">
+    <div class="cover-page flex h-[371mm] w-full flex-col justify-between px-20 py-10">
       <UiCard class="relative h-auto w-full flex-grow overflow-hidden rounded-lg shadow-lg">
         <img src="/img/profile.jpg" alt="Profile Picture" class="h-full w-full object-cover" />
         <!-- <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4 text-white opacity-100 transition-opacity"></div> -->
@@ -10,7 +10,7 @@
     </div>
 
     <!-- Main Content Pages -->
-    <div class="main-content-pages px-20 py-10">
+    <div class="main-content-pages h-[371mm] relative px-20 py-10">
       <div class="flex gap-2">
       <UiHeading
         :title="$t('about.overview.resume.title')"
@@ -64,8 +64,9 @@
             </section>
         </div>
       </div>
+      <div class="break-inside-avoid-page absolute bottom-0">Seite 1/2</div>
     </div>
-      <div class="main-content-pages break-inside-avoid-page px-20 py-10">
+      <div class="main-content-pages relative break-inside-avoid-page h-[371mm] px-20 py-10">
       <div class="flex gap-10">
         <div class="w-1/3">
           <!-- Career Timeline Section -->
@@ -94,6 +95,7 @@
             </section>
         </div>
       </div>
+      <div class="break-inside-avoid-page absolute bottom-0">Seite 2/2</div>
       </div>
   </div>
 </template>
