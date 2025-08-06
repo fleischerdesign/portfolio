@@ -14,8 +14,15 @@ export const getResumeData = (t: ComposerTranslation) => ({
     'Node.js', 'Deno', 'Python', 'PostgreSQL', 'MongoDB', 'Java', 'GraphQL', 'Linux'
   ],
   softSkills: [
-    'Leadership', 'Teamwork', 'Problem Solving', 'Communication', 'Adaptability',
-    'Time Management', 'Critical Thinking', 'Creativity', 'Attention to Detail'
+    t('softskills.leadership'),
+    t('softskills.teamwork'),
+    t('softskills.problem_solving'),
+    t('softskills.communication'),
+    t('softskills.adaptability'),
+    t('softskills.time_management'),
+    t('softskills.critical_thinking'),
+    t('softskills.creativity'),
+    t('softskills.attention_to_detail')
   ],
   careerTimeline: [
     {

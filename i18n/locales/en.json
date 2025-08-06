@@ -24,6 +24,17 @@
     "elementary_school_diploma": "Elementary School Diploma",
     "summary": "Summary"
   },
+  "softskills": {
+    "leadership": "Leadership",
+    "teamwork": "Teamwork",
+    "problem_solving": "Problem Solving",
+    "communication": "Communication",
+    "adaptability": "Adaptability",
+    "time_management": "Time Management",
+    "critical_thinking": "Critical Thinking",
+    "creativity": "Creativity",
+    "attention_to_detail": "Attention to Detail"
+  },
   "navigation": {
     "home": "Home",
     "about": "About",

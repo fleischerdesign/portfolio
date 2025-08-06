@@ -24,6 +24,17 @@
     "elementary_school_diploma": "Grundschulabschluss",
     "summary": "Zusammenfassung"
   },
+  "softskills": {
+    "leadership": "Führung",
+    "teamwork": "Teamwork",
+    "problem_solving": "Problemlösung",
+    "communication": "Kommunikation",
+    "adaptability": "Flexibilität",
+    "time_management": "Zeitmanagement",
+    "critical_thinking": "Kritisches Denken",
+    "creativity": "Kreativität",
+    "attention_to_detail": "Genauigkeit"
+  },
   "navigation": {
     "home": "Startseite",
     "about": "Über mich",
