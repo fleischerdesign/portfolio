@@ -5,11 +5,11 @@
       <BlogPostCard v-for="(post, index) in posts" :key="index" :post="post" />
     </div>
     <div class="mt-8 text-center">
-      <NuxtLink to="/blog" class="block w-full md:inline-block md:w-auto">
+      <NuxtLinkLocale to="/blog" class="block w-full md:inline-block md:w-auto">
         <UiButton variant="secondary" class="w-full">
           {{ $t('home.blog.view_all') }}
         </UiButton>
-      </NuxtLink>
+      </NuxtLinkLocale>
     </div>
   </div>
 </template>
