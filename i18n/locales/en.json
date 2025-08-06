@@ -298,5 +298,11 @@
       "published": "Published",
       "notpublished": "Unpublished"
     }
+  },
+  "resume": {
+    "personal": {
+      "location": "Neubrandenburg, Germany",
+      "internshipStatus": "Available for a 6-month mandatory internship"
+    }
   }
 }

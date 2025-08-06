@@ -298,5 +298,11 @@
       "published": "Veröffentlicht",
       "notpublished": "Unveröffentlicht"
     }
+  },
+  "resume": {
+    "personal": {
+      "location": "Neubrandenburg, Deutschland",
+      "internshipStatus": "Verfügbar für ein 6-monatiges Pflichtpraktikum"
+    }
   }
 }

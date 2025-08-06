@@ -86,14 +86,14 @@
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Kurse</h3>
             <TechstackList :items="resumeData.softSkills" :scroll="false" :gradient="true" />
             </section>
-            <section class="mb-8">
+            <section v-if="projects" class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Projekte</h3>
-            <ul>
-              <li><b>Fleischer.design:</b> Bla</li>
-              <li><b>Ancoris:</b> Bla</li>
-              <li><b>Riffle:</b> Bla</li>
-              <li><b>Scriptorium:</b> Bla</li>
-            </ul>
+            <div class="grid grid-cols-1 gap-4">
+              <div v-for="project in projects" :key="project.slug" class="block p-2">
+                <h4 class="font-bold text-lg">{{ project.title }}</h4>
+                <p class="text-sm text-neutral-600 dark:text-neutral-400">{{ project.subtitle }}</p>
+              </div>
+            </div>
             </section>
         </div>
       </div>
@@ -104,6 +104,13 @@
 <script lang="ts" setup>
 import { getResumeData } from '~/data/resumeData';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const resumeData = getResumeData(t);
+
+const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`, () =>
+  queryCollection('projects')
+    .where('locale', '=', locale.value)
+    .select('title', 'subtitle', 'slug')
+    .all()
+);
 </script>
