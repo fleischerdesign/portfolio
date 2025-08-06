@@ -64,7 +64,7 @@
             </section>
         </div>
       </div>
-      <div class="break-inside-avoid-page absolute bottom-0">Seite 1/2</div>
+      <ResumeFooter :current-page="1" :total-pages="2" class="absolute bottom-10 left-20 right-20" />
     </div>
       <div class="main-content-pages relative break-inside-avoid-page h-[371mm] px-20 py-10">
       <div class="flex gap-10">
@@ -95,7 +95,7 @@
             </section>
         </div>
       </div>
-      <div class="break-inside-avoid-page absolute bottom-0">Seite 2/2</div>
+      <ResumeFooter :current-page="2" :total-pages="2" class="absolute bottom-10 left-20 right-20" />
       </div>
   </div>
 </template>
