@@ -46,6 +46,31 @@
               <li><b>Englisch:</b> C1 Niveau</li>
             </ul>
             </section>
+          <section class="mb-8">
+            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Kontakt</h3>
+            <div class="grid grid-cols-1">
+              <div class="flex items-center gap-2">
+                <Icon name="heroicons:envelope" class="text-primary-500" />
+                <span>philipp@fleischer.design</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <Icon name="heroicons:phone" class="text-primary-500" />
+                <span>+49 176 310 99 324</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <Icon name="heroicons:globe-alt" class="text-primary-500" />
+                <span>fleischer.design</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <Icon name="mdi:github" class="text-primary-500" />
+                <span>github.com/fleischerdesign</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <Icon name="mdi:linkedin" class="text-primary-500" />
+                <span>linkedin.com/in/fleischerdesign</span>
+              </div>
+            </div>
+          </section>
         </div>
         <div class="w-2/3">
           <section class="mb-8">
