@@ -94,11 +94,6 @@
       <div class="main-content-pages relative break-inside-avoid-page h-[371mm] px-20 py-10">
       <div class="flex gap-10">
         <div class="w-1/3">
-          <!-- Career Timeline Section -->
-          <section class="mb-8">
-            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('about.overview.careerPath.title') }}</h3>
-            <BaseTimeline :items="resumeData.careerTimeline.filter(item => item.type === 'career')" :is-print-view="true" />
-          </section>
             <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Interessen</h3>
             <ul>
@@ -108,16 +103,21 @@
               <li><b>Bildung:</b> MINT, Psychologie, Geschichte, Politik, Biologie</li>
             </ul>
             </section>
-        </div>
-        <div class="w-2/3">
-          <section class="mb-8">
-            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Bildungsweg</h3>
-            <BaseTimeline :items="resumeData.careerTimeline.filter(item => item.type === 'education')" :is-print-view="true" />
-          </section>
             <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Kurse</h3>
             <TechstackList :items="resumeData.softSkills" :scroll="false" :gradient="true" />
             </section>
+        </div>
+        <div class="w-2/3">
+          <section class="mb-8">
+            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Bildungsweg</h3>
+            <BaseTimeline :items="resumeData.careerTimeline.filter(item => item.type === 'education').splice(0, 4)" :is-print-view="true" />
+          </section>
+          <!-- Career Timeline Section -->
+          <section class="mb-8">
+            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('about.overview.careerPath.title') }}</h3>
+            <BaseTimeline :items="resumeData.careerTimeline.filter(item => item.type === 'career')" :is-print-view="true" />
+          </section>
         </div>
       </div>
       <ResumeFooter :current-page="2" :total-pages="2" class="absolute bottom-10 left-20 right-20" />

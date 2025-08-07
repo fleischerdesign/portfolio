@@ -39,7 +39,7 @@
             <Icon :name="item.icon" size="24" class="text-secondary-400" :class="{'hidden': !isPrintView, 'block': isPrintView}" />
             {{ item.title }}
           </h3>
-          <p class="mt-2 text-gray-600 dark:text-gray-300">{{ item.description }}</p>
+          <p class="text-gray-600 dark:text-gray-300">{{ item.description }}</p>
           <div v-if="item.skills && item.skills.length && !isPrintView" class="mt-3 flex flex-wrap gap-2" :class="index % 2 === 0 ? (isPrintView ? 'justify-start' : 'md:justify-end') : 'justify-start'">
             <UiTag v-for="(skill, skillIndex) in item.skills" :key="skillIndex">
               {{ skill }}
