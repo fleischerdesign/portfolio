@@ -104,8 +104,14 @@
             </ul>
             </section>
             <section class="mb-8">
-            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Kurse</h3>
-            <TechstackList :items="resumeData.softSkills" :scroll="false" :gradient="true" />
+              <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Kurse</h3>
+              <div>
+                <div v-for="(skill, index) in resumeData.skills" :key="skill.title" :class="{ 'mb-4': index < resumeData.skills.length - 1 }">
+                  <h4 class="font-bold text-base">{{ skill.title }}</h4>
+                  <p class="text-sm">{{ skill.date }}</p>
+                  <p class="text-sm">{{ skill.teacher.join(', ') }}</p>
+                </div>
+              </div>
             </section>
         </div>
         <div class="w-2/3">

@@ -43,7 +43,7 @@ export default defineNuxtConfig({
   },
   autoTranslate: {
     apiProvider: 'openai', // oder 'anthropic', 'google'
-    model: 'gpt-4.1-nano', // Modell je nach Provider
+    model: 'gpt-4.1-mini-2025-04-14', // Modell je nach Provider
     paths: [
       {
         sourcePath: 'blog',
