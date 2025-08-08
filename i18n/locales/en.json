@@ -177,7 +177,16 @@
     },
     "resume": {
       "title": "Resume",
-      "subtitle": "Dive deeper into my qualifications and accomplishments. This section provides a comprehensive overview of my skills, education, and professional milestones."
+      "subtitle": "Dive deeper into my qualifications and accomplishments. This section provides a comprehensive overview of my skills, education, and professional milestones.",
+      "details": {
+        "birthday": "Birthday",
+        "birthplace": "Birthplace",
+        "marital_status_label": "Marital Status",
+        "marital_status": "Single",
+        "drivers_license_label": "Driver's License",
+        "drivers_license": "Class B",
+        "address_label": "Address"
+      }
     }
   },
   "blog": {
@@ -303,6 +312,49 @@
     "personal": {
       "location": "Neubrandenburg, Germany",
       "internshipStatus": "Available for a 6-month mandatory internship"
+    }
+  },
+  "languages": {
+    "title": "Languages",
+    "german": "German",
+    "english": "English",
+    "native": "Native"
+  },
+  "interests": {
+    "title": "Interests",
+    "technology": {
+      "title": "Technology",
+      "programming": "Programming",
+      "ml": "Machine Learning",
+      "ai": "Artificial Intelligence",
+      "additive_manufacturing": "Additive Manufacturing",
+      "cad": "CAD",
+      "video_games": "Video Games"
+    },
+    "culture": {
+      "title": "Culture",
+      "books": "Books",
+      "music": "Music",
+      "cuisine": "Cuisine",
+      "nature": "Nature",
+      "art": "Art",
+      "design": "Design",
+      "film": "Film"
+    },
+    "health": {
+      "title": "Health",
+      "running": "Running",
+      "fitness": "Fitness",
+      "mental": "Mental",
+      "nutrition": "Nutrition"
+    },
+    "education": {
+      "title": "Education",
+      "stem": "STEM",
+      "psychology": "Psychology",
+      "history": "History",
+      "politics": "Politics",
+      "biology": "Biology"
     }
   }
 }

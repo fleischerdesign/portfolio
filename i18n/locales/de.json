@@ -303,6 +303,58 @@
     "personal": {
       "location": "Neubrandenburg, Deutschland",
       "internshipStatus": "Verfügbar für ein 6-monatiges Pflichtpraktikum"
+    },
+    "details": {
+      "birthday": "Geburtstag",
+      "birthplace": "Geburtsort",
+      "marital_status_label": "Familienstand",
+      "marital_status": "Ledig",
+      "drivers_license_label": "Führerschein",
+      "drivers_license": "Klasse B",
+      "address_label": "Wohnort"
+    }
+  },
+  "languages": {
+    "title": "Sprachen",
+    "german": "Deutsch",
+    "english": "Englisch",
+    "native": "Muttersprache"
+  },
+  "interests": {
+    "title": "Interessen",
+    "technology": {
+      "title": "Technologie",
+      "programming": "Programmieren",
+      "ml": "Maschinelles Lernen",
+      "ai": "Künstliche Intelligenz",
+      "additive_manufacturing": "Additive Fertigung",
+      "cad": "CAD",
+      "video_games": "Videospiele"
+    },
+    "culture": {
+      "title": "Kultur",
+      "books": "Bücher",
+      "music": "Musik",
+      "cuisine": "Cuisine",
+      "nature": "Natur",
+      "art": "Kunst",
+      "design": "Design",
+      "film": "Film"
+    },
+    "health": {
+      "title": "Gesundheit",
+      "running": "Laufen",
+      "fitness": "Fitness",
+      "mental": "Mental",
+      "nutrition": "Ernährung"
+    },
+    "education": {
+      "title": "Bildung",
+      "stem": "MINT",
+      "psychology": "Psychologie",
+      "history": "Geschichte",
+      "politics": "Politik",
+      "biology": "Biologie"
     }
   }
 }

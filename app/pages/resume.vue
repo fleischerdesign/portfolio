@@ -55,12 +55,12 @@ Mit freundlichen Grüßen,<br><br>
       </UiCard >
       </section>
           <section class="mb-8">
-            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Philipp Fleischer</h3>
-            <div><span class="font-bold">Geburtstag:</span> 16.12.1995</div>
-            <div><span class="font-bold">Geburtsort:</span> Demmin</div>
-            <div><span class="font-bold">Familienstand:</span> Ledig</div>
-            <div><span class="font-bold">Führerschein:</span> Klasse B</div>
-            <div><span class="font-bold">Wohnort:</span> Hufelandstr. 55, 17036 Neubrandenburg</div>
+            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ resumeData.personal.name }}</h3>
+            <div><span class="font-bold">{{ $t('resume.details.birthday') }}:</span> {{ resumeData.details.birthday }}</div>
+            <div><span class="font-bold">{{ $t('resume.details.birthplace') }}:</span> {{ resumeData.details.birthplace }}</div>
+            <div><span class="font-bold">{{ $t('resume.details.marital_status_label') }}:</span> {{ resumeData.details.maritalStatus }}</div>
+            <div><span class="font-bold">{{ $t('resume.details.drivers_license_label') }}:</span> {{ resumeData.details.driversLicense }}</div>
+            <div><span class="font-bold">{{ $t('resume.details.address_label') }}:</span> {{ resumeData.details.address }}</div>
           </section>
           <!-- Tech Stack Section -->
           <section class="mb-8">
@@ -68,34 +68,33 @@ Mit freundlichen Grüßen,<br><br>
             <TechstackList :items="resumeData.softSkills" :scroll="false" :gradient="true" />
           </section>
             <section class="mb-8">
-            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Sprachen</h3>
-            <ul>
-              <li><b>Deutsch:</b> Muttersprache</li>
-              <li><b>Englisch:</b> C1 Niveau</li>
-            </ul>
+              <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('languages.title') }}</h3>
+              <ul>
+                <li v-for="lang in resumeData.languages" :key="lang.name"><b>{{ lang.name }}:</b> {{ lang.level }}</li>
+              </ul>
             </section>
           <section class="mb-8">
-            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Kontakt</h3>
+            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('contact.title') }}</h3>
             <div class="grid grid-cols-1">
               <div class="flex items-center gap-2">
                 <Icon name="heroicons:envelope" class="text-primary-500" />
-                <span>philipp@fleischer.design</span>
+                <span>{{ resumeData.contact.email }}</span>
               </div>
               <div class="flex items-center gap-2">
                 <Icon name="heroicons:phone" class="text-primary-500" />
-                <span>+49 176 310 99 324</span>
+                <span>{{ resumeData.contact.phone }}</span>
               </div>
               <div class="flex items-center gap-2">
                 <Icon name="heroicons:globe-alt" class="text-primary-500" />
-                <span>fleischer.design</span>
+                <span>{{ resumeData.contact.website }}</span>
               </div>
               <div class="flex items-center gap-2">
                 <Icon name="mdi:github" class="text-primary-500" />
-                <span>github.com/fleischerdesign</span>
+                <span>{{ resumeData.contact.github }}</span>
               </div>
               <div class="flex items-center gap-2">
                 <Icon name="mdi:linkedin" class="text-primary-500" />
-                <span>linkedin.com/in/fleischerdesign</span>
+                <span>{{ resumeData.contact.linkedin }}</span>
               </div>
             </div>
           </section>
@@ -123,13 +122,13 @@ Mit freundlichen Grüßen,<br><br>
       <div class="flex gap-10">
         <div class="w-1/3">
             <section class="mb-8">
-            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Interessen</h3>
-            <ul>
-              <li><b>Technologie:</b> Programmieren, Maschinelles Lernen, Künstliche Intelligenz, Additive Fertigung, CAD, Videospiele</li>
-              <li><b>Kultur:</b> Bücher, Musik, Cuisine, Natur, Kunst, Design, Film</li>
-              <li><b>Gesundheit:</b> Laufen, Fitness, Mental, Ernährung</li>
-              <li><b>Bildung:</b> MINT, Psychologie, Geschichte, Politik, Biologie</li>
-            </ul>
+              <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('interests.title') }}</h3>
+              <ul>
+                <li><b>{{ $t('interests.technology.title') }}:</b> {{ resumeData.interests.technology.join(', ') }}</li>
+                <li><b>{{ $t('interests.culture.title') }}:</b> {{ resumeData.interests.culture.join(', ') }}</li>
+                <li><b>{{ $t('interests.health.title') }}:</b> {{ resumeData.interests.health.join(', ') }}</li>
+                <li><b>{{ $t('interests.education.title') }}:</b> {{ resumeData.interests.education.join(', ') }}</li>
+              </ul>
             </section>
             <section class="mb-8">
               <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Kurse</h3>

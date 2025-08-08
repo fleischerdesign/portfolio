@@ -124,5 +124,29 @@ export const getResumeData = (t: ComposerTranslation) => ({
       date: "12.04.2020 - 02.05.2020",
       teacher: ["Autodesk"]
     },
-  ]
+  ],
+  details: {
+    birthday: "16.12.1995",
+    birthplace: "Demmin",
+    maritalStatus: t('resume.details.marital_status'),
+    driversLicense: t('resume.details.drivers_license'),
+    address: "Hufelandstr. 55, 17036 Neubrandenburg"
+  },
+  contact: {
+    email: "philipp@fleischer.design",
+    phone: "+49 176 310 99 324",
+    website: "fleischer.design",
+    github: "github.com/fleischerdesign",
+    linkedin: "linkedin.com/in/fleischerdesign"
+  },
+  languages: [
+    { name: t('languages.german'), level: t('languages.native') },
+    { name: t('languages.english'), level: 'C1' }
+  ],
+  interests: {
+    technology: [t('interests.technology.programming'), t('interests.technology.ml'), t('interests.technology.ai'), t('interests.technology.additive_manufacturing'), t('interests.technology.cad'), t('interests.technology.video_games')],
+    culture: [t('interests.culture.books'), t('interests.culture.music'), t('interests.culture.cuisine'), t('interests.culture.nature'), t('interests.culture.art'), t('interests.culture.design'), t('interests.culture.film')],
+    health: [t('interests.health.running'), t('interests.health.fitness'), t('interests.health.mental'), t('interests.health.nutrition')],
+    education: [t('interests.education.stem'), t('interests.education.psychology'), t('interests.education.history'), t('interests.education.politics'), t('interests.education.biology')]
+  }
 });
