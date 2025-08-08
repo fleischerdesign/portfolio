@@ -8,9 +8,37 @@
       </UiCard >
         <UiHeading :level="1" symbol="logo:fleischerdesign" :title="resumeData.personal.name" :subtitle="resumeData.personal.subtitle" class="!mb-0 mt-10"/>
     </div>
+    <!-- Writing -->
+    <div class="main-content-pages relative h-[371mm] px-20 py-10">
+      <div class="absolute right-20">Neubrandenburg, 08.08.2025</div>
+      <div>
+      <ul>
+        <li>Philipp Fleischer</li>
+        <li>Hufelandstr. 55</li>
+        <li>17036 Neubrandenburg</li>
+      </ul>
 
-    <!-- Main Content Pages -->
-    <div class="main-content-pages h-[371mm] relative px-20 py-10">
+      <ul class="mt-20">
+        <li>Sample GmbH</li>
+        <li>Muster Allee 46-48a</li>
+        <li>20435 Hamburg</li>
+      </ul>
+    </div>
+    
+      <UiHeading :level="1" symbol="logo:fleischerdesign" title="Bewerbung um ein Praktikum" subtitle="Umschüler zum Fachinformatiker für Anwendungsentwicklung" class="!mb-0 mt-20"/>
+      <div class="mt-20">
+Sehr geehrte/r Frau/Herr [Nachname des Ansprechpartners],<br><br>
+mit großem Interesse habe ich Ihre Stellenanzeige auf [Name der Jobbörse oder Webseite] gelesen und bin überzeugt, dass meine Fähigkeiten und Erfahrungen ideal zu den Anforderungen der Position als [Bezeichnung der Stelle] passen.<br><br>
+In meiner bisherigen beruflichen Laufbahn bei [Name des letzten Arbeitgebers] konnte ich umfassende Kenntnisse in [Nennen Sie hier 1-2 relevante Fachbereiche oder Tätigkeiten] erwerben. Zu meinen Hauptaufgaben gehörte unter anderem [Beschreiben Sie 1-2 konkrete Aufgaben oder Erfolge, die für die neue Stelle relevant sind]. Dabei habe ich gelernt, [Nennen Sie eine wichtige Fähigkeit, z.B. "eigenverantwortlich zu arbeiten", "im Team zu agieren" oder "prozessorientiert zu denken"].<br><br>
+Die in der Stellenanzeige geforderten Qualifikationen, insbesondere [Nennen Sie eine spezifische Anforderung aus der Stellenanzeige], bringe ich durch meine Ausbildung/mein Studium in [Name der Ausbildung/Studienfach] und meine praktische Erfahrung vollumfänglich mit. Mich reizt an Ihrem Unternehmen besonders [Nennen Sie einen Grund, z.B. "die innovative Ausrichtung", "die Unternehmenskultur" oder "die Möglichkeit zur Weiterentwicklung"].<br><br>
+Gerne überzeuge ich Sie in einem persönlichen Gespräch von meiner Motivation und meinen Fähigkeiten. Ich freue mich auf die Gelegenheit, mehr über die spannenden Aufgaben in Ihrem Unternehmen zu erfahren.<br><br>
+Mit freundlichen Grüßen,<br><br>
+[Ihr Vorname Ihr Nachname]
+      </div>
+      <ResumeFooter :current-page="1" :total-pages="3" class="absolute bottom-10 left-20 right-20" />
+    </div>
+    <!-- Resume Content Pages -->
+    <div class="main-content-pages relative h-[371mm] px-20 py-10">
       <div class="flex gap-2">
       <UiHeading
         :title="$t('about.overview.resume.title')"
@@ -91,7 +119,7 @@
       </div>
       <ResumeFooter :current-page="1" :total-pages="2" class="absolute bottom-10 left-20 right-20" />
     </div>
-      <div class="main-content-pages relative break-inside-avoid-page h-[371mm] px-20 py-10">
+      <div class="main-content-pages relative h-[371mm] break-inside-avoid-page px-20 py-10">
       <div class="flex gap-10">
         <div class="w-1/3">
             <section class="mb-8">
@@ -107,7 +135,7 @@
               <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Kurse</h3>
               <div>
                 <div v-for="(skill, index) in resumeData.skills" :key="skill.title" :class="{ 'mb-4': index < resumeData.skills.length - 1 }">
-                  <h4 class="font-bold text-base">{{ skill.title }}</h4>
+                  <h4 class="text-base font-bold">{{ skill.title }}</h4>
                   <p class="text-sm">{{ skill.date }}</p>
                   <p class="text-sm">{{ skill.teacher.join(', ') }}</p>
                 </div>
