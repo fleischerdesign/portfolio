@@ -180,7 +180,7 @@ sizes="100vw lg:600px" src="/img/child.jpg"
                                 <p class="mt-1">{{ $t("about.careerPath.content.paragraph2") }}</p>
                             </div>
                         </div>
-            <BaseTimeline :items="careerTimeline" />
+            <BaseTimeline :items="timeline" />
 
                         <div class="flex items-start gap-4">
                             <div>
@@ -260,7 +260,7 @@ sizes="100vw lg:400px" src="/img/business_atire.jpg"
 </template>
 
 <script lang="ts" setup>
-import { getResumeData } from '../data/resumeData.ts'
+import { timelineData } from '~/data/timeline.data';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -280,6 +280,5 @@ useSeoMeta({
     robots: 'index, follow',
 })
 
-const resumeData = getResumeData(t)
-const careerTimeline = resumeData.careerTimeline
+const timeline = timelineData(t)
 </script>

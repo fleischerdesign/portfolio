@@ -6,7 +6,7 @@
         <img src="/img/profile.jpg" alt="Profile Picture" class="h-full w-full object-cover" />
         <!-- <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4 text-white opacity-100 transition-opacity"></div> -->
       </UiCard >
-        <UiHeading :level="1" symbol="logo:fleischerdesign" :title="resumeData.personal.name" :subtitle="resumeData.personal.subtitle" class="!mb-0 mt-10"/>
+        <UiHeading :level="1" symbol="logo:fleischerdesign" :title="personal.name" :subtitle="personal.subtitle" class="!mb-0 mt-10"/>
     </div>
     <!-- Writing -->
     <div class="main-content-pages relative h-[371mm] px-20 py-10">
@@ -55,22 +55,22 @@ Mit freundlichen Grüßen,<br><br>
       </UiCard >
       </section>
           <section class="mb-8">
-            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ resumeData.personal.name }}</h3>
-            <div><span class="font-bold">{{ $t('resume.details.birthday') }}:</span> {{ resumeData.details.birthday }}</div>
-            <div><span class="font-bold">{{ $t('resume.details.birthplace') }}:</span> {{ resumeData.details.birthplace }}</div>
-            <div><span class="font-bold">{{ $t('resume.details.marital_status_label') }}:</span> {{ resumeData.details.maritalStatus }}</div>
-            <div><span class="font-bold">{{ $t('resume.details.drivers_license_label') }}:</span> {{ resumeData.details.driversLicense }}</div>
-            <div><span class="font-bold">{{ $t('resume.details.address_label') }}:</span> {{ resumeData.details.address }}</div>
+            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ personal.name }}</h3>
+            <div><span class="font-bold">{{ $t('resume.details.birthday') }}:</span> {{ personal.birth.date }}</div>
+            <div><span class="font-bold">{{ $t('resume.details.birthplace') }}:</span> {{ personal.birth.location }}</div>
+            <div><span class="font-bold">{{ $t('resume.details.marital_status_label') }}:</span> {{ personal.maritalStatus }}</div>
+            <div><span class="font-bold">{{ $t('resume.details.drivers_license_label') }}:</span> {{ personal.driversLicense }}</div>
+            <div><span class="font-bold">{{ $t('resume.details.address_label') }}:</span> {{ personal.address.street }}, {{ personal.address.postalCode }} {{ personal.address.city }}, {{ personal.address.county }}, {{ personal.address.country }}</div>
           </section>
           <!-- Tech Stack Section -->
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Softskills</h3>
-            <TechstackList :items="resumeData.softSkills" :scroll="false" :gradient="true" />
+            <TechstackList :items="softSkills" :scroll="false" :gradient="true" />
           </section>
             <section class="mb-8">
               <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('languages.title') }}</h3>
               <ul>
-                <li v-for="lang in resumeData.languages" :key="lang.name"><b>{{ lang.name }}:</b> {{ lang.level }}</li>
+                <li v-for="lang in languages" :key="lang.name"><b>{{ lang.name }}:</b> {{ lang.level }}</li>
               </ul>
             </section>
           <section class="mb-8">
@@ -78,23 +78,23 @@ Mit freundlichen Grüßen,<br><br>
             <div class="grid grid-cols-1">
               <div class="flex items-center gap-2">
                 <Icon name="heroicons:envelope" class="text-primary-500" />
-                <span>{{ resumeData.contact.email }}</span>
+                <span>{{ contact.email }}</span>
               </div>
               <div class="flex items-center gap-2">
                 <Icon name="heroicons:phone" class="text-primary-500" />
-                <span>{{ resumeData.contact.phone }}</span>
+                <span>{{ contact.phone }}</span>
               </div>
               <div class="flex items-center gap-2">
                 <Icon name="heroicons:globe-alt" class="text-primary-500" />
-                <span>{{ resumeData.contact.website }}</span>
+                <span>{{ contact.website }}</span>
               </div>
               <div class="flex items-center gap-2">
                 <Icon name="mdi:github" class="text-primary-500" />
-                <span>{{ resumeData.contact.github }}</span>
+                <span>{{ contact.github }}</span>
               </div>
               <div class="flex items-center gap-2">
                 <Icon name="mdi:linkedin" class="text-primary-500" />
-                <span>{{ resumeData.contact.linkedin }}</span>
+                <span>{{ contact.linkedin }}</span>
               </div>
             </div>
           </section>
@@ -102,11 +102,11 @@ Mit freundlichen Grüßen,<br><br>
         <div class="w-2/3">
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('common.summary') }}</h3>
-            <p class="text-base leading-relaxed">{{ resumeData.summary }}</p>
+            <p class="text-base leading-relaxed">{{ t("home.hero.summary") }}</p>
           </section>
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('home.overview.techstack.title') }}</h3>
-            <TechstackList :items="resumeData.techStack" :scroll="false" :gradient="true" />
+            <TechstackList :items="techStack" :scroll="false" :gradient="true" />
           </section>
             <section v-if="projects" class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Projekte</h3>
@@ -124,16 +124,16 @@ Mit freundlichen Grüßen,<br><br>
             <section class="mb-8">
               <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('interests.title') }}</h3>
               <ul>
-                <li><b>{{ $t('interests.technology.title') }}:</b> {{ resumeData.interests.technology.join(', ') }}</li>
-                <li><b>{{ $t('interests.culture.title') }}:</b> {{ resumeData.interests.culture.join(', ') }}</li>
-                <li><b>{{ $t('interests.health.title') }}:</b> {{ resumeData.interests.health.join(', ') }}</li>
-                <li><b>{{ $t('interests.education.title') }}:</b> {{ resumeData.interests.education.join(', ') }}</li>
+                <li><b>{{ $t('interests.technology.title') }}:</b> {{ interests.technology.join(', ') }}</li>
+                <li><b>{{ $t('interests.culture.title') }}:</b> {{ interests.culture.join(', ') }}</li>
+                <li><b>{{ $t('interests.health.title') }}:</b> {{ interests.health.join(', ') }}</li>
+                <li><b>{{ $t('interests.education.title') }}:</b> {{ interests.education.join(', ') }}</li>
               </ul>
             </section>
             <section class="mb-8">
               <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Kurse</h3>
               <div>
-                <div v-for="(skill, index) in resumeData.skills" :key="skill.title" :class="{ 'mb-4': index < resumeData.skills.length - 1 }">
+                <div v-for="(skill, index) in courses" :key="skill.title" :class="{ 'mb-4': index < courses.length - 1 }">
                   <h4 class="text-base font-bold">{{ skill.title }}</h4>
                   <p class="text-sm">{{ skill.date }}</p>
                   <p class="text-sm">{{ skill.teacher.join(', ') }}</p>
@@ -144,12 +144,12 @@ Mit freundlichen Grüßen,<br><br>
         <div class="w-2/3">
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Bildungsweg</h3>
-            <BaseTimeline :items="resumeData.careerTimeline.filter(item => item.type === 'education').splice(0, 4)" :is-print-view="true" />
+            <BaseTimeline :items="timeline.filter(item => item.type === 'education').splice(0, 4)" :is-print-view="true" />
           </section>
           <!-- Career Timeline Section -->
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('about.overview.careerPath.title') }}</h3>
-            <BaseTimeline :items="resumeData.careerTimeline.filter(item => item.type === 'career')" :is-print-view="true" />
+            <BaseTimeline :items="timeline.filter(item => item.type === 'career')" :is-print-view="true" />
           </section>
         </div>
       </div>
@@ -159,10 +159,24 @@ Mit freundlichen Grüßen,<br><br>
 </template>
 
 <script lang="ts" setup>
-import { getResumeData } from '~/data/resumeData';
+import { personalData } from '~/data/personal.data';
+import { languagesData } from '~/data/languages.data';
+import { interestsData } from '~/data/interests.data';
+import { contactData } from '~/data/contact.data';
+import { timelineData } from '~/data/timeline.data';
+import { coursesData } from '~/data/courses.data';
+import { softSkillsData } from '~/data/softSkills.data';
+import { techStackData } from '~/data/techStack.data';
 
 const { t, locale } = useI18n();
-const resumeData = getResumeData(t);
+const personal = personalData(t);
+const languages = languagesData(t);
+const interests = interestsData(t);
+const contact = contactData;
+const timeline = timelineData(t);
+const courses = coursesData;
+const softSkills = softSkillsData(t);
+const techStack = techStackData;
 
 const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`, () =>
   queryCollection('projects')
