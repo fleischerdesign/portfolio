@@ -1,7 +1,8 @@
 
-import type { ComposerTranslation } from "#i18n"
+import type { ComposerTranslation, LocaleMessageValue, VueMessageType } from "#i18n"
+import type { LocaleMessage, RemoveIndexSignature } from "@intlify/core-base";
 
-export const getResumeData = (t: ComposerTranslation) => ({
+export const getResumeData = (t: ComposerTranslation<{ en: LocaleMessage<VueMessageType>; de: LocaleMessage<VueMessageType>; }, "en" | "de", RemoveIndexSignature<{ [x: string]: LocaleMessageValue<VueMessageType>; }>, never, string, string>) => ({
   personal: {
     name: "Philipp Fleischer",
     subtitle: t("home.hero.summary"),
