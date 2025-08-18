@@ -42,8 +42,9 @@ export default defineNuxtConfig({
     }
   },
   autoTranslate: {
-    apiProvider: 'openai', // oder 'anthropic', 'google'
-    model: 'gpt-4.1-mini-2025-04-14', // Modell je nach Provider
+    apiProvider: 'openai', // or 'anthropic', 'google'
+    apiBaseUrl: 'https://openrouter.ai/api/v1',
+    model: 'moonshotai/kimi-k2:free',
     paths: [
       {
         sourcePath: 'blog',

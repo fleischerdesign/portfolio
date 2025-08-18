@@ -17,6 +17,7 @@ interface TranslationConfig {
   targetLocale: string
   fieldsToTranslate: string[]
   paths: PathConfig[]
+  apiBaseUrl?: string
 }
 
 
@@ -165,7 +166,13 @@ async function callOpenAIWithPrompt(text: string, systemPrompt: string, config: 
     throw new Error('OPENAI_API_KEY environment variable is not set')
   }
 
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  // URL robust zusammensetzen und Trailing Slash entfernen
+  const baseUrl = (config.apiBaseUrl || 'https://api.openai.com/v1').replace(/\/$/, '');
+  const endpoint = `${baseUrl}/chat/completions`;
+
+  console.log(`📞 Calling API endpoint: ${endpoint}`);
+
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,
@@ -185,7 +192,8 @@ async function callOpenAIWithPrompt(text: string, systemPrompt: string, config: 
   })
 
   if (!response.ok) {
-    throw new Error(`OpenAI API Error: ${response.statusText}`)
+    const errorBody = await response.text()
+    throw new Error(`OpenAI API Error: ${response.statusText} - ${errorBody}`)
   }
 
   const data = await response.json()
