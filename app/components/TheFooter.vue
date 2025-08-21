@@ -21,7 +21,6 @@
             <li><NuxtLink :to="$localePath('/projects')">{{ $t("navigation.projects") }}</NuxtLink></li>
             <li><NuxtLink :to="$localePath('/blog')">{{ $t("navigation.blog") }}</NuxtLink></li>
             <li><NuxtLink :to="$localePath('/about')">{{ $t("navigation.about") }}</NuxtLink></li>
-            <li><NuxtLink :to="$localePath('/resume')">{{ $t("navigation.resume") }}</NuxtLink></li>
             <li><NuxtLink :to="$localePath('/legal')">{{ $t("navigation.legal") }}</NuxtLink></li>
           </ul>
         </div>

@@ -10,7 +10,7 @@
     </div>
     <!-- Writing -->
     <div class="main-content-pages relative h-[371mm] px-20 py-10">
-      <div class="absolute right-20">Neubrandenburg, 08.08.2025</div>
+      <div class="absolute right-20">Neubrandenburg, {{ currentDate }}</div>
       <div>
       <ul>
         <li>Philipp Fleischer</li>
@@ -177,6 +177,14 @@ const timeline = timelineData(t);
 const courses = coursesData;
 const softSkills = softSkillsData(t);
 const techStack = techStackData;
+
+const currentDate = computed(() => {
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const year = today.getFullYear();
+  return `${day}.${month}.${year}`;
+});
 
 const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`, () =>
   queryCollection('projects')
