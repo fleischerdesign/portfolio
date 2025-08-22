@@ -3,16 +3,15 @@ slug: scriptorium
 locale: de
 date: 2025-08-18
 published: true
-category: Kommandozeilen-Anwendung
+category: Kommandozeile
 techstack:
   - Java
   - Gradle
-  - SQLite
-  - Picocli
-  - jBCrypt
+  - SQL
+  - BCrypt
   - Jackson
   - Mockito
-  - JUnit 5
+  - JUnit
 tags:
   - Java
   - CLI
@@ -20,9 +19,9 @@ tags:
   - API-Integration
   - Systemarchitektur
 image:
-  src: /img/placeholder.jpg
+  src: /img/olena-bohovyk-Ft_Wn-K5YH8-unsplash.jpg
   alt: "Platzhalterbild für das Scriptorium Projekt"
-title: "Scriptorium - Ein Bibliothekssystem"
+title: "Scriptorium – Ein Bibliothekssystem"
 subtitle: "Ein robustes, kommandozeilenbasiertes Bibliothekssystem in Java zur Verwaltung von Büchern, Autoren und Benutzern."
 features:
   - "Umfassende Benutzer-, Buch-, Autoren- und Verlagsverwaltung"

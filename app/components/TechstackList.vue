@@ -61,6 +61,7 @@ const techIcons: Record<string, string> = {
   'REST': 'mdi:api',
   'GraphQL': 'simple-icons:graphql',
   'Java': 'devicon-plain:java',
+  'Gradle': 'simple-icons:gradle',
 };
 
 const props = defineProps<{

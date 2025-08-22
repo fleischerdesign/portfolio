@@ -27,7 +27,7 @@ tags:
 image:
   src: /img/fleischerdesign_screenshot.jpg
   alt: "Screenshot von fleischer.design"
-title: "Fleischer.design - Mein persönliches Portfolio"
+title: "Fleischer.design – Mein persönliches Portfolio"
 subtitle: "Die technische und kreative Umsetzung meines persönlichen Portfolios mit modernen Webtechnologien und bewährten Content Strategien."
 features:
   - Responsives, modernes Webdesign
