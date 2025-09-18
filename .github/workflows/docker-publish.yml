@@ -30,11 +30,3 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
-
-      - name: Trigger Komodo Redeploy
-        if: success()
-        run: |
-          curl -X POST \
-            -H "Content-Type: application/json" \
-            -d '{"secret": "${{ secrets.KOMODO_WEBHOOK_SECRET }}"}' \
-            ${{ secrets.KOMODO_WEBHOOK_URL }}
