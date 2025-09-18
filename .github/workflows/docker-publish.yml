@@ -1,22 +1,40 @@
-name: Build and Push Docker Image
+name: Build, Push, and Deploy Docker Image
+
 on:
   push:
-    branches: [ "master" ] # Oder "master"
+    branches: [ "master" ]
+  workflow_dispatch:
+
 jobs:
-  build-and-push:
+  build-push-deploy:
     runs-on: ubuntu-latest
+    environment: production
     permissions:
       contents: read
       packages: write
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: docker/login-action@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/build-push-action@v6
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
         with:
-          context: . # Annahme: Dockerfile ist im Root-Verzeichnis
+          context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
+
+      - name: Trigger Komodo Redeploy
+        if: success()
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"secret": "${{ secrets.KOMODO_WEBHOOK_SECRET }}"}' \
+            ${{ secrets.KOMODO_WEBHOOK_URL }}
