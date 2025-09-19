@@ -1,11 +1,3 @@
-import { writeFileSync } from 'fs'
-import { fileURLToPath } from 'url'
-import { dirname, resolve } from 'path'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-const DATA_PATH = resolve(__dirname, '../../../data/now.json')
-
 export default defineEventHandler(async (event) => {
   const token = getHeader(event, 'Authorization')?.replace('Bearer ', '')
   if (token !== process.env.NOW_API_TOKEN) {
@@ -35,7 +27,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    writeFileSync(DATA_PATH, JSON.stringify(newData, null, 2), 'utf-8')
+    await useStorage('data').setItem('now.json', newData)
     return { success: true, updatedAt: newData.updatedAt }
   } catch (error) {
     console.error('Failed to write now.json:', error)

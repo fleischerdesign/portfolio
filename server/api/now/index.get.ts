@@ -1,11 +1,3 @@
-import { readFileSync, existsSync } from 'fs'
-import { fileURLToPath } from 'url'
-import { dirname, resolve } from 'path'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-const DATA_PATH = resolve(__dirname, '../../../data/now.json')
-
 export default cachedEventHandler(async (event) => {
   const query = getQuery(event)
   const langParam = Array.isArray(query.lang) 
@@ -18,13 +10,13 @@ export default cachedEventHandler(async (event) => {
     || 'de'
   ) as string
 
-  if (!existsSync(DATA_PATH)) {
+  const data = await useStorage('data').getItem<Record<string, string>>('now.json')
+
+  if (!data) {
     return { status: 'No status set!', updatedAt: null , icon: 'mage:zap'}
   }
 
   try {
-    const rawData = readFileSync(DATA_PATH, 'utf-8')
-    const data = JSON.parse(rawData) as Record<string, string>
     return {
       status: data[lang] || data.de,
       icon: data.icon || 'info',
