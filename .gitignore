@@ -26,3 +26,5 @@ logs
 nix-direnv-reload
 .direnv
 .aider*
+
+/data/

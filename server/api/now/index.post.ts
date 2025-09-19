@@ -1,6 +1,8 @@
 export default defineEventHandler(async (event) => {
   const token = getHeader(event, 'Authorization')?.replace('Bearer ', '')
-  if (token !== process.env.NOW_API_TOKEN) {
+  const apiToken = process.env.NOW_API_TOKEN
+
+  if (!apiToken || !token || token !== apiToken) {
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
   }
 
