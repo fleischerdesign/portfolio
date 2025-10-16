@@ -74,7 +74,7 @@ Mit freundlichen Grüßen,<br><br>
               </ul>
             </section>
           <section class="mb-8">
-            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('contact.title') }}</h3>
+            <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('home.contact.title') }}</h3>
             <div class="grid grid-cols-1">
               <div class="flex items-center gap-2">
                 <Icon name="heroicons:envelope" class="text-primary-500" />
