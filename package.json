@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "generate-pdf": "ts-node scripts/generate-pdf.ts"
+    "generate-pdf": "node -r ts-node/register --env-file=.env scripts/generate-pdf.ts "
   },
   "dependencies": {
     "@nuxt/content": "^3.5.1",

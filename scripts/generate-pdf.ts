@@ -4,10 +4,11 @@ import path from 'path';
 import fs from 'fs';
 
 async function generatePdf() {
+  console.log(process.env.BROWSER_BIN);
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    executablePath: '/etc/profiles/per-user/philipp/bin/google-chrome-stable',
+    executablePath: process.env.BROWSER_BIN, 
   });
   const page = await browser.newPage();
 
