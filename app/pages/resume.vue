@@ -111,7 +111,7 @@ Mit freundlichen Grüßen,<br><br>
             <section v-if="projects" class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Projekte</h3>
             <div class="grid grid-cols-1 gap-4">
-              <ProjectCard v-for="project in projects.slice(0,3)" :key="project.slug" :project="project" :compact="true" />
+              <ProjectCard v-for="project in projects.slice(0,4)" :key="project.slug" :project="project" :compact="true" />
             </div>
             </section>
         </div>
