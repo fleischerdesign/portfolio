@@ -1,7 +1,7 @@
 <template>
   <div class="pdf-resume-container text-primary-950 font-sans">
     <!-- Cover Page -->
-    <div class="cover-page flex h-[371mm] w-full flex-col justify-between px-20 py-10">
+    <div class="cover-page flex h-[371mm] w-full flex-col justify-between px-[20mm] py-[20mm]">
       <UiCard class="relative h-auto w-full flex-grow overflow-hidden rounded-lg shadow-lg">
         <img src="/img/profile.jpg" alt="Profile Picture" class="h-full w-full object-cover" />
         <!-- <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4 text-white opacity-100 transition-opacity"></div> -->
@@ -11,7 +11,7 @@
     <!-- Writing -->
     <div class="main-content-pages relative h-[371mm] px-20 py-10">
       <div class="absolute right-20">Neubrandenburg, {{ currentDate }}</div>
-      <div>
+      <div class="mt-[20mm]">
       <ul>
         <li>Philipp Fleischer</li>
         <li>Hufelandstr. 55</li>
@@ -38,7 +38,7 @@ Mit freundlichen Grüßen,<br><br>
       <ResumeFooter :current-page="1" :total-pages="3" class="absolute bottom-10 left-20 right-20" />
     </div>
     <!-- Resume Content Pages -->
-    <div class="main-content-pages relative h-[371mm] px-20 py-10">
+    <div class="main-content-pages relative h-[371mm] px-[20mm] py-[20mm]">
       <div class="flex gap-2">
       <UiHeading
         :title="$t('about.overview.resume.title')"
@@ -118,7 +118,7 @@ Mit freundlichen Grüßen,<br><br>
       </div>
       <ResumeFooter :current-page="1" :total-pages="2" class="absolute bottom-10 left-20 right-20" />
     </div>
-      <div class="main-content-pages relative h-[371mm] break-inside-avoid-page px-20 py-10">
+      <div class="main-content-pages relative h-[371mm] break-inside-avoid-page px-[20mm] py-[20mm]">
       <div class="flex gap-10">
         <div class="w-1/3">
             <section class="mb-8">
