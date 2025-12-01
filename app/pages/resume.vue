@@ -1,7 +1,7 @@
 <template>
   <div class="pdf-resume-container text-primary-950 font-sans">
     <!-- Cover Page -->
-    <div class="cover-page flex h-[371mm] w-full flex-col justify-between px-[20mm] py-[20mm]">
+    <div class="cover-page flex h-[371mm] w-full flex-col justify-between p-[25mm]">
       <UiCard class="relative h-auto w-full flex-grow overflow-hidden rounded-lg shadow-lg">
         <img src="/img/profile.jpg" alt="Profile Picture" class="h-full w-full object-cover" />
         <!-- <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4 text-white opacity-100 transition-opacity"></div> -->
@@ -9,36 +9,59 @@
         <UiHeading :level="1" symbol="logo:fleischerdesign" :title="personal.name" :subtitle="personal.subtitle" class="!mb-0 mt-10"/>
     </div>
     <!-- Writing -->
-    <div class="main-content-pages relative h-[371mm] px-20 py-10">
-      <div class="absolute right-20">Neubrandenburg, {{ currentDate }}</div>
-      <div class="mt-[20mm]">
-      <ul>
-        <li>Philipp Fleischer</li>
-        <li>Hufelandstr. 55</li>
-        <li>17036 Neubrandenburg</li>
-      </ul>
+    <div class="main-content-pages relative h-[371mm] pt-[56.25mm] pb-[25mm] px-[25mm]">
+      <!-- Absenderzeile (Teil des Briefkopfs) -->
+      <div class="text-xs">
+        Philipp Fleischer, Hufelandstr. 55, 17036 Neubrandenburg
+      </div>
 
-      <ul class="mt-20">
-        <li>Sample GmbH</li>
-        <li>Muster Allee 46-48a</li>
-        <li>20435 Hamburg</li>
-      </ul>
-    </div>
-    
-      <UiHeading :level="1" symbol="logo:fleischerdesign" title="Bewerbung um ein Praktikum" subtitle="Umschüler zum Fachinformatiker für Anwendungsentwicklung" class="!mb-0 mt-20"/>
-      <div class="mt-20">
-Sehr geehrte/r Frau/Herr [Nachname des Ansprechpartners],<br><br>
-mit großem Interesse habe ich Ihre Stellenanzeige auf [Name der Jobbörse oder Webseite] gelesen und bin überzeugt, dass meine Fähigkeiten und Erfahrungen ideal zu den Anforderungen der Position als [Bezeichnung der Stelle] passen.<br><br>
-In meiner bisherigen beruflichen Laufbahn bei [Name des letzten Arbeitgebers] konnte ich umfassende Kenntnisse in [Nennen Sie hier 1-2 relevante Fachbereiche oder Tätigkeiten] erwerben. Zu meinen Hauptaufgaben gehörte unter anderem [Beschreiben Sie 1-2 konkrete Aufgaben oder Erfolge, die für die neue Stelle relevant sind]. Dabei habe ich gelernt, [Nennen Sie eine wichtige Fähigkeit, z.B. "eigenverantwortlich zu arbeiten", "im Team zu agieren" oder "prozessorientiert zu denken"].<br><br>
-Die in der Stellenanzeige geforderten Qualifikationen, insbesondere [Nennen Sie eine spezifische Anforderung aus der Stellenanzeige], bringe ich durch meine Ausbildung/mein Studium in [Name der Ausbildung/Studienfach] und meine praktische Erfahrung vollumfänglich mit. Mich reizt an Ihrem Unternehmen besonders [Nennen Sie einen Grund, z.B. "die innovative Ausrichtung", "die Unternehmenskultur" oder "die Möglichkeit zur Weiterentwicklung"].<br><br>
-Gerne überzeuge ich Sie in einem persönlichen Gespräch von meiner Motivation und meinen Fähigkeiten. Ich freue mich auf die Gelegenheit, mehr über die spannenden Aufgaben in Ihrem Unternehmen zu erfahren.<br><br>
-Mit freundlichen Grüßen,<br><br>
-[Ihr Vorname Ihr Nachname]
+      <!-- Adress- und Datumsblock -->
+      <div class="mt-4 grid grid-cols-3 gap-8">
+        <!-- Empfängeradresse (2/3 der Breite) -->
+        <div class="col-span-2">
+          <p>Sample GmbH</p>
+          <p>Muster Allee 46-48a</p>
+          <p>20435 Hamburg</p>
+        </div>
+        <!-- Informationsblock (Datum, etc. auf der rechten Seite) -->
+        <div class="text-right">
+          <p>Neubrandenburg, {{ currentDate }}</p>
+        </div>
+      </div>
+
+      <!-- Betreffzeile (ca. 2 Leerzeilen Abstand) -->
+      <UiHeading :level="1" symbol="logo:fleischerdesign" title="Bewerbung um ein Praktikum" subtitle="Umschüler zum Fachinformatiker für Anwendungsentwicklung" class="mt-12 !mb-0"/>
+
+      <!-- Anrede (ca. 2 Leerzeilen Abstand) -->
+      <p class="mt-12">
+        Sehr geehrte/r Frau/Herr [Nachname des Ansprechpartners],
+      </p>
+
+      <!-- Brieftext (ca. 1 Leerzeile Abstand, mit Absätzen) -->
+      <div class="mt-4 space-y-4 text-base">
+        <p>
+          mit großem Interesse habe ich Ihre Stellenanzeige auf [Name der Jobbörse oder Webseite] gelesen und bin überzeugt, dass meine Fähigkeiten und Erfahrungen ideal zu den Anforderungen der Position als [Bezeichnung der Stelle] passen.
+        </p>
+        <p>
+          In meiner bisherigen beruflichen Laufbahn bei [Name des letzten Arbeitgebers] konnte ich umfassende Kenntnisse in [Nennen Sie hier 1-2 relevante Fachbereiche oder Tätigkeiten] erwerben. Zu meinen Hauptaufgaben gehörte unter anderem [Beschreiben Sie 1-2 konkrete Aufgaben oder Erfolge, die für die neue Stelle relevant sind]. Dabei habe ich gelernt, [Nennen Sie eine wichtige Fähigkeit, z.B. "eigenverantwortlich zu arbeiten", "im Team zu agieren" oder "prozessorientiert zu denken"].
+        </p>
+        <p>
+          Die in der Stellenanzeige geforderten Qualifikationen, insbesondere [Nennen Sie eine spezifische Anforderung aus der Stellenanzeige], bringe ich durch meine Ausbildung/mein Studium in [Name der Ausbildung/Studienfach] und meine praktische Erfahrung vollumfänglich mit. Mich reizt an Ihrem Unternehmen besonders [Nennen Sie einen Grund, z.B. "die innovative Ausrichtung", "die Unternehmenskultur" oder "die Möglichkeit zur Weiterentwicklung"].
+        </p>
+        <p>
+          Gerne überzeuge ich Sie in einem persönlichen Gespräch von meiner Motivation und meinen Fähigkeiten. Ich freue mich auf die Gelegenheit, mehr über die spannenden Aufgaben in Ihrem Unternehmen zu erfahren.
+        </p>
+        <p class="mt-12">
+          Mit freundlichen Grüßen,
+        </p>
+        <p class="mt-4">
+          Philipp Fleischer
+        </p>
       </div>
       <ResumeFooter :current-page="1" :total-pages="3" class="absolute bottom-10 left-20 right-20" />
     </div>
     <!-- Resume Content Pages -->
-    <div class="main-content-pages relative h-[371mm] px-[20mm] py-[20mm]">
+    <div class="main-content-pages relative h-[371mm] p-[25mm]">
       <div class="flex gap-2">
       <UiHeading
         :title="$t('about.overview.resume.title')"
@@ -111,14 +134,19 @@ Mit freundlichen Grüßen,<br><br>
             <section v-if="projects" class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Projekte</h3>
             <div class="grid grid-cols-1 gap-4">
-              <ProjectCard v-for="project in projects.slice(0,4)" :key="project.slug" :project="project" :compact="true" />
+              <ProjectCard v-for="project in projects.slice(0,3)" :key="project.slug" :project="project" :compact="true" />
+            </div>
+<div class="mt-4 text-left">
+              <UiButton to="/projects" class="gap-0 justify-start">
+                <span>Weitere Projekte auf <strong>fleischer.design/projects</strong></span>
+              </UiButton>
             </div>
             </section>
         </div>
       </div>
       <ResumeFooter :current-page="1" :total-pages="2" class="absolute bottom-10 left-20 right-20" />
     </div>
-      <div class="main-content-pages relative h-[371mm] break-inside-avoid-page px-[20mm] py-[20mm]">
+      <div class="main-content-pages relative h-[371mm] break-inside-avoid-page p-[25mm]">
       <div class="flex gap-10">
         <div class="w-1/3">
             <section class="mb-8">
