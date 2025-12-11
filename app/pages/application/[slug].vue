@@ -16,41 +16,30 @@
       </div>
 
       <!-- Adress- und Datumsblock -->
-      <div class="mt-4 grid grid-cols-3 gap-8">
+      <div v-if="application" class="mt-4 grid grid-cols-3 gap-8">
         <!-- Empfängeradresse (2/3 der Breite) -->
         <div class="col-span-2">
-          <p>Sample GmbH</p>
-          <p>Muster Allee 46-48a</p>
-          <p>20435 Hamburg</p>
+          <p>{{ application.company.name }}</p>
+          <p>{{ application.company.address.street }} {{ application.company.address.houseNumber }}</p>
+          <p>{{ application.company.address.zipcode }} {{ application.company.address.city }}</p>
         </div>
         <!-- Informationsblock (Datum, etc. auf der rechten Seite) -->
         <div class="text-right">
-          <p>Neubrandenburg, {{ currentDate }}</p>
+          <p>Neubrandenburg, {{ applicationDate }}</p>
         </div>
       </div>
 
       <!-- Betreffzeile (ca. 2 Leerzeilen Abstand) -->
-      <UiHeading :level="1" symbol="logo:fleischerdesign" title="Bewerbung um ein Praktikum" subtitle="Umschüler zum Fachinformatiker für Anwendungsentwicklung" class="mt-12 !mb-0"/>
+      <UiHeading v-if="application" :level="1" symbol="logo:fleischerdesign" :title="application.title" :subtitle="application.subtitle" class="mt-12 !mb-0"/>
 
       <!-- Anrede (ca. 2 Leerzeilen Abstand) -->
       <p class="mt-12">
-        Sehr geehrte/r Frau/Herr [Nachname des Ansprechpartners],
+        {{ salutation }},
       </p>
 
       <!-- Brieftext (ca. 1 Leerzeile Abstand, mit Absätzen) -->
       <div class="mt-4 space-y-4 text-base">
-        <p>
-          mit großem Interesse habe ich Ihre Stellenanzeige auf [Name der Jobbörse oder Webseite] gelesen und bin überzeugt, dass meine Fähigkeiten und Erfahrungen ideal zu den Anforderungen der Position als [Bezeichnung der Stelle] passen.
-        </p>
-        <p>
-          In meiner bisherigen beruflichen Laufbahn bei [Name des letzten Arbeitgebers] konnte ich umfassende Kenntnisse in [Nennen Sie hier 1-2 relevante Fachbereiche oder Tätigkeiten] erwerben. Zu meinen Hauptaufgaben gehörte unter anderem [Beschreiben Sie 1-2 konkrete Aufgaben oder Erfolge, die für die neue Stelle relevant sind]. Dabei habe ich gelernt, [Nennen Sie eine wichtige Fähigkeit, z.B. "eigenverantwortlich zu arbeiten", "im Team zu agieren" oder "prozessorientiert zu denken"].
-        </p>
-        <p>
-          Die in der Stellenanzeige geforderten Qualifikationen, insbesondere [Nennen Sie eine spezifische Anforderung aus der Stellenanzeige], bringe ich durch meine Ausbildung/mein Studium in [Name der Ausbildung/Studienfach] und meine praktische Erfahrung vollumfänglich mit. Mich reizt an Ihrem Unternehmen besonders [Nennen Sie einen Grund, z.B. "die innovative Ausrichtung", "die Unternehmenskultur" oder "die Möglichkeit zur Weiterentwicklung"].
-        </p>
-        <p>
-          Gerne überzeuge ich Sie in einem persönlichen Gespräch von meiner Motivation und meinen Fähigkeiten. Ich freue mich auf die Gelegenheit, mehr über die spannenden Aufgaben in Ihrem Unternehmen zu erfahren.
-        </p>
+        <ContentRenderer :value="application" />
         <p class="mt-12">
           Mit freundlichen Grüßen,
         </p>
@@ -197,6 +186,17 @@ import { softSkillsData } from '~/data/softSkills.data';
 import { techStackData } from '~/data/techStack.data';
 
 const { t, locale } = useI18n();
+const route = useRoute();
+const { slug } = route.params;
+
+const { data: application } = await useAsyncData(`application-${slug}`, () => 
+  queryCollection('applications').where('slug', '=', slug as string).first()
+);
+
+if (!application.value) {
+  throw createError({ statusCode: 404, statusMessage: 'Application not found' });
+}
+
 const personal = personalData(t);
 const languages = languagesData(t);
 const interests = interestsData(t);
@@ -206,12 +206,21 @@ const courses = coursesData;
 const softSkills = softSkillsData(t);
 const techStack = techStackData;
 
-const currentDate = computed(() => {
-  const today = new Date();
-  const day = String(today.getDate()).padStart(2, '0');
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const year = today.getFullYear();
+const applicationDate = computed(() => {
+  if (!application.value?.dates?.application) return '';
+  const date = new Date(application.value.dates.application);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
   return `${day}.${month}.${year}`;
+});
+
+const salutation = computed(() => {
+  const contactName = application.value?.company?.address?.contact?.name;
+  if (contactName) {
+    return `Sehr geehrte/r Frau/Herr ${contactName.split(' ').pop()}`;
+  }
+  return 'Sehr geehrte Damen und Herren';
 });
 
 const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`, () =>

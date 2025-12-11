@@ -4,6 +4,12 @@ import path from 'path';
 import fs from 'fs';
 
 async function generatePdf() {
+  const slug = process.argv[2];
+  if (!slug) {
+    console.error('Please provide an application slug as an argument.');
+    process.exit(1);
+  }
+
   console.log(process.env.BROWSER_BIN);
   const browser = await puppeteer.launch({
     headless: true,
@@ -13,7 +19,7 @@ async function generatePdf() {
   const page = await browser.newPage();
 
   const apiBaseUrl = 'http://localhost:3000';
-  const pageUrl = `${apiBaseUrl}/de/resume`;
+  const pageUrl = `${apiBaseUrl}/de/application/${slug}`;
 
   try {
     await page.goto(pageUrl, { waitUntil: 'networkidle0' });
@@ -27,7 +33,7 @@ async function generatePdf() {
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    const outputPath = path.resolve(__dirname, '../public/resume.pdf');
+    const outputPath = path.resolve(__dirname, `../generated/applications/${slug}.pdf`);
 
     const outputDir = path.dirname(outputPath);
     if (!fs.existsSync(outputDir)) {
@@ -37,10 +43,11 @@ async function generatePdf() {
     fs.writeFileSync(outputPath, pdfBuffer);
     console.log(`PDF generated successfully at ${outputPath}`);
   } catch (error) {
-    console.error('Error generating PDF:', error);
+    console.error(`Error generating PDF for slug "${slug}":`, error);
   } finally {
     await browser.close();
   }
 }
 
 generatePdf();
+
