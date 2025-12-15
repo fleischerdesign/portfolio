@@ -19,7 +19,7 @@ async function generatePdf() {
   const page = await browser.newPage();
 
   const apiBaseUrl = 'http://localhost:3000';
-  const pageUrl = `${apiBaseUrl}/de/application/${slug}`;
+  const pageUrl = `${apiBaseUrl}/de/application/${slug}/print`;
 
   try {
     await page.goto(pageUrl, { waitUntil: 'networkidle0' });

@@ -27,4 +27,5 @@ nix-direnv-reload
 .direnv
 .aider*
 
+generated/
 /data/

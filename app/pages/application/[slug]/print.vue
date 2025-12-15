@@ -1,43 +1,40 @@
 <template>
   <div class="pdf-resume-container text-primary-950 font-sans">
-    <!-- Cover Page -->
+
     <div class="cover-page flex h-[371mm] w-full flex-col justify-between p-[25mm]">
       <UiCard class="relative h-auto w-full flex-grow overflow-hidden rounded-lg shadow-lg">
         <img src="/img/profile.jpg" alt="Profile Picture" class="h-full w-full object-cover" />
-        <!-- <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4 text-white opacity-100 transition-opacity"></div> -->
       </UiCard >
         <UiHeading :level="1" symbol="logo:fleischerdesign" :title="personal.name" :subtitle="personal.subtitle" class="!mb-0 mt-10"/>
     </div>
-    <!-- Writing -->
+
     <div class="main-content-pages relative h-[371mm] pt-[56.25mm] pb-[25mm] px-[25mm]">
-      <!-- Absenderzeile (Teil des Briefkopfs) -->
+
       <div class="text-xs">
         Philipp Fleischer, Hufelandstr. 55, 17036 Neubrandenburg
       </div>
 
-      <!-- Adress- und Datumsblock -->
+
       <div v-if="application" class="mt-4 grid grid-cols-3 gap-8">
-        <!-- Empfängeradresse (2/3 der Breite) -->
         <div class="col-span-2">
           <p>{{ application.company.name }}</p>
           <p>{{ application.company.address.street }} {{ application.company.address.houseNumber }}</p>
           <p>{{ application.company.address.zipcode }} {{ application.company.address.city }}</p>
         </div>
-        <!-- Informationsblock (Datum, etc. auf der rechten Seite) -->
         <div class="text-right">
           <p>Neubrandenburg, {{ applicationDate }}</p>
         </div>
       </div>
 
-      <!-- Betreffzeile (ca. 2 Leerzeilen Abstand) -->
+      
       <UiHeading v-if="application" :level="1" symbol="logo:fleischerdesign" :title="application.title" :subtitle="application.subtitle" class="mt-12 !mb-0"/>
 
-      <!-- Anrede (ca. 2 Leerzeilen Abstand) -->
+      
       <p class="mt-12">
         {{ salutation }},
       </p>
 
-      <!-- Brieftext (ca. 1 Leerzeile Abstand, mit Absätzen) -->
+      
       <div class="mt-4 space-y-4 text-base">
         <ContentRenderer class="prose prose-neutral max-w-none text-black dark:prose-invert" :value="application" />
         <p class="mt-12">
@@ -49,7 +46,7 @@
       </div>
       <ResumeFooter :current-page="1" :total-pages="3" class="absolute bottom-10 left-20 right-20" />
     </div>
-    <!-- Resume Content Pages -->
+    
     <div class="main-content-pages relative h-[371mm] p-[25mm]">
       <div class="flex gap-2">
       <UiHeading
@@ -74,7 +71,7 @@
             <div><span class="font-bold">{{ $t('resume.details.drivers_license_label') }}:</span> {{ personal.driversLicense }}</div>
             <div><span class="font-bold">{{ $t('resume.details.address_label') }}:</span> {{ personal.address.street }}, {{ personal.address.postalCode }} {{ personal.address.city }}, {{ personal.address.county }}, {{ personal.address.country }}</div>
           </section>
-          <!-- Tech Stack Section -->
+          
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Softskills</h3>
             <TechstackList :items="softSkills" :scroll="false" :gradient="true" />
@@ -163,7 +160,7 @@
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">Bildungsweg</h3>
             <BaseTimeline :items="timeline.filter(item => item.type === 'education').splice(0, 4)" :is-print-view="true" />
           </section>
-          <!-- Career Timeline Section -->
+          
           <section class="mb-8">
             <h3 class="section-title text-primary-700 mb-4 border-l-4 border-secondary-400 pl-3 text-2xl font-bold">{{ $t('about.overview.careerPath.title') }}</h3>
             <BaseTimeline :items="timeline.filter(item => item.type === 'career')" :is-print-view="true" />
@@ -230,3 +227,31 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
     .all()
 );
 </script>
+
+<style>
+@media screen {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #4b5563 transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #4b5563;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #6b7280;
+  }
+}
+</style>
