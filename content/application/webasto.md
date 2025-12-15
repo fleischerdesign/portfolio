@@ -1,7 +1,7 @@
 ---
 title: 'Bewerbung um ein Praktikum'
 subtitle: 'Umschüler zum Fachinformatiker für Anwendungsentwicklung'
-slug: 'webasto-neubrandenburg'
+slug: 'webasto'
 url: 'https://www.webasto.com/de-de/karriere/standorte-und-werke/neubrandenburg.html'
 dates:
   application: 2025-12-15
