@@ -232,30 +232,4 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
 );
 </script>
 
-<style>
-@media screen {
-  html {
-    scrollbar-width: thin;
-    scrollbar-color: #4b5563 transparent;
-  }
 
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #4b5563;
-    border-radius: 4px;
-    border: 2px solid transparent;
-    background-clip: content-box;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: #6b7280;
-  }
-}
-</style>
