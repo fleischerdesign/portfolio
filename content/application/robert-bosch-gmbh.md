@@ -27,6 +27,6 @@ Aktuell befinde ich mich in der Umschulung bei der WBS Training AG. Warum ich in
 
 - Tech-Stack: Ob Python für Automatisierung oder Container-Technologien für das Deployment – ich nutze Werkzeuge, die auch in professionellen IoT-Umgebungen Standard sind.
 
-- Mindset: Am IoT Campus wird Innovation gelebt. Ich bringe Neugier, Lernbereitschaft und den Willen mit, mich tief in komplexe Systeme einzuarbeiten – Eigenschaften, die [Name des Freundes] sicher bestätigen kann.
+- Mindset: Am IoT Campus wird Innovation gelebt. Ich bringe Neugier, Lernbereitschaft und den Willen mit, mich tief in komplexe Systeme einzuarbeiten – Eigenschaften, die Tobias Pornak sicher bestätigen kann.
 
 Ich möchte die Chance nutzen, von den Besten zu lernen und meinen Beitrag zu vernetzten Lösungen "Invented for life" zu leisten. Gerne stelle ich mich Ihnen persönlich vor.
