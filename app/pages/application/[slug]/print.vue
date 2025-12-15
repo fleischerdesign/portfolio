@@ -173,6 +173,10 @@
 </template>
 
 <script lang="ts" setup>
+definePageMeta({
+  layout: 'print'
+});
+
 import { personalData } from '~/data/personal.data';
 import { languagesData } from '~/data/languages.data';
 import { interestsData } from '~/data/interests.data';
