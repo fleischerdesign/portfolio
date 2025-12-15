@@ -39,7 +39,7 @@
 
       <!-- Brieftext (ca. 1 Leerzeile Abstand, mit Absätzen) -->
       <div class="mt-4 space-y-4 text-base">
-        <ContentRenderer :value="application" />
+        <ContentRenderer class="prose prose-neutral max-w-none text-black dark:prose-invert" :value="application" />
         <p class="mt-12">
           Mit freundlichen Grüßen,
         </p>
