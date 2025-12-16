@@ -1,8 +1,6 @@
+#syntax=docker/dockerfile:1
 # ---- Builder Stage ----
 FROM node:20-alpine AS builder
-
-# Pass the GitHub token as a build argument
-ARG GITHUB_APPLICATIONS_REPO_TOKEN
 
 # Cache busting mit Build-Argumenten
 ARG CACHEBUST=1
@@ -16,9 +14,11 @@ RUN npm ci --omit=dev --prefer-offline --audit=false
 COPY . .
 
 # Print build info to bust cache
-RUN echo "Build time: $(date)" && \
+RUN --mount=type=secret,id=GITHUB_APPLICATIONS_REPO_TOKEN \
+    export GITHUB_APPLICATIONS_REPO_TOKEN=$(cat /run/secrets/GITHUB_APPLICATIONS_REPO_TOKEN) && \
+    echo "Build time: $(date)" && \
     echo "Cache buster: $CACHEBUST" && \
-    GITHUB_APPLICATIONS_REPO_TOKEN=$GITHUB_APPLICATIONS_REPO_TOKEN npm run build
+    npm run build
 
 # ---- Production Stage ----
 FROM node:20-alpine
