@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
-    authSecret: process.env.NUXT_AUTH_SECRET,
+    authSecret: process.env.AUTH_SECRET,
     github: {
       token: process.env.GITHUB_TOKEN,
       username: process.env.GITHUB_USERNAME,
