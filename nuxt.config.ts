@@ -7,6 +7,43 @@ export default defineNuxtConfig({
       }
     }
   },
+  runtimeConfig: {
+    authSecret: process.env.NUXT_AUTH_SECRET,
+    github: {
+      token: process.env.GITHUB_TOKEN,
+      username: process.env.GITHUB_USERNAME,
+      applicationsRepoToken: process.env.GITHUB_APPLICATIONS_REPO_TOKEN
+    },
+    smtp: {
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      secure: process.env.SMTP_SECURE,
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+      from: process.env.SMTP_FROM
+    },
+    contact: {
+      email: process.env.CONTACT_EMAIL
+    },
+    now: {
+      apiToken: process.env.NOW_API_TOKEN
+    },
+    openai: {
+      apiKey: process.env.OPENAI_API_KEY
+    },
+    anthropic: {
+      apiKey: process.env.ANTHROPIC_API_KEY
+    },
+    google: {
+      apiKey: process.env.GOOGLE_API_KEY
+    },
+    authentik: {
+      clientId: process.env.AUTHENTIK_ID,
+      clientSecret: process.env.AUTHENTIK_SECRET,
+      issuer: process.env.AUTHENTIK_ISSUER
+    },
+    public: {}
+  },
   compatibilityDate: '2024-11-01',
   devtools: {
     enabled: true,
@@ -28,14 +65,26 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@nuxtjs/google-fonts',
     'nuxt-og-image',
-    '@nuxt/eslint'
+    '@nuxt/eslint',
+    '@sidebase/nuxt-auth'
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
-      head: {
+    head: {
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' }
       ]
+    }
+  },
+  auth: {
+    isEnabled: true,
+    disableServerSideAuth: false,
+    originEnvKey: 'AUTH_ORIGIN',
+    baseURL: 'http://localhost:3000/api/auth',
+    provider: { /* your provider config */ },
+    sessionRefresh: {
+      enablePeriodically: true,
+      enableOnWindowFocus: true,
     }
   },
   hooks: {
@@ -82,7 +131,7 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
     locales: [
       { code: 'en', name: 'English', file: 'en.json', language: 'en-US' },
-      { code: 'de', name: 'German', file: 'de.json' , language: 'de-DE' }
+      { code: 'de', name: 'German', file: 'de.json', language: 'de-DE' }
     ],
     baseUrl: 'https://fleischer.design',
   },

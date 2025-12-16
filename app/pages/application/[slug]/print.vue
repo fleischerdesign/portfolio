@@ -8,7 +8,7 @@
         <UiHeading :level="1" symbol="logo:fleischerdesign" :title="personal.name" :subtitle="personal.subtitle" class="!mb-0 mt-10"/>
     </div>
 
-    <div class="main-content-pages relative h-[371mm] pt-[56.25mm] pb-[25mm] px-[25mm]">
+    <div class="main-content-pages relative h-[371mm] px-[25mm] pb-[25mm] pt-[56.25mm]">
 
       <div class="text-xs">
         Philipp Fleischer, Hufelandstr. 55, 17036 Neubrandenburg
@@ -27,7 +27,7 @@
       </div>
 
       
-      <UiHeading v-if="application" :level="1" symbol="logo:fleischerdesign" :title="application.title" :subtitle="application.subtitle" class="mt-12 !mb-0"/>
+      <UiHeading v-if="application" :level="1" symbol="logo:fleischerdesign" :title="application.title" :subtitle="application.subtitle" class="!mb-0 mt-12"/>
 
       
       <p class="mt-12">
@@ -123,7 +123,7 @@
               <ProjectCard v-for="project in projects.slice(0,3)" :key="project.slug" :project="project" :compact="true" />
             </div>
 <div class="mt-4 text-left">
-              <UiButton to="/projects" class="gap-0 justify-start">
+              <UiButton to="/projects" class="justify-start gap-0">
                 <span>Weitere Projekte auf <strong>fleischer.design/projects</strong></span>
               </UiButton>
             </div>
@@ -173,10 +173,6 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({
-  layout: 'print'
-});
-
 import { personalData } from '~/data/personal.data';
 import { languagesData } from '~/data/languages.data';
 import { interestsData } from '~/data/interests.data';
@@ -185,6 +181,11 @@ import { timelineData } from '~/data/timeline.data';
 import { coursesData } from '~/data/courses.data';
 import { softSkillsData } from '~/data/softSkills.data';
 import { techStackData } from '~/data/techStack.data';
+
+definePageMeta({
+  layout: 'print',
+  middleware: 'sidebase-auth'
+});
 
 const { t, locale } = useI18n();
 const route = useRoute();

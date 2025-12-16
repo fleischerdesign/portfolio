@@ -4,25 +4,26 @@ import { z } from 'zod'
 export default defineEventHandler(async (event) => {
     try {
         const body = await readBody(event)
+        const { smtp, contact } = useRuntimeConfig()
 
         // Validiere den Body mit dem zentralen Zod-Schema
         const { name, email, subject, message } = ContactFormSchema.parse(body)
 
         // Nodemailer Transporter konfigurieren
         const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: parseInt(process.env.SMTP_PORT || '587'),
-            secure: process.env.SMTP_SECURE === 'true',
+            host: smtp.host,
+            port: parseInt(smtp.port || '587'),
+            secure: smtp.secure === 'true',
             auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS,
+                user: smtp.user,
+                pass: smtp.pass,
             },
         })
 
         // Email Optionen
         const mailOptions = {
-            from: `"${name}" <${process.env.SMTP_FROM}>`,
-            to: process.env.CONTACT_EMAIL,
+            from: `"${name}" <${smtp.from}>`,
+            to: contact.email,
             replyTo: email,
             subject: subject || 'Neue Kontaktanfrage',
             html: `

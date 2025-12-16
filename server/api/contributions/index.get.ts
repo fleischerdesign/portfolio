@@ -20,8 +20,7 @@ type GitHubResponse = {
 }
 
 export default cachedEventHandler(async (_event) => {
-    const GITHUB_TOKEN = process.env.GITHUB_TOKEN || ''
-    const GITHUB_USERNAME = process.env.GITHUB_USERNAME || ''
+    const { github: { token, username } } = useRuntimeConfig()
 
     const query = `
     query($userName: String!) {
@@ -44,12 +43,12 @@ export default cachedEventHandler(async (_event) => {
     const response = await $fetch<GitHubResponse>('https://api.github.com/graphql', {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${GITHUB_TOKEN}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             query,
-            variables: { userName: GITHUB_USERNAME }
+            variables: { userName: username }
         })
     })
 

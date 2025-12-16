@@ -1,4 +1,6 @@
 <script setup lang="ts">
+definePageMeta({ middleware: 'sidebase-auth' })
+
 const route = useRoute()
 const { slug } = route.params
 

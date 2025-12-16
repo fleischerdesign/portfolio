@@ -161,9 +161,10 @@ async function callLLMWithPrompt(text: string, systemPrompt: string, config: Tra
 }
 
 async function callOpenAIWithPrompt(text: string, systemPrompt: string, config: TranslationConfig): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY
+  const runtimeConfig = useRuntimeConfig()
+  const apiKey = runtimeConfig.openai.apiKey
   if (!apiKey) {
-    throw new Error('OPENAI_API_KEY environment variable is not set')
+    throw new Error('OPENAI_API_KEY is not set in runtimeConfig')
   }
 
   // URL robust zusammensetzen und Trailing Slash entfernen
@@ -201,9 +202,10 @@ async function callOpenAIWithPrompt(text: string, systemPrompt: string, config: 
 }
 
 async function callAnthropicWithPrompt(text: string, systemPrompt: string, config: TranslationConfig): Promise<string> {
-  const apiKey = process.env.ANTHROPIC_API_KEY
+  const runtimeConfig = useRuntimeConfig()
+  const apiKey = runtimeConfig.anthropic.apiKey
   if (!apiKey) {
-    throw new Error('ANTHROPIC_API_KEY environment variable is not set')
+    throw new Error('ANTHROPIC_API_KEY is not set in runtimeConfig')
   }
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -233,9 +235,10 @@ async function callAnthropicWithPrompt(text: string, systemPrompt: string, confi
 }
 
 async function callGoogleWithPrompt(text: string, systemPrompt: string, config: TranslationConfig): Promise<string> {
-  const apiKey = process.env.GOOGLE_API_KEY
+  const runtimeConfig = useRuntimeConfig()
+  const apiKey = runtimeConfig.google.apiKey
   if (!apiKey) {
-    throw new Error('GOOGLE_API_KEY environment variable is not set')
+    throw new Error('GOOGLE_API_KEY is not set in runtimeConfig')
   }
 
   const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${config.model}:generateContent?key=${apiKey}`, {

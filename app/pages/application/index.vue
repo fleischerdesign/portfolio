@@ -1,4 +1,6 @@
 <script setup lang="ts">
+definePageMeta({ middleware: 'sidebase-auth' })
+
 const { data: applications } = await useAsyncData('all-applications', () =>
   queryCollection('applications').all()
 )
@@ -31,7 +33,7 @@ useSeoMeta({
         <NuxtLink
           v-for="app in applications"
           :key="app._id"
-          :to="`/application/${app.slug}`"
+          :to="$localePath(`/application/${app.slug}`)"
           class="group"
         >
           <UiCard hover class="h-full flex-col">
