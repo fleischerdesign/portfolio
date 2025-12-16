@@ -30,3 +30,5 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
+          build-args: |
+            GITHUB_APPLICATIONS_REPO_TOKEN=${{ secrets.APPLICATIONS_REPO_TOKEN }}

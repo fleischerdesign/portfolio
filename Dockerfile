@@ -1,6 +1,9 @@
 # ---- Builder Stage ----
 FROM node:20-alpine AS builder
 
+# Pass the GitHub token as a build argument
+ARG GITHUB_APPLICATIONS_REPO_TOKEN
+
 # Cache busting mit Build-Argumenten
 ARG CACHEBUST=1
 
@@ -15,7 +18,7 @@ COPY . .
 # Print build info to bust cache
 RUN echo "Build time: $(date)" && \
     echo "Cache buster: $CACHEBUST" && \
-    npm run build
+    GITHUB_APPLICATIONS_REPO_TOKEN=$GITHUB_APPLICATIONS_REPO_TOKEN npm run build
 
 # ---- Production Stage ----
 FROM node:20-alpine

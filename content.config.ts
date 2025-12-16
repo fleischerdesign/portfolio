@@ -65,7 +65,11 @@ export default defineContentConfig({
     ),
     applications: defineCollection({
       type: 'page',
-      source: 'application/*.md',
+      source: {
+        repository: 'https://github.com/fleischerdesign/portfolio-applications',
+        include: '*.md',
+        authToken: process.env.GITHUB_APPLICATIONS_REPO_TOKEN
+      },
       schema: z.object({
         title: z.string(),
         subtitle: z.string(),
