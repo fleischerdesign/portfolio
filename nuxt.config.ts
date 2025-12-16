@@ -8,39 +8,39 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
-    authSecret: process.env.AUTH_SECRET,
+    authSecret: '',
     github: {
-      token: process.env.GITHUB_TOKEN,
-      username: process.env.GITHUB_USERNAME,
-      applicationsRepoToken: process.env.GITHUB_APPLICATIONS_REPO_TOKEN
+      token: '',
+      username: '',
+      applicationsRepoToken: ''
     },
     smtp: {
-      host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
-      secure: process.env.SMTP_SECURE,
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-      from: process.env.SMTP_FROM
+      host: '',
+      port: '',
+      secure: '',
+      user: '',
+      pass: '',
+      from: ''
     },
     contact: {
-      email: process.env.CONTACT_EMAIL
+      email: ''
     },
     now: {
-      apiToken: process.env.NOW_API_TOKEN
+      apiToken: ''
     },
     openai: {
-      apiKey: process.env.OPENAI_API_KEY
+      apiKey: ''
     },
     anthropic: {
-      apiKey: process.env.ANTHROPIC_API_KEY
+      apiKey: ''
     },
     google: {
-      apiKey: process.env.GOOGLE_API_KEY
+      apiKey: ''
     },
     authentik: {
-      clientId: process.env.AUTHENTIK_ID,
-      clientSecret: process.env.AUTHENTIK_SECRET,
-      issuer: process.env.AUTHENTIK_ISSUER
+      clientId: '',
+      clientSecret: '',
+      issuer: ''
     },
     public: {}
   },
@@ -79,7 +79,7 @@ export default defineNuxtConfig({
   auth: {
     isEnabled: true,
     disableServerSideAuth: false,
-    originEnvKey: 'AUTH_ORIGIN',
+    originEnvKey: 'NUXT_AUTH_ORIGIN',
     baseURL: 'http://localhost:3000/api/auth',
     provider: { /* your provider config */ },
     sessionRefresh: {
