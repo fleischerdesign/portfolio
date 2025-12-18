@@ -5,7 +5,7 @@
       <UiCard class="relative h-auto w-full flex-grow overflow-hidden rounded-lg shadow-lg">
         <img src="/img/profile.jpg" alt="Profile Picture" class="h-full w-full object-cover" />
       </UiCard >
-        <UiHeading :level="1" symbol="logo:fleischerdesign" :title="personal.name" :subtitle="personal.subtitle" class="!mb-0 mt-10"/>
+        <UiSectionHeader :level="1" symbol="logo:fleischerdesign" :title="personal.name" :subtitle="personal.subtitle" class="!mb-0 mt-10"/>
     </div>
 
     <div class="main-content-pages relative h-[371mm] px-[25mm] pb-[25mm] pt-[56.25mm]">
@@ -27,7 +27,7 @@
       </div>
 
       
-      <UiHeading v-if="application" :level="1" symbol="logo:fleischerdesign" :title="application.title" :subtitle="application.subtitle" class="!mb-0 mt-12"/>
+      <UiSectionHeader v-if="application" :level="1" symbol="logo:fleischerdesign" :title="application.title" :subtitle="application.subtitle" class="!mb-0 mt-12"/>
 
       
       <p class="mt-12">
@@ -49,7 +49,7 @@
     
     <div class="main-content-pages relative h-[371mm] p-[25mm]">
       <div class="flex gap-2">
-      <UiHeading
+      <UiSectionHeader
         :title="$t('about.overview.resume.title')"
         :subtitle="''"
         symbol="logo:fleischerdesign"

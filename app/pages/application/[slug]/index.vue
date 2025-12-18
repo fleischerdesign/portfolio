@@ -31,7 +31,7 @@ useSeoMeta({
 <template>
   <div v-if="application" class="container mx-auto max-w-screen-xl py-16">
     <div class="mb-12">
-      <UiHeading :title="application.title" :subtitle="`Bewerbung an ${application.company.name}`" />
+      <UiSectionHeader :title="application.title" :subtitle="`Bewerbung an ${application.company.name}`" />
     </div>
 
     <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">

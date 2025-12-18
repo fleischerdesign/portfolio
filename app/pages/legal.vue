@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto max-w-screen-xl py-16">
-      <UiHeading :level="1" :title="$t('legal.title')" :subtitle="$t('legal.subtitle')" />
+      <UiSectionHeader :level="1" :title="$t('legal.title')" :subtitle="$t('legal.subtitle')" />
 <p>Angaben gemäß § 5 DDG</p><p>Philipp Fleischer<br> 
 <br> 
 Hufelandstraße 55<br> 

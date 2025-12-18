@@ -1,6 +1,6 @@
 <template>
   <div class="mb-24">
-      <UiHeading :title="$t('home.projects.title')" :subtitle="$t('home.projects.subtitle')" />
+      <UiSectionHeader :title="$t('home.projects.title')" :subtitle="$t('home.projects.subtitle')" />
     <div class="mt-4 grid grid-cols-1 gap-3">
       <ProjectCard v-for="(project, index) in projects" :key="index" hover class="group overflow-hidden" :project="project" />
     </div>

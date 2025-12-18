@@ -4,7 +4,7 @@
       <Icon v-if="symbol" :name="symbol" class="h-10 w-10 shrink-0 fill-secondary-400" mode="svg" />
       <component :is="tag" class="text-5xl font-semibold">{{ title }}</component>
     </div>
-    <p class="w-full border-l-4 border-secondary-400 pl-4 text-neutral-600 lg:w-2/3 dark:text-neutral-400">
+    <p v-if="subtitle" class="w-full border-l-4 border-secondary-400 pl-4 text-neutral-600 lg:w-2/3 dark:text-neutral-400">
       {{ subtitle }}
     </p>
   </div>

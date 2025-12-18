@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-auto max-w-screen-xl py-16">
         <div class="mb-24">
-              <UiHeading :level="1" :title="project!.title" :subtitle="project!.subtitle" />
+              <UiSectionHeader :level="1" :title="project!.title" :subtitle="project!.subtitle" />
             <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
                 <UiCard class="relative col-span-1 row-span-2 overflow-hidden md:col-span-2">
                     <NuxtImg

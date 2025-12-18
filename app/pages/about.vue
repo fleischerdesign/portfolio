@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto max-w-screen-xl py-16">
-          <UiHeading :level="1" :title="$t('about.title')" :subtitle="$t('about.subtitle')" />
+          <UiSectionHeader :level="1" :title="$t('about.title')" :subtitle="$t('about.subtitle')" />
         <div
             class="mb-24 mt-4 grid grid-cols-1 grid-rows-1 items-stretch gap-4 md:grid-cols-2 md:grid-rows-2 lg:grid-cols-3">
             <UiCard class="group relative row-span-2 overflow-hidden">
@@ -102,7 +102,7 @@ name="mage:checklist-note-fill" size="30"
         </div>
         
         <div>
-            <UiHeading id="early_life" :title="$t('about.earlyLife.title')" :subtitle="$t('about.earlyLife.subtitle')" />
+            <UiSectionHeader id="early_life" :title="$t('about.earlyLife.title')" :subtitle="$t('about.earlyLife.subtitle')" />
         <div class="mb-24 flex flex-col gap-x-4">
             <div class="grid grid-cols-1 items-center gap-8 lg:grid-cols-2">
                 <div class="order-2 lg:order-1">
@@ -159,7 +159,7 @@ sizes="100vw lg:600px" src="/img/child.jpg"
         </div>
         </div>
         <div>
-            <UiHeading id="career_path" :title="$t('about.careerPath.title')" :subtitle="$t('about.careerPath.subtitle')"/>
+            <UiSectionHeader id="career_path" :title="$t('about.careerPath.title')" :subtitle="$t('about.careerPath.subtitle')"/>
         <div class="mb-24 flex flex-col gap-4">
                         <div class="flex items-start gap-4">
                             <div>
@@ -205,7 +205,7 @@ sizes="100vw lg:600px" src="/img/child.jpg"
         </div>
         </div>
         <div>
-                <UiHeading id="personal_life" :title="$t('about.personalLife.title')" :subtitle="$t('about.personalLife.subtitle')"/>
+                <UiSectionHeader id="personal_life" :title="$t('about.personalLife.title')" :subtitle="$t('about.personalLife.subtitle')"/>
         <div class="mb-24 flex flex-col gap-4">
             <p>{{ $t("about.personalLife.content.paragraph1") }}</p>
 
@@ -254,7 +254,7 @@ sizes="100vw lg:400px" src="/img/business_atire.jpg"
         </div>
         </div>
         <div class="mb-24 flex flex-col gap-4">
-                <UiHeading id="resume" :title="$t('about.resume.title')" :subtitle="$t('about.resume.subtitle')"/>
+                <UiSectionHeader id="resume" :title="$t('about.resume.title')" :subtitle="$t('about.resume.subtitle')"/>
         </div>
     </div>
 </template>
