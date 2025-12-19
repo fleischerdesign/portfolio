@@ -1,1 +1,0 @@
-ALTER TABLE `applications` ADD `body` text;
