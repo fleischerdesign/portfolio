@@ -27,6 +27,7 @@ USER app
 
 COPY --from=builder --chown=app:app /app/.output ./
 COPY --from=builder --chown=app:app /app/node_modules ./node_modules
+COPY --from=builder --chown=app:app /app/server/db/migrations ./server/db/migrations
 
 
 ENV NODE_ENV=production \
