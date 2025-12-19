@@ -63,42 +63,6 @@ export default defineContentConfig({
         }),
       })
     ),
-    applications: defineCollection({
-      type: 'page',
-      source: {
-        repository: 'https://github.com/fleischerdesign/portfolio-applications',
-        include: '*.md',
-        authToken: process.env.GITHUB_APPLICATIONS_REPO_TOKEN
-      },
-      schema: z.object({
-        title: z.string(),
-        subtitle: z.string(),
-        slug: z.string(),
-        url: z.string(),
-        dates: z.object({
-          application: z.date().optional(),
-          response: z.date().optional(),
-          interviews: z.array(z.date()).optional()
-        }).optional(),
-        status: z.enum(['draft', 'applied', 'interview', 'offer', 'rejected', 'withdrawn']),
-        company: z.object({
-          name: z.string(),
-          address: z.object({
-            name: z.string(),
-            contact: z.object({
-              name: z.string(),
-              position: z.string().optional(),
-              email: z.string().optional(),
-              phone: z.string().optional()
-            }).optional(),
-            street: z.string(),
-            houseNumber: z.string(),
-            zipcode: z.number(),
-            city: z.string()
-          }),
-        }),
-        notes: z.array(z.string()).optional()
-      })
-    })
+
   }
 })
