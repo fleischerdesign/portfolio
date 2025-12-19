@@ -36,6 +36,7 @@ USER app
 # 4. Nur notwendige Artefakte kopieren
 COPY --from=builder --chown=app:app /app/.output ./
 COPY --from=builder --chown=app:app /app/node_modules ./node_modules
+COPY --from=builder --chown=app:app /app/package.json ./package.json
 
 # 5. Runtime-Konfiguration
 ENV NODE_ENV=production \
