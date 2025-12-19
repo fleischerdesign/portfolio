@@ -9,7 +9,7 @@ export default defineNitroPlugin(async () => {
 
   try {
     console.log('Running database migrations...');
-    await migrate(db, { migrationsFolder: 'server/db/migrations' });
+    await migrate(db, { migrationsFolder: 'migrations' });
     console.log('Database migrations completed successfully.');
   } catch (e) {
     console.error('Error running database migrations:', e);
