@@ -31,7 +31,7 @@ RUN apk add --no-cache dumb-init curl && \
 USER app
 
 # 4. Data-Verzeichnis als app user erstellen
-RUN mkdir -p /app/data
+
 
 # 4. Nur notwendige Artefakte kopieren
 COPY --from=builder --chown=app:app /app/.output ./
@@ -49,4 +49,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
 
 # 7. Optimierte Container-Initialisierung
 ENTRYPOINT ["dumb-init"]
-CMD ["node", "/app/server/index.mjs"]
+CMD ["npm", "run", "start:prod"]

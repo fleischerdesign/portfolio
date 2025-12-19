@@ -36,7 +36,8 @@
 
       
       <div class="mt-4 space-y-4 text-base">
-        <ContentRenderer class="prose prose-neutral max-w-none text-black dark:prose-invert" :value="application" />
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div class="prose prose-neutral max-w-none text-black dark:prose-invert dark:text-white" v-html="renderMarkdown(application.body)" />
         <p class="mt-12">
           Mit freundlichen Grüßen,
         </p>
@@ -184,19 +185,23 @@ import { techStackData } from '~/data/techStack.data';
 
 definePageMeta({
   layout: 'print',
-  middleware: 'sidebase-auth'
+  middleware: [
+    async () => {
+      await authorize(isAdmin);
+    }
+  ]
 });
 
 const { t, locale } = useI18n();
 const route = useRoute();
-const { slug } = route.params;
+const { slug } = route.params as { slug: string };
 
-const { data: application } = await useAsyncData(`application-${slug}`, () => 
-  queryCollection('applications').where('slug', '=', slug as string).first()
+const { data: application, error } = await useAsyncData(`application-print-${slug}`, () =>
+  $fetch(`/api/applications/${slug}`)
 );
 
-if (!application.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Application not found' });
+if (error.value || !application.value) {
+  throw createError({ statusCode: 404, statusMessage: 'Application not found', fatal: true });
 }
 
 const personal = personalData(t);
@@ -208,9 +213,11 @@ const courses = coursesData;
 const softSkills = softSkillsData(t);
 const techStack = techStackData;
 
+const { renderMarkdown } = useMarkdown();
+
 const applicationDate = computed(() => {
-  if (!application.value?.dates?.application) return '';
-  const date = new Date(application.value.dates.application);
+  if (!application.value?.applicationDate) return '';
+  const date = new Date(application.value.applicationDate);
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
@@ -218,7 +225,7 @@ const applicationDate = computed(() => {
 });
 
 const salutation = computed(() => {
-  const contactName = application.value?.company?.address?.contact?.name;
+  const contactName = application.value?.company?.address?.contactName;
   if (contactName) {
     return `Sehr geehrte/r Frau/Herr ${contactName.split(' ').pop()}`;
   }

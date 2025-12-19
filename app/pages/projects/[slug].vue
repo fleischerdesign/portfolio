@@ -8,7 +8,7 @@
 sizes="100vw sm:100vw" :placeholder="[50, 25, 75, 5]" :src="project?.image?.src"
                         class="aspect-[4/3] h-full w-full object-cover" :alt="project?.title || 'Project Background'" />
                 <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
-		  <Icon :name="'logo:'+project!.slug" class="h-40 w-40 fill-emerald-400 [&>g]:fill-emerald-400 drop-shadow-xl" mode="svg" />
+		  <Icon :name="'logo:'+project!.slug" class="h-40 w-40 fill-emerald-400 drop-shadow-xl [&>g]:fill-emerald-400" mode="svg" />
                 </div>
                 </UiCard >
                 <UiCard >

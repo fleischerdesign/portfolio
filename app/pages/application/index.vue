@@ -1,11 +1,20 @@
 <script setup lang="ts">
-definePageMeta({ middleware: 'sidebase-auth' })
+definePageMeta({
+  middleware: [
+    async () => {
+      await authorize(isAdmin);
+    }
+  ]
+})
 
-const { data: applications } = await useAsyncData('all-applications', () =>
-  queryCollection('applications').all()
+
+
+const { data, pending: _pending, error: _error } = await useAsyncData('api-applications', () =>
+  $fetch('/api/applications')
 )
+const applications = computed(() => data.value?.applications ?? [])
 
-const { t, locale } = useI18n()
+const { locale } = useI18n()
 const route = useRoute()
 const { statusColor, formatDate } = useApplicationUtils()
 
@@ -32,7 +41,7 @@ useSeoMeta({
       <div v-if="applications && applications.length > 0" class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <NuxtLink
           v-for="app in applications"
-          :key="app._id"
+          :key="app.id"
           :to="$localePath(`/application/${app.slug}`)"
           class="group"
         >
@@ -49,7 +58,7 @@ useSeoMeta({
               </div>
               <p class="mt-2 text-neutral-600 dark:text-neutral-300">{{ app.title }}</p>
               <div class="mt-4 border-t border-neutral-200 pt-4 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
-                <span>Bewerbung vom: {{ formatDate(app.dates?.application) }}</span>
+                <span>Bewerbung vom: {{ formatDate(app.applicationDate) }}</span>
               </div>
             </UiCardContainer>
           </UiCard>

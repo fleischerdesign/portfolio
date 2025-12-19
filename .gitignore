@@ -29,3 +29,5 @@ nix-direnv-reload
 
 generated/
 /data/
+
+applications

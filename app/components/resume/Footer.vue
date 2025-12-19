@@ -1,5 +1,5 @@
 <template>
-  <footer class="text-xs text-gray-600 flex justify-between items-center border-t pt-2">
+  <footer class="flex items-center justify-between border-t pt-2 text-xs text-gray-600">
     <!-- Linke Seite: Name und Portfolio -->
     <div>
       <span class="font-bold">Philipp Fleischer</span> | fleischer.design

@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink v-if="to" :to="to" :class="buttonClasses">
+    <NuxtLink v-if="to" :to="to" :class="buttonClasses" :external="external">
         <slot />
     </NuxtLink>
     <button v-else :type="type" :class="buttonClasses" :disabled="isDisabled">
@@ -14,12 +14,14 @@ interface Props {
     to?: string;
     variant?: 'default' | 'secondary';
     type?: 'button' | 'submit' | 'reset';
+    external?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     to: undefined,
     variant: 'default',
     type: 'button',
+    external: false,
 });
 
 const attrs = useAttrs();

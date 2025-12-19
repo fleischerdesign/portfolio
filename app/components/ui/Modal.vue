@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   modelValue: boolean;
 }>();
 
@@ -15,7 +15,7 @@ const closeModal = () => {
 <template>
   <Transition name="modal">
     <div v-if="modelValue" class="fixed inset-0 z-[9998] flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300" @click.self="closeModal">
-      <div class="w-full max-w-md rounded-lg bg-neutral-50 dark:bg-neutral-900 p-6 shadow-lg transition-all duration-300 flex flex-col">
+      <div class="flex w-full max-w-md flex-col rounded-lg bg-neutral-50 p-6 shadow-lg transition-all duration-300 dark:bg-neutral-900">
         <div class="flex justify-end">
           <button class="text-2xl font-bold text-neutral-600 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200" @click="closeModal">
             &times;

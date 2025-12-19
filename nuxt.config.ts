@@ -3,12 +3,12 @@ export default defineNuxtConfig({
     storage: {
       data: {
         driver: 'fs',
-        base: './data'
+        base: './.data'
       }
     }
   },
   runtimeConfig: {
-    authSecret: '',
+    dbUrl: '',
     github: {
       token: '',
       username: '',
@@ -37,10 +37,8 @@ export default defineNuxtConfig({
     google: {
       apiKey: ''
     },
-    authentik: {
-      clientId: '',
-      clientSecret: '',
-      issuer: ''
+    session: {
+      password: ''
     },
     public: {}
   },
@@ -66,7 +64,8 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     'nuxt-og-image',
     '@nuxt/eslint',
-    '@sidebase/nuxt-auth'
+    'nuxt-auth-utils',
+    'nuxt-authorization'
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -76,17 +75,7 @@ export default defineNuxtConfig({
       ]
     }
   },
-  auth: {
-    isEnabled: true,
-    disableServerSideAuth: false,
-    originEnvKey: 'NUXT_AUTH_ORIGIN',
-    baseURL: 'http://localhost:3000/api/auth',
-    provider: { /* your provider config */ },
-    sessionRefresh: {
-      enablePeriodically: true,
-      enableOnWindowFocus: true,
-    }
-  },
+
   hooks: {
     'content:file:afterParse'(ctx) {
       const { file, content } = ctx;
