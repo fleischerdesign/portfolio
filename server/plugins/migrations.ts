@@ -3,7 +3,7 @@ import { migrate } from 'drizzle-orm/libsql/migrator';
 export default defineNitroPlugin(async () => {
   // We only run migrations in production builds.
   // In development, `drizzle-kit push` or `drizzle-kit migrate`
-  if (import.meta.dev) {
+  if (import.meta.prerender || import.meta.dev) {
     return;
   }
 
