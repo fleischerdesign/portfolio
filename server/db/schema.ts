@@ -79,6 +79,27 @@ export const users = sqliteTable('users', {
   authProviderId: text('auth_provider_id').notNull().unique(), // ID from Authentik
   email: text('email').notNull().unique(),
   name: text('name'),
+  role: text('role', { enum: ['admin', 'user'] }).default('user').notNull(), // Added role column
   // other fields you might want to store
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
 });
+
+export const usersRelations = relations(users, ({ many }) => ({
+  apiKeys: many(apiKeys),
+}));
+
+export const apiKeys = sqliteTable('api_keys', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  name: text('name').notNull(),
+  keyHash: text('key_hash').notNull().unique(),
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
+  lastUsedAt: integer('last_used_at', { mode: 'timestamp' }),
+});
+
+export const apiKeysRelations = relations(apiKeys, ({ one }) => ({
+  user: one(users, {
+    fields: [apiKeys.userId],
+    references: [users.id],
+  }),
+}));

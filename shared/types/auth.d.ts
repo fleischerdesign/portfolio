@@ -1,6 +1,5 @@
-// This file will augment the User type provided by nuxt-auth-utils
-declare module '#auth-utils' {
-  type User = import('../schemas/user.schema').SessionUser;
-}
+import type { SessionUser } from '../schemas/user.schema';
 
-export {}
+declare module '#auth-utils' {
+  interface User extends SessionUser {}
+}

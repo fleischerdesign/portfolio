@@ -51,6 +51,7 @@ export default defineOAuthAuthentikEventHandler({
         id: user.id,
         email: user.email,
         name: user.name,
+        role: user.role, // Add the role to the session
       },
       loggedInAt: new Date()
     });

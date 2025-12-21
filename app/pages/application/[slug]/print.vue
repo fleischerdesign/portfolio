@@ -1,3 +1,67 @@
+<script setup lang="ts">
+import { personalData } from '~/data/personal.data';
+import { languagesData } from '~/data/languages.data';
+import { interestsData } from '~/data/interests.data';
+import { contactData } from '~/data/contact.data';
+import { timelineData } from '~/data/timeline.data';
+import { coursesData } from '~/data/courses.data';
+import { softSkillsData } from '~/data/softSkills.data';
+import { techStackData } from '~/data/techStack.data';
+
+definePageMeta({
+  layout: 'print',
+  middleware: 'authorize',
+  ability: isAdmin,
+});
+
+const { t, locale } = useI18n();
+const route = useRoute();
+const { slug } = route.params as { slug: string };
+
+const { data: application, error } = await useAsyncData(`application-print-${slug}`, () =>
+  $fetch(`/api/applications/${slug}`)
+);
+
+if (error.value || !application.value) {
+  throw createError({ statusCode: 404, statusMessage: 'Application not found', fatal: true });
+}
+
+const personal = personalData(t);
+const languages = languagesData(t);
+const interests = interestsData(t);
+const contact = contactData;
+const timeline = timelineData(t);
+const courses = coursesData;
+const softSkills = softSkillsData(t);
+const techStack = techStackData;
+
+const { renderMarkdown } = useMarkdown();
+
+const applicationDate = computed(() => {
+  if (!application.value?.applicationDate) return '';
+  const date = new Date(application.value.applicationDate);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+});
+
+const salutation = computed(() => {
+  const contactName = application.value?.company?.address?.contactName;
+  if (contactName) {
+    return `Sehr geehrte/r Frau/Herr ${contactName.split(' ').pop()}`;
+  }
+  return 'Sehr geehrte Damen und Herren';
+});
+
+const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`, () =>
+  queryCollection('projects')
+    .where('locale', '=', locale.value)
+    .select('title', 'subtitle', 'slug', 'image')
+    .all()
+);
+</script>
+
 <template>
   <div class="pdf-resume-container text-primary-950 font-sans">
 
@@ -172,72 +236,3 @@
       </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { personalData } from '~/data/personal.data';
-import { languagesData } from '~/data/languages.data';
-import { interestsData } from '~/data/interests.data';
-import { contactData } from '~/data/contact.data';
-import { timelineData } from '~/data/timeline.data';
-import { coursesData } from '~/data/courses.data';
-import { softSkillsData } from '~/data/softSkills.data';
-import { techStackData } from '~/data/techStack.data';
-
-definePageMeta({
-  layout: 'print',
-  middleware: [
-    async () => {
-      await authorize(isAdmin);
-    }
-  ]
-});
-
-const { t, locale } = useI18n();
-const route = useRoute();
-const { slug } = route.params as { slug: string };
-
-const { data: application, error } = await useAsyncData(`application-print-${slug}`, () =>
-  $fetch(`/api/applications/${slug}`)
-);
-
-if (error.value || !application.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Application not found', fatal: true });
-}
-
-const personal = personalData(t);
-const languages = languagesData(t);
-const interests = interestsData(t);
-const contact = contactData;
-const timeline = timelineData(t);
-const courses = coursesData;
-const softSkills = softSkillsData(t);
-const techStack = techStackData;
-
-const { renderMarkdown } = useMarkdown();
-
-const applicationDate = computed(() => {
-  if (!application.value?.applicationDate) return '';
-  const date = new Date(application.value.applicationDate);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}.${month}.${year}`;
-});
-
-const salutation = computed(() => {
-  const contactName = application.value?.company?.address?.contactName;
-  if (contactName) {
-    return `Sehr geehrte/r Frau/Herr ${contactName.split(' ').pop()}`;
-  }
-  return 'Sehr geehrte Damen und Herren';
-});
-
-const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`, () =>
-  queryCollection('projects')
-    .where('locale', '=', locale.value)
-    .select('title', 'subtitle', 'slug', 'image')
-    .all()
-);
-</script>
-
-

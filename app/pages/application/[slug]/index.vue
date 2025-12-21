@@ -1,11 +1,8 @@
 <script setup lang="ts">
 definePageMeta({
-  middleware: [
-    async () => {
-      await authorize(isAdmin);
-    }
-  ]
-})
+  middleware: 'authorize',
+  ability: isAdmin
+});
 
 
 

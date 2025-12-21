@@ -8,6 +8,20 @@
       "when": 1766184524809,
       "tag": "0000_chemical_daredevil",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1766222448760,
+      "tag": "0001_little_magus",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1766260955673,
+      "tag": "0002_bouncy_wild_child",
+      "breakpoints": true
     }
   ]
 }

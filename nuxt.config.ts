@@ -37,6 +37,7 @@ export default defineNuxtConfig({
     google: {
       apiKey: ''
     },
+    masterApiKey: '',
     session: {
       password: ''
     },

@@ -1,13 +1,9 @@
 <script setup lang="ts">
+
 definePageMeta({
-  middleware: [
-    async () => {
-      await authorize(isAdmin);
-    }
-  ]
-})
-
-
+  middleware: 'authorize',
+  ability: isAdmin
+});
 
 const { data, pending: _pending, error: _error } = await useAsyncData('api-applications', () =>
   $fetch('/api/applications')

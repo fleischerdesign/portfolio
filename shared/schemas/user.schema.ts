@@ -5,6 +5,7 @@ export const dbUserSchema = z.object({
   authProviderId: z.string(),
   email: z.string().email(),
   name: z.string().optional().nullable(),
+  role: z.enum(['admin', 'user']).default('user'), // Added role property
   createdAt: z.date().nullable().optional(),
 });
 
@@ -17,6 +18,7 @@ export const sessionUserSchema = z.object({
   id: z.number().int().positive(), // ID must be present in session
   email: z.string().email(),
   name: z.string().optional().nullable(),
+  role: z.enum(['admin', 'user']),
 });
 
 // Type for the user as stored in the session and used in composables/abilities
