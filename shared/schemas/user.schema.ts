@@ -23,3 +23,10 @@ export const sessionUserSchema = z.object({
 
 // Type for the user as stored in the session and used in composables/abilities
 export type SessionUser = z.infer<typeof sessionUserSchema>;
+
+// Schema for updating user properties via API
+export const updateUserSchema = dbUserSchema.omit({
+  id: true,
+  authProviderId: true,
+  createdAt: true,
+}).partial();
