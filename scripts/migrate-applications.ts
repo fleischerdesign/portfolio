@@ -4,7 +4,9 @@ import path from 'node:path';
 import matter from 'gray-matter';
 
 const APPLICATIONS_PATH = 'applications'; // Path relative to project root
-const API_ENDPOINT = 'http://localhost:3000/api/applications';
+// Use command-line arguments, with fallbacks to defaults
+const API_ENDPOINT = process.argv[2] || 'http://localhost:3000/api/applications';
+const API_KEY = process.argv[3];
 
 interface FrontmatterDate {
   application?: Date;
@@ -87,11 +89,17 @@ async function main() {
         },
       };
 
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+
+      if (API_KEY) {
+        headers['X-Api-Key'] = API_KEY;
+      }
+
       const response = await fetch(API_ENDPOINT, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify(payload),
       });
 
