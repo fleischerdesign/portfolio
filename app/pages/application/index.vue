@@ -5,9 +5,7 @@ definePageMeta({
   ability: isAdmin
 });
 
-const { data, pending: _pending, error: _error } = await useAsyncData('api-applications', () =>
-  $fetch('/api/applications')
-)
+const { data, pending: _pending, error: _error } = await useAuthFetch('/api/applications');
 const applications = computed(() => data.value?.applications ?? [])
 
 const { locale } = useI18n()

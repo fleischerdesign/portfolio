@@ -18,9 +18,7 @@ const { t, locale } = useI18n();
 const route = useRoute();
 const { slug } = route.params as { slug: string };
 
-const { data: application, error } = await useAsyncData(`application-print-${slug}`, () =>
-  $fetch(`/api/applications/${slug}`)
-);
+const { data: application, error } = await useAuthFetch(`/api/applications/${slug}`);
 
 if (error.value || !application.value) {
   throw createError({ statusCode: 404, statusMessage: 'Application not found', fatal: true });
