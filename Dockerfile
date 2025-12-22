@@ -23,7 +23,8 @@ WORKDIR /app
 RUN apk add --no-cache dumb-init curl chromium && \
     chmod +x /usr/bin/chromium-browser && \
     adduser -D app && \
-    chown -R app:app /app
+    mkdir -p /app/data && \
+    chown -R app:app /app /app/data
 USER app
 
 COPY --from=builder --chown=app:app /app/.output ./
