@@ -21,11 +21,10 @@ FROM node:20-alpine
 
 WORKDIR /app
 RUN apk add --no-cache dumb-init curl chromium && \
+    chmod +x /usr/bin/chromium-browser && \
     adduser -D app && \
     chown -R app:app /app
 USER app
-
-RUN chmod +x /usr/bin/chromium-browser
 
 COPY --from=builder --chown=app:app /app/.output ./
 COPY --from=builder --chown=app:app /app/node_modules ./node_modules
