@@ -1,0 +1,1 @@
+ALTER TABLE `applications` ADD `pdf_generated_at` integer;

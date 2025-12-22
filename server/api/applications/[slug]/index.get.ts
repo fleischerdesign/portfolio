@@ -1,9 +1,9 @@
-import { applications } from '../../db/schema';
+import { applications } from '~~/server/db/schema';
 import { eq } from 'drizzle-orm';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
-  
+
   const slug = getRouterParam(event, 'slug');
 
   if (!slug) {

@@ -49,6 +49,7 @@ export const applications = sqliteTable('applications', {
   body: text('body'), // To store the cover letter / main content
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).$onUpdate(() => sql`(strftime('%s', 'now'))`),
+  pdfGeneratedAt: integer('pdf_generated_at', { mode: 'timestamp' }),
 });
 
 export const applicationsRelations = relations(applications, ({ one, many }) => ({

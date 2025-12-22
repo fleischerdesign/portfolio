@@ -14,7 +14,6 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "generate-application": "node -r ts-node/register --env-file=.env scripts/generate-application.ts ",
     "db:migrate-md": "ts-node scripts/migrate-applications.ts"
   },
   "dependencies": {

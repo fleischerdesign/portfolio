@@ -9,7 +9,7 @@ definePageMeta({
 const route = useRoute()
 const { slug } = route.params as { slug: string }
 
-const { data: application, error } = await useAuthFetch(`/api/applications/${slug}`);
+const { data: application, error, refresh } = await useAuthFetch(`/api/applications/${slug}`);
 
 if (error.value || !application.value) {
   throw createError({ statusCode: 404, statusMessage: 'Application not found', fatal: true })
@@ -19,6 +19,29 @@ const printUrl = computed(() => `/application/${route.params.slug}/print`)
 
 const { statusColor, formatDate } = useApplicationUtils()
 const { renderMarkdown } = useMarkdown()
+
+const isLoading = ref(false)
+
+const isPdfOutdated = computed(() => {
+  if (!application.value?.pdfGeneratedAt || !application.value?.updatedAt) {
+    return true; // If no PDF or updated timestamp, it's "outdated"
+  }
+  return new Date(application.value.updatedAt) > new Date(application.value.pdfGeneratedAt);
+});
+
+async function generatePdf() {
+  isLoading.value = true
+  try {
+    await useRequestFetch()(`/api/applications/${slug}/pdf/generate`, {
+      method: 'POST',
+    })
+    await refresh() // Refresh data to get the new pdfGeneratedAt timestamp
+  } catch (error) {
+    console.error('Failed to generate PDF', error)
+  } finally {
+    isLoading.value = false
+  }
+}
 
 useSeoMeta({
   title: () => application.value!.title,
@@ -117,14 +140,23 @@ useSeoMeta({
             title="Application Preview"
           />
         </div>
-        <div class="mt-4 text-center">
-          <a
-            :href="printUrl"
-            target="_blank"
-            class="hover:text-primary-500 text-sm text-gray-500 dark:text-gray-400"
-          >
+        <div class="mt-4 flex justify-center gap-4">
+          <UiButton :to="printUrl" target="_blank">
             Vollbild-Vorschau öffnen
-          </a>
+          </UiButton>
+          <template v-if="application.pdfGeneratedAt">
+            <UiButton :to="`/api/applications/${slug}/pdf/download`" external>
+              Download PDF
+            </UiButton>
+            <UiButton v-if="isPdfOutdated" :is-loading="isLoading" @click="generatePdf">
+              Regenerate PDF
+            </UiButton>
+          </template>
+          <template v-else>
+            <UiButton :is-loading="isLoading" @click="generatePdf">
+              Generate PDF
+            </UiButton>
+          </template>
         </div>
       </div>
     </div>
