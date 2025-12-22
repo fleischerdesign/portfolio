@@ -1,9 +1,9 @@
 import puppeteer from 'puppeteer';
 import { fileURLToPath } from 'url';
-import path from 'path';
+import path from 'path'; // Import path module
 import fs from 'fs';
 import { eq } from 'drizzle-orm';
-import { applications } from '../../../../db/schema';
+import { applications } from '~~/server/db/schema';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
@@ -44,10 +44,9 @@ export default defineEventHandler(async (event) => {
       scale: .8
     });
 
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    const outputPath = path.resolve(__dirname, `../../data/applications/${slug}.pdf`);
-    console.log(outputPath)
+    // Use process.cwd() which is reliably /app in the container
+    const outputPath = path.join(process.cwd(), 'data', 'applications', `${slug}.pdf`);
+    console.log(`Writing PDF to: ${outputPath}`);
 
     const outputDir = path.dirname(outputPath);
     if (!fs.existsSync(outputDir)) {

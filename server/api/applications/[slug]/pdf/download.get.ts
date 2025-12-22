@@ -1,6 +1,5 @@
 import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from 'path'; // Import path module
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
@@ -13,10 +12,9 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  const filePath = path.resolve(__dirname, `../../data/applications/${slug}.pdf`);
-  console.log(filePath)
+  // Use process.cwd() which is reliably /app in the container
+  const filePath = path.join(process.cwd(), 'data', 'applications', `${slug}.pdf`);
+  console.log(`Reading PDF from: ${filePath}`);
 
   if (!fs.existsSync(filePath)) {
     throw createError({
