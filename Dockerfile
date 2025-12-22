@@ -20,10 +20,12 @@ RUN --mount=type=secret,id=GITHUB_APPLICATIONS_REPO_TOKEN \
 FROM node:20-alpine
 
 WORKDIR /app
-RUN apk add --no-cache dumb-init curl && \
+RUN apk add --no-cache dumb-init curl chromium && \
     adduser -D app && \
     chown -R app:app /app
 USER app
+
+RUN chmod +x /usr/bin/chromium-browser
 
 COPY --from=builder --chown=app:app /app/.output ./
 COPY --from=builder --chown=app:app /app/node_modules ./node_modules
@@ -32,7 +34,8 @@ COPY --from=builder --chown=app:app /app/server/db/migrations ./server/db/migrat
 
 ENV NODE_ENV=production \
     PORT=3000 \
-    HOST=0.0.0.0
+    HOST=0.0.0.0 \
+    BROWSER_BIN=/usr/bin/chromium-browser
 EXPOSE 3000
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
