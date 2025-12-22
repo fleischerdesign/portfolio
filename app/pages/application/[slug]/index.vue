@@ -148,12 +148,12 @@ useSeoMeta({
             <UiButton :to="`/api/applications/${slug}/pdf/download`" external>
               Download PDF
             </UiButton>
-            <UiButton v-if="isPdfOutdated" :is-loading="isLoading" @click="generatePdf">
+            <UiButton v-if="isPdfOutdated" :is-loading="isLoading" :disabled="isLoading" @click="generatePdf">
               Regenerate PDF
             </UiButton>
           </template>
           <template v-else>
-            <UiButton :is-loading="isLoading" @click="generatePdf">
+            <UiButton :is-loading="isLoading" :disabled="isLoading" @click="generatePdf">
               Generate PDF
             </UiButton>
           </template>

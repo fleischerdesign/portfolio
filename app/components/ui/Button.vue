@@ -2,8 +2,14 @@
     <NuxtLink v-if="to" :to="to" :class="buttonClasses" :external="external">
         <slot />
     </NuxtLink>
-    <button v-else :type="type" :class="buttonClasses" :disabled="isDisabled">
-        <slot />
+    <button v-else :type="type" :class="buttonClasses" :disabled="isDisabled || isLoading">
+        <span v-if="isLoading" class="flex items-center gap-2">
+            <Icon name="mdi:loading" class="animate-spin h-5 w-5" />
+            Loading...
+        </span>
+        <span v-else>
+            <slot />
+        </span>
     </button>
 </template>
 
@@ -15,6 +21,7 @@ interface Props {
     variant?: 'default' | 'secondary';
     type?: 'button' | 'submit' | 'reset';
     external?: boolean;
+    isLoading?: boolean; // Add isLoading prop
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -22,6 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
     variant: 'default',
     type: 'button',
     external: false,
+    isLoading: false, // Default to false
 });
 
 const attrs = useAttrs();
