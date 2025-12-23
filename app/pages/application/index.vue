@@ -6,10 +6,14 @@ definePageMeta({
 });
 
 const { data, pending: _pending, error: _error } = await useAuthFetch('/api/applications');
-const applications = computed(() => data.value?.applications ?? [])
+const applications = ref(data.value?.applications ?? []);
 
 const { locale } = useI18n()
 const route = useRoute()
+
+function handleApplicationDeleted(deletedId: number) {
+  applications.value = applications.value.filter(app => app.id !== deletedId);
+}
 
 useSeoMeta({
   title: "Bewerbungsübersicht",
@@ -36,6 +40,7 @@ useSeoMeta({
           v-for="app in applications"
           :key="app.id"
           :application="app"
+          @deleted="handleApplicationDeleted"
         />
       </div>
       <div v-else class="mt-8 text-center text-neutral-500 dark:text-neutral-400">
