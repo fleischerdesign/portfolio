@@ -147,9 +147,8 @@ onUnmounted(() => {
       </UiCard>
     </NuxtLink>
 
-    <UiModal v-model="showDeleteModal">
+    <UiModal v-model="showDeleteModal" title="Bewerbung löschen">
       <template #body>
-        <h3 class="text-lg font-semibold">Bewerbung löschen</h3>
         <p class="mt-2">Möchten Sie die Bewerbung für "{{ application.title }}" bei "{{ application.company.name }}" wirklich endgültig löschen? Diese Aktion kann nicht rückgängig gemacht werden.</p>
       </template>
       <template #footer>
@@ -160,9 +159,8 @@ onUnmounted(() => {
       </template>
     </UiModal>
 
-    <UiModal v-model="showStatusModal">
+    <UiModal v-model="showStatusModal" title="Status ändern">
       <template #body>
-        <h3 class="text-lg font-semibold">Status ändern</h3>
         <p class="mt-2">Wählen Sie einen neuen Status für die Bewerbung bei "{{ application.company.name }}".</p>
         <div class="mt-4 space-y-2">
           <label v-for="status in availableStatuses" :key="status" class="flex items-center gap-3 rounded-md p-2 hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50">
