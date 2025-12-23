@@ -1,5 +1,4 @@
 import puppeteer from 'puppeteer';
-import { fileURLToPath } from 'url';
 import path from 'path'; // Import path module
 import fs from 'fs';
 import { eq } from 'drizzle-orm';
