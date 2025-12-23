@@ -36,7 +36,10 @@ export const applicationApiSchema = z.object({
   body: z.string().optional().nullable(),
 });
 
+export const updateApplicationSchema = applicationApiSchema.partial();
+
 export type ApplicationApiPayload = z.infer<typeof applicationApiSchema>;
+export type UpdateApplicationApiPayload = z.infer<typeof updateApplicationSchema>;
 export type CompanyApiPayload = z.infer<typeof companyApiSchema>;
 export type AddressApiPayload = z.infer<typeof addressApiSchema>;
 export type InterviewApiPayload = z.infer<typeof interviewApiSchema>;

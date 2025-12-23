@@ -15,6 +15,13 @@ function handleApplicationDeleted(deletedId: number) {
   applications.value = applications.value.filter(app => app.id !== deletedId);
 }
 
+function handleApplicationUpdated(updatedApplication: any) {
+  const index = applications.value.findIndex(app => app.id === updatedApplication.id);
+  if (index !== -1) {
+    applications.value[index] = updatedApplication;
+  }
+}
+
 useSeoMeta({
   title: "Bewerbungsübersicht",
   ogTitle: "Bewerbungsübersicht",
@@ -41,6 +48,7 @@ useSeoMeta({
           :key="app.id"
           :application="app"
           @deleted="handleApplicationDeleted"
+          @updated="handleApplicationUpdated"
         />
       </div>
       <div v-else class="mt-8 text-center text-neutral-500 dark:text-neutral-400">

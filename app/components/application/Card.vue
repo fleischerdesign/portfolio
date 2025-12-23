@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
-import type { ApplicationApiPayload as Application } from '~/shared/schemas/application.schema';
+import { applicationApiSchema, type ApplicationApiPayload as Application } from '#shared/schemas/application.schema';
 
 const props = defineProps({
   application: {
@@ -9,13 +9,18 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['deleted']);
+const emit = defineEmits(['deleted', 'updated']);
 
 const { statusColor, formatDate } = useApplicationUtils();
 const isMenuOpen = ref(false);
 const showDeleteModal = ref(false);
+const showStatusModal = ref(false);
 const isDeleting = ref(false);
+const isUpdatingStatus = ref(false);
 const menu = ref<HTMLElement | null>(null);
+
+const newStatus = ref(props.application.status);
+const availableStatuses = applicationApiSchema.shape.status.options;
 
 const handleClickOutside = (event: MouseEvent) => {
   if (menu.value && !menu.value.contains(event.target as Node)) {
@@ -38,8 +43,31 @@ async function deleteApplication() {
   }
 }
 
+async function updateApplicationStatus() {
+  isUpdatingStatus.value = true;
+  try {
+    const updatedApplication = await useRequestFetch()(`/api/applications/${props.application.slug}`, {
+      method: 'PUT',
+      body: { status: newStatus.value },
+    });
+    console.log('API Response:', updatedApplication);
+    emit('updated', updatedApplication);
+    showStatusModal.value = false;
+  } catch (error) {
+    console.error('Failed to update status', error);
+  } finally {
+    isUpdatingStatus.value = false;
+  }
+}
+
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
+  // Set initial status for the modal when it opens
+  watch(showStatusModal, (newValue) => {
+    if (newValue) {
+      newStatus.value = props.application.status;
+    }
+  });
 });
 
 onUnmounted(() => {
@@ -83,7 +111,7 @@ onUnmounted(() => {
                   </button>
                 </li>
                 <li>
-                  <button class="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50">
+                  <button @click="showStatusModal = true" class="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50">
                     <Icon name="mdi:tag-multiple" class="h-5 w-5" />
                     <span>Status ändern</span>
                   </button>
@@ -122,6 +150,7 @@ onUnmounted(() => {
       </UiCard>
     </NuxtLink>
 
+    <!-- Delete Confirmation Modal -->
     <UiModal v-model="showDeleteModal">
       <template #body>
         <h3 class="text-lg font-semibold">Bewerbung löschen</h3>
@@ -131,6 +160,26 @@ onUnmounted(() => {
         <UiButton @click="showDeleteModal = false">Abbrechen</UiButton>
         <UiButton variant="danger" :is-loading="isDeleting" @click="deleteApplication">
           Löschen
+        </UiButton>
+      </template>
+    </UiModal>
+
+    <!-- Status Change Modal -->
+    <UiModal v-model="showStatusModal">
+      <template #body>
+        <h3 class="text-lg font-semibold">Status ändern</h3>
+        <p class="mt-2">Wählen Sie einen neuen Status für die Bewerbung bei "{{ application.company.name }}".</p>
+        <div class="mt-4 space-y-2">
+          <label v-for="status in availableStatuses" :key="status" class="flex items-center gap-3 rounded-md p-2 hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50">
+            <input type="radio" :value="status" v-model="newStatus" name="application_status" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:checked:bg-primary-500">
+            <span>{{ status }}</span>
+          </label>
+        </div>
+      </template>
+      <template #footer>
+        <UiButton @click="showStatusModal = false">Abbrechen</UiButton>
+        <UiButton :is-loading="isUpdatingStatus" @click="updateApplicationStatus">
+          Speichern
         </UiButton>
       </template>
     </UiModal>
