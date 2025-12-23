@@ -162,12 +162,35 @@ onUnmounted(() => {
     <UiModal v-model="showStatusModal" title="Status ändern">
       <template #body>
         <p class="mt-2">Wählen Sie einen neuen Status für die Bewerbung bei "{{ application.company.name }}".</p>
-        <div class="mt-4 space-y-2">
-          <label v-for="status in availableStatuses" :key="status" class="flex items-center gap-3 rounded-md p-2 hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50">
-            <input type="radio" :value="status" v-model="newStatus" name="application_status" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:checked:bg-primary-500">
-            <span>{{ status }}</span>
-          </label>
-        </div>
+        <fieldset class="mt-4">
+          <legend class="sr-only">
+            Application Status
+          </legend>
+          <div class="space-y-2">
+            <label
+              v-for="status in availableStatuses"
+              :key="status"
+              :for="`status_${status}`"
+              class="relative flex cursor-pointer items-center gap-3 rounded-lg border p-3 shadow-sm transition hover:bg-secondary-500/20 hover:border-secondary-300 dark:hover:border-secondary-700"
+              :class="[
+                newStatus === status ? 'border-secondary-400 ring-2 ring-secondary-400 bg-secondary-100 dark:border-secondary-600 dark:ring-secondary-600 dark:bg-secondary-800' : 'border-neutral-300 dark:border-neutral-700'
+              ]"
+            >
+              <input
+                :id="`status_${status}`"
+                type="radio"
+                :value="status"
+                v-model="newStatus"
+                name="application_status"
+                class="sr-only"
+              >
+              <span class="flex flex-1 items-center gap-3">
+                <Icon name="mdi:circle" class="h-4 w-4" :class="statusColor(status)" />
+                <span class="font-medium">{{ status }}</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
       </template>
       <template #footer>
         <UiButton @click="showStatusModal = false">Abbrechen</UiButton>
