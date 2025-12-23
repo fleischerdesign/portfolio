@@ -4,7 +4,7 @@
     </NuxtLink>
     <button v-else :type="type" :class="buttonClasses" :disabled="isDisabled || isLoading">
         <span v-if="isLoading" class="flex items-center gap-2">
-            <Icon name="mdi:loading" class="animate-spin h-5 w-5" />
+            <Icon name="mdi:loading" class="h-5 w-5 animate-spin" />
             Loading...
         </span>
         <span v-else>
@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 
 interface Props {
     to?: string;

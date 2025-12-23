@@ -29,14 +29,14 @@ onUnmounted(() => {
 <template>
   <NuxtLink :to="$localePath(`/application/${application.slug}`)" class="group relative">
     <UiCard hover class="h-full flex-col">
-      <UiCardContainer class="flex-col h-full">
+      <UiCardContainer class="h-full flex-col">
         <!-- Kebab Menu Button -->
-        <button
-          class="absolute right-4 z-20 p-1 rounded-md text-neutral-500 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700"
+        <uiButton
+          class="absolute right-4 z-20 h-9 w-9 rounded-md !p-1 text-neutral-500 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700"
           @click.stop.prevent="isMenuOpen = !isMenuOpen"
         >
           <Icon name="mdi:dots-vertical" class="p-3" />
-        </button>
+        </uiButton>
 
         <!-- Kebab Menu Dropdown -->
         <Transition
