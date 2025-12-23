@@ -18,12 +18,10 @@ export function useContactForm() {
 
     async function onSubmit() {
         try {
-            // Validiere das Formular mit dem Zod-Schema
             ContactFormSchema.parse(form.value)
             errors.value = {}
         } catch (error) {
             if (error instanceof z.ZodError) {
-                // Extrahiere die Fehlermeldungen aus dem Zod-Error
                 const newErrors: Record<string, string> = {}
                 error.errors.forEach((err) => {
                     if (err.path[0]) {
@@ -31,7 +29,7 @@ export function useContactForm() {
                     }
                 })
                 errors.value = newErrors
-                return // Stoppe die Ausführung, wenn die Validierung fehlschlägt
+                return
             }
         }
 
@@ -45,7 +43,6 @@ export function useContactForm() {
                 body: form.value,
             })
             success.value = true
-            // Formular zurücksetzen
             form.value = { name: '', email: '', subject: '', message: '' }
             setTimeout(() => (success.value = false), TIMEOUT_DURATION)
         } catch (error) {

@@ -4,7 +4,7 @@ const { t } = useI18n();
 function diffTimeValue(start, dailyValue) {
     const today = new Date()
     const diffTime = Math.abs(start - today)
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) // Tage
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
     return diffDays * dailyValue
 } 
 

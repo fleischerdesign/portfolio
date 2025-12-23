@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col gap-2 overflow-hidden">
-    <!-- Mit Scroll-Effekt -->
     <template v-if="scroll">
       <div
 v-for="(row, rowIndex) in rowItems" :key="'marquee-row-' + rowIndex"
@@ -16,7 +15,6 @@ v-for="(row, rowIndex) in rowItems" :key="'marquee-row-' + rowIndex"
         </div>
       </div>
     </template>
-    <!-- Ohne Scroll-Effekt -->
     <template v-else>
       <div v-for="(row, rowIndex) in rowItems" :key="'static-row-' + rowIndex" class="flex flex-wrap gap-2">
         <UiTag v-for="(item, index) in row" :key="index" :gradient="gradient" fill>
@@ -75,7 +73,6 @@ const scroll = computed(() => props.scroll ?? false);
 const rows = computed(() => props.rows ?? 1);
 const gradient = computed(() => props.gradient ?? false);
 
-// Items gleichmäßig auf Zeilen verteilen
 function chunkArray<T>(arr: T[], chunkCount: number): T[][] {
   const result: T[][] = Array.from({ length: chunkCount }, () => []);
   arr.forEach((item, idx) => {
@@ -86,22 +83,18 @@ function chunkArray<T>(arr: T[], chunkCount: number): T[][] {
 
 const rowItems = computed(() => chunkArray(props.items, rows.value));
 
-// Refs und Animationsdauern für jede Zeile
 const marqueeRefs = ref<(HTMLElement | null)[]>([]);
 const animationDurations = ref<number[]>([]);
 
-// Ref Setter für v-for
 function setMarqueeRef(el: HTMLElement | null, idx: number) {
   marqueeRefs.value[idx] = el;
 }
 
-// Animationsdauer pro Zeile berechnen (nur im Client)
 function updateDurations() {
   if (!scroll.value || typeof window === 'undefined') return;
   animationDurations.value = marqueeRefs.value.map((el, i) => {
     if (el) {
       const width = el.scrollWidth;
-      // Optional: Geschwindigkeit pro Zeile leicht variieren
       return width / (20 + (i * 10));
     }
     return 20;
@@ -110,12 +103,10 @@ function updateDurations() {
 
 onMounted(() => {
   if (scroll.value) {
-    // Timeout für initiales Rendern, damit die DOM-Breiten stimmen
     setTimeout(updateDurations, 100);
   }
 });
 
-// Bei Änderung der Items/Zeilen neu berechnen
 watch([rowItems, scroll], () => {
   if (scroll.value) {
     setTimeout(updateDurations, 100);

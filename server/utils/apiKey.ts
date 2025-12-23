@@ -1,7 +1,7 @@
 import { createHash, randomBytes } from 'node:crypto';
 
 export const generateApiKey = () => {
-  const prefix = 'sk_'; // "Secret Key"
+  const prefix = 'sk_';
   const bytes = randomBytes(24);
   const randomString = bytes.toString('hex');
   return prefix + randomString;

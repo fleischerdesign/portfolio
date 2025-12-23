@@ -1,34 +1,26 @@
 <template>
   <div class="relative">
-    <!-- Vertical line - mobile -->
     <div class="absolute left-5 top-0 h-full w-0.5 bg-secondary-400" :class="{'md:hidden': !isPrintView, 'hidden': isPrintView}"></div>
     
-    <!-- Vertical line - desktop -->
     <div class="absolute left-1/2 top-0 hidden h-full w-0.5 -translate-x-1/2 transform bg-secondary-400" :class="{'hidden': isPrintView, 'md:block': !isPrintView}"></div>
 
     <div v-for="(item, index) in items" :key="index" class="relative" :class="isPrintView ? 'mb-6' : 'mb-12'">
       <div class="flex">
-        <!-- Mobile circle with icon -->
         <div class="absolute left-5 z-10 flex h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-full bg-secondary-400" :class="{'md:hidden': !isPrintView, 'hidden': isPrintView}">
           <Icon :name="item.icon" size="20" class="text-white dark:text-gray-900" />
         </div>
         
-        <!-- Desktop circle with icon -->
         <div class="absolute left-1/2 z-10 hidden h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-full bg-secondary-400" :class="{'hidden': isPrintView, 'md:flex': !isPrintView}">
           <Icon :name="item.icon" size="20" class="text-white dark:text-gray-900" />
         </div>
         
-        <!-- Content container -->
         <UiCard
 :class="[
           'flex-col content-end p-5',
-          // Base mobile classes
-          isPrintView ? 'ml-0' : 'ml-12', // Conditional margin-left
+          isPrintView ? 'ml-0' : 'ml-12',
           'w-full',
-          // Desktop overrides, only if not in print view
           {'md:ml-0': !isPrintView},
           {'md:w-5/12': !isPrintView},
-          // Alignment classes
           index % 2 === 0
             ? (isPrintView ? 'justify-start text-left' : 'justify-end md:mr-auto md:text-right')
             : (isPrintView ? 'justify-start text-left' : 'md:ml-auto md:text-left'),
@@ -57,7 +49,7 @@ interface TimelineItem {
   date: string
   title: string
   description: string
-  icon: string // Icon name from Nuxt Icon
+  icon: string
   skills?: string[]
 }
 

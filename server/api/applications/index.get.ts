@@ -3,10 +3,8 @@ import { applications, companies, addresses, interviews as interviewsTable } fro
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
 
-  // Check if any companies or applications exist
   const existingApplication = await db.query.applications.findFirst();
 
-  // If DB is empty, insert dummy data. This should only run once.
   if (!existingApplication) {
     console.log('No applications found, inserting dummy data.');
 
@@ -39,15 +37,13 @@ export default defineEventHandler(async (event) => {
       notes: ['Sent application via website.', 'Followed up via email after 1 week.'],
       body: '## About the Role\n\nThis is a placeholder for the cover letter content.',
     }).returning();
-    
-    // Add dummy interviews for the new application
+
     await db.insert(interviewsTable).values([
-      { applicationId: newApplication.id, date: new Date('2025-11-15T10:00:00.000Z'), notes: 'First technical interview.'},
-      { applicationId: newApplication.id, date: new Date('2025-11-22T14:30:00.000Z'), notes: 'Follow-up with team lead.'},
+      { applicationId: newApplication.id, date: new Date('2025-11-15T10:00:00.000Z'), notes: 'First technical interview.' },
+      { applicationId: newApplication.id, date: new Date('2025-11-22T14:30:00.000Z'), notes: 'Follow-up with team lead.' },
     ]);
   }
 
-  // Fetch all applications with related company, address, and interviews data
   const allApplications = await db.query.applications.findMany({
     with: {
       company: {

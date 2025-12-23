@@ -6,14 +6,10 @@ const RequestBodySchema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-  // Authorization check first
-  await authorize(event, canManageApiKeys); // Added authorization check
+  await authorize(event, canManageApiKeys);
 
   const session = await requireUserSession(event);
   const user = session.user;
-
-  // No need for explicit if (!user?.id) check here, as authorize() covers it for 'canManageApiKeys'
-  // and requireUserSession() would also throw a 401 if no valid session.
 
   const body = await readValidatedBody(event, (body) => RequestBodySchema.safeParse(body));
 
@@ -25,18 +21,15 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Generate the new key
   const newApiKey = generateApiKey();
-  const hashedKey = hashApiKey(newApiKey); // No await needed for SHA256
+  const hashedKey = hashApiKey(newApiKey);
 
-  // Store the hashed key in the database
   await db.insert(apiKeys).values({
     name: body.data.name,
     keyHash: hashedKey,
-    userId: user.id, // Use user.id from the session
+    userId: user.id,
   });
 
-  // Return the plaintext key to the user ONCE.
   return {
     message: 'API key created successfully. Save this key somewhere safe. You will not be able to see it again.',
     apiKey: newApiKey,

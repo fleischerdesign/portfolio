@@ -91,7 +91,6 @@ const formatDate = (isoDate: string) => {
   })
 }
 
-// Tooltip-Handler
 function showTooltip(event: MouseEvent, day: Contribution) {
   if (!container.value || day.count == 0) return
   const rect = container.value.getBoundingClientRect()
@@ -106,7 +105,6 @@ function hideTooltip() {
   tooltip.value.visible = false
 }
 
-// Datenaufbereitung
 const allWeeksData = computed(() => {
   const weeks: Contribution[][] = []
   const contributionMap = new Map(
@@ -115,16 +113,13 @@ const allWeeksData = computed(() => {
       : []
   )
 
-  // Startdatum: Heute vor 52 Wochen
   const today = new Date()
   const startDate = new Date(today)
   startDate.setDate(startDate.getDate() - 7 * 52 + 1)
 
-  // Zum letzten Sonntag vor dem Startdatum springen
   const startSunday = new Date(startDate)
   startSunday.setDate(startSunday.getDate() - ((startSunday.getDay() + 6) % 7))
 
-  // 52 Wochen aufbauen
   for (let weekIndex = 0; weekIndex < 52; weekIndex++) {
     const week: Contribution[] = []
     const weekStart = new Date(startSunday)
@@ -133,7 +128,6 @@ const allWeeksData = computed(() => {
       const currentDate = new Date(weekStart)
       currentDate.setDate(currentDate.getDate() + dayIndex)
 
-      // Nur Tage bis zum heutigen Datum in der letzten Woche hinzufügen
       if (weekIndex === 51 && currentDate > today) {
         break;
       }
@@ -213,17 +207,13 @@ const debouncedUpdate = () => {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(updateDisplayedWeeks, 150);
 };
-// Lifecycle
 onMounted(() => {
-  // Warte auf den ersten Render-Zyklus
   if(import.meta.client) {
   nextTick(() => {
-    // Initiale Berechnung nur wenn Container existiert
     if (container.value) {
       updateDisplayedWeeks()
     }
     
-    // ResizeObserver initialisieren
     resizeObserver = new ResizeObserver(debouncedUpdate);
     resizeObserver.observe(container.value!)
   })
@@ -236,7 +226,6 @@ onUnmounted(() => {
   window.removeEventListener('resize', updateDisplayedWeeks)
 })
 
-// Aktualisiere bei Änderung der Contributions
 watch(() => props.contributions, updateDisplayedWeeks, { immediate: true })
 
 </script>

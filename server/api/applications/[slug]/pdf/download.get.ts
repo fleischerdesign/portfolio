@@ -1,5 +1,5 @@
 import fs from 'fs';
-import path from 'path'; // Import path module
+import path from 'path';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
@@ -12,7 +12,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Use process.cwd() which is reliably /app in the container
   const filePath = path.join(process.cwd(), 'data', 'applications', `${slug}.pdf`);
   console.log(`Reading PDF from: ${filePath}`);
 
@@ -25,7 +24,6 @@ export default defineEventHandler(async (event) => {
 
   const pdfBuffer = fs.readFileSync(filePath);
 
-  // Set headers to prompt download
   event.node.res.setHeader('Content-Type', 'application/pdf');
   event.node.res.setHeader('Content-Disposition', `attachment; filename="${slug}.pdf"`);
 

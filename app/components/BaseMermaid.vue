@@ -13,7 +13,6 @@ import mermaid from 'mermaid'
 const container = ref<HTMLDivElement | null>(null)
 const slotRef = ref<HTMLElement | null>(null)
 let lastDiagramCode = ''
-// Eindeutige Diagramm-ID für jedes Diagramm
 const diagramId = `mermaid-diagram-${Math.random().toString(36).substr(2, 9)}`
 
 const renderDiagram = async (code: string) => {

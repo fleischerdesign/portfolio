@@ -1,10 +1,8 @@
-// scripts/migrate-applications.ts
 import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-const APPLICATIONS_PATH = 'applications'; // Path relative to project root
-// Use command-line arguments, with fallbacks to defaults
+const APPLICATIONS_PATH = 'applications';
 const API_ENDPOINT = process.argv[2] || 'http://localhost:3000/api/applications';
 const API_KEY = process.argv[3];
 
@@ -62,7 +60,7 @@ async function main() {
     try {
       // Map frontmatter to API payload structure
       const payload = {
-        slug: parsedFrontmatter.slug || file.replace('.md', ''), // Use slug from frontmatter or filename
+        slug: parsedFrontmatter.slug || file.replace('.md', ''),
         title: parsedFrontmatter.title,
         subtitle: parsedFrontmatter.subtitle,
         body: body.trim(), // Trim whitespace from markdown body
@@ -77,9 +75,9 @@ async function main() {
           name: parsedFrontmatter.company.name,
           address: {
             name: parsedFrontmatter.company.address.name,
-                  street: parsedFrontmatter.company.address.street,
-                  houseNumber: String(parsedFrontmatter.company.address.houseNumber), // Ensure houseNumber is a string
-                  zipcode: parsedFrontmatter.company.address.zipcode,            city: parsedFrontmatter.company.address.city,
+            street: parsedFrontmatter.company.address.street,
+            houseNumber: String(parsedFrontmatter.company.address.houseNumber), // Ensure houseNumber is a string
+            zipcode: parsedFrontmatter.company.address.zipcode, city: parsedFrontmatter.company.address.city,
             // Flatten contact details
             contactName: parsedFrontmatter.company.address.contact?.name,
             contactPosition: parsedFrontmatter.company.address.contact?.position,

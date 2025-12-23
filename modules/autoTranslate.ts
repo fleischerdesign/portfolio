@@ -1,4 +1,3 @@
-// modules/auto-translate.ts
 import { promises as fs } from 'fs'
 import path from 'path'
 import { defineNuxtModule } from 'nuxt/kit'
@@ -36,7 +35,6 @@ export default defineNuxtModule<TranslationConfig>({
     fieldsToTranslate: ['title', 'description', 'tags']
   },
   setup(options, nuxt) {
-    // Hook in den Build-Prozess
     nuxt.hook('build:before', async () => {
       console.log('🔄 Starting automatic translation...')
       await translateMarkdownFiles(options)
@@ -46,16 +44,15 @@ export default defineNuxtModule<TranslationConfig>({
 
 async function translateMarkdownFiles(config: TranslationConfig) {
   const contentDir = 'content'
-  
+
   try {
     for (const pathConfig of config.paths) {
-      // Merge pfadspezifische und globale Felder
       const fieldsToTranslate = pathConfig.fieldsToTranslate || config.fieldsToTranslate
       const mergedConfig = { ...config, fieldsToTranslate }
 
       const sourceDir = path.join(contentDir, config.sourceLocale, pathConfig.sourcePath)
       const targetDir = path.join(contentDir, config.targetLocale, pathConfig.targetPath)
-      
+
       console.log(`📂 Processing path: ${sourceDir} → ${targetDir} (Fields: ${fieldsToTranslate.join(', ')})`)
 
       await fs.mkdir(targetDir, { recursive: true })
@@ -65,18 +62,15 @@ async function translateMarkdownFiles(config: TranslationConfig) {
       for (const file of markdownFiles) {
         const sourcePath = path.join(sourceDir, file)
         const targetPath = path.join(targetDir, file)
-        
+
         if (await needsTranslation(sourcePath, targetPath)) {
           console.log(`🔄 Translating: ${file}`)
-          // Fehler wird jetzt in translateFile behandelt und nicht mehr geworfen
           await translateFile(sourcePath, targetPath, mergedConfig)
         }
       }
     }
   } catch (error) {
-    // Kritische Fehler im Dateisystem etc. werden hier noch geloggt
     console.error('❌ A critical error occurred during the file processing loop:', error)
-    // Wichtig: Wir werfen den Fehler hier nicht erneut, um den Build nicht zu blockieren
   }
 }
 
@@ -84,33 +78,28 @@ async function needsTranslation(sourcePath: string, targetPath: string): Promise
   try {
     const sourceStats = await fs.stat(sourcePath)
     const targetStats = await fs.stat(targetPath)
-    
-    // Übersetze nur wenn Quelle neuer ist
+
     return sourceStats.mtime > targetStats.mtime
   } catch {
-    // Zieldatei existiert nicht
     return true
   }
 }
 
 async function translateFile(
-  sourcePath: string, 
-  targetPath: string, 
+  sourcePath: string,
+  targetPath: string,
   config: TranslationConfig
 ): Promise<void> {
   try {
     const content = await fs.readFile(sourcePath, 'utf-8')
-    
-    // Übersetze komplettes Dokument mit spezifischen Anweisungen
+
     const translatedContent = await translateCompleteDocument(content, config)
-    
+
     await fs.writeFile(targetPath, translatedContent, 'utf-8')
-    
+
     console.log(`✅ Translated: ${path.basename(sourcePath)}`)
   } catch (error) {
-    // Fehler bei der Übersetzung protokollieren, aber den Prozess nicht anhalten
     console.error(`❌ Error translating ${path.basename(sourcePath)}: ${error.message}`)
-    // Wichtig: Der Fehler wird hier nicht weitergeworfen
   }
 }
 
@@ -167,7 +156,6 @@ async function callOpenAIWithPrompt(text: string, systemPrompt: string, config: 
     throw new Error('OPENAI_API_KEY is not set in runtimeConfig')
   }
 
-  // URL robust zusammensetzen und Trailing Slash entfernen
   const baseUrl = (config.apiBaseUrl || 'https://api.openai.com/v1').replace(/\/$/, '');
   const endpoint = `${baseUrl}/chat/completions`;
 
@@ -188,7 +176,7 @@ async function callOpenAIWithPrompt(text: string, systemPrompt: string, config: 
         role: 'user',
         content: text
       }],
-      temperature: 0.1 // Niedrige Temperatur für konsistente Formatierung
+      temperature: 0.1
     })
   })
 

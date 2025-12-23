@@ -6,15 +6,18 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    { nixpkgs, flake-utils, ... }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-      in {
+      in
+      {
         devShells.default = pkgs.mkShell {
           name = "nodejs-dev-shell";
           packages = with pkgs; [
-            nodejs_24 
+            nodejs_24
             python314
             chromium
           ];
@@ -30,5 +33,6 @@
             fi
           '';
         };
-      });
+      }
+    );
 }

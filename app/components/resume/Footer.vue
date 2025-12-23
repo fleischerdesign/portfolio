@@ -1,11 +1,9 @@
 <template>
   <footer class="flex items-center justify-between border-t pt-2 text-xs text-gray-600">
-    <!-- Linke Seite: Name und Portfolio -->
     <div>
       <span class="font-bold">Philipp Fleischer</span> | fleischer.design
     </div>
 
-    <!-- Mitte: Kontakt-Icons -->
     <div class="flex items-center gap-3">
       <div class="flex items-center gap-1">
         <Icon name="heroicons:envelope" />
@@ -21,7 +19,6 @@
       </div>
     </div>
 
-    <!-- Rechte Seite: Seitenzahl -->
     <div>
       Seite {{ currentPage }} von {{ totalPages }}
     </div>

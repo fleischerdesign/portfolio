@@ -7,5 +7,4 @@ export const ContactFormSchema = z.object({
   message: z.string().min(1, 'Nachricht ist erforderlich'),
 })
 
-// Leite einen TypeScript-Typ vom Schema ab, um ihn im Frontend zu verwenden
 export type ContactForm = z.infer<typeof ContactFormSchema>

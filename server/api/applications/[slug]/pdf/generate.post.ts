@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer';
-import path from 'path'; // Import path module
+import path from 'path';
 import fs from 'fs';
 import { eq } from 'drizzle-orm';
 import { applications } from '~~/server/db/schema';
@@ -43,7 +43,6 @@ export default defineEventHandler(async (event) => {
       scale: .8
     });
 
-    // Use process.cwd() which is reliably /app in the container
     const outputPath = path.join(process.cwd(), 'data', 'applications', `${slug}.pdf`);
     console.log(`Writing PDF to: ${outputPath}`);
 

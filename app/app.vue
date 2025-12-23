@@ -6,14 +6,14 @@
 </template>
 
 <script setup lang="ts">
-const { locale } = useI18n() // Importiere die aktuelle Sprache aus dem i18n Plugin
+const { locale } = useI18n()
 
 useHead({
   titleTemplate: (titleChunk) => {
     return titleChunk ? `${titleChunk} - Philipp Fleischer` : 'Philipp Fleischer'
   },
   htmlAttrs: {
-    lang: locale // Das setzt das lang-Attribut auf den aktuellen Sprachcode
+    lang: locale
   },
   meta: [
     { charset: 'utf-8' },

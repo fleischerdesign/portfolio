@@ -30,7 +30,6 @@ const closeModal = () => {
 
         <div class="flex justify-end">
           <slot name="footer">
-            <!-- default footer -->
           </slot>
         </div>
       </div>
@@ -39,7 +38,6 @@ const closeModal = () => {
 </template>
 
 <style scoped>
-/* Transitions for the modal */
 .modal-enter-active, .modal-leave-active {
   transition: opacity 0.3s ease;
 }

@@ -62,7 +62,6 @@ async function updateApplicationStatus() {
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
-  // Set initial status for the modal when it opens
   watch(showStatusModal, (newValue) => {
     if (newValue) {
       newStatus.value = props.application.status;
@@ -80,7 +79,6 @@ onUnmounted(() => {
     <NuxtLink :to="$localePath(`/application/${application.slug}`)" class="group relative">
       <UiCard hover class="h-full flex-col">
         <UiCardContainer class="h-full flex-col">
-          <!-- Kebab Menu Button -->
           <uiButton
             class="absolute right-4 z-20 h-9 w-9 rounded-md !p-1 text-neutral-500 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700"
             @click.stop.prevent="isMenuOpen = !isMenuOpen"
@@ -88,7 +86,6 @@ onUnmounted(() => {
             <Icon name="mdi:dots-vertical" class="p-3" />
           </uiButton>
 
-          <!-- Kebab Menu Dropdown -->
           <Transition
             enter-active-class="transition ease-out duration-100"
             enter-from-class="transform opacity-0 scale-95"
@@ -150,7 +147,6 @@ onUnmounted(() => {
       </UiCard>
     </NuxtLink>
 
-    <!-- Delete Confirmation Modal -->
     <UiModal v-model="showDeleteModal">
       <template #body>
         <h3 class="text-lg font-semibold">Bewerbung löschen</h3>
@@ -164,7 +160,6 @@ onUnmounted(() => {
       </template>
     </UiModal>
 
-    <!-- Status Change Modal -->
     <UiModal v-model="showStatusModal">
       <template #body>
         <h3 class="text-lg font-semibold">Status ändern</h3>

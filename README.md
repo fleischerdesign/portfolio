@@ -4,7 +4,7 @@ Welcome to the official repository for my personal portfolio website, [fleischer
 
 It is built with a modern, full-stack technology stack to ensure a great developer and user experience, with a focus on reproducible environments and a clean separation of concerns.
 
-## ✨ Features
+## Features
 
 *   **Full-Stack with Nuxt 4:** Built with the latest version of the intuitive Vue framework, handling both the frontend and a powerful server backend.
 *   **Content-Driven Portfolio:** Uses `@nuxt/content` for managing blog posts and project descriptions with Markdown.
@@ -24,7 +24,7 @@ It is built with a modern, full-stack technology stack to ensure a great develop
 *   **Authentication:** Secure authentication powered by `nuxt-auth-utils`.
 *   **CI/CD:** Automated build and deployment pipeline using **GitHub Actions**.
 
-## 🚀 Tech Stack
+## Tech Stack
 
 | Category      | Technology                                                                                             |
 |---------------|--------------------------------------------------------------------------------------------------------|
@@ -40,7 +40,7 @@ It is built with a modern, full-stack technology stack to ensure a great develop
 | **Dev Env**   | [Nix](https://nixos.org/), [Docker](https://www.docker.com/)                                              |
 | **CI/CD**     | [GitHub Actions](https://github.com/features/actions)                                                    |
 
-## 📂 Project Structure
+## Project Structure
 
 The repository is structured to follow Nuxt conventions while maintaining a clear separation between public and private concerns.
 

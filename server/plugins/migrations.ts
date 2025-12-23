@@ -14,8 +14,5 @@ export default defineNitroPlugin(async () => {
     console.log('Database migrations completed successfully.');
   } catch (e) {
     console.error('Error running database migrations:', e);
-    // Depending on the app's needs, we might want to exit the process
-    // if migrations fail, as the app might be in an unusable state.
-    // process.exit(1);
   }
 });

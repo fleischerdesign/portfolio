@@ -1,7 +1,6 @@
 #syntax=docker/dockerfile:1
 FROM node:20-alpine AS builder
 
-# Cache busting mit Build-Argumenten
 ARG CACHEBUST=1
 
 WORKDIR /app
@@ -16,7 +15,6 @@ RUN --mount=type=secret,id=GITHUB_APPLICATIONS_REPO_TOKEN \
     echo "Cache buster: $CACHEBUST" && \
     npm run build
 
-# ---- Production Stage ----
 FROM node:20-alpine
 
 WORKDIR /app

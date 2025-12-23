@@ -20,7 +20,7 @@ interface Props {
     variant?: 'default' | 'secondary' | 'danger';
     type?: 'button' | 'submit' | 'reset';
     external?: boolean;
-    isLoading?: boolean; // Add isLoading prop
+    isLoading?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
     variant: 'default',
     type: 'button',
     external: false,
-    isLoading: false, // Default to false
+    isLoading: false,
 });
 
 const attrs = useAttrs();

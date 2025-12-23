@@ -11,19 +11,17 @@ class="inline-flex items-center gap-1 rounded-lg border border-neutral-300 px-2 
 </template>
 
 <script setup lang="ts">
-// Definiere das 'fill'-Property
 defineProps({
   gradient: {
     type: Boolean,
-    default: false // Setzt den Standardwert auf false (kein Fill)
+    default: false
   },
   hover: {
     type: Boolean,
-    default: false // Setzt den Standardwert auf false (kein Fill)
+    default: false
   },
   fill: {
     type: Boolean,
-    default: false // Setzt den Standardwert auf false (kein Fill)
-  }
+    default: false
 });
 </script>

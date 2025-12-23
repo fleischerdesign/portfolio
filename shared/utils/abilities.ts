@@ -1,4 +1,4 @@
-import type { DbUser } from '#shared/schemas/user.schema'; // Corrected import path
+import type { DbUser } from '#shared/schemas/user.schema';
 
 export const isAdmin = defineAbility((user: DbUser | null) => {
   return user?.role === 'admin';

@@ -45,13 +45,13 @@ export default defineOAuthAuthentikEventHandler({
       return sendRedirect(event, '/login-error');
     }
 
-    // Store our internal user ID and some basic info in the session
+    // Store internal user ID and some basic info in the session
     await setUserSession(event, {
       user: {
-        id: user.id,
+        id: user.id!,
         email: user.email,
         name: user.name,
-        role: user.role, // Add the role to the session
+        role: user.role,
       },
       loggedInAt: new Date()
     });
@@ -60,6 +60,6 @@ export default defineOAuthAuthentikEventHandler({
   },
   onError(event, error) {
     console.error('Authentik OAuth error:', error);
-    return sendRedirect(event, '/login-error'); // Redirect to generic error page
+    return sendRedirect(event, '/login-error');
   }
 });

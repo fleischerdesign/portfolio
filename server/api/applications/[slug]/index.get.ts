@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
           address: true,
         },
       },
-      interviews: true, // Eager load interviews
+      interviews: true,
     },
   });
 

@@ -7,8 +7,8 @@ const primary = colors.neutral
 const secondary = colors.emerald
 
 export default <Partial<Config>>{
-    plugins: [typography],
-    theme: {
+  plugins: [typography],
+  theme: {
     container: {
       center: true,
       padding: {

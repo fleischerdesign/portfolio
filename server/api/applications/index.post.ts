@@ -21,21 +21,17 @@ export default defineEventHandler(async (event) => {
 
   const data: ApplicationApiPayload = validation.data;
 
-  // Drizzle's transaction will automatically roll back if any error is thrown inside
   const result = await db.transaction(async (tx) => {
     let addressId: number | null = null;
     let companyId: number;
 
-    // Step A: Process address
     if (data.company.address) {
-      // NOTE: For simplicity, we just insert. A real-world app might find/update existing addresses.
       const [newAddress] = await tx.insert(addresses).values({
         ...data.company.address
       }).returning();
       addressId = newAddress.id;
     }
 
-    // Step B: Upsert Company
     const existingCompany = await tx.query.companies.findFirst({
       where: eq(companies.name, data.company.name),
     });
@@ -53,7 +49,6 @@ export default defineEventHandler(async (event) => {
       companyId = newCompany.id;
     }
 
-    // Step C: Upsert Application
     const applicationInsertData = {
       title: data.title,
       subtitle: data.subtitle,
@@ -83,20 +78,18 @@ export default defineEventHandler(async (event) => {
       currentApplicationId = inserted.id;
       finalStatus = 'inserted';
     }
-    
-    // Step D: Process interviews (simple delete & re-insert for upsert)
+
     await tx.delete(interviewsTable).where(eq(interviewsTable.applicationId, currentApplicationId));
-    
+
     if (data.interviews && data.interviews.length > 0) {
-        const interviewInserts = data.interviews.map(interview => ({
-            applicationId: currentApplicationId,
-            date: new Date(interview.date), // The Zod schema validated this is a datetime string
-            notes: interview.notes,
-        }));
-        await tx.insert(interviewsTable).values(interviewInserts);
+      const interviewInserts = data.interviews.map(interview => ({
+        applicationId: currentApplicationId,
+        date: new Date(interview.date), // The Zod schema validated this is a datetime string
+        notes: interview.notes,
+      }));
+      await tx.insert(interviewsTable).values(interviewInserts);
     }
-    
-    // Return the final application with all its relations
+
     const finalApplication = await tx.query.applications.findFirst({
       where: eq(applications.id, currentApplicationId),
       with: {
@@ -104,7 +97,7 @@ export default defineEventHandler(async (event) => {
         interviews: true,
       }
     });
-    
+
     return { ...finalApplication, status: finalStatus };
   });
 

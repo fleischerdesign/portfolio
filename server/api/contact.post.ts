@@ -6,10 +6,8 @@ export default defineEventHandler(async (event) => {
         const body = await readBody(event)
         const { smtp, contact } = useRuntimeConfig()
 
-        // Validiere den Body mit dem zentralen Zod-Schema
         const { name, email, subject, message } = ContactFormSchema.parse(body)
 
-        // Nodemailer Transporter konfigurieren
         const transporter = nodemailer.createTransport({
             host: smtp.host,
             port: parseInt(smtp.port || '587'),
@@ -20,7 +18,6 @@ export default defineEventHandler(async (event) => {
             },
         })
 
-        // Email Optionen
         const mailOptions = {
             from: `"${name}" <${smtp.from}>`,
             to: contact.email,
@@ -46,7 +43,6 @@ ${message}
       `,
         }
 
-        // Email senden
         await transporter.sendMail(mailOptions)
 
         return {
@@ -56,7 +52,6 @@ ${message}
     }
     catch (error) {
         if (error instanceof z.ZodError) {
-            // Spezifischer Fehler für ungültige Daten
             throw createError({
                 statusCode: 400,
                 statusMessage: 'Validierungsfehler',
@@ -66,7 +61,6 @@ ${message}
 
         console.error('Email sending error:', error)
 
-        // Allgemeiner Serverfehler
         throw createError({
             statusCode: 500,
             statusMessage: 'Fehler beim Senden der Email',

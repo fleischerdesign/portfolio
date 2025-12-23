@@ -25,7 +25,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'No fields provided for update' });
   }
 
-  // Transform date strings to Date objects for Drizzle
   if (updateData.applicationDate) {
     updateData.applicationDate = new Date(updateData.applicationDate);
   }
@@ -43,7 +42,6 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 404, statusMessage: 'Application not found' });
     }
 
-    // Refetch the application to include relations
     const fullUpdatedApplication = await db.query.applications.findFirst({
       where: eq(applications.id, updatedApplication.id),
       with: {

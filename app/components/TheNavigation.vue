@@ -22,7 +22,6 @@ name="mage:sun-fill" size="30"
                             class="absolute opacity-0 transition group-hover:opacity-40" />
                     </template>
                     <template #fallback>
-                        <!-- Fallback für SSR - zeigt ein neutrales Icon -->
                         <Icon name="mage:moon" size="30" class="opacity-40" />
                     </template>
                 </ClientOnly>
