@@ -123,7 +123,7 @@ onUnmounted(() => {
                   </button>
                 </li>
                 <li>
-                  <button @click="showDeleteModal = true" class="flex w-full items-center gap-3 rounded-md p-2 text-left text-red-500 hover:bg-red-500/10">
+                  <button class="flex w-full items-center gap-3 rounded-md p-2 text-left text-red-500 hover:bg-red-500/10" @click="showDeleteModal = true">
                     <Icon name="mdi:delete" class="h-5 w-5" />
                     <span>Entfernen</span>
                   </button>

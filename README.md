@@ -1,50 +1,77 @@
-# Personal Portfolio & Blog
+# Personal Portfolio & Application Manager
 
-Welcome to the official repository for my personal portfolio website, [fleischer.design](https://fleischer.design). This project serves as a central hub to showcase my work, share my thoughts through blog articles, and provide insights into my technical skills. It is built with a modern, content-driven technology stack to ensure a great developer and user experience.
+Welcome to the official repository for my personal portfolio website, [fleischer.design](https://fleischer.design). This project serves a dual purpose: it's a public-facing portfolio and blog, and a private, authenticated backend for managing job applications.
+
+It is built with a modern, full-stack technology stack to ensure a great developer and user experience, with a focus on reproducible environments and a clean separation of concerns.
 
 ## ✨ Features
 
-*   **Nuxt 4:** Built with the latest version of the intuitive Vue framework.
-*   **Content-Driven:** Uses `@nuxt/content` for managing blog posts and project descriptions with Markdown.
-*   **Bilingual Content:** Fully internationalized (i18n) for German and English.
-*   **Component-Based:** A modular and reusable component library built with Vue.
-*   **Styling with Tailwind CSS:** Modern and utility-first CSS for a clean and responsive design.
-*   **Dark & Light Mode:** Theme switcher for user preference.
-*   **SEO Optimized:** Configured with `@nuxt/seo` for best search engine visibility.
-*   **Dockerized Environment:** Comes with a `Dockerfile` and `compose.yaml` for easy and consistent deployment.
-*   **Nix Flake:** A `flake.nix` file is included for a reproducible development environment using Nix.
+*   **Full-Stack with Nuxt 4:** Built with the latest version of the intuitive Vue framework, handling both the frontend and a powerful server backend.
+*   **Content-Driven Portfolio:** Uses `@nuxt/content` for managing blog posts and project descriptions with Markdown.
+*   **Private Application Management:**
+    *   Authenticated section to create, view, and manage job applications.
+    *   CRUD functionality for applications, including status updates and deletion.
+    *   On-demand, secure generation of application documents as PDFs using **Puppeteer**.
+*   **Relational Database:** Uses **Drizzle ORM** with a SQLite database (`libsql`) to manage all application, company, and user data.
+*   **Reproducible Environments:**
+    *   **Nix Flake:** A `flake.nix` file provides a fully reproducible development environment.
+    *   **Dockerized:** Includes `Dockerfile` for production and `Dockerfile.dev` for a containerized Nix environment, with `docker-compose` for orchestration.
+*   **Modern Frontend:**
+    *   Styling with **Tailwind CSS** for a clean, responsive, utility-first design.
+    *   Bilingual content support (DE/EN) with `@nuxtjs/i18n`.
+    *   Dark & Light Mode.
+    *   Rich data visualizations, including a GitHub contribution chart.
+*   **Authentication:** Secure authentication powered by `nuxt-auth-utils`.
+*   **CI/CD:** Automated build and deployment pipeline using **GitHub Actions**.
 
 ## 🚀 Tech Stack
 
-*   **Framework:** [Nuxt.js](https://nuxt.com/)
-*   **UI Framework:** [Vue.js](https://vuejs.org/)
-*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-*   **Language:** [TypeScript](https://www.typescriptlang.org/)
-*   **Content:** [@nuxt/content](https://content.nuxt.com/) (Markdown-based)
-*   **Internationalization:** [@nuxtjs/i18n](https://i18n.nuxtjs.org/)
-*   **Deployment:** [Docker](https://www.docker.com/), [GitHub Actions](https://github.com/features/actions)
+| Category      | Technology                                                                                             |
+|---------------|--------------------------------------------------------------------------------------------------------|
+| **Framework** | [Nuxt.js](https://nuxt.com/) (v4), [Vue.js](https://vuejs.org/)                                          |
+| **Language**  | [TypeScript](https://www.typescriptlang.org/)                                                            |
+| **Backend**   | [Nitro Server Engine](https://nitro.unjs.io/)                                                            |
+| **Database**  | [Drizzle ORM](https://orm.drizzle.team/), [SQLite (libSQL)](https://turso.tech/)                           |
+| **Styling**   | [Tailwind CSS](https://tailwindcss.com/)                                                                 |
+| **Content**   | [@nuxt/content](https://content.nuxt.com/) (Markdown-based)                                              |
+| **PDFs**      | [Puppeteer](https://pptr.dev/)                                                                           |
+| **Auth**      | [nuxt-auth-utils](https://github.com/Atinux/nuxt-auth-utils)                                             |
+| **i18n**      | [@nuxtjs/i18n](https://i18n.nuxtjs.org/)                                                                 |
+| **Dev Env**   | [Nix](https://nixos.org/), [Docker](https://www.docker.com/)                                              |
+| **CI/CD**     | [GitHub Actions](https://github.com/features/actions)                                                    |
 
 ## 📂 Project Structure
 
-The repository is structured to follow Nuxt conventions, keeping a clean separation of concerns:
+The repository is structured to follow Nuxt conventions while maintaining a clear separation between public and private concerns.
 
--   `app/`: The main application source, including pages, components, and layouts.
--   `components/`: Reusable Vue components.
--   `content/`: Markdown files for blog posts and project details (in `en` and `de`).
--   `composables/`: Reusable Vue composables (e.g., for SEO configuration).
--   `data/`: Static data, like my resume information.
--   `i18n/`: Locale files for translation.
--   `public/`: Static assets that are publicly available.
--   `server/`: Nitro server routes for API endpoints (e.g., contact form).
--   `.github/workflows/`: CI/CD pipeline for automated deployments.
+-   `app/`: The main Nuxt application source, including pages, components, and layouts.
+-   `content/`: Markdown files for the public-facing blog and project showcases.
+-   `server/`: Nitro server backend.
+    -   `api/`: API endpoints for handling contact forms, authentication, and CRUD operations for applications.
+    -   `db/`: Drizzle ORM schema, migrations, and database connection utilities.
+-   `shared/`: Code shared between the client and server (e.g., Zod schemas for validation).
+-   `i18n/`: Locale files for German and English translations.
+-   `public/`: Static assets like favicons and images.
+-   `.github/workflows/`: CI/CD pipeline for automated Docker image builds and deployments.
+-   `flake.nix`: Defines the reproducible development environment using Nix.
+-   `Dockerfile` & `compose.yaml`: Define the production and development container environments.
 
 ## 🛠️ Getting Started
 
 ### Prerequisites
 
-Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
+This project is designed to be run within either a Nix shell or a Docker container. Manual installation of dependencies on the host machine is not recommended to ensure consistency.
 
-### Installation
+-   [Nix](https://nixos.org/download.html) (Recommended for development)
+-   OR [Docker](https://www.docker.com/get-started)
+
+### Development Setup
+
+Choose one of the following methods to set up your development environment.
+
+#### 1. Nix Shell (Recommended)
+
+The Nix flake provides a complete, reproducible environment with the correct versions of Node.js, Chromium (for Puppeteer), and other dependencies.
 
 1.  Clone the repository:
     ```bash
@@ -56,65 +83,58 @@ Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.co
     ```bash
     cp .env.example .env
     ```
-    Now, open the `.env` file and fill in your credentials for the mail server and translation APIs.
+    *Open the `.env` file and fill in your credentials.*
 
-3.  Install dependencies:
-    ```bash
-    npm install
-    ```
-
-### Running the Development Server
-
-There are three recommended ways to run the development environment. Choose the one that best fits your workflow.
-
-#### 1. Standard (npm)
-
-This is the standard method if you have a suitable version of [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed locally.
-
-Start the development server on `http://localhost:3000`:
-```bash
-npm run dev
-```
-
-#### 2. Using Nix
-
-If you have [Nix](https://nixos.org/) installed, you can use the `flake.nix` file to create a reproducible shell with all the exact dependencies.
-
-1.  Enter the development shell:
+3.  Enter the development shell. This will automatically install all necessary dependencies if they aren't already present in your Nix store.
     ```bash
     nix develop
     ```
-2.  Once inside the shell, start the server:
+
+4.  Once inside the shell, run the Nuxt development server:
     ```bash
-    npm run dev
+    npm run start:dev
+    ```
+    The application will be available at `http://localhost:3000`.
+
+#### 2. Docker (Alternative)
+
+For a fully containerized setup that mirrors the Nix environment.
+
+1.  Clone the repository and set up your `.env` file as described above.
+2.  Build and run the development containers:
+    ```bash
+    docker compose -f compose.dev.yaml up --build
+    ```
+    The application will be available at `http://localhost:3000` with hot-reloading enabled.
+
+### Database
+
+The project uses Drizzle ORM for database management.
+
+-   **Generate a migration:**
+    ```bash
+    # Inside the Nix shell or Docker container
+    npm run db:generate
+    ```
+-   **Apply migrations:**
+    ```bash
+    npm run db:migrate
+    ```
+-   **Explore the database with Drizzle Studio:**
+    ```bash
+    npm run db:studio
     ```
 
-#### 3. Using Docker
+## 🚢 Production
 
-For a fully containerized environment that uses Nix under the hood, you can use the provided Docker setup. This is ideal if you prefer Docker or don't have Nix/Node.js on your host machine.
+The application is deployed as a Docker container. The production image is built in multiple stages for an optimized, smaller final image.
 
-**Prerequisites:**
-- [Docker](https.www.docker.com/) installed and running.
-
-**Instructions:**
-```bash
-docker compose -f compose.dev.yaml up --build
-```
-The server will be available at `http://localhost:3000`. Hot-reloading is enabled.
-
-### Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview the production build:
-
-```bash
-npm run preview
-```
+-   **Build the production image:**
+    ```bash
+    docker build . -t my-portfolio
+    ```
+-   **Run in production mode:**
+    The `compose.yaml` file is configured to run the pre-built image from a container registry. For local testing, you can adapt it or use `docker run`.
 
 ## Contact
 

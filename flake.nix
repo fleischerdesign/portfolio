@@ -16,11 +16,13 @@
           packages = with pkgs; [
             nodejs_24 
             python314
+            chromium
           ];
           shellHook = ''
             echo "Entering Node.js development environment"
             # Beispiel: Setze PATH, wenn du lokale Binärdateien hast (z.B. node_modules/.bin)
             export PATH=$PWD/node_modules/.bin:$PATH
+            export BROWSER_BIN="${pkgs.chromium}/bin/chromium"
 
             if [ ! -d "node_modules" ]; then
               echo "node_modules not found, running npm install..."
