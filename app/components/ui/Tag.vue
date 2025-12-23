@@ -23,5 +23,6 @@ defineProps({
   fill: {
     type: Boolean,
     default: false
+  }
 });
 </script>
