@@ -56,7 +56,7 @@ The repository is structured to follow Nuxt conventions while maintaining a clea
 -   `flake.nix`: Defines the reproducible development environment using Nix.
 -   `Dockerfile` & `compose.yaml`: Define the production and development container environments.
 
-## 🛠️ Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -125,7 +125,7 @@ The project uses Drizzle ORM for database management.
     npm run db:studio
     ```
 
-## 🚢 Production
+## Production
 
 The application is deployed as a Docker container. The production image is built in multiple stages for an optimized, smaller final image.
 
