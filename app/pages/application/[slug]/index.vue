@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import type { ApplicationApiPayload } from '~/shared/schemas/application.schema';
+import { applicationApiSchema, type ApplicationApiPayload } from '#shared/schemas/application.schema';
 const { formatDate, getStatusChipClasses, getStatusTextClasses } = useApplicationUtils();
-const { renderMarkdown } = useMarkdown(); // Keep this, as useMarkdown is not part of useApplicationUtils
+const { renderMarkdown } = useMarkdown(); 
+
+const availableStatuses = applicationApiSchema.shape.status.options;
 
 definePageMeta({
   middleware: 'authorize',
@@ -20,6 +22,41 @@ if (error.value || !application.value) {
 const printUrl = computed(() => `/application/${route.params.slug}/print`)
 
 const isLoading = ref(false)
+const isEditing = ref(false)
+const editableApplication = ref<Partial<ApplicationApiPayload> | null>(null)
+
+function startEditing() {
+  
+  editableApplication.value = JSON.parse(JSON.stringify(application.value))
+  isEditing.value = true
+}
+
+function cancelEditing() {
+  isEditing.value = false
+  editableApplication.value = null
+}
+
+async function updateApplication() {
+  if (!editableApplication.value) return;
+  isLoading.value = true
+  try {
+    
+    const { id, company, interviews, pdfGeneratedAt, ...updateData } = editableApplication.value;
+
+    await useRequestFetch()(`/api/applications/${slug}`, {
+      method: 'PUT',
+      body: updateData,
+    })
+    await refresh()
+    isEditing.value = false
+    editableApplication.value = null;
+  } catch (error) {
+    console.error('Failed to update application', error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
 
 const isPdfOutdated = computed(() => {
   if (!application.value?.pdfGeneratedAt || !application.value?.updatedAt) {
@@ -34,7 +71,7 @@ async function generatePdf() {
     await useRequestFetch()(`/api/applications/${slug}/pdf/generate`, {
       method: 'POST',
     })
-    await refresh() // Refresh data to get the new pdfGeneratedAt timestamp
+    await refresh() 
   } catch (error) {
     console.error('Failed to generate PDF', error)
   } finally {
@@ -98,6 +135,16 @@ const timelineItems = computed((): TimelineItem[] => {
   return items.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 });
 
+const notesAsText = computed({
+  get: () => editableApplication.value?.notes?.join('\n') ?? '',
+  set: (value: string) => {
+    if (editableApplication.value) {
+      editableApplication.value.notes = value.split('\n').filter(note => note.trim() !== '');
+    }
+  },
+});
+
+
 </script>
 
 <template>
@@ -115,7 +162,9 @@ const timelineItems = computed((): TimelineItem[] => {
           <UiCard class="md:col-span-1">
             <UiCardContainer class="flex h-full flex-col gap-4">
               <h3 class="text-2xl font-medium">Details</h3>
-              <div class="flex flex-col gap-3">
+              
+
+              <div v-if="!isEditing" class="flex flex-col gap-3">
                 <div class="flex items-center justify-between">
                   <span class="text-sm text-neutral-600 dark:text-neutral-300">Status:</span>
                   <UiChip size="sm" :class="[getStatusChipClasses(application.status), getStatusTextClasses(application.status)]">
@@ -131,6 +180,32 @@ const timelineItems = computed((): TimelineItem[] => {
                   <span class="font-medium">{{ formatDate(application.responseDate) }}</span>
                 </div>
               </div>
+              
+
+              <form v-else-if="editableApplication" class="flex flex-col gap-4" @submit.prevent="updateApplication">
+                <UiSelect
+                  id="status"
+                  v-model="editableApplication.status"
+                  :options="availableStatuses"
+                  label="Status"
+                >
+                  <template #display="{ option }">
+                    <span class="flex items-center gap-3">
+                      <Icon name="mdi:circle" class="h-4 w-4" :class="getStatusTextClasses(option)" />
+                      <span class="font-medium">{{ option }}</span>
+                    </span>
+                  </template>
+                  <template #option="{ option }">
+                    <span class="flex items-center gap-3">
+                      <Icon name="mdi:circle" class="h-4 w-4" :class="getStatusTextClasses(option)" />
+                      <span class="font-medium">{{ option }}</span>
+                    </span>
+                  </template>
+                </UiSelect>
+                <UiInput id="applicationDate" type="date" label="Beworben am" :model-value="editableApplication.applicationDate?.toString().split('T')[0]" @update:model-value="editableApplication.applicationDate = $event" />
+                <UiInput id="responseDate" type="date" label="Rückmeldung am" :model-value="editableApplication.responseDate?.toString().split('T')[0]" @update:model-value="editableApplication.responseDate = $event" />
+              </form>
+
               <div v-if="application.url" class="mt-auto">
                 <a :href="application.url" target="_blank" rel="noopener noreferrer">
                   <UiButton class="w-full">
@@ -176,22 +251,38 @@ const timelineItems = computed((): TimelineItem[] => {
         </UiCard>
 
         <!-- Notes Card -->
-        <UiCard v-if="application.notes && application.notes.length > 0">
+        <UiCard v-if="(!isEditing && application.notes && application.notes.length > 0) || isEditing">
             <UiCardContainer class="flex h-full flex-col gap-4">
                 <h3 class="text-2xl font-medium">Notizen</h3>
-                <div class="prose prose-neutral max-w-none dark:prose-invert" >
+                <div v-if="!isEditing" class="prose prose-neutral max-w-none dark:prose-invert" >
                     <ul class="list-disc space-y-2 pl-5">
                         <li v-for="(note, index) in application.notes" :key="index" v-html="renderMarkdown(note)"></li>
                     </ul>
+                </div>
+                <div v-else>
+                    <UiInput 
+                        id="notes"
+                        v-model="notesAsText"
+                        as="textarea"
+                        label="Notizen (eine pro Zeile)"
+                    />
                 </div>
             </UiCardContainer>
         </UiCard>
 
         <!-- Body Content -->
-        <UiCard v-if="application.body">
+        <UiCard v-if="(!isEditing && application.body) || isEditing">
             <UiCardContainer>
                 <h3 class="mb-4 text-2xl font-medium">Inhalt</h3>
-                <div class="prose prose-neutral max-w-none dark:prose-invert" v-html="renderMarkdown(application.body)"></div>
+                <div v-if="!isEditing" class="prose prose-neutral max-w-none dark:prose-invert" v-html="renderMarkdown(application.body || '')"></div>
+                <div v-else-if="editableApplication">
+                    <UiInput
+                        id="body"
+                        v-model="editableApplication.body"
+                        as="textarea"
+                        label="Inhalt (Markdown)"
+                    />
+                </div>
             </UiCardContainer>
         </UiCard>
       </div>
@@ -216,6 +307,20 @@ const timelineItems = computed((): TimelineItem[] => {
         </UiCard>
         <div class="rounded-lg bg-white shadow dark:bg-neutral-900">
           <div class="flex w-full flex-col gap-2">
+              <template v-if="isEditing">
+                <UiButton class="w-full" :is-loading="isLoading" @click="updateApplication">
+                  Speichern
+                </UiButton>
+                <UiButton class="w-full" variant="secondary" @click="cancelEditing">
+                  Abbrechen
+                </UiButton>
+              </template>
+              <template v-else>
+                <UiButton class="w-full" @click="startEditing">
+                  Bearbeiten
+                </UiButton>
+              </template>
+              <hr class="my-2 border-neutral-200 dark:border-neutral-700">
               <UiButton class="w-full" :to="printUrl" target="_blank">
                   Vollbild-Vorschau
               </UiButton>
