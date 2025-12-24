@@ -11,7 +11,10 @@ const props = defineProps({
 
 const emit = defineEmits(['deleted', 'updated']);
 
-const { statusColor, formatDate } = useApplicationUtils();
+const { getStatusChipClasses, getStatusTextClasses, formatDate } = useApplicationUtils();
+
+
+
 const isMenuOpen = ref(false);
 const showDeleteModal = ref(false);
 const showStatusModal = ref(false);
@@ -138,10 +141,9 @@ onUnmounted(() => {
 
           <div class="mt-4 flex items-center justify-between border-t border-neutral-200 pt-4 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
             <span>Bewerbung vom: {{ formatDate(application.applicationDate) }}</span>
-            <span class="flex items-center gap-1">
-              <Icon name="mdi:circle" class="h-3 w-3" :class="statusColor(application.status)" />
-              <span>{{ application.status }}</span>
-            </span>
+            <UiChip size="sm" :class="[getStatusChipClasses(application.status), getStatusTextClasses(application.status)]">
+              {{ application.status }}
+            </UiChip>
           </div>
         </UiCardContainer>
       </UiCard>
@@ -185,7 +187,7 @@ onUnmounted(() => {
                 class="sr-only"
               >
               <span class="flex flex-1 items-center gap-3">
-                <Icon name="mdi:circle" class="h-4 w-4" :class="statusColor(status)" />
+                <Icon name="mdi:circle" class="h-4 w-4" :class="getStatusTextClasses(status)" />
                 <span class="font-medium">{{ status }}</span>
               </span>
             </label>

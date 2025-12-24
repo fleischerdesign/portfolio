@@ -1,5 +1,29 @@
+<script setup lang="ts">
+import { computed } from 'vue';
+
+const props = defineProps({
+  size: {
+    type: String,
+    default: 'md', // 'sm' | 'md'
+  },
+});
+
+const sizeClasses = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return 'px-3 py-1 text-xs';
+    case 'md':
+    default:
+      return 'px-4 py-2 text-base';
+  }
+});
+</script>
+
 <template>
-  <span class="flex justify-center gap-3 rounded-full border border-neutral-300 bg-gradient-to-br from-neutral-100 to-neutral-200 px-4 py-2 shadow-sm dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800">
+  <span :class="[
+    'flex justify-center items-center rounded-full border border-neutral-300 dark:border-neutral-700 shadow-sm',
+    sizeClasses,
+  ]">
     <slot />
   </span>
 </template>

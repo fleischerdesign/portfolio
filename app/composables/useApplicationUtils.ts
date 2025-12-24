@@ -1,18 +1,37 @@
 export const useApplicationUtils = () => {
-  const statusColor = (status: string) => {
-    switch (status) {
-      case 'applied':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
-      case 'interview':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
-      case 'offer':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-      case 'rejected':
-      case 'withdrawn':
-        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-          case 'draft':
-          default:
-            return 'bg-neutral-100 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-300'    }
+  const statusStyles = {
+    applied: {
+      chip: 'bg-blue-100 border-blue-200 dark:bg-blue-900/50 dark:border-blue-700',
+      text: 'text-blue-800 dark:text-blue-300',
+    },
+    interview: {
+      chip: 'bg-yellow-100 border-yellow-200 dark:bg-yellow-900/50 dark:border-yellow-700',
+      text: 'text-yellow-800 dark:text-yellow-300',
+    },
+    offer: {
+      chip: 'bg-green-100 border-green-200 dark:bg-green-900/50 dark:border-green-700',
+      text: 'text-green-800 dark:text-green-300',
+    },
+    rejected: {
+      chip: 'bg-red-100 border-red-200 dark:bg-red-900/50 dark:border-red-700',
+      text: 'text-red-800 dark:text-red-300',
+    },
+    withdrawn: {
+      chip: 'bg-purple-100 border-purple-200 dark:bg-purple-900/50 dark:border-purple-700',
+      text: 'text-purple-800 dark:text-purple-300',
+    },
+    draft: {
+      chip: 'bg-neutral-100 border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700',
+      text: 'text-neutral-800 dark:text-neutral-300',
+    },
+  };
+
+  const getStatusChipClasses = (status: keyof typeof statusStyles) => {
+    return statusStyles[status]?.chip || statusStyles.draft.chip;
+  }
+
+  const getStatusTextClasses = (status: keyof typeof statusStyles) => {
+    return statusStyles[status]?.text || statusStyles.draft.text;
   }
 
   const formatDate = (dateString: string | Date | undefined) => {
@@ -26,7 +45,8 @@ export const useApplicationUtils = () => {
   }
 
   return {
-    statusColor,
+    getStatusChipClasses,
+    getStatusTextClasses,
     formatDate,
   }
 }
