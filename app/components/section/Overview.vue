@@ -1,6 +1,6 @@
 <template>
   <div id="overview" class="mb-24 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-    <UiCard class="col-span-1 flex flex-col gap-1 md:col-span-2">
+    <UiCard class="col-span-1 gap-1 md:col-span-2">
       <UiCardContainer class="flex-col">
         <h3 class="text-3xl font-medium">{{ $t("home.overview.github.title") }}</h3>
         <p class="text-neutral-600 dark:text-neutral-400">{{ subtitle }}</p>
@@ -15,21 +15,21 @@
         class="h-full w-full bg-cover bg-center transition duration-500 group-hover:scale-110">
       </div>
     </UiCard >
-    <UiCard class="col-span-1 flex flex-col">
+    <UiCard class="col-span-1">
       <UiCardContainer class="flex-col">
         <h3 class="text-3xl font-medium">{{ $t("home.overview.techstack.title") }}</h3>
         <p class="text-neutral-600 dark:text-neutral-400">{{ $t("home.overview.techstack.subtitle") }}</p>
         <TechstackList scroll :rows="3" :items="['Typescript', 'React', 'Git', 'Docker', 'Dart', 'Rust', 'Tailwind', 'Vue', 'Flutter', 'Node.js', 'Deno', 'Python', 'PostgreSQL', 'MongoDB', 'REST', 'GraphQL']" />
       </UiCardContainer>
     </UiCard >
-    <UiCard class="col-span-1 flex flex-col">
+    <UiCard class="col-span-1">
       <UiCardContainer class="flex-col">
         <h3 class="text-3xl font-medium">{{ $t("home.overview.statistics.title") }}</h3>
         <p class="text-neutral-600 dark:text-neutral-400">{{ $t("home.overview.statistics.subtitle") }}</p>
         <BaseStats />
       </UiCardContainer>
     </UiCard >
-    <UiCard hover class="col-span-1 flex flex-col">
+    <UiCard interactive class="col-span-1">
       <UiCardContainer class="flex-col">
         <h3 class="text-3xl font-medium">{{ $t("home.overview.searching.title") }}</h3>
         <p class="text-neutral-600 dark:text-neutral-400">{{ $t("home.overview.searching.subtitle") }}</p>

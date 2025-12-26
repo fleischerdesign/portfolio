@@ -24,7 +24,7 @@ sizes="300px sm:100vw" src="/img/profile.jpg" placeholder
                     </div>
                 </div>
             </UiCard >
-            <UiCard hover class="group">
+            <UiCard interactive class="group">
                 <NuxtLink to="#early_life">
                     <UiCardContainer class="flex flex-col">
                         <div class="flex items-center gap-2">
@@ -43,7 +43,7 @@ name="mage:rocket-fill" size="30"
                     </UiCardContainer>
                 </NuxtLink>
             </UiCard >
-            <UiCard hover class="group">
+            <UiCard interactive class="group">
                 <NuxtLink to="#career_path">
                     <UiCardContainer class="flex flex-col">
                         <div class="flex items-center gap-2">
@@ -62,7 +62,7 @@ name="mage:cup-hot-fill" size="30"
                     </UiCardContainer>
                 </NuxtLink>
             </UiCard >
-            <UiCard hover class="group">
+            <UiCard interactive class="group">
                 <NuxtLink to="#personal_life">
                     <UiCardContainer class="flex flex-col">
                         <div class="flex items-center gap-2">
@@ -81,7 +81,7 @@ name="mage:heart-fill" size="30"
                     </UiCardContainer>
                 </NuxtLink>
             </UiCard >
-            <UiCard hover class="group">
+            <UiCard interactive class="group">
                 <NuxtLink to="#resume">
                     <UiCardContainer class="flex flex-col">
                         <div class="flex items-center gap-2">

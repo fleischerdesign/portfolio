@@ -1,5 +1,5 @@
 <template>
-    <UiCard hover class="group !flex-col overflow-hidden">
+    <UiCard interactive class="group overflow-hidden">
         <NuxtLink :to="$localePath(`/blog/${post?.slug}`)" class="h-full w-full">
             <div class="relative h-60 w-full overflow-hidden">
                 <div

@@ -1,6 +1,6 @@
 <template>
     <NuxtLink :to="$localePath(`/projects/${project?.slug}`)" class="group">
-        <UiCard hover class="overflow-hidden">
+        <UiCard interactive direction="row" class="overflow-hidden">
             <div class="relative w-1/3 overflow-hidden">
                 <NuxtImg
 :src="project.image?.src" :alt="project.image?.alt || project.title" sizes="600px"

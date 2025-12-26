@@ -80,7 +80,7 @@ onUnmounted(() => {
 <template>
   <div>
     <NuxtLink :to="$localePath(`/application/${application.slug}`)" class="group relative">
-      <UiCard hover class="h-full flex-col">
+      <UiCard interactive class="h-full">
         <UiCardContainer class="h-full flex-col">
           <uiButton
             class="absolute right-4 z-20 h-9 w-9 rounded-md !p-1 text-neutral-500 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700"
