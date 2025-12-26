@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useCva } from '~/composables/useCva';
 
 interface Props {
     variant?: 'info' | 'success' | 'warning' | 'error';
@@ -52,20 +50,19 @@ const closeAlert = () => {
 
 <template>
     <div v-if="show" :class="alertClasses">
-        <Icon v-if="showIcon" :name="iconName" class="flex-shrink-0 w-5 h-5" />
+        <Icon v-if="showIcon" :name="iconName" class="h-5 w-5 flex-shrink-0" />
         <div class="flex-1">
-            <h3 v-if="title" class="text-lg font-semibold mb-1">{{ title }}</h3>
+            <h3 v-if="title" class="mb-1 text-lg font-semibold">{{ title }}</h3>
             <div class="text-sm">
                 <slot />
             </div>
         </div>
-        <button v-if="closable" @click="closeAlert" class="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex h-8 w-8 focus:ring-2 focus:ring-current">
+        <button v-if="closable" class="-mx-1.5 -my-1.5 ml-auto inline-flex h-8 w-8 rounded-lg p-1.5 focus:ring-2 focus:ring-current" @click="closeAlert">
             <span class="sr-only">Close</span>
-            <Icon name="mdi:close" class="w-5 h-5" />
+            <Icon name="mdi:close" class="h-5 w-5" />
         </button>
     </div>
 </template>
 
 <style scoped>
-/* No specific scoped styles needed yet, Tailwind handles most. */
 </style>

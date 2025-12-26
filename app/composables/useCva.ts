@@ -1,5 +1,5 @@
 type Variants = Record<string, Record<string, string>>;
-type VariantProps = Record<string, string | undefined | null>;
+type VariantProps = Record<string, string | boolean | undefined | null>;
 
 /**
  * A composable for creating variant classes for Vue components.
@@ -15,8 +15,11 @@ export function useCva(props: VariantProps, base: string, variants: Variants): C
     const variantClasses = Object.entries(variants)
       .map(([variantName, variantOptions]) => {
         const propValue = props[variantName];
-        if (propValue && variantOptions[propValue]) {
-          return variantOptions[propValue];
+        if (propValue !== undefined && propValue !== null) {
+          const propValueAsString = String(propValue);
+          if (Object.prototype.hasOwnProperty.call(variantOptions, propValueAsString)) {
+            return variantOptions[propValueAsString];
+          }
         }
         return '';
       })

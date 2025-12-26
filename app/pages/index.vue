@@ -1,6 +1,7 @@
 <template>
   <div class="container max-w-screen-xl">
 
+
     <div>
       <SectionHero />
       <SectionOverview />
