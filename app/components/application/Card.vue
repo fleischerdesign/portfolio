@@ -141,7 +141,7 @@ onUnmounted(() => {
 
           <div class="mt-4 flex items-center justify-between border-t border-neutral-200 pt-4 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
             <span>Bewerbung vom: {{ formatDate(application.applicationDate) }}</span>
-            <UiChip size="sm" :class="[getStatusChipClasses(application.status), getStatusTextClasses(application.status)]">
+            <UiChip size="md" :class="[getStatusChipClasses(application.status), getStatusTextClasses(application.status)]">
               {{ application.status }}
             </UiChip>
           </div>
