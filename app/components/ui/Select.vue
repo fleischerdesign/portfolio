@@ -1,13 +1,17 @@
 <script setup lang="ts" generic="T extends Record<string, any> | string">
-import { ref, onMounted, onUnmounted, computed } from 'vue';
-
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   id: string;
   modelValue: T | null | undefined;
   options: readonly T[];
   label: string;
   by?: keyof T;
-}>();
+  error?: string;
+  hasError?: boolean;
+}>(), {
+  by: undefined,
+  error: '',
+  hasError: false,
+});
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -33,7 +37,7 @@ function areEqual(a: T, b: T) {
   return a?.[props.by] === b?.[props.by];
 }
 
-const selectedOption = computed(() => 
+const selectedOption = computed(() =>
   props.options.find(opt => areEqual(opt, props.modelValue as T))
 );
 
@@ -81,10 +85,21 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
 });
+
+const selectButtonClasses = useCva(
+  props,
+  'relative w-full rounded-lg px-4 py-3 text-left shadow-sm transition outline-none',
+  {
+    hasError: {
+      false: 'border border-neutral-300 bg-gradient-to-br from-neutral-100 to-neutral-200 peer-focus:ring-2 peer-focus:ring-secondary-400 dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800',
+      true: 'border border-red-500 bg-gradient-to-br from-neutral-100 to-neutral-200 peer-focus:ring-2 peer-focus:ring-red-500 text-red-500 dark:border-red-500 dark:from-neutral-900 dark:to-neutral-800',
+    },
+  },
+);
 </script>
 
 <template>
-  <div ref="rootEl" class="relative">
+  <div ref="rootEl" class="relative group" :class="{ 'has-error': hasError }">
 
     <input
       ref="hiddenInputEl"
@@ -97,13 +112,13 @@ onUnmounted(() => {
       aria-hidden="true"
       readonly
     />
-    
+
 
     <button
       ref="buttonEl"
       :id="id"
       type="button"
-      class="relative w-full rounded-lg border border-neutral-300 bg-gradient-to-br from-neutral-100 to-neutral-200 px-4 py-3 text-left shadow-sm transition outline-none peer-focus:ring-2 peer-focus:ring-secondary-400 dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800"
+      :class="selectButtonClasses"
       :aria-expanded="isOpen"
       :aria-haspopup="true"
       :aria-labelledby="`${id}-label`"
@@ -120,12 +135,12 @@ onUnmounted(() => {
         </slot>
       </div>
     </button>
-    
+
 
     <label
       :id="`${id}-label`"
       :for="id"
-      class="pointer-events-none absolute -top-2.5 left-4 px-1 text-sm text-neutral-400 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:bg-neutral-100 peer-focus:text-sm peer-focus:text-secondary-400 dark:peer-focus:bg-neutral-900"
+      class="pointer-events-none absolute left-4 px-1 transition-all -top-2.5 text-sm bg-neutral-100 dark:bg-neutral-900 text-neutral-400 peer-focus:text-secondary-400 group-[.has-error]:text-red-500 group-[.has-error]:peer-focus:text-red-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-400 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:text-sm peer-focus:bg-neutral-100 dark:peer-focus:bg-neutral-900"
     >
       {{ label }}
     </label>
@@ -164,5 +179,6 @@ onUnmounted(() => {
         </ul>
       </div>
     </Transition>
+    <p v-if="error" class="mt-1 text-sm text-red-500">{{ error }}</p>
   </div>
 </template>
