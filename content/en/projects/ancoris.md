@@ -3,6 +3,7 @@ slug: ancoris
 locale: en
 date: 2024-04-02
 published: true
+icon: logo:ancoris
 category: Administration
 techstack:
   - Linux

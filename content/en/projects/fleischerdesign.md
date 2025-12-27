@@ -3,6 +3,7 @@ slug: fleischerdesign
 locale: en
 date: 2024-06-14
 published: true
+icon: logo:fleischerdesign
 category: Web Development
 techstack:
   - Linux

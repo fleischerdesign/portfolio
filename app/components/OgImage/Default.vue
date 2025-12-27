@@ -20,17 +20,15 @@ const props = withDefaults(defineProps<{
 
 const HexRegex = /^#(?:[0-9a-f]{3}){1,2}$/i
 
-const runtimeConfig = useOgImageRuntimeConfig()
-
 const colorMode = computed(() => {
-  return props.colorMode || runtimeConfig.colorPreference || 'light'
+  return props.colorMode || 'light'
 })
 
 const themeHex = computed(() => {
   if (HexRegex.test(props.theme))
     return props.theme
 
-  if (HexRegex.test(`#${props.theme}`))
+  if (HexHexRegex.test(`#${props.theme}`))
     return `#${props.theme}`
 
   if (props.theme.startsWith('rgb')) {
@@ -59,26 +57,12 @@ const themeRgb = computed(() => {
     .join(', ')
 })
 
-const siteConfig = useSiteConfig()
 const siteName = computed(() => {
-  return props.siteName || siteConfig.name
+  return props.siteName
 })
 const siteLogo = computed(() => {
-  return props.siteLogo || siteConfig.logo
+  return props.siteLogo
 })
-
-const IconComponent = runtimeConfig.hasNuxtIcon
-  ? resolveComponent('Icon')
-  : defineComponent({
-      render() {
-        return h('div', 'missing @nuxt/icon')
-      },
-    })
-if (typeof props.icon === 'string' && !runtimeConfig.hasNuxtIcon && import.meta.dev) {
-  console.warn('Please install `@nuxt/icon` to use icons with the fallback OG Image component.')
-   
-  console.log('\nnpx nuxi module add icon\n')
-}
 </script>
 
 <template>
@@ -96,8 +80,11 @@ if (typeof props.icon === 'string' && !runtimeConfig.hasNuxtIcon && import.meta.
       }"
     />
     <div class="relative h-full w-full justify-between">
-      <div class="flex flex-row items-start justify-between">
-        <div class="flex w-full max-w-[65%] flex-col">
+      <div class="flex flex-row items-start justify-start gap-x-12">
+        <div v-if="Boolean(icon)" class="flex justify-start" style="width: 400px; height: 400px;">
+          <Icon :name="icon" style="width: 100%; height: 100%; opacity: 0.7;" />
+        </div>
+        <div class="flex w-full flex-col">
           <h1 class="m-0 mb-[30px] text-[75px] font-bold" style="display: block; text-overflow: ellipsis;" :style="{ lineClamp: description ? 2 : 3 }">
             {{ title }}
           </h1>
@@ -112,16 +99,13 @@ if (typeof props.icon === 'string' && !runtimeConfig.hasNuxtIcon && import.meta.
             {{ description }}
           </p>
         </div>
-        <div v-if="Boolean(icon)" style="width: 30%;" class="flex justify-end">
-          <IconComponent :name="icon" size="250px" style="margin: 0 auto; opacity: 0.7;" />
-        </div>
       </div>
       <div class="flex w-full flex-row items-center justify-center text-left">
         <img v-if="siteLogo" :src="siteLogo" height="30">
         <template v-else>
-          <Icon name="logo:fleischerdesign" class="mr-4 h-8 w-6" mode="svg"/>
-          <p v-if="siteName" style="font-size: 25px;" class="font-bold">
-            Fleischer Design
+          <Icon name="logo:fleischerdesign" class="mr-4 h-14 w-10" mode="svg"/>
+          <p style="font-size: 25px;" class="font-bold">
+            Fleischer.design
           </p>
         </template>
       </div>

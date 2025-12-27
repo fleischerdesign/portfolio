@@ -3,6 +3,7 @@ slug: nixfiles
 locale: en
 date: 2023-12-28
 published: true
+icon: logo:nixfiles
 category: System Administration
 techstack:
   - NixOS

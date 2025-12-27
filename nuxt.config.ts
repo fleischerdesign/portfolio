@@ -43,6 +43,9 @@ export default defineNuxtConfig({
     },
     public: {}
   },
+  site: {
+    url: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://fleischer.design'
+  },
   compatibilityDate: '2024-11-01',
   devtools: {
     enabled: true,
@@ -52,6 +55,7 @@ export default defineNuxtConfig({
     }
   },
   modules: [
+    'nuxt-og-image',
     '@nuxtjs/sitemap',
     '@nuxtjs/tailwindcss',
     '@nuxt/icon',
@@ -63,7 +67,6 @@ export default defineNuxtConfig({
     './modules/autoTranslate',
     '@nuxtjs/robots',
     '@nuxtjs/google-fonts',
-    'nuxt-og-image',
     '@nuxt/eslint',
     'nuxt-auth-utils',
     'nuxt-authorization'
@@ -123,7 +126,7 @@ export default defineNuxtConfig({
       { code: 'en', name: 'English', file: 'en.json', language: 'en-US' },
       { code: 'de', name: 'German', file: 'de.json', language: 'de-DE' }
     ],
-    baseUrl: 'https://fleischer.design',
+    baseUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://fleischer.design',
   },
   plausible: {
     ignoredHostnames: ['localhost'],
