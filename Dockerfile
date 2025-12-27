@@ -5,16 +5,20 @@ ARG CACHEBUST=1
 
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev --prefer-offline --audit=false
+# Install all dependencies, including devDependencies, required for the build
+RUN npm ci --prefer-offline --audit=false
 
+# Copy the rest of the source code
 COPY . .
 
 RUN --mount=type=secret,id=GITHUB_APPLICATIONS_REPO_TOKEN \
     export GITHUB_APPLICATIONS_REPO_TOKEN=$(cat /run/secrets/GITHUB_APPLICATIONS_REPO_TOKEN) && \
     echo "Build time: $(date)" && \
     echo "Cache buster: $CACHEBUST" && \
+    # Build the application
     npm run build
 
+# --- Final Stage ---
 FROM node:20-alpine
 
 WORKDIR /app
@@ -25,8 +29,12 @@ RUN apk add --no-cache dumb-init curl chromium && \
     chown -R app:app /app /app/data
 USER app
 
+# Copy package files and install production-only dependencies
+COPY --from=builder --chown=app:app /app/package.json /app/package-lock.json ./
+RUN npm ci --omit=dev --prefer-offline --audit=false
+
+# Copy the built application output and necessary migration files
 COPY --from=builder --chown=app:app /app/.output ./
-COPY --from=builder --chown=app:app /app/node_modules ./node_modules
 COPY --from=builder --chown=app:app /app/server/db/migrations ./server/db/migrations
 
 

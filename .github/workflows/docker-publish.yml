@@ -34,3 +34,5 @@ jobs:
           tags: ghcr.io/${{ github.repository }}:latest
           secrets: |
             GITHUB_APPLICATIONS_REPO_TOKEN=${{ secrets.APPLICATIONS_REPO_TOKEN }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
