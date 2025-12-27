@@ -5,8 +5,8 @@
                 <NuxtImg
 :src="project.image?.src" :alt="project.image?.alt || project.title" sizes="600px"
                     class="aspect-[4/3] h-full w-full object-cover transition duration-500 group-hover:scale-110" />
-                <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
-		  <Icon :name="'logo:'+project!.slug" class="h-24 w-24 fill-emerald-400 drop-shadow-xl [&>g]:fill-emerald-400" mode="svg" />
+                <div v-if="project.icon" class="pointer-events-none absolute inset-0 flex items-center justify-center">
+		  <Icon :name="project.icon" class="h-24 w-24 fill-emerald-400 drop-shadow-xl [&>g]:fill-emerald-400" mode="svg" />
                 </div>
             </div>
             <UiCardContainer class="flex-col">
@@ -24,6 +24,7 @@ defineProps<{
         subtitle?: string
         image?: { src: string, alt?: string }
         slug: string
+        icon?: string
     },
     compact?: boolean
 }>()
