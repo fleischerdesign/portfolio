@@ -141,7 +141,7 @@ watch(showStatusModal, (newValue) => {
           </div>
 
           <div class="mt-4 flex items-center justify-between border-t border-neutral-200 pt-4 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
-            <span>Bewerbung vom: {{ formatDate(application.applicationDate) }}</span>
+            <span>Erstellt am: {{ formatDate(application.createdAt) }}</span>
             <UiChip unstyled size="md" :class="[getStatusChipClasses(application.currentStatus), getStatusTextClasses(application.currentStatus)]">
               {{ application.currentStatus }}
             </UiChip>

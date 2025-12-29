@@ -39,6 +39,7 @@ export const applicationBaseSchema = z.object({
   notes: z.array(z.string()).optional().default([]),
   body: z.string().optional().nullable(),
   company: companyBaseSchema,
+  createdAt: z.string().datetime().optional(),
   updatedAt: z.string().datetime().optional(),
   pdfGeneratedAt: z.string().datetime().optional().nullable(),
 });

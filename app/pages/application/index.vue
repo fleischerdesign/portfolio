@@ -38,6 +38,12 @@ useSeoMeta({
   <div class="container mx-auto max-w-screen-xl py-16">
     <div class="mb-24">
       <UiSectionHeader :level="1" title="Bewerbungsübersicht" subtitle="Eine Liste aller erstellten und versendeten Bewerbungen." />
+      <NuxtLink :to="$localePath('/application/new')">
+        <UiButton class="mt-4">
+          <Icon name="heroicons:plus" class="mr-2 h-5 w-5" />
+          Neue Bewerbung
+        </UiButton>
+      </NuxtLink>
 
       <div v-if="applications && applications.length > 0" class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <ApplicationCard
