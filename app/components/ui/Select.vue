@@ -50,10 +50,6 @@ function selectOption(option: T) {
 
 function toggleOpen() {
   isOpen.value = !isOpen.value;
-
-  if (isOpen.value) {
-    hiddenInputEl.value?.focus();
-  }
 }
 
 function handleClickOutside(event: MouseEvent) {
@@ -91,8 +87,8 @@ const selectButtonClasses = useCva(
   'relative w-full rounded-lg px-4 py-3 text-left shadow-sm transition outline-none',
   {
     hasError: {
-      false: 'border border-neutral-300 bg-gradient-to-br from-neutral-100 to-neutral-200 peer-focus:ring-2 peer-focus:ring-secondary-400 dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800',
-      true: 'border border-red-500 bg-gradient-to-br from-neutral-100 to-neutral-200 peer-focus:ring-2 peer-focus:ring-red-500 text-red-500 dark:border-red-500 dark:from-neutral-900 dark:to-neutral-800',
+      false: 'border border-neutral-300 bg-gradient-to-br from-neutral-100 to-neutral-200 focus:ring-2 focus:ring-secondary-400 dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800',
+      true: 'border border-red-500 bg-gradient-to-br from-neutral-100 to-neutral-200 focus:ring-2 focus:ring-red-500 text-red-500 dark:border-red-500 dark:from-neutral-900 dark:to-neutral-800',
     },
   },
 );
@@ -109,7 +105,6 @@ const selectButtonClasses = useCva(
       placeholder=" "
       :value="hasValue ? 'has-value' : ''"
       tabindex="-1"
-      aria-hidden="true"
       readonly
     />
 
@@ -122,8 +117,7 @@ const selectButtonClasses = useCva(
       :aria-expanded="isOpen"
       :aria-haspopup="true"
       :aria-labelledby="`${id}-label`"
-      @click="toggleOpen" @keydown="handleKeydown" @focus="hiddenInputEl?.focus()"
-      @blur="hiddenInputEl?.blur()"
+      @click="toggleOpen" @keydown="handleKeydown"
     >
       <div class="min-h-[1.5rem]">
         <slot
@@ -140,7 +134,7 @@ const selectButtonClasses = useCva(
     <label
       :id="`${id}-label`"
       :for="id"
-      class="pointer-events-none absolute left-4 px-1 transition-all -top-2.5 text-sm bg-neutral-100 dark:bg-neutral-900 text-neutral-400 peer-focus:text-secondary-400 group-[.has-error]:text-red-500 group-[.has-error]:peer-focus:text-red-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-400 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:text-sm peer-focus:bg-neutral-100 dark:peer-focus:bg-neutral-900"
+      class="pointer-events-none absolute left-4 px-1 transition-all -top-2.5 text-sm bg-neutral-100 dark:bg-neutral-900 text-neutral-400 group-focus-within:text-secondary-400 group-[.has-error]:text-red-500 group-[.has-error]:group-focus-within:text-red-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-400 peer-placeholder-shown:bg-transparent group-focus-within:-top-2.5 group-focus-within:text-sm group-focus-within:bg-neutral-100 dark:group-focus-within:bg-neutral-900"
     >
       {{ label }}
     </label>

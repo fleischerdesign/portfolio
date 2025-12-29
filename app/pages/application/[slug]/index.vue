@@ -380,11 +380,11 @@ const notesAsText = computed({
               </div>
               <BaseTimeline v-if="timelineItems.length" :items="timelineItems">
                 <template #default="{ item, index }">
-                  <div :class="{ 'opacity-50 line-through': item._deleted }">
+                  <div :class="{ 'md:text-right': index % 2 === 0 }">
                     <span class="text-sm font-semibold text-secondary-400">{{ item.date }}</span>
                     <h3
                       class="mt-1 flex gap-2 text-xl font-bold"
-                      :class="{ 'md:ml-auto': index % 2 === 0 }"
+                      :class="{ 'md:justify-end': index % 2 === 0 }"
                     >
                       {{ item.title }}
                     </h3>
@@ -508,7 +508,7 @@ const notesAsText = computed({
       <template #header><h3 class="text-xl font-semibold">Neuen Verlaufseintrag hinzufügen</h3></template>
       <template #body>
         <form class="flex flex-col gap-4" @submit.prevent="addHistory">
-          <UiSelect v-model="newHistoryStatus" :options="availableStatuses" label="Status">
+          <UiSelect id="add-history-status" v-model="newHistoryStatus" :options="availableStatuses" label="Status">
             <template #display="{ option }">
               <span class="flex items-center gap-3">
                 <Icon name="mdi:circle" class="h-4 w-4" :class="getStatusTextClasses(option)" />
@@ -522,8 +522,8 @@ const notesAsText = computed({
               </span>
             </template>
           </UiSelect>
-          <UiInput v-model="newHistoryNotes" as="textarea" label="Notizen (optional)" />
-          <UiInput v-model="newHistoryCreatedAt" type="datetime-local" label="Datum" />
+          <UiInput id="add-history-notes" v-model="newHistoryNotes" as="textarea" label="Notizen (optional)" />
+          <UiInput id="add-history-date" v-model="newHistoryCreatedAt" type="datetime-local" label="Datum" />
         </form>
       </template>
       <template #footer>
@@ -536,7 +536,7 @@ const notesAsText = computed({
       <template #header><h3 class="text-xl font-semibold">Verlaufseintrag bearbeiten</h3></template>
       <template #body>
         <form class="flex flex-col gap-4" @submit.prevent="updateHistory">
-          <UiSelect v-model="editableHistoryEntry.status" :options="availableStatuses" label="Status">
+          <UiSelect id="edit-history-status" v-model="editableHistoryEntry.status" :options="availableStatuses" label="Status">
             <template #display="{ option }">
               <span class="flex items-center gap-3">
                 <Icon name="mdi:circle" class="h-4 w-4" :class="getStatusTextClasses(option)" />
@@ -550,8 +550,8 @@ const notesAsText = computed({
               </span>
             </template>
           </UiSelect>
-          <UiInput v-model="editableHistoryEntry.notes" as="textarea" label="Notizen" />
-          <UiInput v-model="editableHistoryEntry.createdAt" type="datetime-local" label="Datum" />
+          <UiInput id="edit-history-notes" v-model="editableHistoryEntry.notes" as="textarea" label="Notizen" />
+          <UiInput id="edit-history-date" v-model="editableHistoryEntry.createdAt" type="datetime-local" label="Datum" />
         </form>
       </template>
       <template #footer>
