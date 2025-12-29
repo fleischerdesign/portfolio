@@ -243,7 +243,7 @@ const timelineItems = computed((): TimelineItem[] => {
         id: history.id,
         type: 'history',
         date: formatDate(history.createdAt),
-        title: `Status: ${history.status}`,
+        title: history.status.charAt(0).toUpperCase() + history.status.slice(1),
         description: history.notes || `Status wurde auf '${history.status}' geändert.`,
         icon: statusIconMap[history.status] || 'heroicons:question-mark-circle',
         _deleted: (history as any)._deleted,
