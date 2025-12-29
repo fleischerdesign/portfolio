@@ -1,4 +1,4 @@
-import { applications } from '~~/server/db/schema';
+import { applicationHistories, applications } from '~~/server/db/schema';
 import { eq, desc } from 'drizzle-orm';
 
 export default defineEventHandler(async (event) => {
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
       },
       interviews: true,
       histories: {
-        orderBy: [desc(applications.createdAt)],
+        orderBy: [desc(applicationHistories.createdAt), desc(applicationHistories.id)],
       },
     },
   });

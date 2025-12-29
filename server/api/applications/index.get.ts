@@ -63,7 +63,7 @@ export default defineEventHandler(async (event) => {
   const applicationsWithStatus = await Promise.all(allApplications.map(async (app) => {
     const latestHistory = await db.query.applicationHistories.findFirst({
       where: eq(applicationHistories.applicationId, app.id),
-      orderBy: [desc(applicationHistories.createdAt)],
+      orderBy: [desc(applicationHistories.createdAt), desc(applicationHistories.id)],
     });
     return {
       ...app,

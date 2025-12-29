@@ -21,20 +21,29 @@ if (error.value || !application.value) {
 
 const printUrl = computed(() => `/application/${route.params.slug}/print`)
 
+const formatForDateTimeLocal = (isoString: string | null | undefined): string => {
+  if (!isoString) return '';
+  const d = new Date(isoString);
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0, 16);
+};
+
 const isLoading = ref(false)
 
 const isEditing = ref(false)
-const editableApplication = ref<Partial<ApplicationResponsePayload> | null>(null)
+const editableApplication = ref<Partial<ApplicationResponsePayload> & { histories: (ApplicationHistoryPayload & { _deleted?: boolean })[] } | null>(null)
+
 
 const showAddHistoryModal = ref(false);
 const newHistoryStatus = ref<ApplicationHistoryCreatePayload['status']>(application.value.currentStatus);
 const newHistoryNotes = ref<string | null>(null);
-const newHistoryCreatedAt = ref<string>(new Date().toISOString().split('T')[0]);
+const newHistoryCreatedAt = ref<string>(formatForDateTimeLocal(new Date().toISOString()));
 const isAddingHistory = ref(false);
 
 const showEditHistoryModal = ref(false);
 const isUpdatingHistory = ref(false);
-const editableHistoryEntry = ref<Partial<ApplicationHistoryPayload> | null>(null);
+type EditableHistoryEntry = Partial<ApplicationHistoryPayload> & { createdAt: string };
+const editableHistoryEntry = ref<EditableHistoryEntry | null>(null);
 
 const showDeleteHistoryModal = ref(false);
 const isDeletingHistory = ref(false);
@@ -52,104 +61,131 @@ function cancelEditing() {
 }
 
 async function updateApplication() {
-  if (!editableApplication.value) return;
-  isLoading.value = true
+  if (!editableApplication.value || !application.value) return;
+  isLoading.value = true;
   try {
+    const originalHistories = application.value.histories;
+    const editedHistories = editableApplication.value.histories || [];
+
+    const toDelete = editedHistories.filter(h => h._deleted && h.id! > 0);
+    for (const history of toDelete) {
+      await useRequestFetch()(`/api/applications/${slug}/histories/${history.id}`, { method: 'DELETE' });
+    }
+
+    const toCreate = editedHistories.filter(h => h.id! < 0);
+    for (const history of toCreate) {
+      const { id, _deleted, ...createData } = history;
+      await useRequestFetch()(`/api/applications/${slug}/histories`, {
+        method: 'POST',
+        body: createData,
+      });
+    }
+
+    const toUpdate = editedHistories.filter(edited => {
+      if (edited.id! < 0 || edited._deleted) return false;
+      const original = originalHistories.find(orig => orig.id === edited.id);
+      if (!original) return false;
+      return (
+        original.status !== edited.status ||
+        original.notes !== edited.notes ||
+        new Date(original.createdAt!).getTime() !== new Date(edited.createdAt!).getTime()
+      );
+    });
+    for (const history of toUpdate) {
+      const { id, _deleted, ...updateData } = history;
+      await useRequestFetch()(`/api/applications/${slug}/histories/${id}`, {
+        method: 'PUT',
+        body: updateData as ApplicationHistoryUpdatePayload,
+      });
+    }
+    
     const { id, company, interviews, pdfGeneratedAt, currentStatus, histories, ...updateData } = editableApplication.value;
-    await useRequestFetch()(`/api/applications/${slug}`, {
-      method: 'PUT',
-      body: updateData,
-    })
-    await refresh()
-    isEditing.value = false
+    await useRequestFetch()(`/api/applications/${slug}`, { method: 'PUT', body: updateData });
+
+    await refresh();
+    isEditing.value = false;
     editableApplication.value = null;
   } catch (error) {
-    console.error('Failed to update application', error)
+    console.error('Failed to update application and its history', error);
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
 }
 
-async function addHistory() {
-  if (!newHistoryStatus.value) return;
-  isAddingHistory.value = true;
-  try {
-    await useRequestFetch()(`/api/applications/${slug}/histories`, {
-      method: 'POST',
-      body: {
-        status: newHistoryStatus.value,
-        notes: newHistoryNotes.value,
-        createdAt: newHistoryCreatedAt.value,
-      },
-    });
-    await refresh();
-    newHistoryNotes.value = null;
-    newHistoryCreatedAt.value = new Date().toISOString().split('T')[0];
-    showAddHistoryModal.value = false;
-    if(application.value) newHistoryStatus.value = application.value.currentStatus;
-  } catch (error) {
-    console.error('Failed to add history entry', error);
-  } finally {
-    isAddingHistory.value = false;
-  }
+function addHistory() {
+  if (!newHistoryStatus.value || !editableApplication.value?.histories) return;
+  const newEntry: ApplicationHistoryPayload & { _deleted?: boolean } = {
+    id: Date.now() * -1,
+    status: newHistoryStatus.value,
+    notes: newHistoryNotes.value,
+    createdAt: new Date(newHistoryCreatedAt.value).toISOString(),
+    _deleted: false,
+  };
+  editableApplication.value.histories.push(newEntry);
+  editableApplication.value.histories.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime() || (b.id || 0) - (a.id || 0));
+  
+  newHistoryNotes.value = null;
+  newHistoryCreatedAt.value = formatForDateTimeLocal(new Date().toISOString());
+  showAddHistoryModal.value = false;
+  if(application.value) newHistoryStatus.value = application.value.currentStatus;
 }
 
 function startEditHistory(item: TimelineItem) {
-  const entry = application.value?.histories.find(h => h.id === item.id);
+  const entry = editableApplication.value?.histories.find(h => h.id === item.id);
   if (entry) {
-    editableHistoryEntry.value = { ...entry, createdAt: new Date(entry.createdAt!).toISOString().split('T')[0] };
+    editableHistoryEntry.value = { ...entry, createdAt: formatForDateTimeLocal(entry.createdAt) };
     showEditHistoryModal.value = true;
   }
 }
 
-async function updateHistory() {
-  if (!editableHistoryEntry.value || !editableHistoryEntry.value.id) return;
-  isUpdatingHistory.value = true;
-  try {
-    const { id, ...updateData } = editableHistoryEntry.value;
-    await useRequestFetch()(`/api/applications/${slug}/histories/${id}`, {
-      method: 'PUT',
-      body: updateData as ApplicationHistoryUpdatePayload
-    });
-    await refresh();
-    showEditHistoryModal.value = false;
-    editableHistoryEntry.value = null;
-  } catch (error) {
-    console.error('Failed to update history entry', error);
-  } finally {
-    isUpdatingHistory.value = false;
+function updateHistory() {
+  if (!editableHistoryEntry.value?.id || !editableApplication.value?.histories) return;
+  const index = editableApplication.value.histories.findIndex(h => h.id === editableHistoryEntry.value!.id);
+  if (index !== -1) {
+    editableApplication.value.histories[index] = { 
+      ...editableApplication.value.histories[index],
+      ...editableHistoryEntry.value,
+      createdAt: new Date(editableHistoryEntry.value.createdAt).toISOString(),
+    };
+    editableApplication.value.histories.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime() || (b.id || 0) - (a.id || 0));
   }
+  showEditHistoryModal.value = false;
+  editableHistoryEntry.value = null;
 }
 
 function startDeleteHistory(item: TimelineItem) {
-  const entry = timelineItems.value.find(h => h.id === item.id && h.type === 'history');
+  const entry = editableApplication.value?.histories.find(h => h.id === item.id);
   if (entry) {
-    deletableHistoryEntry.value = entry;
+    deletableHistoryEntry.value = item;
     showDeleteHistoryModal.value = true;
   }
 }
 
-async function deleteHistory() {
-  if (!deletableHistoryEntry.value || !deletableHistoryEntry.value.id) return;
-  isDeletingHistory.value = true;
-  try {
-    await useRequestFetch()(`/api/applications/${slug}/histories/${deletableHistoryEntry.value.id}`, {
-      method: 'DELETE',
-    });
-    await refresh();
-    showDeleteHistoryModal.value = false;
-    deletableHistoryEntry.value = null;
-  } catch (error) {
-    console.error('Failed to delete history entry', error);
-  } finally {
-    isDeletingHistory.value = false;
+function deleteHistory() {
+  if (!deletableHistoryEntry.value?.id || !editableApplication.value?.histories) return;
+  const idToDelete = deletableHistoryEntry.value.id;
+  const index = editableApplication.value.histories.findIndex(h => h.id === idToDelete);
+  if (index !== -1) {
+    if (idToDelete > 0) {
+      editableApplication.value.histories[index]._deleted = true;
+    } else {
+      editableApplication.value.histories.splice(index, 1);
+    }
+  }
+  showDeleteHistoryModal.value = false;
+  deletableHistoryEntry.value = null;
+}
+
+function undoDeleteHistory(item: TimelineItem) {
+  if (!editableApplication.value?.histories) return;
+  const index = editableApplication.value.histories.findIndex(h => h.id === item.id);
+  if (index !== -1) {
+    editableApplication.value.histories[index]._deleted = false;
   }
 }
 
 const isPdfOutdated = computed(() => {
-  if (!application.value?.pdfGeneratedAt || !application.value?.updatedAt) {
-    return true; 
-  }
+  if (!application.value?.pdfGeneratedAt || !application.value?.updatedAt) return true; 
   return new Date(application.value.updatedAt) > new Date(application.value.pdfGeneratedAt);
 });
 
@@ -182,6 +218,7 @@ interface TimelineItem {
   title: string;
   description: string;
   icon: string;
+  _deleted?: boolean;
 }
 
 const statusIconMap: Record<string, string> = {
@@ -194,10 +231,13 @@ const statusIconMap: Record<string, string> = {
 };
 
 const timelineItems = computed((): TimelineItem[] => {
-  if (!application.value) return [];
-  const items: TimelineItem[] = [];
+  const source = isEditing.value ? editableApplication.value : application.value;
+  if (!source) return [];
 
-  application.value.histories.forEach(history => {
+  const items: TimelineItem[] = [];
+  const histories = (isEditing.value ? source.histories : source.histories?.filter(h => !(h as any)._deleted)) || [];
+
+  histories.forEach(history => {
     if (history.createdAt && history.id) {
       items.push({
         id: history.id,
@@ -206,12 +246,13 @@ const timelineItems = computed((): TimelineItem[] => {
         title: `Status: ${history.status}`,
         description: history.notes || `Status wurde auf '${history.status}' geändert.`,
         icon: statusIconMap[history.status] || 'heroicons:question-mark-circle',
+        _deleted: (history as any)._deleted,
       });
     }
   });
 
-  if (application.value.interviews) {
-    application.value.interviews.forEach((interview) => {
+  if (source.interviews) {
+    source.interviews.forEach((interview) => {
       if(interview.id) {
         items.push({
           id: interview.id,
@@ -224,13 +265,14 @@ const timelineItems = computed((): TimelineItem[] => {
       }
     });
   }
-
   return items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 });
 
 const derivedApplicationDate = computed(() => {
   if (!application.value) return null;
-  const appliedEntry = [...application.value.histories]
+  const sourceHistories = isEditing.value ? editableApplication.value?.histories : application.value.histories;
+  const appliedEntry = [...(sourceHistories || [])]
+    .filter(h => !(h as any)._deleted)
     .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime())
     .find(h => h.status === 'applied');
   return appliedEntry?.createdAt;
@@ -238,7 +280,9 @@ const derivedApplicationDate = computed(() => {
 
 const derivedResponseDate = computed(() => {
   if (!application.value) return null;
-  const responseEntry = [...application.value.histories]
+  const sourceHistories = isEditing.value ? editableApplication.value?.histories : application.value.histories;
+  const responseEntry = [...(sourceHistories || [])]
+    .filter(h => !(h as any)._deleted)
     .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime())
     .find(h => h.status !== 'draft' && h.status !== 'applied');
   return responseEntry?.createdAt;
@@ -336,25 +380,29 @@ const notesAsText = computed({
               </div>
               <BaseTimeline v-if="timelineItems.length" :items="timelineItems">
                 <template #default="{ item, index }">
-                  <span class="text-sm font-semibold text-secondary-400">{{ item.date }}</span>
-                  <h3
-                    class="mt-1 flex gap-2 text-xl font-bold"
-                    :class="{ 'md:ml-auto': index % 2 === 0 }"
-                  >
-                    {{ item.title }}
-                  </h3>
-                  <p class="text-gray-600 dark:text-gray-300">{{ item.description }}</p>
-
+                  <div :class="{ 'opacity-50 line-through': item._deleted }">
+                    <span class="text-sm font-semibold text-secondary-400">{{ item.date }}</span>
+                    <h3
+                      class="mt-1 flex gap-2 text-xl font-bold"
+                      :class="{ 'md:ml-auto': index % 2 === 0 }"
+                    >
+                      {{ item.title }}
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300">{{ item.description }}</p>
+                  </div>
                   <div
                     v-if="isEditing && item.type === 'history'"
                     class="mt-2 flex gap-2"
                     :class="index % 2 === 0 ? 'md:justify-end' : 'justify-start'"
                   >
-                    <UiButton size="sm" variant="ghost" @click="startEditHistory(item)">
+                    <UiButton v-if="!item._deleted" size="sm" variant="ghost" @click="startEditHistory(item)">
                       Bearbeiten
                     </UiButton>
-                    <UiButton size="sm" variant="ghost" color="danger" @click="startDeleteHistory(item)">
+                    <UiButton v-if="!item._deleted" size="sm" variant="ghost" color="danger" @click="startDeleteHistory(item)">
                       Löschen
+                    </UiButton>
+                    <UiButton v-else size="sm" variant="ghost" @click="undoDeleteHistory(item)">
+                      Rückgängig
                     </UiButton>
                   </div>
                 </template>
@@ -457,9 +505,7 @@ const notesAsText = computed({
 
     <!-- Modals -->
     <UiModal v-model="showAddHistoryModal">
-      <template #header>
-        <h3 class="text-xl font-semibold">Neuen Verlaufseintrag hinzufügen</h3>
-      </template>
+      <template #header><h3 class="text-xl font-semibold">Neuen Verlaufseintrag hinzufügen</h3></template>
       <template #body>
         <form class="flex flex-col gap-4" @submit.prevent="addHistory">
           <UiSelect v-model="newHistoryStatus" :options="availableStatuses" label="Status">
@@ -477,7 +523,7 @@ const notesAsText = computed({
             </template>
           </UiSelect>
           <UiInput v-model="newHistoryNotes" as="textarea" label="Notizen (optional)" />
-          <UiInput v-model="newHistoryCreatedAt" type="date" label="Datum" />
+          <UiInput v-model="newHistoryCreatedAt" type="datetime-local" label="Datum" />
         </form>
       </template>
       <template #footer>
@@ -487,9 +533,7 @@ const notesAsText = computed({
     </UiModal>
 
     <UiModal v-model="showEditHistoryModal" v-if="editableHistoryEntry">
-      <template #header>
-        <h3 class="text-xl font-semibold">Verlaufseintrag bearbeiten</h3>
-      </template>
+      <template #header><h3 class="text-xl font-semibold">Verlaufseintrag bearbeiten</h3></template>
       <template #body>
         <form class="flex flex-col gap-4" @submit.prevent="updateHistory">
           <UiSelect v-model="editableHistoryEntry.status" :options="availableStatuses" label="Status">
@@ -507,7 +551,7 @@ const notesAsText = computed({
             </template>
           </UiSelect>
           <UiInput v-model="editableHistoryEntry.notes" as="textarea" label="Notizen" />
-          <UiInput v-model="editableHistoryEntry.createdAt" type="date" label="Datum" />
+          <UiInput v-model="editableHistoryEntry.createdAt" type="datetime-local" label="Datum" />
         </form>
       </template>
       <template #footer>
@@ -517,9 +561,7 @@ const notesAsText = computed({
     </UiModal>
 
     <UiModal v-model="showDeleteHistoryModal" v-if="deletableHistoryEntry">
-      <template #header>
-        <h3 class="text-xl font-semibold">Verlaufseintrag löschen</h3>
-      </template>
+      <template #header><h3 class="text-xl font-semibold">Verlaufseintrag löschen</h3></template>
       <template #body>
         <p>Möchten Sie diesen Verlaufseintrag wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.</p>
         <p class="mt-2 rounded-lg bg-neutral-100 p-2 dark:bg-neutral-800">
