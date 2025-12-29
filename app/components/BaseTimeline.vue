@@ -26,17 +26,19 @@
             : (isPrintView ? 'justify-start text-left' : 'md:ml-auto md:text-left'),
           'transition-all hover:scale-[1.02]'
         ]">
-          <span class="text-sm font-semibold text-secondary-400">{{ item.date }}</span>
-          <h3 class="mt-1 flex gap-2 text-xl font-bold" :class="{'md:ml-auto': !isPrintView && index % 2 === 0}">
-            <Icon :name="item.icon" size="24" class="text-secondary-400" :class="{'hidden': !isPrintView, 'block': isPrintView}" />
-            {{ item.title }}
-          </h3>
-          <p class="text-gray-600 dark:text-gray-300">{{ item.description }}</p>
-          <div v-if="item.skills && item.skills.length && !isPrintView" class="mt-3 flex flex-wrap gap-2" :class="index % 2 === 0 ? (isPrintView ? 'justify-start' : 'md:justify-end') : 'justify-start'">
-            <UiTag v-for="(skill, skillIndex) in item.skills" :key="skillIndex">
-              {{ skill }}
-          </UiTag>
-          </div>
+          <slot :item="item" :index="index">
+            <span class="text-sm font-semibold text-secondary-400">{{ item.date }}</span>
+            <h3 class="mt-1 flex gap-2 text-xl font-bold" :class="{'md:ml-auto': !isPrintView && index % 2 === 0}">
+              <Icon :name="item.icon" size="24" class="text-secondary-400" :class="{'hidden': !isPrintView, 'block': isPrintView}" />
+              {{ item.title }}
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300">{{ item.description }}</p>
+            <div v-if="item.skills && item.skills.length && !isPrintView" class="mt-3 flex flex-wrap gap-2" :class="index % 2 === 0 ? (isPrintView ? 'justify-start' : 'md:justify-end') : 'justify-start'">
+              <UiTag v-for="(skill, skillIndex) in item.skills" :key="skillIndex">
+                {{ skill }}
+            </UiTag>
+            </div>
+          </slot>
         </UiCard >
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { applications } from '~~/server/db/schema';
-import { updateApplicationSchema } from '#shared/schemas/application.schema';
+import { applicationUpdateSchema } from '#shared/schemas/application.schema';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Slug is required' });
   }
 
-  const body = await readValidatedBody(event, (body) => updateApplicationSchema.safeParse(body));
+  const body = await readValidatedBody(event, (body) => applicationUpdateSchema.safeParse(body));
   if (!body.success) {
     throw createError({
       statusCode: 400,
@@ -23,13 +23,6 @@ export default defineEventHandler(async (event) => {
 
   if (Object.keys(updateData).length === 0) {
     throw createError({ statusCode: 400, statusMessage: 'No fields provided for update' });
-  }
-
-  if (updateData.applicationDate) {
-    updateData.applicationDate = new Date(updateData.applicationDate);
-  }
-  if (updateData.responseDate) {
-    updateData.responseDate = new Date(updateData.responseDate);
   }
 
   try {

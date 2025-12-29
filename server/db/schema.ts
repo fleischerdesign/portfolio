@@ -39,14 +39,19 @@ export const applications = sqliteTable('applications', {
   subtitle: text('subtitle'),
   slug: text('slug').notNull().unique(),
   url: text('url'),
-  applicationDate: integer('application_date', { mode: 'timestamp' }),
-  responseDate: integer('response_date', { mode: 'timestamp' }),
-  status: text('status', { enum: ['draft', 'applied', 'interview', 'offer', 'rejected', 'withdrawn'] }).default('draft').notNull(),
   notes: text('notes', { mode: 'json' }).$type<string[]>().default('[]'), // Storing array of strings as JSON
   body: text('body'),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).$onUpdate(() => sql`(strftime('%s', 'now'))`),
   pdfGeneratedAt: integer('pdf_generated_at', { mode: 'timestamp' }),
+});
+
+export const applicationHistories = sqliteTable('application_histories', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  applicationId: integer('application_id').references(() => applications.id, { onDelete: 'cascade' }).notNull(),
+  status: text('status', { enum: ['draft', 'applied', 'interview', 'offer', 'rejected', 'withdrawn'] }).default('draft').notNull(),
+  notes: text('notes'),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
 });
 
 export const applicationsRelations = relations(applications, ({ one, many }) => ({
@@ -55,6 +60,14 @@ export const applicationsRelations = relations(applications, ({ one, many }) => 
     references: [companies.id],
   }),
   interviews: many(interviews),
+  histories: many(applicationHistories),
+}));
+
+export const applicationHistoriesRelations = relations(applicationHistories, ({ one }) => ({
+  application: one(applications, {
+    fields: [applicationHistories.applicationId],
+    references: [applications.id],
+  }),
 }));
 
 export const interviews = sqliteTable('interviews', {

@@ -1,5 +1,5 @@
 import { applications } from '~~/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
@@ -22,6 +22,9 @@ export default defineEventHandler(async (event) => {
         },
       },
       interviews: true,
+      histories: {
+        orderBy: [desc(applications.createdAt)],
+      },
     },
   });
 
@@ -32,5 +35,11 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  return application;
+  const currentStatus = application.histories.length > 0 ? application.histories[0].status : 'draft';
+
+  return {
+    ...application,
+    currentStatus,
+    histories: application.histories,
+  };
 });

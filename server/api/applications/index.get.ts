@@ -1,4 +1,5 @@
-import { applications, companies, addresses, interviews as interviewsTable } from '../../db/schema';
+import { applications, companies, addresses, interviews as interviewsTable, applicationHistories } from '../../db/schema';
+import { desc, eq } from 'drizzle-orm';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
@@ -32,11 +33,15 @@ export default defineEventHandler(async (event) => {
       subtitle: 'Seeking adventurous individual for high-speed product testing.',
       slug: appSlug,
       url: 'https://acmecorp.com/careers/' + appSlug,
-      applicationDate: new Date('2025-10-26'),
-      status: 'applied',
       notes: ['Sent application via website.', 'Followed up via email after 1 week.'],
       body: '## About the Role\n\nThis is a placeholder for the cover letter content.',
     }).returning();
+    
+    await db.insert(applicationHistories).values({
+      applicationId: newApplication.id,
+      status: 'applied',
+      notes: 'Initial dummy data creation',
+    });
 
     await db.insert(interviewsTable).values([
       { applicationId: newApplication.id, date: new Date('2025-11-15T10:00:00.000Z'), notes: 'First technical interview.' },
@@ -55,7 +60,19 @@ export default defineEventHandler(async (event) => {
     },
   });
 
+  const applicationsWithStatus = await Promise.all(allApplications.map(async (app) => {
+    const latestHistory = await db.query.applicationHistories.findFirst({
+      where: eq(applicationHistories.applicationId, app.id),
+      orderBy: [desc(applicationHistories.createdAt)],
+    });
+    return {
+      ...app,
+      currentStatus: latestHistory?.status || 'draft',
+    };
+  }));
+
+
   return {
-    applications: allApplications,
+    applications: applicationsWithStatus,
   };
 });

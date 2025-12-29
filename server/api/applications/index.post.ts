@@ -1,15 +1,15 @@
 import { db } from '../../utils/db';
-import { addresses, companies, applications, interviews as interviewsTable } from '../../db/schema';
+import { addresses, companies, applications, interviews as interviewsTable, applicationHistories } from '../../db/schema';
 import { eq } from 'drizzle-orm';
-import { applicationApiSchema } from '../../../shared/schemas/application.schema';
-import type { ApplicationApiPayload } from '../../../shared/schemas/application.schema';
+import { applicationCreateSchema } from '../../../shared/schemas/application.schema';
+import type { ApplicationCreatePayload } from '../../../shared/schemas/application.schema';
 
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
 
   const body = await readBody(event);
-  const validation = applicationApiSchema.safeParse(body);
+  const validation = applicationCreateSchema.safeParse(body);
 
   if (!validation.success) {
     throw createError({
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const data: ApplicationApiPayload = validation.data;
+  const data: ApplicationCreatePayload = validation.data;
 
   const result = await db.transaction(async (tx) => {
     let addressId: number | null = null;
@@ -54,11 +54,8 @@ export default defineEventHandler(async (event) => {
       subtitle: data.subtitle,
       slug: data.slug,
       url: data.url,
-      status: data.status,
       body: data.body,
       notes: data.notes,
-      applicationDate: data.applicationDate ? new Date(data.applicationDate) : null,
-      responseDate: data.responseDate ? new Date(data.responseDate) : null,
       companyId,
     };
 
@@ -67,16 +64,25 @@ export default defineEventHandler(async (event) => {
     });
 
     let currentApplicationId;
-    let finalStatus: 'updated' | 'inserted';
+    let finalAction: 'updated' | 'inserted';
 
     if (existingApplication) {
       const [updated] = await tx.update(applications).set(applicationInsertData).where(eq(applications.id, existingApplication.id)).returning();
       currentApplicationId = updated.id;
-      finalStatus = 'updated';
+      finalAction = 'updated';
     } else {
       const [inserted] = await tx.insert(applications).values(applicationInsertData).returning();
       currentApplicationId = inserted.id;
-      finalStatus = 'inserted';
+      finalAction = 'inserted';
+    }
+
+    // Insert initial history entry for new applications
+    if (finalAction === 'inserted') {
+      await tx.insert(applicationHistories).values({
+        applicationId: currentApplicationId,
+        status: 'draft',
+        notes: 'Initial creation as draft',
+      });
     }
 
     await tx.delete(interviewsTable).where(eq(interviewsTable.applicationId, currentApplicationId));
@@ -98,7 +104,7 @@ export default defineEventHandler(async (event) => {
       }
     });
 
-    return { ...finalApplication, status: finalStatus };
+    return { ...finalApplication, action: finalAction };
   });
 
   return { result };

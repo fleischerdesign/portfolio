@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
-import { applicationApiSchema, type ApplicationApiPayload as Application } from '#shared/schemas/application.schema';
+import { applicationHistoryBaseSchema, type ApplicationPayload } from '#shared/schemas/application.schema';
+
+interface ApplicationCardProp extends ApplicationPayload {
+  currentStatus: string;
+}
 
 const props = defineProps({
   application: {
-    type: Object as () => Application,
+    type: Object as () => ApplicationCardProp,
     required: true,
   },
 });
 
-const emit = defineEmits(['deleted', 'updated']);
+const emit = defineEmits(['deleted', 'refresh']);
 
 const { getStatusChipClasses, getStatusTextClasses, formatDate } = useApplicationUtils();
-
-
 
 const isMenuOpen = ref(false);
 const showDeleteModal = ref(false);
@@ -22,8 +23,8 @@ const isDeleting = ref(false);
 const isUpdatingStatus = ref(false);
 const menu = ref<HTMLElement | null>(null);
 
-const newStatus = ref(props.application.status);
-const availableStatuses = applicationApiSchema.shape.status.options;
+const newStatus = ref(props.application.currentStatus);
+const availableStatuses = applicationHistoryBaseSchema.shape.status.options;
 
 const handleClickOutside = (event: MouseEvent) => {
   if (menu.value && !menu.value.contains(event.target as Node)) {
@@ -49,12 +50,11 @@ async function deleteApplication() {
 async function updateApplicationStatus() {
   isUpdatingStatus.value = true;
   try {
-    const updatedApplication = await useRequestFetch()(`/api/applications/${props.application.slug}`, {
-      method: 'PUT',
-      body: { status: newStatus.value },
+    await useRequestFetch()(`/api/applications/${props.application.slug}/histories`, {
+      method: 'POST',
+      body: { status: newStatus.value, notes: 'Status updated from overview card.' },
     });
-    console.log('API Response:', updatedApplication);
-    emit('updated', updatedApplication);
+    emit('refresh');
     showStatusModal.value = false;
   } catch (error) {
     console.error('Failed to update status', error);
@@ -65,15 +65,16 @@ async function updateApplicationStatus() {
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
-  watch(showStatusModal, (newValue) => {
-    if (newValue) {
-      newStatus.value = props.application.status;
-    }
-  });
 });
 
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
+});
+
+watch(showStatusModal, (newValue) => {
+  if (newValue) {
+    newStatus.value = props.application.currentStatus;
+  }
 });
 </script>
 
@@ -141,8 +142,8 @@ onUnmounted(() => {
 
           <div class="mt-4 flex items-center justify-between border-t border-neutral-200 pt-4 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
             <span>Bewerbung vom: {{ formatDate(application.applicationDate) }}</span>
-            <UiChip unstyled size="md" :class="[getStatusChipClasses(application.status), getStatusTextClasses(application.status)]">
-              {{ application.status }}
+            <UiChip unstyled size="md" :class="[getStatusChipClasses(application.currentStatus), getStatusTextClasses(application.currentStatus)]">
+              {{ application.currentStatus }}
             </UiChip>
           </div>
         </UiCardContainer>
