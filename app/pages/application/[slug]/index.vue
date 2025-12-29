@@ -288,6 +288,11 @@ const derivedResponseDate = computed(() => {
   return responseEntry?.createdAt;
 });
 
+const derivedLastActivityDate = computed(() => {
+  if (!timelineItems.value.length) return null;
+  return timelineItems.value[0].date;
+});
+
 const notesAsText = computed({
   get: () => editableApplication.value?.notes?.join('\n') ?? '',
   set: (value: string) => {
@@ -330,6 +335,10 @@ const notesAsText = computed({
                 <div v-if="derivedResponseDate" class="flex items-center justify-between">
                   <span class="text-sm text-neutral-600 dark:text-neutral-300">Rückmeldung:</span>
                   <span class="font-medium">{{ formatDate(derivedResponseDate) }}</span>
+                </div>
+                <div v-if="derivedLastActivityDate" class="flex items-center justify-between">
+                  <span class="text-sm text-neutral-600 dark:text-neutral-300">Letzte Aktivität:</span>
+                  <span class="font-medium">{{ derivedLastActivityDate }}</span>
                 </div>
               </div>
 
