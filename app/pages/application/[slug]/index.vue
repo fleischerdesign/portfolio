@@ -13,7 +13,7 @@ definePageMeta({
 const route = useRoute()
 const { slug } = route.params as { slug: string }
 
-const { data: application, error, refresh } = await useAuthFetch<ApplicationResponsePayload>(`/api/applications/${slug}`);
+const { data: application, error, refresh } = await useFetch<ApplicationResponsePayload>(`/api/applications/${slug}`);
 
 if (error.value || !application.value) {
   throw createError({ statusCode: 404, statusMessage: 'Application not found', fatal: true })

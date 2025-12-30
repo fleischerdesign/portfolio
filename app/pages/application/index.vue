@@ -7,7 +7,7 @@ definePageMeta({
   ability: isAdmin
 });
 
-const { data, pending: _pending, error: _error } = await useAuthFetch('/api/applications');
+const { data, pending: _pending, error: _error } = await useFetch('/api/applications');
 const applications = ref(data.value?.applications ?? []);
 
 const { locale } = useI18n();
