@@ -95,11 +95,11 @@ const selectButtonClasses = useCva(
 </script>
 
 <template>
-  <div ref="rootEl" class="relative group" :class="{ 'has-error': hasError }">
+  <div ref="rootEl" class="group relative" :class="{ 'has-error': hasError }">
 
     <input
-      ref="hiddenInputEl"
       :id="`${id}-hidden`"
+      ref="hiddenInputEl"
       type="text"
       class="peer pointer-events-none absolute inset-0 opacity-0"
       placeholder=" "
@@ -110,8 +110,8 @@ const selectButtonClasses = useCva(
 
 
     <button
-      ref="buttonEl"
       :id="id"
+      ref="buttonEl"
       type="button"
       :class="selectButtonClasses"
       :aria-expanded="isOpen"
@@ -134,7 +134,7 @@ const selectButtonClasses = useCva(
     <label
       :id="`${id}-label`"
       :for="id"
-      class="pointer-events-none absolute left-4 px-1 transition-all -top-2.5 text-sm bg-neutral-100 dark:bg-neutral-900 text-neutral-400 group-focus-within:text-secondary-400 group-[.has-error]:text-red-500 group-[.has-error]:group-focus-within:text-red-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-400 peer-placeholder-shown:bg-transparent group-focus-within:-top-2.5 group-focus-within:text-sm group-focus-within:bg-neutral-100 dark:group-focus-within:bg-neutral-900"
+      class="pointer-events-none absolute -top-2.5 left-4 bg-neutral-100 px-1 text-sm text-neutral-400 transition-all group-focus-within:-top-2.5 group-focus-within:bg-neutral-100 group-focus-within:text-sm group-focus-within:text-secondary-400 group-[.has-error]:text-red-500 group-[.has-error]:group-focus-within:text-red-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:bg-transparent peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-400 dark:bg-neutral-900 dark:group-focus-within:bg-neutral-900"
     >
       {{ label }}
     </label>

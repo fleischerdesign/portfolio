@@ -64,7 +64,12 @@ export const applicationHistoryCreateSchema = applicationHistoryBaseSchema.pick(
 });
 
 export const applicationHistoryUpdateSchema = applicationHistoryCreateSchema.partial().extend({
-  createdAt: z.string().datetime().optional(),
+  createdAt: z.preprocess((arg) => {
+    if (typeof arg === 'string' || arg instanceof Date) {
+      return new Date(arg);
+    }
+    return arg;
+  }, z.date()).optional(),
 });
 
 export const applicationResponseSchema = applicationBaseSchema.extend({

@@ -1,6 +1,6 @@
 <template>
     <UiChip size="lg" variant="gradient" class="gap-2">
-        <div class="relative w-6 h-6 flex items-center justify-center overflow-visible drop-shadow-emit-lg">
+        <div class="relative flex h-6 w-6 items-center justify-center overflow-visible drop-shadow-emit-lg">
             <Icon :name="now?.icon || 'mage:clock'" size="24" class="absolute inset-0 text-secondary-400" />
             <Icon
 :name="now?.icon || 'mage:clock'" size="24"

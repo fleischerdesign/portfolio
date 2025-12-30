@@ -57,9 +57,6 @@ const themeRgb = computed(() => {
     .join(', ')
 })
 
-const siteName = computed(() => {
-  return props.siteName
-})
 const siteLogo = computed(() => {
   return props.siteLogo
 })

@@ -1,7 +1,6 @@
 import { eq } from 'drizzle-orm';
-import { db } from '~~/server/utils/db';
 import { applicationHistories } from '~~/server/db/schema';
-import { applicationHistoryUpdateSchema } from '~~/shared/schemas/application.schema';
+import { applicationHistoryUpdateSchema } from '#shared/schemas/application.schema';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
@@ -23,12 +22,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const updateData = body.data;
-
-  // Convert string date to Date object if provided
-  if (updateData.createdAt) {
-    // This is a bit tricky with typing, so we cast to any
-    (updateData as any).createdAt = new Date(updateData.createdAt);
-  }
 
   try {
     // We could also check if the historyId belongs to the application with the given slug, but for now we'll trust the input

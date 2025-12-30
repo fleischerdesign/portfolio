@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { applicationHistoryBaseSchema, type ApplicationPayload } from '#shared/schemas/application.schema';
+import type { ApplicationPayload } from '#shared/schemas/application.schema';
 
 interface ApplicationCardProp extends ApplicationPayload {
   currentStatus: string;

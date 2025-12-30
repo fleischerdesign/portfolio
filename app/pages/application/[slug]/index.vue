@@ -230,12 +230,16 @@ const statusIconMap: Record<string, string> = {
   withdrawn: 'heroicons:arrow-uturn-left',
 };
 
+interface EditableHistory extends ApplicationHistoryPayload {
+  _deleted?: boolean;
+}
+
 const timelineItems = computed((): TimelineItem[] => {
   const source = isEditing.value ? editableApplication.value : application.value;
   if (!source) return [];
 
   const items: TimelineItem[] = [];
-  const histories = (isEditing.value ? source.histories : source.histories?.filter(h => !(h as any)._deleted)) || [];
+  const histories = (isEditing.value ? source.histories : source.histories?.filter(h => !(h as EditableHistory)._deleted)) || [];
 
   histories.forEach(history => {
     if (history.createdAt && history.id) {
@@ -246,7 +250,7 @@ const timelineItems = computed((): TimelineItem[] => {
         title: history.status.charAt(0).toUpperCase() + history.status.slice(1),
         description: history.notes || `Status wurde auf '${history.status}' geändert.`,
         icon: statusIconMap[history.status] || 'heroicons:question-mark-circle',
-        _deleted: (history as any)._deleted,
+        _deleted: (history as EditableHistory)._deleted,
       });
     }
   });
@@ -272,7 +276,7 @@ const derivedApplicationDate = computed(() => {
   if (!application.value) return null;
   const sourceHistories = isEditing.value ? editableApplication.value?.histories : application.value.histories;
   const appliedEntry = [...(sourceHistories || [])]
-    .filter(h => !(h as any)._deleted)
+    .filter(h => !(h as EditableHistory)._deleted)
     .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime())
     .find(h => h.status === 'applied');
   return appliedEntry?.createdAt;
@@ -282,7 +286,7 @@ const derivedResponseDate = computed(() => {
   if (!application.value) return null;
   const sourceHistories = isEditing.value ? editableApplication.value?.histories : application.value.histories;
   const responseEntry = [...(sourceHistories || [])]
-    .filter(h => !(h as any)._deleted)
+    .filter(h => !(h as EditableHistory)._deleted)
     .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime())
     .find(h => h.status !== 'draft' && h.status !== 'applied');
   return responseEntry?.createdAt;
@@ -426,6 +430,7 @@ const notesAsText = computed({
                 <h3 class="text-2xl font-medium">Notizen</h3>
                 <div v-if="!isEditing" class="prose prose-neutral max-w-none dark:prose-invert" >
                     <ul class="list-disc space-y-2 pl-5">
+                        <!-- eslint-disable-next-line vue/no-v-html -->
                         <li v-for="(note, index) in application.notes" :key="index" v-html="renderMarkdown(note)"></li>
                     </ul>
                 </div>
@@ -444,6 +449,7 @@ const notesAsText = computed({
         <UiCard v-if="(!isEditing && application.body) || isEditing">
             <UiCardContainer>
                 <h3 class="mb-4 text-2xl font-medium">Inhalt</h3>
+                <!-- eslint-disable-next-line vue/no-v-html -->
                 <div v-if="!isEditing" class="prose prose-neutral max-w-none dark:prose-invert" v-html="renderMarkdown(application.body || '')"></div>
                 <div v-else-if="editableApplication">
                     <UiInput
@@ -541,7 +547,7 @@ const notesAsText = computed({
       </template>
     </UiModal>
 
-    <UiModal v-model="showEditHistoryModal" v-if="editableHistoryEntry">
+    <UiModal v-if="editableHistoryEntry" v-model="showEditHistoryModal">
       <template #header><h3 class="text-xl font-semibold">Verlaufseintrag bearbeiten</h3></template>
       <template #body>
         <form class="flex flex-col gap-4" @submit.prevent="updateHistory">
@@ -569,7 +575,7 @@ const notesAsText = computed({
       </template>
     </UiModal>
 
-    <UiModal v-model="showDeleteHistoryModal" v-if="deletableHistoryEntry">
+    <UiModal v-if="deletableHistoryEntry" v-model="showDeleteHistoryModal">
       <template #header><h3 class="text-xl font-semibold">Verlaufseintrag löschen</h3></template>
       <template #body>
         <p>Möchten Sie diesen Verlaufseintrag wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.</p>

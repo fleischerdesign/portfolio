@@ -7,7 +7,7 @@ definePageMeta({
   ability: isAdmin
 });
 
-const { data, pending: _pending, error: _error, refresh } = await useAuthFetch('/api/applications');
+const { data, pending: _pending, error: _error } = await useAuthFetch('/api/applications');
 const applications = ref(data.value?.applications ?? []);
 
 const { locale } = useI18n();
@@ -70,7 +70,7 @@ useSeoMeta({
       
       <div class="mt-4 flex flex-col gap-4 md:flex-row md:items-center">
         <UiInput id="search-applications" v-model="searchTerm" label="Suchen" class="w-full md:flex-grow" />
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:flex-shrink-0">
+        <div class="flex flex-col gap-4 md:flex-shrink-0 md:flex-row md:items-center">
           <UiSelect id="filter-status" v-model="statusFilter" :options="availableStatuses" label="Status filtern" class="md:w-auto">
             <template #display="{ option }">
               <span v-if="option === 'all'">Alle Status</span>

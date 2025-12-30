@@ -58,7 +58,7 @@ const modalContentClasses = useCva(
     leave-from-class="opacity-100"
     leave-to-class="opacity-0"
   >
-    <div v-if="modelValue" class="fixed inset-0 z-[9998] flex items-center justify-center bg-black bg-opacity-50 transition ease-out duration-200" @click.self="closeModal">
+    <div v-if="modelValue" class="fixed inset-0 z-[9998] flex items-center justify-center bg-black bg-opacity-50 transition duration-200 ease-out" @click.self="closeModal">
       <Transition
         enter-from-class="scale-90 opacity-0"
         enter-to-class="scale-100 opacity-100"
