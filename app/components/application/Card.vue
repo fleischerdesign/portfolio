@@ -18,13 +18,8 @@ const { getStatusChipClasses, getStatusTextClasses, formatDate } = useApplicatio
 
 const isMenuOpen = ref(false);
 const showDeleteModal = ref(false);
-const showStatusModal = ref(false);
 const isDeleting = ref(false);
-const isUpdatingStatus = ref(false);
 const menu = ref<HTMLElement | null>(null);
-
-const newStatus = ref(props.application.currentStatus);
-const availableStatuses = applicationHistoryBaseSchema.shape.status.options;
 
 const handleClickOutside = (event: MouseEvent) => {
   if (menu.value && !menu.value.contains(event.target as Node)) {
@@ -47,34 +42,12 @@ async function deleteApplication() {
   }
 }
 
-async function updateApplicationStatus() {
-  isUpdatingStatus.value = true;
-  try {
-    await useRequestFetch()(`/api/applications/${props.application.slug}/histories`, {
-      method: 'POST',
-      body: { status: newStatus.value, notes: 'Status updated from overview card.' },
-    });
-    emit('refresh');
-    showStatusModal.value = false;
-  } catch (error) {
-    console.error('Failed to update status', error);
-  } finally {
-    isUpdatingStatus.value = false;
-  }
-}
-
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
 });
 
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
-});
-
-watch(showStatusModal, (newValue) => {
-  if (newValue) {
-    newStatus.value = props.application.currentStatus;
-  }
 });
 </script>
 
@@ -112,12 +85,6 @@ watch(showStatusModal, (newValue) => {
                   </button>
                 </li>
                 <li>
-                  <button @click="showStatusModal = true" class="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50">
-                    <Icon name="mdi:tag-multiple" class="h-5 w-5" />
-                    <span>Status ändern</span>
-                  </button>
-                </li>
-                <li>
                   <button class="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50">
                     <Icon name="mdi:share-variant" class="h-5 w-5" />
                     <span>Teilen</span>
@@ -150,7 +117,10 @@ watch(showStatusModal, (newValue) => {
       </UiCard>
     </NuxtLink>
 
-    <UiModal v-model="showDeleteModal" title="Bewerbung löschen">
+    <UiModal v-model="showDeleteModal">
+      <template #header>
+        <h3 class="text-lg font-semibold">Bewerbung löschen</h3>
+      </template>
       <template #body>
         <p class="mt-2">Möchten Sie die Bewerbung für "{{ application.title }}" bei "{{ application.company.name }}" wirklich endgültig löschen? Diese Aktion kann nicht rückgängig gemacht werden.</p>
       </template>
@@ -158,47 +128,6 @@ watch(showStatusModal, (newValue) => {
         <UiButton @click="showDeleteModal = false">Abbrechen</UiButton>
         <UiButton variant="danger" :is-loading="isDeleting" @click="deleteApplication">
           Löschen
-        </UiButton>
-      </template>
-    </UiModal>
-
-    <UiModal v-model="showStatusModal" title="Status ändern">
-      <template #body>
-        <p class="mt-2">Wählen Sie einen neuen Status für die Bewerbung bei "{{ application.company.name }}".</p>
-        <fieldset class="mt-4">
-          <legend class="sr-only">
-            Application Status
-          </legend>
-          <div class="space-y-2">
-            <label
-              v-for="status in availableStatuses"
-              :key="status"
-              :for="`status_${status}`"
-              class="relative flex cursor-pointer items-center gap-3 rounded-lg border p-3 shadow-sm transition hover:bg-secondary-500/20 hover:border-secondary-300 dark:hover:border-secondary-700"
-              :class="[
-                newStatus === status ? 'border-secondary-400 ring-2 ring-secondary-400 bg-secondary-100 dark:border-secondary-600 dark:ring-secondary-600 dark:bg-secondary-800' : 'border-neutral-300 dark:border-neutral-700'
-              ]"
-            >
-              <input
-                :id="`status_${status}`"
-                type="radio"
-                :value="status"
-                v-model="newStatus"
-                name="application_status"
-                class="sr-only"
-              >
-              <span class="flex flex-1 items-center gap-3">
-                <Icon name="mdi:circle" class="h-4 w-4" :class="getStatusTextClasses(status)" />
-                <span class="font-medium">{{ status }}</span>
-              </span>
-            </label>
-          </div>
-        </fieldset>
-      </template>
-      <template #footer>
-        <UiButton @click="showStatusModal = false">Abbrechen</UiButton>
-        <UiButton :is-loading="isUpdatingStatus" @click="updateApplicationStatus">
-          Speichern
         </UiButton>
       </template>
     </UiModal>

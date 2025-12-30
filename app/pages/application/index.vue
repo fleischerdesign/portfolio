@@ -96,7 +96,6 @@ useSeoMeta({
           :key="app.id"
           :application="app"
           @deleted="handleApplicationDeleted"
-          @refresh="refresh"
         />
       </div>
       <div v-else class="mt-8 text-center text-neutral-500 dark:text-neutral-400">
