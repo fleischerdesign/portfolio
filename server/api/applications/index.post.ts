@@ -29,6 +29,7 @@ export default defineEventHandler(async (event) => {
       const [newAddress] = await tx.insert(addresses).values({
         ...data.company.address
       }).returning();
+      if (!newAddress) { throw createError({ statusCode: 500, statusMessage: 'Failed to insert address' }); }
       addressId = newAddress.id;
     }
 
@@ -46,6 +47,7 @@ export default defineEventHandler(async (event) => {
         name: data.company.name,
         addressId,
       }).returning();
+      if (!newCompany) { throw createError({ statusCode: 500, statusMessage: 'Failed to insert company' }); }
       companyId = newCompany.id;
     }
 
@@ -68,10 +70,12 @@ export default defineEventHandler(async (event) => {
 
     if (existingApplication) {
       const [updated] = await tx.update(applications).set(applicationInsertData).where(eq(applications.id, existingApplication.id)).returning();
+      if (!updated) { throw createError({ statusCode: 500, statusMessage: 'Failed to update application' }); }
       currentApplicationId = updated.id;
       finalAction = 'updated';
     } else {
       const [inserted] = await tx.insert(applications).values(applicationInsertData).returning();
+      if (!inserted) { throw createError({ statusCode: 500, statusMessage: 'Failed to insert application' }); }
       currentApplicationId = inserted.id;
       finalAction = 'inserted';
     }

@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const currentStatus = application.histories.length > 0 ? application.histories[0].status : 'draft';
+  const currentStatus = application.histories.length > 0 ? application.histories[0]!.status : 'draft';
 
   return {
     ...application,

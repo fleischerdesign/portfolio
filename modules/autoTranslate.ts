@@ -69,8 +69,12 @@ async function translateMarkdownFiles(config: TranslationConfig) {
         }
       }
     }
-  } catch (error) {
-    console.error('❌ A critical error occurred during the file processing loop:', error)
+  } catch (error: unknown) {
+    let errorMessage = 'An unknown error occurred';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    console.error(`❌ A critical error occurred during the file processing loop: ${errorMessage}`);
   }
 }
 
@@ -98,8 +102,12 @@ async function translateFile(
     await fs.writeFile(targetPath, translatedContent, 'utf-8')
 
     console.log(`✅ Translated: ${path.basename(sourcePath)}`)
-  } catch (error) {
-    console.error(`❌ Error translating ${path.basename(sourcePath)}: ${error.message}`)
+  } catch (error: unknown) {
+    let errorMessage = 'An unknown error occurred';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    console.error(`❌ Error translating ${path.basename(sourcePath)}: ${errorMessage}`);
   }
 }
 

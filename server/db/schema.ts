@@ -39,7 +39,7 @@ export const applications = sqliteTable('applications', {
   subtitle: text('subtitle'),
   slug: text('slug').notNull().unique(),
   url: text('url'),
-  notes: text('notes', { mode: 'json' }).$type<string[]>().default('[]'), // Storing array of strings as JSON
+  notes: text('notes', { mode: 'json' }).$type<string[]>().default(sql`'[]'`), // Storing array of strings as JSON
   body: text('body'),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).$onUpdate(() => sql`(strftime('%s', 'now'))`),

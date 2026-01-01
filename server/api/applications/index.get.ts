@@ -20,11 +20,17 @@ export default defineEventHandler(async (event) => {
       zipcode: 12345,
       city: 'Metropolis',
     }).returning();
+    if (!newAddress) {
+      throw createError({ statusCode: 500, statusMessage: 'Failed to insert address' });
+    }
 
     const [newCompany] = await db.insert(companies).values({
       name: 'ACME Corp',
       addressId: newAddress.id,
     }).returning();
+    if (!newCompany) {
+      throw createError({ statusCode: 500, statusMessage: 'Failed to insert company' });
+    }
 
     const appSlug = 'rocket-powered-skates-tester';
     const [newApplication] = await db.insert(applications).values({
@@ -36,6 +42,9 @@ export default defineEventHandler(async (event) => {
       notes: ['Sent application via website.', 'Followed up via email after 1 week.'],
       body: '## About the Role\n\nThis is a placeholder for the cover letter content.',
     }).returning();
+    if (!newApplication) {
+      throw createError({ statusCode: 500, statusMessage: 'Failed to insert application' });
+    }
     
     await db.insert(applicationHistories).values({
       applicationId: newApplication.id,
