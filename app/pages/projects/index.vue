@@ -18,7 +18,7 @@ const route = useRoute()
 const { data } = await useAsyncData(route.path, () => {
     return queryCollection('projects')
         .where('locale', '=', locale.value)
-        .select('title', 'subtitle', "image", "slug")
+        .select('title', 'subtitle', "image", "slug", "icon")
         .all()
 })
 

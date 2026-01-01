@@ -38,6 +38,7 @@ export default defineContentConfig({
           slug: z.string(),
           date: z.date(),
           subtitle: z.string(),
+          icon: z.string().optional(),
           tags: z.array(z.string()).optional(),
           techstack: z.array(z.string()).optional(),
           features: z.array(z.string()).optional(),
