@@ -66,7 +66,7 @@ const salutation = computed(() => {
 const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`, () =>
   queryCollection('projects')
     .where('locale', '=', locale.value)
-    .select('title', 'subtitle', 'slug', 'image')
+    .select('title', 'subtitle', 'slug', 'image', 'icon')
     .all()
 );
 </script>
