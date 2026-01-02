@@ -36,8 +36,19 @@ const techStack = techStackData;
 const { renderMarkdown } = useMarkdown();
 
 const applicationDate = computed(() => {
-  if (!application.value?.applicationDate) return '';
-  const date = new Date(application.value.applicationDate);
+  if (!application.value) return '';
+
+  const sortedHistories = [...(application.value.histories || [])]
+    .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime());
+
+  const appliedHistory = sortedHistories.find(h => h.status === 'applied');
+  const draftHistory = sortedHistories.find(h => h.status === 'draft');
+    
+  const dateValue = appliedHistory?.createdAt || draftHistory?.createdAt || application.value.createdAt;
+
+  if (!dateValue) return '';
+
+  const date = new Date(dateValue);
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
