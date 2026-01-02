@@ -204,7 +204,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
             </section>
         </div>
       </div>
-      <ResumeFooter :current-page="1" :total-pages="2" class="absolute bottom-10 left-20 right-20" />
+      <ResumeFooter :current-page="2" :total-pages="3" class="absolute bottom-10 left-20 right-20" />
     </div>
       <div class="main-content-pages relative h-[371mm] break-inside-avoid-page p-[25mm]">
       <div class="flex gap-10">
@@ -241,7 +241,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
           </section>
         </div>
       </div>
-      <ResumeFooter :current-page="2" :total-pages="2" class="absolute bottom-10 left-20 right-20" />
+      <ResumeFooter :current-page="3" :total-pages="3" class="absolute bottom-10 left-20 right-20" />
       </div>
   </div>
 </template>
