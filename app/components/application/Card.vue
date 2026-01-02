@@ -1,20 +1,16 @@
 <script setup lang="ts">
-import type { ApplicationPayload } from '#shared/schemas/application.schema';
-
-interface ApplicationCardProp extends ApplicationPayload {
-  currentStatus: string;
-}
+import type { ApplicationResponsePayload } from '#shared/schemas/application.schema';
 
 const props = defineProps({
   application: {
-    type: Object as () => ApplicationCardProp,
+    type: Object as () => ApplicationResponsePayload,
     required: true,
   },
 });
 
 const emit = defineEmits(['deleted', 'refresh']);
 
-const { getStatusChipClasses, getStatusTextClasses, formatDate } = useApplicationUtils();
+const { getStatusChipClasses, getStatusTextClasses, getFormattedLastActivityDate } = useApplicationUtils();
 
 const isMenuOpen = ref(false);
 const showDeleteModal = ref(false);
@@ -108,7 +104,7 @@ onUnmounted(() => {
           </div>
 
           <div class="mt-4 flex items-center justify-between border-t border-neutral-200 pt-4 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
-            <span>Erstellt am: {{ formatDate(application.createdAt) }}</span>
+            <span>Letzte Aktivität: {{ getFormattedLastActivityDate(application) }}</span>
             <UiChip unstyled size="md" :class="[getStatusChipClasses(application.currentStatus), getStatusTextClasses(application.currentStatus)]">
               {{ application.currentStatus }}
             </UiChip>

@@ -34,26 +34,9 @@ const softSkills = softSkillsData(t);
 const techStack = techStackData;
 
 const { renderMarkdown } = useMarkdown();
+const { getFormattedApplicationDate } = useApplicationUtils();
 
-const applicationDate = computed(() => {
-  if (!application.value) return '';
 
-  const sortedHistories = [...(application.value.histories || [])]
-    .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime());
-
-  const appliedHistory = sortedHistories.find(h => h.status === 'applied');
-  const draftHistory = sortedHistories.find(h => h.status === 'draft');
-    
-  const dateValue = appliedHistory?.createdAt || draftHistory?.createdAt || application.value.createdAt;
-
-  if (!dateValue) return '';
-
-  const date = new Date(dateValue);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}.${month}.${year}`;
-});
 
 const salutation = computed(() => {
   const contactName = application.value?.company?.address?.contactName;
@@ -95,7 +78,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
           <p>{{ application.company.address.zipcode }} {{ application.company.address.city }}</p>
         </div>
         <div class="text-right">
-          <p>Neubrandenburg, {{ applicationDate }}</p>
+          <p>Neubrandenburg, {{ getFormattedApplicationDate(application) }}</p>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { applicationHistoryBaseSchema, type ApplicationResponsePayload, type ApplicationHistoryPayload, type ApplicationHistoryCreatePayload, type ApplicationHistoryUpdatePayload } from '#shared/schemas/application.schema';
-const { formatDate, getStatusChipClasses, getStatusTextClasses } = useApplicationUtils();
+const { formatDate, getStatusChipClasses, getStatusTextClasses, getApplicationDate, getResponseDate, getLastActivityDate, getFormattedApplicationDate, getFormattedResponseDate, getFormattedLastActivityDate } = useApplicationUtils();
 const { renderMarkdown } = useMarkdown(); 
 
 const availableStatuses = applicationHistoryBaseSchema.shape.status.options;
@@ -272,30 +272,11 @@ const timelineItems = computed((): TimelineItem[] => {
   return items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 });
 
-const derivedApplicationDate = computed(() => {
-  if (!application.value) return null;
-  const sourceHistories = isEditing.value ? editableApplication.value?.histories : application.value.histories;
-  const appliedEntry = [...(sourceHistories || [])]
-    .filter(h => !(h as EditableHistory)._deleted)
-    .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime())
-    .find(h => h.status === 'applied');
-  return appliedEntry?.createdAt;
-});
 
-const derivedResponseDate = computed(() => {
-  if (!application.value) return null;
-  const sourceHistories = isEditing.value ? editableApplication.value?.histories : application.value.histories;
-  const responseEntry = [...(sourceHistories || [])]
-    .filter(h => !(h as EditableHistory)._deleted)
-    .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime())
-    .find(h => h.status !== 'draft' && h.status !== 'applied');
-  return responseEntry?.createdAt;
-});
 
-const derivedLastActivityDate = computed(() => {
-  if (!timelineItems.value.length) return null;
-  return timelineItems.value[0].date;
-});
+
+
+
 
 const notesAsText = computed({
   get: () => editableApplication.value?.notes?.join('\n') ?? '',
@@ -332,17 +313,17 @@ const notesAsText = computed({
                     {{ application.currentStatus }}
                   </UiChip>
                 </div>
-                <div v-if="derivedApplicationDate" class="flex items-center justify-between">
+                <div v-if="getApplicationDate(application)" class="flex items-center justify-between">
                   <span class="text-sm text-neutral-600 dark:text-neutral-300">Beworben:</span>
-                  <span class="font-medium">{{ formatDate(derivedApplicationDate) }}</span>
+                  <span class="font-medium">{{ getFormattedApplicationDate(application) }}</span>
                 </div>
-                <div v-if="derivedResponseDate" class="flex items-center justify-between">
+                <div v-if="getResponseDate(application)" class="flex items-center justify-between">
                   <span class="text-sm text-neutral-600 dark:text-neutral-300">Rückmeldung:</span>
-                  <span class="font-medium">{{ formatDate(derivedResponseDate) }}</span>
+                  <span class="font-medium">{{ getFormattedResponseDate(application) }}</span>
                 </div>
-                <div v-if="derivedLastActivityDate" class="flex items-center justify-between">
+                <div v-if="getLastActivityDate(application)" class="flex items-center justify-between">
                   <span class="text-sm text-neutral-600 dark:text-neutral-300">Letzte Aktivität:</span>
-                  <span class="font-medium">{{ derivedLastActivityDate }}</span>
+                  <span class="font-medium">{{ getFormattedLastActivityDate(application) }}</span>
                 </div>
               </div>
 
