@@ -1,5 +1,6 @@
 import { applicationHistories, applications } from '~~/server/db/schema';
 import { eq, desc } from 'drizzle-orm';
+import { ApplicationResponsePayload } from '~~/shared/schemas/application.schema';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
@@ -21,6 +22,11 @@ export default defineEventHandler(async (event) => {
           address: true,
         },
       },
+      contacts: {
+        with: {
+          contact: true,
+        },
+      },
       interviews: true,
       histories: {
         orderBy: [desc(applicationHistories.createdAt), desc(applicationHistories.id)],
@@ -36,10 +42,18 @@ export default defineEventHandler(async (event) => {
   }
 
   const currentStatus = application.histories.length > 0 ? application.histories[0]!.status : 'draft';
+  const associatedContacts = application.contacts.map(appToContact => appToContact.contact);
 
-  return {
+  const response: ApplicationResponsePayload = {
     ...application,
     currentStatus,
+    company: {
+        ...application.company,
+        address: application.company.address || null,
+    },
+    contacts: associatedContacts,
     histories: application.histories,
   };
+
+  return response;
 });

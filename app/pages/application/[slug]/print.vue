@@ -7,6 +7,7 @@ import { timelineData } from '~/data/timeline.data';
 import { coursesData } from '~/data/courses.data';
 import { softSkillsData } from '~/data/softSkills.data';
 import { techStackData } from '~/data/techStack.data';
+import type { ApplicationResponsePayload } from '#shared/schemas/application.schema';
 
 definePageMeta({
   layout: 'print',
@@ -18,7 +19,7 @@ const { t, locale } = useI18n();
 const route = useRoute();
 const { slug } = route.params as { slug: string };
 
-const { data: application, error } = await useFetch(`/api/applications/${slug}`);
+const { data: application, error } = await useFetch<ApplicationResponsePayload>(`/api/applications/${slug}`);
 
 if (error.value || !application.value) {
   throw createError({ statusCode: 404, statusMessage: 'Application not found', fatal: true });
@@ -34,14 +35,33 @@ const softSkills = softSkillsData(t);
 const techStack = techStackData;
 
 const { renderMarkdown } = useMarkdown();
-const { getFormattedApplicationDate } = useApplicationUtils();
+const { getFormattedApplicationDate, formatDate } = useApplicationUtils();
 
+const printDate = computed(() => {
+  const formattedAppDate = getFormattedApplicationDate(application.value);
+  if (formattedAppDate && formattedAppDate !== 'N/A') {
+    return formattedAppDate;
+  }
+  // Fallback to creation date if no 'applied' date is found
+  return formatDate(application.value?.createdAt);
+});
 
 
 const salutation = computed(() => {
-  const contactName = application.value?.company?.address?.contactName;
-  if (contactName) {
-    return `Sehr geehrte/r Frau/Herr ${contactName.split(' ').pop()}`;
+  const mainContact = application.value?.contacts?.[0];
+  if (mainContact) {
+    const lastName = mainContact.name.split(' ').pop();
+    switch (mainContact.salutation) {
+      case 'male':
+        return `Sehr geehrter Herr ${lastName}`;
+      case 'female':
+        return `Sehr geehrte Frau ${lastName}`;
+      case 'diverse':
+      case 'neutral':
+      case null:
+      default:
+        return 'Sehr geehrte Damen und Herren';
+    }
   }
   return 'Sehr geehrte Damen und Herren';
 });
@@ -71,14 +91,16 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
       </div>
 
 
-      <div v-if="application" class="mt-4 grid grid-cols-3 gap-8">
+      <div v-if="application && application.company" class="mt-4 grid grid-cols-3 gap-8">
         <div class="col-span-2">
           <p>{{ application.company.name }}</p>
-          <p>{{ application.company.address.street }} {{ application.company.address.houseNumber }}</p>
-          <p>{{ application.company.address.zipcode }} {{ application.company.address.city }}</p>
+          <div v-if="application.company.address">
+            <p>{{ application.company.address.street }} {{ application.company.address.houseNumber }}</p>
+            <p>{{ application.company.address.zipcode }} {{ application.company.address.city }}</p>
+          </div>
         </div>
         <div class="text-right">
-          <p>Neubrandenburg, {{ getFormattedApplicationDate(application) }}</p>
+          <p>Neubrandenburg, {{ printDate }}</p>
         </div>
       </div>
 
@@ -93,14 +115,14 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
       
       <div class="mt-4 space-y-4 text-base">
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <div class="prose prose-neutral max-w-none text-black dark:prose-invert dark:text-white" v-html="renderMarkdown(application.body)" />
+        <div v-if="application" class="prose prose-neutral max-w-none text-black dark:prose-invert dark:text-white" v-html="renderMarkdown(application.body || '')" />
         <p class="mt-12">
           Mit freundlichen Grüßen,
         </p>
         <p class="mt-4">
           Philipp Fleischer
         </p>
-                <NuxtImg src="img/signature.png" :alt="Unterschrift" height="80"/>
+                <NuxtImg src="/img/signature.png" alt="Unterschrift" height="80"/>
       </div>
       <ResumeFooter :current-page="1" :total-pages="3" class="absolute bottom-10 left-20 right-20" />
     </div>
@@ -181,7 +203,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
               <ProjectCard v-for="project in projects.slice(0,3)" :key="project.slug" :project="project" :compact="true" />
             </div>
 <div class="mt-4 text-left">
-              <UiButton to="/projects" class="justify-start gap-0">
+              <UiButton :to="$localePath('/projects')" class="justify-start gap-0">
                 <span>Weitere Projekte auf <strong>fleischer.design/projects</strong></span>
               </UiButton>
             </div>

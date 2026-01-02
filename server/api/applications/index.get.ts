@@ -1,9 +1,12 @@
-import { applications, companies, addresses, interviews as interviewsTable, applicationHistories } from '../../db/schema';
+import { applications, companies, addresses, interviews as interviewsTable, applicationHistories, contacts, applications_to_contacts } from '../../db/schema';
 import { desc, eq } from 'drizzle-orm';
+import { ApplicationResponsePayload } from '../../../shared/schemas/application.schema';
+import { CompanyResponse } from '../../../shared/schemas/company.schema';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
 
+  // Temporary dummy data creation logic - keep as is for now
   const existingApplication = await db.query.applications.findFirst();
 
   if (!existingApplication) {
@@ -11,10 +14,6 @@ export default defineEventHandler(async (event) => {
 
     const [newAddress] = await db.insert(addresses).values({
       name: 'Company HQ',
-      contactName: 'Max Mustermann',
-      contactPosition: 'HR Manager',
-      contactEmail: 'hr@acmecorp.com',
-      contactPhone: '+49123456789',
       street: 'Main Street',
       houseNumber: '10',
       zipcode: 12345,
@@ -32,6 +31,18 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 500, statusMessage: 'Failed to insert company' });
     }
 
+    const [newContact] = await db.insert(contacts).values({
+      name: 'Max Mustermann',
+      salutation: 'male',
+      position: 'HR Manager',
+      email: 'hr@acmecorp.com',
+      phone: '+49123456789',
+      companyId: newCompany.id,
+    }).returning();
+    if (!newContact) {
+      throw createError({ statusCode: 500, statusMessage: 'Failed to insert contact' });
+    }
+
     const appSlug = 'rocket-powered-skates-tester';
     const [newApplication] = await db.insert(applications).values({
       companyId: newCompany.id,
@@ -46,6 +57,11 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 500, statusMessage: 'Failed to insert application' });
     }
     
+    await db.insert(applications_to_contacts).values({
+      applicationId: newApplication.id,
+      contactId: newContact.id,
+    });
+
     await db.insert(applicationHistories).values({
       applicationId: newApplication.id,
       status: 'applied',
@@ -65,19 +81,31 @@ export default defineEventHandler(async (event) => {
           address: true,
         },
       },
+      contacts: {
+        with: {
+          contact: true,
+        },
+      },
       interviews: true,
+      histories: true,
     },
   });
 
-  const applicationsWithStatus = await Promise.all(allApplications.map(async (app) => {
-    const latestHistory = await db.query.applicationHistories.findFirst({
-      where: eq(applicationHistories.applicationId, app.id),
-      orderBy: [desc(applicationHistories.createdAt), desc(applicationHistories.id)],
-    });
+  const applicationsWithStatus: ApplicationResponsePayload[] = await Promise.all(allApplications.map(async (app) => {
+    const latestHistory = app.histories.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
+    
+    // Transform Drizzle's many-to-many contact structure to an array of Contact objects
+    const associatedContacts = app.contacts.map(appToContact => appToContact.contact);
+
     return {
       ...app,
       currentStatus: latestHistory?.status || 'draft',
-    };
+      company: {
+        ...app.company,
+        address: app.company.address || null, // Ensure address is null if not found
+      } as CompanyResponse,
+      contacts: associatedContacts,
+    } as ApplicationResponsePayload;
   }));
 
 

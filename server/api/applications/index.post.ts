@@ -1,6 +1,6 @@
 import { db } from '../../utils/db';
-import { addresses, companies, applications, interviews as interviewsTable, applicationHistories } from '../../db/schema';
-import { eq } from 'drizzle-orm';
+import { addresses, companies, applications, interviews as interviewsTable, applicationHistories, applications_to_contacts } from '../../db/schema';
+import { eq, and } from 'drizzle-orm';
 import { applicationCreateSchema } from '../../../shared/schemas/application.schema';
 import type { ApplicationCreatePayload } from '../../../shared/schemas/application.schema';
 
@@ -22,19 +22,20 @@ export default defineEventHandler(async (event) => {
   const data: ApplicationCreatePayload = validation.data;
 
   const result = await db.transaction(async (tx) => {
-    let addressId: number | null = null;
+    let addressId: number | null | undefined = undefined;
     let companyId: number;
 
-    if (data.company.address) {
+    if (data.companyAddress) {
+      // Potentially find an existing address to avoid duplicates in the future
       const [newAddress] = await tx.insert(addresses).values({
-        ...data.company.address
+        ...data.companyAddress
       }).returning();
       if (!newAddress) { throw createError({ statusCode: 500, statusMessage: 'Failed to insert address' }); }
       addressId = newAddress.id;
     }
 
     const existingCompany = await tx.query.companies.findFirst({
-      where: eq(companies.name, data.company.name),
+      where: eq(companies.name, data.companyName),
     });
 
     if (existingCompany) {
@@ -44,20 +45,16 @@ export default defineEventHandler(async (event) => {
       }
     } else {
       const [newCompany] = await tx.insert(companies).values({
-        name: data.company.name,
-        addressId,
+        name: data.companyName,
+        addressId: addressId,
       }).returning();
       if (!newCompany) { throw createError({ statusCode: 500, statusMessage: 'Failed to insert company' }); }
       companyId = newCompany.id;
     }
-
+    
+    const { companyName, companyAddress, ...applicationData } = data;
     const applicationInsertData = {
-      title: data.title,
-      subtitle: data.subtitle,
-      slug: data.slug,
-      url: data.url,
-      body: data.body,
-      notes: data.notes,
+      ...applicationData,
       companyId,
     };
 
@@ -88,6 +85,17 @@ export default defineEventHandler(async (event) => {
         notes: 'Initial creation as draft',
       });
     }
+    
+    // Sync contacts
+    await tx.delete(applications_to_contacts).where(eq(applications_to_contacts.applicationId, currentApplicationId));
+    if (data.contactIds && data.contactIds.length > 0) {
+      const contactLinks = data.contactIds.map(contactId => ({
+        applicationId: currentApplicationId,
+        contactId,
+      }));
+      await tx.insert(applications_to_contacts).values(contactLinks);
+    }
+
 
     await tx.delete(interviewsTable).where(eq(interviewsTable.applicationId, currentApplicationId));
 
@@ -105,6 +113,7 @@ export default defineEventHandler(async (event) => {
       with: {
         company: { with: { address: true } },
         interviews: true,
+        contacts: { with: { contact: true } },
       }
     });
 

@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { applicationHistoryBaseSchema, type ApplicationResponsePayload, type ApplicationHistoryPayload, type ApplicationHistoryCreatePayload, type ApplicationHistoryUpdatePayload } from '#shared/schemas/application.schema';
+import { applicationHistoryBaseSchema, type ApplicationResponsePayload, type ApplicationHistoryPayload, type ApplicationHistoryCreatePayload, type ApplicationHistoryUpdatePayload, type ApplicationUpdatePayload } from '#shared/schemas/application.schema';
+import type { CompanyResponse, CompanyCreate } from '#shared/schemas/company.schema';
+import type { Contact, ContactCreate } from '#shared/schemas/contact.schema';
+
 const { formatDate, getStatusChipClasses, getStatusTextClasses, getApplicationDate, getResponseDate, getLastActivityDate, getFormattedApplicationDate, getFormattedResponseDate, getFormattedLastActivityDate } = useApplicationUtils();
 const { renderMarkdown } = useMarkdown(); 
 
@@ -31,7 +34,21 @@ const formatForDateTimeLocal = (isoString: string | null | undefined): string =>
 const isLoading = ref(false)
 
 const isEditing = ref(false)
-const editableApplication = ref<Partial<ApplicationResponsePayload> & { histories: (ApplicationHistoryPayload & { _deleted?: boolean })[] } | null>(null)
+// Use a more specific type for editableApplication to include companyId and contactIds
+interface EditableApplication extends Partial<ApplicationUpdatePayload> {
+  id: number;
+  histories: (ApplicationHistoryPayload & { _deleted?: boolean })[];
+  companyId: number;
+  selectedContactIds: number[];
+  // Store full company/contacts for display during editing
+  selectedCompany?: CompanyResponse;
+  selectedContacts?: Contact[];
+}
+
+const editableApplication = ref<EditableApplication | null>(null);
+
+const allCompanies = ref<CompanyResponse[]>([]);
+const allContacts = ref<Contact[]>([]);
 
 
 const showAddHistoryModal = ref(false);
@@ -50,14 +67,31 @@ const isDeletingHistory = ref(false);
 const deletableHistoryEntry = ref<TimelineItem | null>(null);
 
 
-function startEditing() {
-  editableApplication.value = JSON.parse(JSON.stringify(application.value))
+async function startEditing() {
+  if (!application.value) return;
+
+  // Fetch all companies and contacts for selection
+  const companiesData = await $fetch<CompanyResponse[]>('/api/companies');
+  allCompanies.value = companiesData || [];
+
+  const contactsData = await $fetch<Contact[]>('/api/contacts');
+  allContacts.value = contactsData || [];
+
+  editableApplication.value = {
+    ...JSON.parse(JSON.stringify(application.value)), // Deep copy
+    companyId: application.value.company.id,
+    selectedContactIds: application.value.contacts.map(c => c.id),
+    selectedCompany: allCompanies.value.find(c => c.id === application.value.company.id), // Find the object from the fetched list
+    selectedContacts: application.value.contacts,
+  };
   isEditing.value = true
 }
 
 function cancelEditing() {
   isEditing.value = false
   editableApplication.value = null
+  allCompanies.value = [];
+  allContacts.value = [];
 }
 
 async function updateApplication() {
@@ -67,6 +101,7 @@ async function updateApplication() {
     const originalHistories = application.value.histories;
     const editedHistories = editableApplication.value.histories || [];
 
+    // Separate history updates/deletes/creates
     const toDelete = editedHistories.filter(h => h._deleted && h.id! > 0);
     for (const history of toDelete) {
       await useRequestFetch()(`/api/applications/${slug}/histories/${history.id}`, { method: 'DELETE' });
@@ -99,12 +134,25 @@ async function updateApplication() {
       });
     }
     
-    const { id, company, interviews, pdfGeneratedAt, currentStatus, histories, ...updateData } = editableApplication.value;
-    await useRequestFetch()(`/api/applications/${slug}`, { method: 'PUT', body: updateData });
+    // Construct the payload for the application itself
+    const payload: ApplicationUpdatePayload = {
+      title: editableApplication.value.title,
+      subtitle: editableApplication.value.subtitle,
+      slug: editableApplication.value.slug,
+      url: editableApplication.value.url,
+      body: editableApplication.value.body,
+      notes: editableApplication.value.notes,
+      companyId: editableApplication.value.selectedCompany?.id,
+      contactIds: editableApplication.value.selectedContactIds,
+    };
+
+    await useRequestFetch()(`/api/applications/${slug}`, { method: 'PUT', body: payload });
 
     await refresh();
     isEditing.value = false;
     editableApplication.value = null;
+    allCompanies.value = [];
+    allContacts.value = [];
   } catch (error) {
     console.error('Failed to update application and its history', error);
   } finally {
@@ -272,12 +320,6 @@ const timelineItems = computed((): TimelineItem[] => {
   return items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 });
 
-
-
-
-
-
-
 const notesAsText = computed({
   get: () => editableApplication.value?.notes?.join('\n') ?? '',
   set: (value: string) => {
@@ -339,25 +381,81 @@ const notesAsText = computed({
           </UiCard>
 
           <!-- Company Card -->
-          <UiCard class="md:col-span-2">
+          <UiCard class="md:col-span-1">
             <UiCardContainer class="flex h-full flex-col gap-4">
               <h3 class="text-2xl font-medium">Unternehmen</h3>
-              <div v-if="application.company.address">
-                  <p class="font-bold">{{ application.company.name }}</p>
+              <div v-if="!isEditing">
+                <p class="font-bold">{{ application.company.name }}</p>
+                <div v-if="application.company.address">
                   <p>{{ application.company.address.street }} {{ application.company.address.houseNumber }}</p>
                   <p>{{ application.company.address.zipcode }} {{ application.company.address.city }}</p>
+                </div>
+                <div v-else>
+                  <p class="text-neutral-500">Keine Adresse vorhanden.</p>
+                </div>
+              </div>
+              <div v-else-if="editableApplication">
+                <UiSelect
+                  id="company-select"
+                  v-model="editableApplication.selectedCompany"
+                  :options="allCompanies"
+                  label="Firma"
+                  by="id"
+                >
+                  <template #display="{ option }">
+                    {{ option.name }}
+                  </template>
+                  <template #option="{ option }">
+                    {{ option.name }}
+                  </template>
+                </UiSelect>
+                <div v-if="editableApplication.selectedCompany?.address" class="mt-4">
+                  <p>{{ editableApplication.selectedCompany.address.street }} {{ editableApplication.selectedCompany.address.houseNumber }}</p>
+                  <p>{{ editableApplication.selectedCompany.address.zipcode }} {{ editableApplication.selectedCompany.address.city }}</p>
+                </div>
+              </div>
+            </UiCardContainer>
+          </UiCard>
 
-                  <div v-if="application.company.address.contactName" class="mt-4 border-t border-neutral-200 pt-4 dark:border-neutral-700">
-                      <p class="font-bold">Ansprechpartner</p>
-                      <p>{{ application.company.address.contactName }} <span v-if="application.company.address.contactPosition">({{ application.company.address.contactPosition }})</span></p>
-                      <p v-if="application.company.address.contactEmail">{{ application.company.address.contactEmail }}</p>
-                      <p v-if="application.company.address.contactPhone">{{ application.company.address.contactPhone }}</p>
-                  </div>
+          <!-- Contacts Card -->
+          <UiCard class="md:col-span-1">
+            <UiCardContainer class="flex h-full flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <h3 class="text-2xl font-medium">Ansprechpartner</h3>
+                <UiButton v-if="isEditing" size="sm" variant="ghost">
+                  <Icon name="heroicons:plus" class="h-5 w-5" />
+                  Hinzufügen
+                </UiButton>
               </div>
-              <div v-else>
-                  <p class="font-bold">{{ application.company.name }}</p>
-                  <p class="text-neutral-500">Keine weiteren Firmendetails vorhanden.</p>
+              <div v-if="!isEditing && application.contacts && application.contacts.length > 0" class="grid grid-cols-1 gap-4">
+                <div v-for="contact in application.contacts" :key="contact.id">
+                  <p class="font-bold">{{ contact.name }}</p>
+                  <p v-if="contact.position" class="text-sm text-neutral-500">{{ contact.position }}</p>
+                  <p v-if="contact.email" class="mt-2">{{ contact.email }}</p>
+                  <p v-if="contact.phone">{{ contact.phone }}</p>
+                </div>
               </div>
+              <div v-else-if="isEditing && editableApplication" class="grid grid-cols-1 gap-4">
+                <UiSelect
+                  id="contact-select"
+                  v-model="editableApplication.selectedContactIds"
+                  :options="allContacts"
+                  label="Kontakte auswählen"
+                  value-key="id"
+                  text-key="name"
+                  multiple
+                >
+                  <template #display="{ option }">
+                    {{ option.name }}
+                    <span v-if="option.company && option.company.name">({{ option.company.name }})</span>
+                  </template>
+                  <template #option="{ option }">
+                    {{ option.name }}
+                    <span v-if="option.company && option.company.name" class="text-sm text-neutral-500">({{ option.company.name }})</span>
+                  </template>
+                </UiSelect>
+              </div>
+              <p v-else class="text-neutral-500">Keine Ansprechpartner vorhanden.</p>
             </UiCardContainer>
           </UiCard>
         </div>

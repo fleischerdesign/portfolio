@@ -4,10 +4,6 @@ import { sql, relations } from 'drizzle-orm';
 export const addresses = sqliteTable('addresses', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   name: text('name'),
-  contactName: text('contact_name'),
-  contactPosition: text('contact_position'),
-  contactEmail: text('contact_email'),
-  contactPhone: text('contact_phone'),
   street: text('street'),
   houseNumber: text('house_number'),
   zipcode: integer('zipcode'),
@@ -30,6 +26,25 @@ export const companiesRelations = relations(companies, ({ one, many }) => ({
     references: [addresses.id],
   }),
   applications: many(applications),
+  contacts: many(contacts),
+}));
+
+export const contacts = sqliteTable('contacts', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  name: text('name').notNull(),
+  salutation: text('salutation', { enum: ['male', 'female', 'diverse', 'neutral'] }),
+  position: text('position'),
+  email: text('email'),
+  phone: text('phone'),
+  companyId: integer('company_id').references(() => companies.id),
+});
+
+export const contactsRelations = relations(contacts, ({ one, many }) => ({
+  company: one(companies, {
+    fields: [contacts.companyId],
+    references: [companies.id],
+  }),
+  applications: many(applications_to_contacts),
 }));
 
 export const applications = sqliteTable('applications', {
@@ -44,6 +59,11 @@ export const applications = sqliteTable('applications', {
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).$onUpdate(() => sql`(strftime('%s', 'now'))`),
   pdfGeneratedAt: integer('pdf_generated_at', { mode: 'timestamp' }),
+});
+
+export const applications_to_contacts = sqliteTable('applications_to_contacts', {
+  applicationId: integer('application_id').notNull().references(() => applications.id),
+  contactId: integer('contact_id').notNull().references(() => contacts.id),
 });
 
 export const applicationHistories = sqliteTable('application_histories', {
@@ -61,6 +81,18 @@ export const applicationsRelations = relations(applications, ({ one, many }) => 
   }),
   interviews: many(interviews),
   histories: many(applicationHistories),
+  contacts: many(applications_to_contacts),
+}));
+
+export const applicationsToContactsRelations = relations(applications_to_contacts, ({ one }) => ({
+  application: one(applications, {
+    fields: [applications_to_contacts.applicationId],
+    references: [applications.id],
+  }),
+  contact: one(contacts, {
+    fields: [applications_to_contacts.contactId],
+    references: [contacts.id],
+  }),
 }));
 
 export const applicationHistoriesRelations = relations(applicationHistories, ({ one }) => ({

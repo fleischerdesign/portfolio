@@ -1,21 +1,6 @@
 import { z } from 'zod';
-
-export const addressBaseSchema = z.object({
-  name: z.string().optional().nullable(),
-  contactName: z.string().optional().nullable(),
-  contactPosition: z.string().optional().nullable(),
-  contactEmail: z.string().optional().nullable(),
-  contactPhone: z.string().optional().nullable(),
-  street: z.string(),
-  houseNumber: z.string(),
-  zipcode: z.number().int().positive(),
-  city: z.string(),
-});
-
-export const companyBaseSchema = z.object({
-  name: z.string(),
-  address: addressBaseSchema.optional(),
-});
+import { companyResponseSchema, type CompanyResponse } from './company.schema';
+import { contactBaseSchema, type Contact } from './contact.schema';
 
 export const interviewBaseSchema = z.object({
   date: z.string().datetime(),
@@ -35,27 +20,41 @@ export const applicationBaseSchema = z.object({
   title: z.string(),
   subtitle: z.string().optional().nullable(),
   url: z.string().url().optional().nullable(),
+  companyId: z.number(), // Reference to company
+  contactIds: z.array(z.number()).optional().default([]), // References to contacts
   interviews: z.array(interviewBaseSchema).optional().default([]),
   notes: z.array(z.string()).optional().default([]),
   body: z.string().optional().nullable(),
-  company: companyBaseSchema,
   createdAt: z.string().datetime().optional(),
   updatedAt: z.string().datetime().optional(),
   pdfGeneratedAt: z.string().datetime().optional().nullable(),
 });
 
-export const applicationCreateSchema = applicationBaseSchema.pick({
-  slug: true,
-  title: true,
-  subtitle: true,
-  url: true,
-  interviews: true,
-  company: true,
-  notes: true,
-  body: true,
+export const applicationCreateSchema = applicationBaseSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  pdfGeneratedAt: true,
+}).extend({
+  companyName: z.string(), // For creating a new company on the fly
+  companyAddress: z.object({
+    street: z.string(),
+    houseNumber: z.string(),
+    zipcode: z.number().int().positive(),
+    city: z.string(),
+  }).optional(),
 });
 
-export const applicationUpdateSchema = applicationCreateSchema.partial();
+export const applicationUpdateSchema = applicationBaseSchema.partial().extend({
+  companyName: z.string().optional(),
+  companyAddress: z.object({
+    street: z.string(),
+    houseNumber: z.string(),
+    zipcode: z.number().int().positive(),
+    city: z.string(),
+  }).partial().optional(),
+});
+
 
 export const applicationHistoryCreateSchema = applicationHistoryBaseSchema.pick({
   status: true,
@@ -75,10 +74,10 @@ export const applicationHistoryUpdateSchema = applicationHistoryCreateSchema.par
 export const applicationResponseSchema = applicationBaseSchema.extend({
   currentStatus: z.enum(['draft', 'applied', 'interview', 'offer', 'rejected', 'withdrawn']),
   histories: z.array(applicationHistoryBaseSchema),
+  company: companyResponseSchema, // Full company object
+  contacts: z.array(contactBaseSchema), // Full contact objects
 });
 
-export type AddressPayload = z.infer<typeof addressBaseSchema>;
-export type CompanyPayload = z.infer<typeof companyBaseSchema>;
 export type InterviewPayload = z.infer<typeof interviewBaseSchema>;
 export type ApplicationHistoryPayload = z.infer<typeof applicationHistoryBaseSchema>;
 export type ApplicationPayload = z.infer<typeof applicationBaseSchema>;

@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { applicationHistoryBaseSchema } from '#shared/schemas/application.schema'; // For availableStatuses
+import { applicationHistoryBaseSchema, type ApplicationResponsePayload } from '#shared/schemas/application.schema'; // For availableStatuses
+import ApplicationStats from '~/components/application/Stats.vue';
 
 definePageMeta({
   middleware: 'authorize',
   ability: isAdmin
 });
 
-const { data, pending: _pending, error: _error } = await useFetch('/api/applications');
+const { data, pending: _pending, error: _error } = await useFetch<{ applications: ApplicationResponsePayload[] }>('/api/applications');
 const applications = ref(data.value?.applications ?? []);
 
 const { locale } = useI18n();
@@ -19,7 +20,7 @@ const statusFilter = ref('all'); // Can be 'all' for all, or a specific status
 const availableStatuses = ['all', ...applicationHistoryBaseSchema.shape.status.options];
 
 const filteredApplications = computed(() => {
-  let result = applications.value;
+  let result = [...applications.value];
 
   // Apply search term
   if (searchTerm.value) {
@@ -65,9 +66,11 @@ useSeoMeta({
 
 <template>
   <div class="container mx-auto max-w-screen-xl py-16">
-    <div class="mb-24">
+    <div class="mb-24 space-y-8">
       <UiSectionHeader :level="1" title="Bewerbungsübersicht" subtitle="Eine Liste aller erstellten und versendeten Bewerbungen." />
       
+      <ApplicationStats :applications="filteredApplications" />
+
       <div class="mt-4 flex flex-col gap-4 md:flex-row md:items-center">
         <UiInput id="search-applications" v-model="searchTerm" label="Suchen" class="w-full md:flex-grow" />
         <div class="flex flex-col gap-4 md:flex-shrink-0 md:flex-row md:items-center">

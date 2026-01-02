@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { ApplicationCreatePayload } from '#shared/schemas/application.schema';
+import type { CompanyResponse, Address } from '#shared/schemas/company.schema';
+import type { Contact } from '#shared/schemas/contact.schema';
 
 definePageMeta({
   middleware: 'authorize',
@@ -10,29 +12,47 @@ const router = useRouter();
 const localePath = useLocalePath();
 const isLoading = ref(false);
 
-const form = ref<ApplicationCreatePayload>({
+// Refs for Companies and Contacts
+const allCompanies = ref<CompanyResponse[]>([]);
+const allContacts = ref<Contact[]>([]);
+
+const selectedCompany = ref<CompanyResponse | undefined>(undefined);
+const selectedContactIds = ref<number[]>([]);
+
+// Refs for new company/address fields
+const newCompanyName = ref('');
+const newCompanyStreet = ref('');
+const newCompanyHouseNumber = ref('');
+const newCompanyZipcode = ref<number | undefined>(undefined);
+const constNewCompanyCity = ref(''); // Renamed to avoid conflict
+const showNewCompanyForm = ref(false);
+
+onMounted(async () => {
+  allCompanies.value = await $fetch<CompanyResponse[]>('/api/companies');
+  allContacts.value = await $fetch<Contact[]>('/api/contacts');
+});
+
+const form = ref<Omit<ApplicationCreatePayload, 'companyName' | 'companyAddress' | 'contactIds' | 'companyId'> & { companyId?: number, contactIds?: number[] }>({
   title: '',
   subtitle: '',
   slug: '',
   url: '',
-  company: {
-    name: '',
-    address: {
-      street: '',
-      houseNumber: '',
-      zipcode: undefined,
-      city: '',
-    }
-  },
   body: '',
   notes: [],
   interviews: [],
+  companyId: undefined, // Will be set by selection or new company creation
+  contactIds: [],
+});
+
+const slugSource = computed(() => {
+  const companyPart = showNewCompanyForm.value ? newCompanyName.value : (selectedCompany.value?.name || '');
+  return `${companyPart} ${form.value.title}`;
 });
 
 const autoSlug = ref(true);
-watch(() => [form.value.company.name, form.value.title], ([companyName, title]) => {
+watch(slugSource, (newSource) => {
   if (autoSlug.value) {
-    form.value.slug = slugify(`${companyName} ${title}`);
+    form.value.slug = slugify(newSource);
   }
 });
 
@@ -43,22 +63,29 @@ function manualSlugInput() {
 async function createApplication() {
   isLoading.value = true;
   try {
-    const payload = JSON.parse(JSON.stringify(form.value));
+    const payload: ApplicationCreatePayload = {
+      ...form.value,
+      contactIds: selectedContactIds.value,
+      companyId: selectedCompany.value?.id,
+    };
 
-    // Ensure zipcode is a number if address is provided
-    if (payload.company.address && payload.company.address.zipcode) {
-      const parsedZip = parseInt(payload.company.address.zipcode, 10);
-      if (!isNaN(parsedZip)) {
-        payload.company.address.zipcode = parsedZip;
-      } else {
-        // If parsing fails, it's better to nullify it to avoid validation errors
-        payload.company.address.zipcode = undefined; 
+    if (showNewCompanyForm.value) {
+      payload.companyName = newCompanyName.value;
+      payload.companyId = undefined; // Ensure new company is created
+      if(newCompanyStreet.value && constNewCompanyCity.value && newCompanyZipcode.value)
+      {
+        payload.companyAddress = {
+          street: newCompanyStreet.value,
+          houseNumber: newCompanyHouseNumber.value,
+          zipcode: newCompanyZipcode.value,
+          city: constNewCompanyCity.value,
+        };
       }
-    }
-
-    // Clean up address if essential fields are missing
-    if (payload.company.address && (!payload.company.address.street || !payload.company.address.city)) {
-      payload.company.address = undefined;
+    } else if (!selectedCompany.value) {
+      // Handle error: no company selected or created
+      console.error("No company selected or created.");
+      isLoading.value = false;
+      return;
     }
 
     const result = await useRequestFetch()('/api/applications', {
@@ -104,14 +131,70 @@ async function createApplication() {
         <UiCard>
           <UiCardContainer class="flex h-full flex-col gap-4">
             <h3 class="text-2xl font-medium">Unternehmen</h3>
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <UiInput id="company-name" v-model="form.company.name" label="Firmenname" required />
-              <div />
-              <UiInput id="company-street" v-model="form.company.address.street" label="Straße" />
-              <UiInput id="company-housenumber" v-model="form.company.address.houseNumber" label="Hausnummer" />
-              <UiInput id="company-zipcode" v-model="form.company.address.zipcode" type="number" label="PLZ" />
-              <UiInput id="company-city" v-model="form.company.address.city" label="Stadt" />
+            <div class="flex items-center gap-2">
+              <UiSelect
+                id="company-select"
+                v-model="selectedCompany"
+                :options="allCompanies"
+                label="Bestehende Firma auswählen"
+                by="id"
+                class="w-full"
+                :disabled="showNewCompanyForm"
+              >
+                <template #display="{ option }">
+                  {{ option.name }}
+                </template>
+                <template #option="{ option }">
+                  {{ option.name }}
+                </template>
+              </UiSelect>
+              <UiButton variant="outline" @click="showNewCompanyForm = !showNewCompanyForm">
+                {{ showNewCompanyForm ? 'Bestehende wählen' : 'Neue Firma' }}
+              </UiButton>
             </div>
+
+            <div v-if="showNewCompanyForm" class="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <UiInput id="new-company-name" v-model="newCompanyName" label="Firmenname" required />
+              <div />
+              <UiInput id="new-company-street" v-model="newCompanyStreet" label="Straße" />
+              <UiInput id="new-company-housenumber" v-model="newCompanyHouseNumber" label="Hausnummer" />
+              <UiInput id="new-company-zipcode" v-model="newCompanyZipcode" type="number" label="PLZ" />
+              <UiInput id="new-company-city" v-model="constNewCompanyCity" label="Stadt" />
+            </div>
+            <p v-else-if="selectedCompany" class="text-neutral-500">
+              Ausgewählte Firma: {{ selectedCompany.name }}
+            </p>
+            <p v-else class="text-neutral-500">Bitte Firma auswählen oder neue anlegen.</p>
+          </UiCardContainer>
+        </UiCard>
+
+        <UiCard>
+          <UiCardContainer class="flex h-full flex-col gap-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-2xl font-medium">Ansprechpartner</h3>
+              <UiButton size="sm" variant="ghost">
+                <Icon name="heroicons:plus" class="h-5 w-5" />
+                Neuer Kontakt
+              </UiButton>
+            </div>
+            <UiSelect
+              id="contact-select"
+              v-model="selectedContactIds"
+              :options="allContacts"
+              label="Bestehende Kontakte auswählen"
+              value-key="id"
+              text-key="name"
+              multiple
+            >
+              <template #display="{ option }">
+                {{ option.name }}
+                <span v-if="option.company && option.company.name">({{ option.company.name }})</span>
+              </template>
+              <template #option="{ option }">
+                {{ option.name }}
+                <span v-if="option.company && option.company.name" class="text-sm text-neutral-500">({{ option.company.name }})</span>
+              </template>
+            </UiSelect>
           </UiCardContainer>
         </UiCard>
 
