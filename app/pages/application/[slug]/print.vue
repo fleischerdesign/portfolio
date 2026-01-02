@@ -117,6 +117,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
         <p class="mt-4">
           Philipp Fleischer
         </p>
+                <NuxtImg src="img/signature.png" :alt="Unterschrift" height="80"/>
       </div>
       <ResumeFooter :current-page="1" :total-pages="3" class="absolute bottom-10 left-20 right-20" />
     </div>
