@@ -17,7 +17,7 @@ const allCompanies = ref<CompanyResponse[]>([]);
 const allContacts = ref<Contact[]>([]);
 
 const selectedCompany = ref<CompanyResponse | undefined>(undefined);
-const selectedContactIds = ref<number[]>([]);
+const selectedContacts = ref<Contact[]>([]);
 
 // Refs for new company/address fields
 const newCompanyName = ref('');
@@ -26,6 +26,9 @@ const newCompanyHouseNumber = ref('');
 const newCompanyZipcode = ref<number | undefined>(undefined);
 const constNewCompanyCity = ref(''); // Renamed to avoid conflict
 const showNewCompanyForm = ref(false);
+
+const showContactFormModal = ref(false);
+const companyIdForNewContact = ref<number | undefined>(undefined);
 
 onMounted(async () => {
   allCompanies.value = await $fetch<CompanyResponse[]>('/api/companies');
@@ -65,7 +68,7 @@ async function createApplication() {
   try {
     const payload: ApplicationCreatePayload = {
       ...form.value,
-      contactIds: selectedContactIds.value,
+      contactIds: selectedContacts.value.map(c => c.id),
       companyId: selectedCompany.value?.id,
     };
 
@@ -106,6 +109,21 @@ async function createApplication() {
   } finally {
     isLoading.value = false;
   }
+}
+
+function handleCreateContactRequest() {
+  companyIdForNewContact.value = selectedCompany.value?.id;
+  showContactFormModal.value = true;
+}
+
+function handleContactCreated(newContact: Contact) {
+  allContacts.value.push(newContact);
+  selectedContacts.value.push(newContact);
+  showContactFormModal.value = false;
+}
+
+function handleCancelContactForm() {
+  showContactFormModal.value = false;
 }
 </script>
 
@@ -170,21 +188,15 @@ async function createApplication() {
 
         <UiCard>
           <UiCardContainer class="flex h-full flex-col gap-4">
-            <div class="flex items-center justify-between">
-              <h3 class="text-2xl font-medium">Ansprechpartner</h3>
-              <UiButton size="sm" variant="ghost">
-                <Icon name="heroicons:plus" class="h-5 w-5" />
-                Neuer Kontakt
-              </UiButton>
-            </div>
             <UiSelect
               id="contact-select"
-              v-model="selectedContactIds"
+              v-model="selectedContacts"
               :options="allContacts"
               label="Bestehende Kontakte auswählen"
-              value-key="id"
-              text-key="name"
+              by="id"
               multiple
+              creatable
+              @create="handleCreateContactRequest"
             >
               <template #display="{ option }">
                 {{ option.name }}
@@ -227,5 +239,17 @@ async function createApplication() {
         </div>
       </div>
     </div>
+
+    <!-- Modals -->
+    <UiModal v-model="showContactFormModal">
+      <template #header><h3 class="text-xl font-semibold">Neuen Kontakt erstellen</h3></template>
+      <template #body>
+        <ApplicationContactForm
+          :company-id="companyIdForNewContact"
+          @success="handleContactCreated"
+          @cancel="handleCancelContactForm"
+        />
+      </template>
+    </UiModal>
   </div>
 </template>

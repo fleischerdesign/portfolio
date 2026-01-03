@@ -1,19 +1,23 @@
 <script setup lang="ts" generic="T extends Record<string, any> | string">
 const props = withDefaults(defineProps<{
   id: string;
-  modelValue: T | null | undefined;
+  modelValue: T | T[] | null | undefined;
   options: readonly T[];
   label: string;
   by?: keyof T;
   error?: string;
   hasError?: boolean;
+  creatable?: boolean;
+  multiple?: boolean;
 }>(), {
   by: undefined,
   error: '',
   hasError: false,
+  creatable: false,
+  multiple: false,
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'create']);
 
 const rootEl = ref<HTMLElement | null>(null);
 const buttonEl = ref<HTMLButtonElement | null>(null);
@@ -21,6 +25,9 @@ const hiddenInputEl = ref<HTMLInputElement | null>(null);
 const isOpen = ref(false);
 
 const hasValue = computed(() => {
+  if (Array.isArray(props.modelValue)) {
+    return props.modelValue.length > 0;
+  }
   if (props.modelValue === null || props.modelValue === undefined) return false;
   if (typeof props.modelValue === 'string') return props.modelValue !== '';
   if (typeof props.modelValue === 'object') return Object.keys(props.modelValue).length > 0;
@@ -37,14 +44,38 @@ function areEqual(a: T, b: T) {
   return a?.[props.by] === b?.[props.by];
 }
 
-const selectedOption = computed(() =>
-  props.options.find(opt => areEqual(opt, props.modelValue as T))
-);
+const selectedOption = computed(() => {
+  if (props.multiple) return undefined;
+  return props.options.find(opt => areEqual(opt, props.modelValue as T));
+});
+
+const selectedOptions = computed(() => {
+  if (!props.multiple || !Array.isArray(props.modelValue)) return [];
+  return props.modelValue.map(val => props.options.find(opt => areEqual(opt, val))).filter(Boolean) as T[];
+});
 
 function selectOption(option: T) {
-  emit('update:modelValue', option);
-  isOpen.value = false;
+  if (props.multiple) {
+    const currentVal = (props.modelValue as T[] | undefined) || [];
+    const index = currentVal.findIndex(item => areEqual(item, option));
 
+    if (index > -1) {
+      const newVal = [...currentVal];
+      newVal.splice(index, 1);
+      emit('update:modelValue', newVal);
+    } else {
+      emit('update:modelValue', [...currentVal, option]);
+    }
+  } else {
+    emit('update:modelValue', option);
+    isOpen.value = false;
+    buttonEl.value?.focus();
+  }
+}
+
+function handleCreate() {
+  emit('create');
+  isOpen.value = false;
   buttonEl.value?.focus();
 }
 
@@ -65,12 +96,6 @@ function handleKeydown(event: KeyboardEvent) {
   } else if (event.key === 'ArrowDown' && !isOpen.value) {
     event.preventDefault();
     isOpen.value = true;
-  } else if (event.key === 'ArrowDown' && isOpen.value) {
-    event.preventDefault();
-
-  } else if (event.key === 'ArrowUp' && isOpen.value) {
-    event.preventDefault();
-
   }
 }
 
@@ -96,7 +121,6 @@ const selectButtonClasses = useCva(
 
 <template>
   <div ref="rootEl" class="group relative" :class="{ 'has-error': hasError }">
-
     <input
       :id="`${id}-hidden`"
       ref="hiddenInputEl"
@@ -108,7 +132,6 @@ const selectButtonClasses = useCva(
       readonly
     />
 
-
     <button
       :id="id"
       ref="buttonEl"
@@ -117,19 +140,24 @@ const selectButtonClasses = useCva(
       :aria-expanded="isOpen"
       :aria-haspopup="true"
       :aria-labelledby="`${id}-label`"
-      @click="toggleOpen" @keydown="handleKeydown"
+      @click="toggleOpen"
+      @keydown="handleKeydown"
     >
-      <div class="min-h-[1.5rem]">
-        <slot
-          v-if="hasValue && selectedOption"
-          name="display"
-          :option="selectedOption"
-        >
-          <span>{{ selectedOption }}</span>
-        </slot>
+      <div class="flex min-h-[1.5rem] flex-wrap items-center gap-2">
+        <template v-if="hasValue">
+          <template v-if="multiple && selectedOptions.length > 0">
+            <slot v-for="opt in selectedOptions" name="display" :option="opt">
+              <UiTag size="sm">{{ opt }}</UiTag>
+            </slot>
+          </template>
+          <template v-else-if="!multiple && selectedOption">
+            <slot name="display" :option="selectedOption">
+              <span>{{ selectedOption }}</span>
+            </slot>
+          </template>
+        </template>
       </div>
     </button>
-
 
     <label
       :id="`${id}-label`"
@@ -138,7 +166,6 @@ const selectButtonClasses = useCva(
     >
       {{ label }}
     </label>
-
 
     <Transition
       enter-active-class="transition duration-100 ease-out"
@@ -155,15 +182,24 @@ const selectButtonClasses = useCva(
         :aria-labelledby="`${id}-label`"
       >
         <ul class="max-h-60 overflow-auto py-1">
+          <li v-if="creatable" class="cursor-pointer px-4 py-2.5 text-secondary-500 transition hover:bg-neutral-100 dark:hover:bg-neutral-700" @click="handleCreate">
+            <slot name="create">
+              <span class="flex items-center gap-2">
+                <Icon name="heroicons:plus" />
+                Neuen Eintrag erstellen
+              </span>
+            </slot>
+          </li>
           <li
             v-for="(option, index) in options"
             :key="index"
             class="cursor-pointer px-4 py-2.5 transition hover:bg-neutral-100 dark:hover:bg-neutral-700"
             :class="{
-              'bg-secondary-50 dark:bg-secondary-900/20': selectedOption && areEqual(option, selectedOption)
+              'bg-secondary-50 dark:bg-secondary-900/20': !multiple && selectedOption && areEqual(option, selectedOption),
+              'bg-blue-50 dark:bg-blue-900/20': multiple && Array.isArray(modelValue) && modelValue.some(v => areEqual(v, option))
             }"
             role="option"
-            :aria-selected="selectedOption && areEqual(option, selectedOption)"
+            :aria-selected="!multiple && selectedOption && areEqual(option, selectedOption)"
             @click="selectOption(option)"
           >
             <slot name="option" :option="option">

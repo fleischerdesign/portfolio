@@ -34,12 +34,10 @@ const formatForDateTimeLocal = (isoString: string | null | undefined): string =>
 const isLoading = ref(false)
 
 const isEditing = ref(false)
-// Use a more specific type for editableApplication to include companyId and contactIds
 interface EditableApplication extends Partial<ApplicationUpdatePayload> {
   id: number;
   histories: (ApplicationHistoryPayload & { _deleted?: boolean })[];
   companyId: number;
-  selectedContactIds: number[];
   // Store full company/contacts for display during editing
   selectedCompany?: CompanyResponse;
   selectedContacts?: Contact[];
@@ -66,6 +64,9 @@ const showDeleteHistoryModal = ref(false);
 const isDeletingHistory = ref(false);
 const deletableHistoryEntry = ref<TimelineItem | null>(null);
 
+const showContactFormModal = ref(false);
+const companyIdForNewContact = ref<number | undefined>(undefined);
+const nameForNewContact = ref<string | undefined>(undefined);
 
 async function startEditing() {
   if (!application.value) return;
@@ -80,7 +81,6 @@ async function startEditing() {
   editableApplication.value = {
     ...JSON.parse(JSON.stringify(application.value)), // Deep copy
     companyId: application.value.company.id,
-    selectedContactIds: application.value.contacts.map(c => c.id),
     selectedCompany: allCompanies.value.find(c => c.id === application.value.company.id), // Find the object from the fetched list
     selectedContacts: application.value.contacts,
   };
@@ -143,7 +143,7 @@ async function updateApplication() {
       body: editableApplication.value.body,
       notes: editableApplication.value.notes,
       companyId: editableApplication.value.selectedCompany?.id,
-      contactIds: editableApplication.value.selectedContactIds,
+      contactIds: editableApplication.value.selectedContacts?.map(c => c.id) || [],
     };
 
     await useRequestFetch()(`/api/applications/${slug}`, { method: 'PUT', body: payload });
@@ -158,6 +158,24 @@ async function updateApplication() {
   } finally {
     isLoading.value = false;
   }
+}
+
+function handleCreateContactRequest(name?: string) {
+  companyIdForNewContact.value = editableApplication.value?.selectedCompany?.id;
+  nameForNewContact.value = name;
+  showContactFormModal.value = true;
+}
+
+function handleContactCreated(newContact: Contact) {
+  allContacts.value.push(newContact);
+  if (editableApplication.value) {
+    editableApplication.value.selectedContacts?.push(newContact);
+  }
+  showContactFormModal.value = false;
+}
+
+function handleCancelContactForm() {
+  showContactFormModal.value = false;
 }
 
 function addHistory() {
@@ -420,13 +438,8 @@ const notesAsText = computed({
           <!-- Contacts Card -->
           <UiCard class="md:col-span-1">
             <UiCardContainer class="flex h-full flex-col gap-4">
-              <div class="flex items-center justify-between">
-                <h3 class="text-2xl font-medium">Ansprechpartner</h3>
-                <UiButton v-if="isEditing" size="sm" variant="ghost">
-                  <Icon name="heroicons:plus" class="h-5 w-5" />
-                  Hinzufügen
-                </UiButton>
-              </div>
+              <h3 class="text-2xl font-medium">Ansprechpartner</h3>
+              
               <div v-if="!isEditing && application.contacts && application.contacts.length > 0" class="grid grid-cols-1 gap-4">
                 <div v-for="contact in application.contacts" :key="contact.id">
                   <p class="font-bold">{{ contact.name }}</p>
@@ -438,12 +451,13 @@ const notesAsText = computed({
               <div v-else-if="isEditing && editableApplication" class="grid grid-cols-1 gap-4">
                 <UiSelect
                   id="contact-select"
-                  v-model="editableApplication.selectedContactIds"
+                  v-model="editableApplication.selectedContacts"
                   :options="allContacts"
                   label="Kontakte auswählen"
-                  value-key="id"
-                  text-key="name"
+                  by="id"
                   multiple
+                  creatable
+                  @create="handleCreateContactRequest"
                 >
                   <template #display="{ option }">
                     {{ option.name }}
@@ -668,6 +682,17 @@ const notesAsText = computed({
       </template>
     </UiModal>
 
+    <UiModal v-model="showContactFormModal">
+      <template #header><h3 class="text-xl font-semibold">Neuen Kontakt erstellen</h3></template>
+      <template #body>
+        <ApplicationContactForm
+          :company-id="companyIdForNewContact"
+          :name="nameForNewContact"
+          @success="handleContactCreated"
+          @cancel="handleCancelContactForm"
+        />
+      </template>
+    </UiModal>
   </div>
   <div v-else class="container mx-auto max-w-screen-xl py-16">
     <p>Lade Bewerbungsdaten...</p>
