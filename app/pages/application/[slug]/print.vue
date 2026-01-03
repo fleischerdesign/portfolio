@@ -47,23 +47,17 @@ const printDate = computed(() => {
 });
 
 
+const { getSalutation, formatName } = useSalutation();
+
 const salutation = computed(() => {
-  const mainContact = application.value?.contacts?.[0];
-  if (mainContact) {
-    const lastName = mainContact.name.split(' ').pop();
-    switch (mainContact.salutation) {
-      case 'male':
-        return `Sehr geehrter Herr ${lastName}`;
-      case 'female':
-        return `Sehr geehrte Frau ${lastName}`;
-      case 'diverse':
-      case 'neutral':
-      case null:
-      default:
-        return 'Sehr geehrte Damen und Herren';
-    }
+  return getSalutation(application.value?.contacts, { format: 'lastname', multiple: 'individual' });
+});
+
+const formattedContactNames = computed(() => {
+  if (!application.value?.contacts || application.value.contacts.length === 0) {
+    return '';
   }
-  return 'Sehr geehrte Damen und Herren';
+  return application.value.contacts.map(c => formatName(c, 'full')).join(', ');
 });
 
 const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`, () =>
@@ -94,6 +88,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
       <div v-if="application && application.company" class="mt-4 grid grid-cols-3 gap-8">
         <div class="col-span-2">
           <p>{{ application.company.name }}</p>
+          <p v-if="formattedContactNames">{{ formattedContactNames }}</p>
           <div v-if="application.company.address">
             <p>{{ application.company.address.street }} {{ application.company.address.houseNumber }}</p>
             <p>{{ application.company.address.zipcode }} {{ application.company.address.city }}</p>
