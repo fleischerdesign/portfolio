@@ -168,9 +168,16 @@ function handleCreateContactRequest(name?: string) {
 }
 
 function handleContactCreated(newContact: Contact) {
-  allContacts.value.push(newContact);
+  // Find the full company object from the already fetched list to enrich the contact
+  const company = allCompanies.value.find(c => c.id === newContact.companyId);
+  const enrichedContact = {
+    ...newContact,
+    company: company || null,
+  };
+
+  allContacts.value.push(enrichedContact);
   if (editableApplication.value) {
-    editableApplication.value.selectedContacts?.push(newContact);
+    editableApplication.value.selectedContacts?.push(enrichedContact);
   }
   showContactFormModal.value = false;
 }

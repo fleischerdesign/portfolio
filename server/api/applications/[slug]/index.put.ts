@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, and, inArray } from 'drizzle-orm';
 import { applications, companies, addresses, applications_to_contacts } from '~~/server/db/schema';
 import { applicationUpdateSchema, type ApplicationUpdatePayload } from '#shared/schemas/application.schema';
 
@@ -58,13 +58,33 @@ export default defineEventHandler(async (event) => {
 
     // Sync contacts
     if (updateData.contactIds) {
-      await tx.delete(applications_to_contacts).where(eq(applications_to_contacts.applicationId, existingApplication.id));
-      if (updateData.contactIds.length > 0) {
-        const contactLinks = updateData.contactIds.map(contactId => ({
+      // Efficiently sync contacts
+      const currentContactLinks = await tx.query.applications_to_contacts.findMany({
+        where: eq(applications_to_contacts.applicationId, existingApplication.id),
+      });
+      const currentContactIds = currentContactLinks.map(c => c.contactId);
+      const newContactIds = updateData.contactIds;
+
+      const idsToAdd = newContactIds.filter(id => !currentContactIds.includes(id));
+      const idsToRemove = currentContactIds.filter(id => !newContactIds.includes(id));
+
+      // Add new contacts
+      if (idsToAdd.length > 0) {
+        const newLinks = idsToAdd.map(contactId => ({
           applicationId: existingApplication.id,
           contactId,
         }));
-        await tx.insert(applications_to_contacts).values(contactLinks);
+        await tx.insert(applications_to_contacts).values(newLinks);
+      }
+
+      // Remove old contacts
+      if (idsToRemove.length > 0) {
+        await tx.delete(applications_to_contacts).where(
+          and(
+            eq(applications_to_contacts.applicationId, existingApplication.id),
+            inArray(applications_to_contacts.contactId, idsToRemove)
+          )
+        );
       }
     }
 

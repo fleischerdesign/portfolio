@@ -1,6 +1,6 @@
 import { db } from '../../utils/db';
 import { addresses, companies, applications, applicationHistories, applications_to_contacts } from '../../db/schema';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, inArray } from 'drizzle-orm';
 import { applicationCreateSchema } from '../../../shared/schemas/application.schema';
 import type { ApplicationCreatePayload } from '../../../shared/schemas/application.schema';
 
@@ -87,13 +87,35 @@ export default defineEventHandler(async (event) => {
     }
     
     // Sync contacts
-    await tx.delete(applications_to_contacts).where(eq(applications_to_contacts.applicationId, currentApplicationId));
-    if (data.contactIds && data.contactIds.length > 0) {
-      const contactLinks = data.contactIds.map(contactId => ({
-        applicationId: currentApplicationId,
-        contactId,
-      }));
-      await tx.insert(applications_to_contacts).values(contactLinks);
+    if (data.contactIds) {
+      // Efficiently sync contacts
+      const currentContactLinks = await tx.query.applications_to_contacts.findMany({
+        where: eq(applications_to_contacts.applicationId, currentApplicationId),
+      });
+      const currentContactIds = currentContactLinks.map(c => c.contactId);
+      const newContactIds = data.contactIds;
+
+      const idsToAdd = newContactIds.filter(id => !currentContactIds.includes(id));
+      const idsToRemove = currentContactIds.filter(id => !newContactIds.includes(id));
+
+      // Add new contacts
+      if (idsToAdd.length > 0) {
+        const newLinks = idsToAdd.map(contactId => ({
+          applicationId: currentApplicationId,
+          contactId,
+        }));
+        await tx.insert(applications_to_contacts).values(newLinks);
+      }
+
+      // Remove old contacts
+      if (idsToRemove.length > 0) {
+        await tx.delete(applications_to_contacts).where(
+          and(
+            eq(applications_to_contacts.applicationId, currentApplicationId),
+            inArray(applications_to_contacts.contactId, idsToRemove)
+          )
+        );
+      }
     }
 
     // Removed interview syncing logic
