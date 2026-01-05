@@ -63,43 +63,17 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
     if (!editableApplication.value || !initialApplication.value) return;
     isLoading.value = true;
     try {
-      const originalHistories = initialApplication.value.histories;
-      const editedHistories = editableApplication.value.histories || [];
-
-      // --- History Sync Logic ---
-      const toDelete = editedHistories.filter(h => h._deleted && h.id! > 0);
-      for (const history of toDelete) {
-        await useRequestFetch()(`/api/applications/${slug.value}/histories/${history.id}`, { method: 'DELETE' });
-      }
-
-      const toCreate = editedHistories.filter(h => h.id! < 0);
-      for (const history of toCreate) {
-        const { id, _deleted, ...createData } = history;
-        await useRequestFetch()(`/api/applications/${slug.value}/histories`, {
-          method: 'POST',
-          body: createData,
+      // Clean up the histories array for submission.
+      const cleanHistories = editableApplication.value.histories
+        .filter(h => !h._deleted) // Remove items marked for deletion
+        .map(h => {
+          const { _deleted, ...rest } = h; // always remove the client-side _deleted flag
+          if (h.id && h.id < 0) { // New item, remove temporary negative ID
+            const { id, ...newRest } = rest;
+            return newRest;
+          }
+          return rest;
         });
-      }
-
-      const toUpdate = editedHistories.filter(edited => {
-        if (edited.id! < 0 || edited._deleted) return false;
-        const original = originalHistories.find(orig => orig.id === edited.id);
-        if (!original) return false;
-        // Check for changes in status, notes, scheduled_at, createdAt
-        return (
-          original.status !== edited.status ||
-          original.notes !== edited.notes ||
-          original.scheduled_at !== edited.scheduled_at || // Added scheduled_at check
-          new Date(original.createdAt!).getTime() !== new Date(edited.createdAt!).getTime()
-        );
-      });
-      for (const history of toUpdate) {
-        const { id, _deleted, ...updateData } = history;
-        await useRequestFetch()(`/api/applications/${slug.value}/histories/${id}`, {
-          method: 'PUT',
-          body: updateData as ApplicationHistoryUpdatePayload, // Correct type here
-        });
-      }
 
       // --- Main Application Payload ---
       const payload: ApplicationUpdatePayload = {
@@ -111,6 +85,7 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
         notes: editableApplication.value.notes,
         companyId: editableApplication.value.selectedCompany?.id,
         contactIds: editableApplication.value.selectedContacts?.map(c => c.id) || [],
+        histories: cleanHistories, // Send the full, clean array
       };
 
       await useRequestFetch()(`/api/applications/${slug.value}`, { method: 'PUT', body: payload });

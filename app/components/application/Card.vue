@@ -11,6 +11,7 @@ const props = defineProps({
 const emit = defineEmits(['deleted', 'refresh']);
 
 const { getStatusChipClasses, getStatusTextClasses, getFormattedLastActivityDate } = useApplicationUtils();
+const localePath = useLocalePath();
 
 const isMenuOpen = ref(false);
 const showDeleteModal = ref(false);
@@ -22,6 +23,37 @@ const handleClickOutside = (event: MouseEvent) => {
     isMenuOpen.value = false;
   }
 };
+
+async function shareApplication() {
+  const url = new URL(window.location.origin);
+  url.pathname = localePath({ path: `/application/${props.application.slug}` });
+  const shareData = {
+    title: `Bewerbung: ${props.application.title}`,
+    text: `Schau dir diese Bewerbung an: ${props.application.title} bei ${props.application.company.name}`,
+    url: url.toString(),
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+      console.log('Application shared successfully');
+    } else {
+      throw new Error('Web Share API not supported');
+    }
+  } catch (err) {
+    console.log('Could not share, falling back to clipboard. Reason:', err);
+    try {
+      await navigator.clipboard.writeText(shareData.url);
+      console.log('URL copied to clipboard');
+      // TODO: Show a toast here: "Link kopiert!"
+    } catch (clipErr) {
+      console.error('Failed to copy URL to clipboard', clipErr);
+      // TODO: Show a toast here: "Kopieren fehlgeschlagen"
+    }
+  } finally {
+    isMenuOpen.value = false;
+  }
+}
 
 async function deleteApplication() {
   isDeleting.value = true;
@@ -75,13 +107,13 @@ onUnmounted(() => {
             >
               <ul class="flex flex-col gap-1">
                 <li>
-                  <button class="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50">
+                  <NuxtLink :to="$localePath({ path: `/application/${application.slug}`, query: { edit: 'true' } })" class="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50">
                     <Icon name="mdi:pencil" class="h-5 w-5" />
                     <span>Bearbeiten</span>
-                  </button>
+                  </NuxtLink>
                 </li>
                 <li>
-                  <button class="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50">
+                  <button class="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50" @click="shareApplication">
                     <Icon name="mdi:share-variant" class="h-5 w-5" />
                     <span>Teilen</span>
                   </button>

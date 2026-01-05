@@ -1,5 +1,5 @@
 import { eq, and, inArray } from 'drizzle-orm';
-import { applications, companies, addresses, applications_to_contacts } from '~~/server/db/schema';
+import { applications, companies, addresses, applications_to_contacts, applicationHistories } from '~~/server/db/schema';
 import { applicationUpdateSchema, type ApplicationUpdatePayload } from '#shared/schemas/application.schema';
 
 export default defineEventHandler(async (event) => {
@@ -88,7 +88,48 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    const { companyName, companyAddress, contactIds, ...applicationData } = updateData;
+    // Sync histories if provided
+    if (updateData.histories) {
+      const incomingHistories = updateData.histories;
+      const existingHistories = await tx.query.applicationHistories.findMany({
+          where: eq(applicationHistories.applicationId, existingApplication.id),
+      });
+
+      const existingIds = existingHistories.map(h => h.id);
+      const incomingIds = incomingHistories.map(h => h.id).filter((id): id is number => id !== undefined);
+
+      // 1. Delete histories that are not in the incoming array
+      const idsToDelete = existingIds.filter(id => !incomingIds.includes(id));
+      if (idsToDelete.length > 0) {
+          await tx.delete(applicationHistories).where(inArray(applicationHistories.id, idsToDelete));
+      }
+
+      // 2. Update existing histories
+      const historiesToUpdate = incomingHistories.filter(h => h.id && existingIds.includes(h.id));
+      for (const history of historiesToUpdate) {
+          const { id, applicationId, createdAt, ...updatePayload } = history;
+          await tx.update(applicationHistories)
+              .set({
+                ...updatePayload,
+                scheduled_at: history.scheduled_at ? new Date(history.scheduled_at) : null,
+              })
+              .where(eq(applicationHistories.id, id!));
+      }
+
+      // 3. Insert new histories
+      const historiesToInsert = incomingHistories.filter(h => h.id === undefined || h.id === null);
+      if (historiesToInsert.length > 0) {
+          const newHistories = historiesToInsert.map(({id, ...h}) => ({
+              ...h,
+              applicationId: existingApplication.id,
+              createdAt: h.createdAt ? new Date(h.createdAt) : undefined,
+              scheduled_at: h.scheduled_at ? new Date(h.scheduled_at) : null,
+          }));
+          await tx.insert(applicationHistories).values(newHistories);
+      }
+    }
+
+    const { companyName, companyAddress, contactIds, histories, ...applicationData } = updateData;
 
     const [updatedApplication] = await tx.update(applications)
       .set({ ...applicationData, companyId: finalCompanyId })

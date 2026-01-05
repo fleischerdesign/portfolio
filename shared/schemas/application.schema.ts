@@ -49,6 +49,7 @@ export const applicationUpdateSchema = applicationBaseSchema.partial().extend({
     zipcode: z.number().int().positive(),
     city: z.string(),
   }).partial().optional(),
+  histories: z.array(applicationHistoryBaseSchema).optional(),
 });
 
 

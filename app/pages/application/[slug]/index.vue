@@ -102,6 +102,12 @@ interface TimelineItem {
   icon: string;
   _deleted?: boolean;
 }
+
+onMounted(() => {
+  if (route.query.edit === 'true') {
+    startEditing();
+  }
+});
 </script>
 
 <template>
@@ -393,7 +399,7 @@ interface TimelineItem {
       </template>
       <template #footer>
         <UiButton variant="secondary" @click="showAddHistoryModal = false">Abbrechen</UiButton>
-        <UiButton :is-loading="isAddingHistory" @click="addHistory">Speichern</UiButton>
+        <UiButton @click="addHistory">Speichern</UiButton>
       </template>
     </UiModal>
 
@@ -422,7 +428,7 @@ interface TimelineItem {
       </template>
       <template #footer>
         <UiButton variant="secondary" @click="showEditHistoryModal = false">Abbrechen</UiButton>
-        <UiButton :is-loading="isUpdatingHistory" @click="updateHistory">Speichern</UiButton>
+        <UiButton @click="updateHistory">Speichern</UiButton>
       </template>
     </UiModal>
 
@@ -436,7 +442,7 @@ interface TimelineItem {
       </template>
       <template #footer>
         <UiButton variant="secondary" @click="showDeleteHistoryModal = false">Abbrechen</UiButton>
-        <UiButton color="danger" :is-loading="isDeletingHistory" @click="deleteHistory">Löschen</UiButton>
+        <UiButton color="danger" @click="deleteHistory">Löschen</UiButton>
       </template>
     </UiModal>
 
