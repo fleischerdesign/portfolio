@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import { type ApplicationResponsePayload, type ApplicationUpdatePayload, type ApplicationHistoryPayload } from '#shared/schemas/application.schema';
+import type { ApplicationResponsePayload } from '#shared/schemas/application.schema';
 import type { CompanyResponse } from '#shared/schemas/company.schema';
-import type { Contact } from '#shared/schemas/contact.schema';
 
-// Composable Imports
-import { useApplicationEditor } from '~/composables/useApplicationEditor';
-import { useHistoryManager } from '~/composables/useHistoryManager';
 
-const { formatDate, getStatusChipClasses, getStatusTextClasses, getApplicationDate, getResponseDate, getLastActivityDate, getFormattedApplicationDate, getFormattedResponseDate, getFormattedLastActivityDate } = useApplicationUtils();
+const { getStatusChipClasses, getStatusTextClasses, getApplicationDate, getResponseDate, getLastActivityDate, getFormattedApplicationDate, getFormattedResponseDate, getFormattedLastActivityDate } = useApplicationUtils();
 const { renderMarkdown } = useMarkdown(); 
 
 definePageMeta({
@@ -18,7 +14,6 @@ definePageMeta({
 const route = useRoute();
 const { slug } = route.params as { slug: string };
 
-// Fetch initial application data
 const { data: application, error, refresh } = await useFetch<ApplicationResponsePayload>(`/api/applications/${slug}`);
 
 if (error.value || !application.value) {
@@ -34,7 +29,7 @@ const {
   allContacts,
   startEditing,
   cancelEditing,
-  saveApplication, // This is the main save function
+  saveApplication,
   isPdfOutdated,
   generatePdf,
   showContactFormModal,
@@ -63,14 +58,13 @@ const {
   deleteHistory,
   undoDeleteHistory,
   timelineItems,
-  availableStatuses, // From useHistoryManager
+  availableStatuses,
   getStatusTextClasses: getHistoryStatusTextClasses, // Alias to avoid conflict with useApplicationUtils
 } = useHistoryManager(
   computed(() => isEditing.value ? editableApplication.value : application.value),
   isEditing
-); // Pass the reactive source and editing flag
+);
 
-// Computed property for notesAsText (remains in component for now as it uses renderMarkdown)
 const notesAsText = computed({
   get: () => editableApplication.value?.notes?.join('\n') ?? '',
   set: (value: string) => {
@@ -82,6 +76,14 @@ const notesAsText = computed({
 
 const printUrl = computed(() => `/application/${route.params.slug}/print`);
 
+const showCompanyAddressModal = ref(false);
+
+async function handleAddressUpdateSuccess(updatedCompany: CompanyResponse) {
+  showCompanyAddressModal.value = false;
+  if (editableApplication.value) {
+    editableApplication.value.selectedCompany = updatedCompany;
+  }
+}
 useSeoMeta({
   title: () => application.value?.title || 'Bewerbung',
   ogTitle: () => application.value?.title || 'Bewerbung',
@@ -91,17 +93,6 @@ useSeoMeta({
   ogType: 'website',
   robots: 'noindex, nofollow',
 });
-
-// Define TimelineItem interface here (or import if shared)
-interface TimelineItem {
-  id: number;
-  type: 'history' | 'interview';
-  date: string;
-  title: string;
-  description: string;
-  icon: string;
-  _deleted?: boolean;
-}
 
 onMounted(() => {
   if (route.query.edit === 'true') {
@@ -190,9 +181,21 @@ onMounted(() => {
                   </template>
                 </UiSelect>
                 <div v-if="editableApplication.selectedCompany?.address" class="mt-4">
-                  <p>{{ editableApplication.selectedCompany.address.street }} {{ editableApplication.selectedCompany.address.houseNumber }}</p>
-                  <p>{{ editableApplication.selectedCompany.address.zipcode }} {{ editableApplication.selectedCompany.address.city }}</p>
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <p>{{ editableApplication.selectedCompany.address.street }} {{ editableApplication.selectedCompany.address.houseNumber }}</p>
+                      <p>{{ editableApplication.selectedCompany.address.zipcode }} {{ editableApplication.selectedCompany.address.city }}</p>
+                    </div>
+                    <UiButton size="sm" variant="ghost" class="!p-1 h-7 w-7" @click="showCompanyAddressModal = true">
+                      <Icon name="mdi:pencil" class="h-4 w-4" />
+                    </UiButton>
+                  </div>
                 </div>
+                 <div v-else class="mt-2">
+                    <UiButton size="sm" variant="ghost" @click="showCompanyAddressModal = true">
+                        Adresse hinzufügen
+                    </UiButton>
+                 </div>
               </div>
             </UiCardContainer>
           </UiCard>
@@ -454,6 +457,17 @@ onMounted(() => {
           :name="nameForNewContact"
           @success="handleContactCreated"
           @cancel="handleCancelContactForm"
+        />
+      </template>
+    </UiModal>
+
+    <UiModal v-if="editableApplication?.selectedCompany" v-model="showCompanyAddressModal">
+      <template #header><h3 class="text-xl font-semibold">Firmenadresse bearbeiten</h3></template>
+      <template #body>
+        <CompanyAddressForm
+          :company="editableApplication.selectedCompany"
+          @success="handleAddressUpdateSuccess"
+          @cancel="showCompanyAddressModal = false"
         />
       </template>
     </UiModal>
