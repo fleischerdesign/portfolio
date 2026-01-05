@@ -83,6 +83,13 @@ export const useApplicationUtils = () => {
     return date ? formatDate(date) : 'N/A';
   }
 
+  const formatForDateTimeLocal = (isoString: string | null | undefined): string => {
+    if (!isoString) return '';
+    const d = new Date(isoString);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0, 16);
+  };
+
   return {
     getStatusChipClasses,
     getStatusTextClasses,
@@ -92,6 +99,7 @@ export const useApplicationUtils = () => {
     getLastActivityDate,
     getFormattedApplicationDate,
     getFormattedResponseDate,
-    getFormattedLastActivityDate
+    getFormattedLastActivityDate,
+    formatForDateTimeLocal,
   }
 }

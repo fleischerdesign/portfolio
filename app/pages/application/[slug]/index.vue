@@ -1,289 +1,86 @@
 <script setup lang="ts">
-import { applicationHistoryBaseSchema, type ApplicationResponsePayload, type ApplicationHistoryPayload, type ApplicationHistoryCreatePayload, type ApplicationHistoryUpdatePayload, type ApplicationUpdatePayload } from '#shared/schemas/application.schema';
-import type { CompanyResponse, CompanyCreate } from '#shared/schemas/company.schema';
-import type { Contact, ContactCreate } from '#shared/schemas/contact.schema';
+import { type ApplicationResponsePayload, type ApplicationUpdatePayload, type ApplicationHistoryPayload } from '#shared/schemas/application.schema';
+import type { CompanyResponse } from '#shared/schemas/company.schema';
+import type { Contact } from '#shared/schemas/contact.schema';
+
+// Composable Imports
+import { useApplicationEditor } from '~/composables/useApplicationEditor';
+import { useHistoryManager } from '~/composables/useHistoryManager';
 
 const { formatDate, getStatusChipClasses, getStatusTextClasses, getApplicationDate, getResponseDate, getLastActivityDate, getFormattedApplicationDate, getFormattedResponseDate, getFormattedLastActivityDate } = useApplicationUtils();
 const { renderMarkdown } = useMarkdown(); 
-
-const availableStatuses = applicationHistoryBaseSchema.shape.status.options;
 
 definePageMeta({
   middleware: 'authorize',
   ability: isAdmin
 });
 
-const route = useRoute()
-const { slug } = route.params as { slug: string }
+const route = useRoute();
+const { slug } = route.params as { slug: string };
 
+// Fetch initial application data
 const { data: application, error, refresh } = await useFetch<ApplicationResponsePayload>(`/api/applications/${slug}`);
 
 if (error.value || !application.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Application not found', fatal: true })
+  throw createError({ statusCode: 404, statusMessage: 'Application not found', fatal: true });
 }
 
-const printUrl = computed(() => `/application/${route.params.slug}/print`)
+// Initialize Application Editor Composable
+const {
+  isEditing,
+  isLoading,
+  editableApplication,
+  allCompanies,
+  allContacts,
+  startEditing,
+  cancelEditing,
+  saveApplication, // This is the main save function
+  isPdfOutdated,
+  generatePdf,
+  showContactFormModal,
+  companyIdForNewContact,
+  nameForNewContact,
+  handleCreateContactRequest,
+  handleContactCreated,
+  handleCancelContactForm,
+} = useApplicationEditor(application, refresh, toRef(route.params as { slug: string }, 'slug')); // Pass application ref, refresh function, and slug ref
 
-const formatForDateTimeLocal = (isoString: string | null | undefined): string => {
-  if (!isoString) return '';
-  const d = new Date(isoString);
-  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-  return d.toISOString().slice(0, 16);
-};
+// Initialize History Manager Composable
+const {
+  showAddHistoryModal,
+  newHistoryStatus,
+  newHistoryNotes,
+  newHistoryScheduledAt,
+  newHistoryCreatedAt,
+  addHistory,
+  showEditHistoryModal,
+  editableHistoryEntry,
+  startEditHistory,
+  updateHistory,
+  showDeleteHistoryModal,
+  deletableHistoryEntry,
+  startDeleteHistory,
+  deleteHistory,
+  undoDeleteHistory,
+  timelineItems,
+  availableStatuses, // From useHistoryManager
+  getStatusTextClasses: getHistoryStatusTextClasses, // Alias to avoid conflict with useApplicationUtils
+} = useHistoryManager(
+  computed(() => isEditing.value ? editableApplication.value : application.value),
+  isEditing
+); // Pass the reactive source and editing flag
 
-const isLoading = ref(false)
-
-const isEditing = ref(false)
-interface EditableApplication extends Partial<ApplicationUpdatePayload> {
-  id: number;
-  histories: (ApplicationHistoryPayload & { _deleted?: boolean })[];
-  companyId: number;
-  // Store full company/contacts for display during editing
-  selectedCompany?: CompanyResponse;
-  selectedContacts?: Contact[];
-}
-
-const editableApplication = ref<EditableApplication | null>(null);
-
-const allCompanies = ref<CompanyResponse[]>([]);
-const allContacts = ref<Contact[]>([]);
-
-
-const showAddHistoryModal = ref(false);
-const newHistoryStatus = ref<ApplicationHistoryCreatePayload['status']>(application.value.currentStatus);
-const newHistoryNotes = ref<string | null>(null);
-const newHistoryScheduledAt = ref<string | null>(null);
-const newHistoryCreatedAt = ref<string>(formatForDateTimeLocal(new Date().toISOString()));
-const isAddingHistory = ref(false);
-
-const showEditHistoryModal = ref(false);
-const isUpdatingHistory = ref(false);
-type EditableHistoryEntry = Partial<ApplicationHistoryPayload> & { createdAt: string };
-const editableHistoryEntry = ref<EditableHistoryEntry | null>(null);
-
-const showDeleteHistoryModal = ref(false);
-const isDeletingHistory = ref(false);
-const deletableHistoryEntry = ref<TimelineItem | null>(null);
-
-const showContactFormModal = ref(false);
-const companyIdForNewContact = ref<number | undefined>(undefined);
-const nameForNewContact = ref<string | undefined>(undefined);
-
-async function startEditing() {
-  if (!application.value) return;
-
-  // Fetch all companies and contacts for selection
-  const companiesData = await $fetch<CompanyResponse[]>('/api/companies');
-  allCompanies.value = companiesData || [];
-
-  const contactsData = await $fetch<Contact[]>('/api/contacts');
-  allContacts.value = contactsData || [];
-
-  editableApplication.value = {
-    ...JSON.parse(JSON.stringify(application.value)), // Deep copy
-    companyId: application.value.company.id,
-    selectedCompany: allCompanies.value.find(c => c.id === application.value.company.id), // Find the object from the fetched list
-    selectedContacts: application.value.contacts,
-  };
-  isEditing.value = true
-}
-
-function cancelEditing() {
-  isEditing.value = false
-  editableApplication.value = null
-  allCompanies.value = [];
-  allContacts.value = [];
-}
-
-async function updateApplication() {
-  if (!editableApplication.value || !application.value) return;
-  isLoading.value = true;
-  try {
-    const originalHistories = application.value.histories;
-    const editedHistories = editableApplication.value.histories || [];
-
-    // Separate history updates/deletes/creates
-    const toDelete = editedHistories.filter(h => h._deleted && h.id! > 0);
-    for (const history of toDelete) {
-      await useRequestFetch()(`/api/applications/${slug}/histories/${history.id}`, { method: 'DELETE' });
+// Computed property for notesAsText (remains in component for now as it uses renderMarkdown)
+const notesAsText = computed({
+  get: () => editableApplication.value?.notes?.join('\n') ?? '',
+  set: (value: string) => {
+    if (editableApplication.value) {
+      editableApplication.value.notes = value.split('\n').filter(note => note.trim() !== '');
     }
-
-    const toCreate = editedHistories.filter(h => h.id! < 0);
-    for (const history of toCreate) {
-      const { id, _deleted, ...createData } = history;
-      await useRequestFetch()(`/api/applications/${slug}/histories`, {
-        method: 'POST',
-        body: createData,
-      });
-    }
-
-    const toUpdate = editedHistories.filter(edited => {
-      if (edited.id! < 0 || edited._deleted) return false;
-      const original = originalHistories.find(orig => orig.id === edited.id);
-      if (!original) return false;
-      return (
-        original.status !== edited.status ||
-        original.notes !== edited.notes ||
-        new Date(original.createdAt!).getTime() !== new Date(edited.createdAt!).getTime()
-      );
-    });
-    for (const history of toUpdate) {
-      const { id, _deleted, ...updateData } = history;
-      await useRequestFetch()(`/api/applications/${slug}/histories/${id}`, {
-        method: 'PUT',
-        body: updateData as ApplicationHistoryUpdatePayload,
-      });
-    }
-    
-    // Construct the payload for the application itself
-    const payload: ApplicationUpdatePayload = {
-      title: editableApplication.value.title,
-      subtitle: editableApplication.value.subtitle,
-      slug: editableApplication.value.slug,
-      url: editableApplication.value.url,
-      body: editableApplication.value.body,
-      notes: editableApplication.value.notes,
-      companyId: editableApplication.value.selectedCompany?.id,
-      contactIds: editableApplication.value.selectedContacts?.map(c => c.id) || [],
-    };
-
-    await useRequestFetch()(`/api/applications/${slug}`, { method: 'PUT', body: payload });
-
-    await refresh();
-    isEditing.value = false;
-    editableApplication.value = null;
-    allCompanies.value = [];
-    allContacts.value = [];
-  } catch (error) {
-    console.error('Failed to update application and its history', error);
-  } finally {
-    isLoading.value = false;
-  }
-}
-
-function handleCreateContactRequest(name?: string) {
-  companyIdForNewContact.value = editableApplication.value?.selectedCompany?.id;
-  nameForNewContact.value = name;
-  showContactFormModal.value = true;
-}
-
-function handleContactCreated(newContact: Contact) {
-  // Find the full company object from the already fetched list to enrich the contact
-  const company = allCompanies.value.find(c => c.id === newContact.companyId);
-  const enrichedContact = {
-    ...newContact,
-    company: company || null,
-  };
-
-  allContacts.value.push(enrichedContact);
-  if (editableApplication.value) {
-    editableApplication.value.selectedContacts?.push(enrichedContact);
-  }
-  showContactFormModal.value = false;
-}
-
-function handleCancelContactForm() {
-  showContactFormModal.value = false;
-}
-
-function addHistory() {
-  if (!newHistoryStatus.value || !editableApplication.value?.histories) return;
-  const newEntry: ApplicationHistoryPayload & { _deleted?: boolean } = {
-    id: Date.now() * -1,
-    status: newHistoryStatus.value,
-    notes: newHistoryNotes.value,
-    scheduled_at: newHistoryStatus.value === 'interview' && newHistoryScheduledAt.value ? new Date(newHistoryScheduledAt.value).toISOString() : undefined,
-    createdAt: new Date(newHistoryCreatedAt.value).toISOString(),
-    _deleted: false,
-  };
-  editableApplication.value.histories.push(newEntry);
-  editableApplication.value.histories.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime() || (b.id || 0) - (a.id || 0));
-  
-  newHistoryNotes.value = null;
-  newHistoryScheduledAt.value = null;
-  newHistoryCreatedAt.value = formatForDateTimeLocal(new Date().toISOString());
-  showAddHistoryModal.value = false;
-  if(application.value) newHistoryStatus.value = application.value.currentStatus;
-}
-
-function startEditHistory(item: TimelineItem) {
-  const entry = editableApplication.value?.histories.find(h => h.id === item.id);
-  if (entry) {
-    editableHistoryEntry.value = { 
-      ...entry, 
-      createdAt: formatForDateTimeLocal(entry.createdAt),
-      scheduled_at: entry.scheduled_at ? formatForDateTimeLocal(entry.scheduled_at) : null,
-    };
-    showEditHistoryModal.value = true;
-  }
-}
-
-function updateHistory() {
-  if (!editableHistoryEntry.value?.id || !editableApplication.value?.histories) return;
-  const index = editableApplication.value.histories.findIndex(h => h.id === editableHistoryEntry.value!.id);
-  if (index !== -1) {
-    const isInterview = editableHistoryEntry.value.status === 'interview';
-    editableApplication.value.histories[index] = { 
-      ...editableApplication.value.histories[index],
-      ...editableHistoryEntry.value,
-      createdAt: new Date(editableHistoryEntry.value.createdAt).toISOString(),
-      scheduled_at: isInterview && editableHistoryEntry.value.scheduled_at 
-        ? new Date(editableHistoryEntry.value.scheduled_at).toISOString() 
-        : undefined,
-    };
-    editableApplication.value.histories.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime() || (b.id || 0) - (a.id || 0));
-  }
-  showEditHistoryModal.value = false;
-  editableHistoryEntry.value = null;
-}
-
-function startDeleteHistory(item: TimelineItem) {
-  const entry = editableApplication.value?.histories.find(h => h.id === item.id);
-  if (entry) {
-    deletableHistoryEntry.value = item;
-    showDeleteHistoryModal.value = true;
-  }
-}
-
-function deleteHistory() {
-  if (!deletableHistoryEntry.value?.id || !editableApplication.value?.histories) return;
-  const idToDelete = deletableHistoryEntry.value.id;
-  const index = editableApplication.value.histories.findIndex(h => h.id === idToDelete);
-  if (index !== -1) {
-    if (idToDelete > 0) {
-      editableApplication.value.histories[index]._deleted = true;
-    } else {
-      editableApplication.value.histories.splice(index, 1);
-    }
-  }
-  showDeleteHistoryModal.value = false;
-  deletableHistoryEntry.value = null;
-}
-
-function undoDeleteHistory(item: TimelineItem) {
-  if (!editableApplication.value?.histories) return;
-  const index = editableApplication.value.histories.findIndex(h => h.id === item.id);
-  if (index !== -1) {
-    editableApplication.value.histories[index]._deleted = false;
-  }
-}
-
-const isPdfOutdated = computed(() => {
-  if (!application.value?.pdfGeneratedAt || !application.value?.updatedAt) return true; 
-  return new Date(application.value.updatedAt) > new Date(application.value.pdfGeneratedAt);
+  },
 });
 
-async function generatePdf() {
-  isLoading.value = true
-  try {
-    await useRequestFetch()(`/api/applications/${slug}/pdf/generate`, { method: 'POST' })
-    await refresh() 
-  } catch (error) {
-    console.error('Failed to generate PDF', error)
-  } finally {
-    isLoading.value = false
-  }
-}
+const printUrl = computed(() => `/application/${route.params.slug}/print`);
 
 useSeoMeta({
   title: () => application.value?.title || 'Bewerbung',
@@ -295,6 +92,7 @@ useSeoMeta({
   robots: 'noindex, nofollow',
 });
 
+// Define TimelineItem interface here (or import if shared)
 interface TimelineItem {
   id: number;
   type: 'history' | 'interview';
@@ -304,65 +102,6 @@ interface TimelineItem {
   icon: string;
   _deleted?: boolean;
 }
-
-const statusIconMap: Record<string, string> = {
-  draft: 'heroicons:pencil-square',
-  applied: 'heroicons:paper-airplane',
-  interview: 'heroicons:chat-bubble-left-right',
-  offer: 'heroicons:gift',
-  rejected: 'heroicons:x-circle',
-  withdrawn: 'heroicons:arrow-uturn-left',
-};
-
-interface EditableHistory extends ApplicationHistoryPayload {
-  _deleted?: boolean;
-}
-
-const timelineItems = computed((): TimelineItem[] => {
-  const source = isEditing.value ? editableApplication.value : application.value;
-  if (!source) return [];
-
-  const items: TimelineItem[] = [];
-  const histories = (isEditing.value ? source.histories : source.histories?.filter(h => !(h as EditableHistory)._deleted)) || [];
-
-  histories.forEach(history => {
-    if (!history.id) return;
-
-    if (history.status === 'interview') {
-      items.push({
-        id: history.id,
-        type: 'interview',
-        date: formatDate(history.scheduled_at!), // Assuming scheduled_at is always present for interviews
-        title: 'Interview',
-        description: history.notes || 'Geplantes Gespräch.',
-        icon: 'heroicons:calendar-days',
-        _deleted: (history as EditableHistory)._deleted,
-      });
-    } else if (history.createdAt) {
-      items.push({
-        id: history.id,
-        type: 'history',
-        date: formatDate(history.createdAt),
-        title: history.status.charAt(0).toUpperCase() + history.status.slice(1),
-        description: history.notes || `Status wurde auf '${history.status}' geändert.`,
-        icon: statusIconMap[history.status] || 'heroicons:question-mark-circle',
-        _deleted: (history as EditableHistory)._deleted,
-      });
-    }
-  });
-
-  // Sort all items by their respective date properties
-  return items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-});
-
-const notesAsText = computed({
-  get: () => editableApplication.value?.notes?.join('\n') ?? '',
-  set: (value: string) => {
-    if (editableApplication.value) {
-      editableApplication.value.notes = value.split('\n').filter(note => note.trim() !== '');
-    }
-  },
-});
 </script>
 
 <template>
@@ -594,7 +333,7 @@ const notesAsText = computed({
         <div class="rounded-lg bg-white shadow dark:bg-neutral-900">
           <div class="flex w-full flex-col gap-2">
               <template v-if="isEditing">
-                <UiButton class="w-full" :is-loading="isLoading" @click="updateApplication">
+                <UiButton class="w-full" :is-loading="isLoading" @click="saveApplication">
                   Speichern
                 </UiButton>
                 <UiButton class="w-full" variant="secondary" @click="cancelEditing">
