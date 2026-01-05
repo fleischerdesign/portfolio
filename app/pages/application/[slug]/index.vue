@@ -52,6 +52,7 @@ const allContacts = ref<Contact[]>([]);
 const showAddHistoryModal = ref(false);
 const newHistoryStatus = ref<ApplicationHistoryCreatePayload['status']>(application.value.currentStatus);
 const newHistoryNotes = ref<string | null>(null);
+const newHistoryScheduledAt = ref<string | null>(null);
 const newHistoryCreatedAt = ref<string>(formatForDateTimeLocal(new Date().toISOString()));
 const isAddingHistory = ref(false);
 
@@ -184,6 +185,7 @@ function addHistory() {
     id: Date.now() * -1,
     status: newHistoryStatus.value,
     notes: newHistoryNotes.value,
+    scheduled_at: newHistoryStatus.value === 'interview' && newHistoryScheduledAt.value ? new Date(newHistoryScheduledAt.value).toISOString() : undefined,
     createdAt: new Date(newHistoryCreatedAt.value).toISOString(),
     _deleted: false,
   };
@@ -191,6 +193,7 @@ function addHistory() {
   editableApplication.value.histories.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime() || (b.id || 0) - (a.id || 0));
   
   newHistoryNotes.value = null;
+  newHistoryScheduledAt.value = null;
   newHistoryCreatedAt.value = formatForDateTimeLocal(new Date().toISOString());
   showAddHistoryModal.value = false;
   if(application.value) newHistoryStatus.value = application.value.currentStatus;
@@ -199,7 +202,11 @@ function addHistory() {
 function startEditHistory(item: TimelineItem) {
   const entry = editableApplication.value?.histories.find(h => h.id === item.id);
   if (entry) {
-    editableHistoryEntry.value = { ...entry, createdAt: formatForDateTimeLocal(entry.createdAt) };
+    editableHistoryEntry.value = { 
+      ...entry, 
+      createdAt: formatForDateTimeLocal(entry.createdAt),
+      scheduled_at: entry.scheduled_at ? formatForDateTimeLocal(entry.scheduled_at) : null,
+    };
     showEditHistoryModal.value = true;
   }
 }
@@ -208,10 +215,14 @@ function updateHistory() {
   if (!editableHistoryEntry.value?.id || !editableApplication.value?.histories) return;
   const index = editableApplication.value.histories.findIndex(h => h.id === editableHistoryEntry.value!.id);
   if (index !== -1) {
+    const isInterview = editableHistoryEntry.value.status === 'interview';
     editableApplication.value.histories[index] = { 
       ...editableApplication.value.histories[index],
       ...editableHistoryEntry.value,
       createdAt: new Date(editableHistoryEntry.value.createdAt).toISOString(),
+      scheduled_at: isInterview && editableHistoryEntry.value.scheduled_at 
+        ? new Date(editableHistoryEntry.value.scheduled_at).toISOString() 
+        : undefined,
     };
     editableApplication.value.histories.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime() || (b.id || 0) - (a.id || 0));
   }
@@ -308,7 +319,19 @@ const timelineItems = computed((): TimelineItem[] => {
   const histories = (isEditing.value ? source.histories : source.histories?.filter(h => !(h as EditableHistory)._deleted)) || [];
 
   histories.forEach(history => {
-    if (history.createdAt && history.id) {
+    if (!history.id) return;
+
+    if (history.status === 'interview') {
+      items.push({
+        id: history.id,
+        type: 'interview',
+        date: formatDate(history.scheduled_at!), // Assuming scheduled_at is always present for interviews
+        title: 'Interview',
+        description: history.notes || 'Geplantes Gespräch.',
+        icon: 'heroicons:calendar-days',
+        _deleted: (history as EditableHistory)._deleted,
+      });
+    } else if (history.createdAt) {
       items.push({
         id: history.id,
         type: 'history',
@@ -321,20 +344,7 @@ const timelineItems = computed((): TimelineItem[] => {
     }
   });
 
-  if (source.interviews) {
-    source.interviews.forEach((interview) => {
-      if(interview.id) {
-        items.push({
-          id: interview.id,
-          type: 'interview',
-          date: formatDate(interview.date),
-          title: `Interview`,
-          description: interview.notes || 'Geplantes Gespräch.',
-          icon: 'heroicons:calendar-days'
-        });
-      }
-    });
-  }
+  // Sort all items by their respective date properties
   return items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 });
 
@@ -497,7 +507,7 @@ const notesAsText = computed({
                     <p class="text-gray-600 dark:text-gray-300">{{ item.description }}</p>
                   </div>
                   <div
-                    v-if="isEditing && item.type === 'history'"
+                    v-if="isEditing"
                     class="mt-2 flex gap-2"
                     :class="index % 2 === 0 ? 'md:justify-end' : 'justify-start'"
                   >
@@ -630,6 +640,7 @@ const notesAsText = computed({
               </span>
             </template>
           </UiSelect>
+          <UiInput v-if="newHistoryStatus === 'interview'" id="add-history-scheduled-at" v-model="newHistoryScheduledAt" type="datetime-local" label="Interview Datum" />
           <UiInput id="add-history-notes" v-model="newHistoryNotes" as="textarea" label="Notizen (optional)" />
           <UiInput id="add-history-date" v-model="newHistoryCreatedAt" type="datetime-local" label="Datum" />
         </form>
@@ -658,6 +669,7 @@ const notesAsText = computed({
               </span>
             </template>
           </UiSelect>
+          <UiInput v-if="editableHistoryEntry.status === 'interview'" id="edit-history-scheduled-at" v-model="editableHistoryEntry.scheduled_at" type="datetime-local" label="Interview Datum" />
           <UiInput id="edit-history-notes" v-model="editableHistoryEntry.notes" as="textarea" label="Notizen" />
           <UiInput id="edit-history-date" v-model="editableHistoryEntry.createdAt" type="datetime-local" label="Datum" />
         </form>

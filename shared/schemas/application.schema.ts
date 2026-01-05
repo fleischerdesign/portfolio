@@ -2,15 +2,11 @@ import { z } from 'zod';
 import { companyResponseSchema, type CompanyResponse } from './company.schema';
 import { contactBaseSchema, type Contact } from './contact.schema';
 
-export const interviewBaseSchema = z.object({
-  date: z.string().datetime(),
-  notes: z.string().optional().nullable(),
-});
-
 export const applicationHistoryBaseSchema = z.object({
   id: z.number().optional(),
   status: z.enum(['draft', 'applied', 'interview', 'offer', 'rejected', 'withdrawn']),
   notes: z.string().optional().nullable(),
+  scheduled_at: z.string().datetime().optional().nullable(), // New field
   createdAt: z.string().datetime().optional(),
 });
 
@@ -22,8 +18,8 @@ export const applicationBaseSchema = z.object({
   url: z.string().url().optional().nullable(),
   companyId: z.number(), // Reference to company
   contactIds: z.array(z.number()).optional().default([]), // References to contacts
-  interviews: z.array(interviewBaseSchema).optional().default([]),
-  notes: z.array(z.string()).optional().default([]),
+  // Removed interviews
+  notes: z.array(z.string()).optional().default([]), // Kept notes as per user request
   body: z.string().optional().nullable(),
   createdAt: z.string().datetime().optional(),
   updatedAt: z.string().datetime().optional(),
@@ -59,6 +55,7 @@ export const applicationUpdateSchema = applicationBaseSchema.partial().extend({
 export const applicationHistoryCreateSchema = applicationHistoryBaseSchema.pick({
   status: true,
   notes: true,
+  scheduled_at: true, // New field
   createdAt: true,
 });
 
@@ -73,12 +70,12 @@ export const applicationHistoryUpdateSchema = applicationHistoryCreateSchema.par
 
 export const applicationResponseSchema = applicationBaseSchema.extend({
   currentStatus: z.enum(['draft', 'applied', 'interview', 'offer', 'rejected', 'withdrawn']),
-  histories: z.array(applicationHistoryBaseSchema),
+  histories: z.array(applicationHistoryBaseSchema), // Kept original name 'histories'
   company: companyResponseSchema, // Full company object
   contacts: z.array(contactBaseSchema), // Full contact objects
 });
 
-export type InterviewPayload = z.infer<typeof interviewBaseSchema>;
+// Removed InterviewPayload
 export type ApplicationHistoryPayload = z.infer<typeof applicationHistoryBaseSchema>;
 export type ApplicationPayload = z.infer<typeof applicationBaseSchema>;
 
@@ -88,3 +85,4 @@ export type ApplicationHistoryCreatePayload = z.infer<typeof applicationHistoryC
 export type ApplicationHistoryUpdatePayload = z.infer<typeof applicationHistoryUpdateSchema>;
 
 export type ApplicationResponsePayload = z.infer<typeof applicationResponseSchema>;
+export type Status = ApplicationHistoryPayload['status'];

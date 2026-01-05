@@ -27,7 +27,6 @@ export default defineEventHandler(async (event) => {
           contact: true,
         },
       },
-      interviews: true,
       histories: {
         orderBy: [desc(applicationHistories.createdAt), desc(applicationHistories.id)],
       },

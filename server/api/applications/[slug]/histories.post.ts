@@ -31,13 +31,14 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: 'Application not found' });
   }
 
-  const { status, notes, createdAt } = body.data;
+  const { status, notes, createdAt, scheduled_at } = body.data;
 
   try {
     const [newHistory] = await db.insert(applicationHistories).values({
       applicationId: application.id,
       status,
       notes,
+      ...(scheduled_at && { scheduled_at: new Date(scheduled_at) }),
       ...(createdAt && { createdAt: new Date(createdAt) }),
     }).returning();
 

@@ -1,5 +1,5 @@
 import { db } from '../../utils/db';
-import { addresses, companies, applications, interviews as interviewsTable, applicationHistories, applications_to_contacts } from '../../db/schema';
+import { addresses, companies, applications, applicationHistories, applications_to_contacts } from '../../db/schema';
 import { eq, and } from 'drizzle-orm';
 import { applicationCreateSchema } from '../../../shared/schemas/application.schema';
 import type { ApplicationCreatePayload } from '../../../shared/schemas/application.schema';
@@ -96,24 +96,14 @@ export default defineEventHandler(async (event) => {
       await tx.insert(applications_to_contacts).values(contactLinks);
     }
 
-
-    await tx.delete(interviewsTable).where(eq(interviewsTable.applicationId, currentApplicationId));
-
-    if (data.interviews && data.interviews.length > 0) {
-      const interviewInserts = data.interviews.map(interview => ({
-        applicationId: currentApplicationId,
-        date: new Date(interview.date), // The Zod schema validated this is a datetime string
-        notes: interview.notes,
-      }));
-      await tx.insert(interviewsTable).values(interviewInserts);
-    }
+    // Removed interview syncing logic
 
     const finalApplication = await tx.query.applications.findFirst({
       where: eq(applications.id, currentApplicationId),
       with: {
         company: { with: { address: true } },
-        interviews: true,
         contacts: { with: { contact: true } },
+        histories: true,
       }
     });
 

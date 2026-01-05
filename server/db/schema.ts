@@ -71,6 +71,7 @@ export const applicationHistories = sqliteTable('application_histories', {
   applicationId: integer('application_id').references(() => applications.id, { onDelete: 'cascade' }).notNull(),
   status: text('status', { enum: ['draft', 'applied', 'interview', 'offer', 'rejected', 'withdrawn'] }).default('draft').notNull(),
   notes: text('notes'),
+  scheduled_at: integer('scheduled_at', { mode: 'timestamp' }),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
 });
 
@@ -79,7 +80,6 @@ export const applicationsRelations = relations(applications, ({ one, many }) => 
     fields: [applications.companyId],
     references: [companies.id],
   }),
-  interviews: many(interviews),
   histories: many(applicationHistories),
   contacts: many(applications_to_contacts),
 }));
@@ -102,19 +102,6 @@ export const applicationHistoriesRelations = relations(applicationHistories, ({ 
   }),
 }));
 
-export const interviews = sqliteTable('interviews', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  applicationId: integer('application_id').references(() => applications.id, { onDelete: 'cascade' }).notNull(),
-  date: integer('date', { mode: 'timestamp' }).notNull(),
-  notes: text('notes'),
-});
-
-export const interviewsRelations = relations(interviews, ({ one }) => ({
-  application: one(applications, {
-    fields: [interviews.applicationId],
-    references: [applications.id],
-  }),
-}));
 
 export const users = sqliteTable('users', {
   id: integer('id').primaryKey(),

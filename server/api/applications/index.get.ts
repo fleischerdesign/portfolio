@@ -1,4 +1,4 @@
-import { applications, companies, addresses, interviews as interviewsTable, applicationHistories, contacts, applications_to_contacts } from '../../db/schema';
+import { applications, companies, addresses, applicationHistories, contacts, applications_to_contacts } from '../../db/schema';
 import { desc, eq } from 'drizzle-orm';
 import { ApplicationResponsePayload } from '../../../shared/schemas/application.schema';
 import { CompanyResponse } from '../../../shared/schemas/company.schema';
@@ -62,15 +62,24 @@ export default defineEventHandler(async (event) => {
       contactId: newContact.id,
     });
 
-    await db.insert(applicationHistories).values({
-      applicationId: newApplication.id,
-      status: 'applied',
-      notes: 'Initial dummy data creation',
-    });
-
-    await db.insert(interviewsTable).values([
-      { applicationId: newApplication.id, date: new Date('2025-11-15T10:00:00.000Z'), notes: 'First technical interview.' },
-      { applicationId: newApplication.id, date: new Date('2025-11-22T14:30:00.000Z'), notes: 'Follow-up with team lead.' },
+    await db.insert(applicationHistories).values([
+      {
+        applicationId: newApplication.id,
+        status: 'applied',
+        notes: 'Initial dummy data creation',
+      },
+      {
+        applicationId: newApplication.id,
+        status: 'interview',
+        scheduled_at: new Date('2025-11-15T10:00:00.000Z'),
+        notes: 'First technical interview.',
+      },
+      {
+        applicationId: newApplication.id,
+        status: 'interview',
+        scheduled_at: new Date('2025-11-22T14:30:00.000Z'),
+        notes: 'Follow-up with team lead.',
+      },
     ]);
   }
 
@@ -86,26 +95,29 @@ export default defineEventHandler(async (event) => {
           contact: true,
         },
       },
-      interviews: true,
       histories: true,
     },
   });
 
   const applicationsWithStatus: ApplicationResponsePayload[] = await Promise.all(allApplications.map(async (app) => {
-    const latestHistory = app.histories.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
+    // Exclude 'interview' status when determining the current overall status of the application
+    const latestStatusHistory = app.histories
+      .filter(h => h.status !== 'interview')
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
     
     // Transform Drizzle's many-to-many contact structure to an array of Contact objects
     const associatedContacts = app.contacts.map(appToContact => appToContact.contact);
 
     return {
       ...app,
-      currentStatus: latestHistory?.status || 'draft',
+      currentStatus: latestStatusHistory?.status || 'draft',
+      histories: app.histories,
       company: {
         ...app.company,
         address: app.company.address || null, // Ensure address is null if not found
       } as CompanyResponse,
       contacts: associatedContacts,
-    } as ApplicationResponsePayload;
+    } as unknown as ApplicationResponsePayload; // Use 'as unknown' to bridge the type gap until all parts are refactored
   }));
 
 
