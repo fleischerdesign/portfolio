@@ -3,9 +3,18 @@
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <UiToastContainer ref="toastContainer" />
 </template>
 
 <script setup lang="ts">
+const toastContainer = ref<{ addToast: (message: string, options?: any) => void } | null>(null);
+
+onMounted(() => {
+  if (toastContainer.value) {
+    registerToastContainer(toastContainer.value.addToast);
+  }
+});
+
 const { locale } = useI18n()
 
 useHead({

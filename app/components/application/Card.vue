@@ -12,6 +12,7 @@ const emit = defineEmits(['deleted', 'refresh']);
 
 const { getStatusChipClasses, getStatusTextClasses, getFormattedLastActivityDate } = useApplicationUtils();
 const localePath = useLocalePath();
+const { showToast } = useToast();
 
 const isMenuOpen = ref(false);
 const showDeleteModal = ref(false);
@@ -36,7 +37,7 @@ async function shareApplication() {
   try {
     if (navigator.share) {
       await navigator.share(shareData);
-      console.log('Application shared successfully');
+      showToast('Bewerbung erfolgreich geteilt!', { type: 'success' });
     } else {
       throw new Error('Web Share API not supported');
     }
@@ -44,11 +45,10 @@ async function shareApplication() {
     console.log('Could not share, falling back to clipboard. Reason:', err);
     try {
       await navigator.clipboard.writeText(shareData.url);
-      console.log('URL copied to clipboard');
-      // TODO: Show a toast here: "Link kopiert!"
+      showToast('Link in Zwischenablage kopiert!', { type: 'success' });
     } catch (clipErr) {
+      showToast('Fehler beim Kopieren des Links!', { type: 'error' });
       console.error('Failed to copy URL to clipboard', clipErr);
-      // TODO: Show a toast here: "Kopieren fehlgeschlagen"
     }
   } finally {
     isMenuOpen.value = false;
@@ -61,9 +61,11 @@ async function deleteApplication() {
     await useRequestFetch()(`/api/applications/${props.application.slug}`, {
       method: 'DELETE',
     });
+    showToast('Bewerbung erfolgreich gelöscht.', { type: 'success' });
     emit('deleted', props.application.id);
     showDeleteModal.value = false;
   } catch (error) {
+    showToast('Fehler beim Löschen der Bewerbung.', { type: 'error' });
     console.error('Failed to delete application', error);
   } finally {
     isDeleting.value = false;

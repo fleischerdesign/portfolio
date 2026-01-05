@@ -1,6 +1,4 @@
-// app/composables/useApplicationEditor.ts
-import { ref, computed, toRaw, type Ref } from 'vue';
-import { applicationHistoryBaseSchema, type ApplicationUpdatePayload, type ApplicationResponsePayload, type ApplicationHistoryPayload, type ApplicationHistoryUpdatePayload } from '#shared/schemas/application.schema';
+import type { ApplicationUpdatePayload, ApplicationResponsePayload, ApplicationHistoryPayload } from '#shared/schemas/application.schema';
 import type { CompanyResponse } from '#shared/schemas/company.schema';
 import type { Contact } from '#shared/schemas/contact.schema';
 
@@ -59,6 +57,8 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
     allContacts.value = [];
   }
 
+  const { showToast } = useToast();
+
   async function saveApplication() {
     if (!editableApplication.value || !initialApplication.value) return;
     isLoading.value = true;
@@ -95,9 +95,10 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
       editableApplication.value = null;
       allCompanies.value = [];
       allContacts.value = [];
+      showToast('Bewerbung erfolgreich gespeichert!', { type: 'success' });
     } catch (error) {
       console.error('Failed to update application and its history', error);
-      // TODO: Handle error feedback to user
+      showToast('Fehler beim Speichern der Bewerbung.', { type: 'error' });
     } finally {
       isLoading.value = false;
     }
@@ -138,8 +139,10 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
     try {
       await useRequestFetch()(`/api/applications/${slug.value}/pdf/generate`, { method: 'POST' });
       await refreshApplication();
+      showToast('PDF erfolgreich generiert.', { type: 'success' });
     } catch (error) {
       console.error('Failed to generate PDF', error);
+      showToast('Fehler bei der PDF-Generierung.', { type: 'error' });
     } finally {
       isLoading.value = false;
     }
