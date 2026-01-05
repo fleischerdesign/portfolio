@@ -65,14 +65,12 @@ const stats = computed(() => [
 <template>
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
     <UiCard v-for="stat in stats" :key="stat.key">
-      <UiCardContainer class="flex items-center justify-between">
-        <div class="flex flex-col">
-          <span class="text-sm text-neutral-500 dark:text-neutral-400">{{ stat.label }}</span>
-          <span class="text-2xl font-bold">{{ stat.value }}</span>
-        </div>
-        <div class="rounded-full bg-primary-100 p-3 dark:bg-primary-900/50">
+      <UiCardContainer class="flex items-center justify-center gap-4">
+        <div class="flex-shrink-0 rounded-full bg-primary-100 p-3 dark:bg-primary-900/50">
           <Icon :name="stat.icon" class="h-6 w-6 text-primary-500 dark:text-primary-400" />
         </div>
+        <span class="text-2xl font-bold">{{ stat.value }}</span>
+        <span class="text-sm text-neutral-500 dark:text-neutral-400">{{ stat.label }}</span>
       </UiCardContainer>
     </UiCard>
   </div>
