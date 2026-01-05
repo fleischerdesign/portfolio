@@ -34,12 +34,17 @@ const editableAddress = ref<Partial<Address>>({
   ...props.company.address
 });
 
+
 async function saveAddress() {
   isLoading.value = true;
   try {
-    const payload = { ...editableAddress.value };
-    // Drizzle/zod doesn't like null for number fields, so convert to undefined
-    if (payload.zipcode === null) {
+    const payload: Partial<Address> = { ...editableAddress.value };
+
+    // Explicitly convert zipcode to number if it's not null/undefined, and handle NaN
+    if (typeof payload.zipcode === 'string') {
+      const numVal = Number(payload.zipcode);
+      payload.zipcode = isNaN(numVal) ? undefined : numVal;
+    } else if (payload.zipcode === null) {
       payload.zipcode = undefined;
     }
     
@@ -47,6 +52,7 @@ async function saveAddress() {
       method: 'PUT',
       body: payload,
     });
+    
     
     showToast('Adresse erfolgreich gespeichert!', { type: 'success' });
     emit('success', updatedCompany);

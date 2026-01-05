@@ -9,7 +9,7 @@
       placeholder=" "
       :type="type"
       :rows="as === 'textarea' ? 5 : undefined"
-      @input="model = ($event.target as HTMLInputElement).value"
+      @input="handleInput"
     />
     <label
       :for="id"
@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-const model = defineModel<string>();
+const model = defineModel<string | number>();
 
 interface Props {
   id: string;
@@ -41,6 +41,16 @@ const props = withDefaults(defineProps<Props>(), {
   error: '',
   hasError: false,
 });
+
+const handleInput = (event: Event) => {
+  const value = (event.target as HTMLInputElement).value;
+  if (props.type === 'number') {
+    const numVal = Number(value);
+    model.value = isNaN(numVal) ? value : numVal; // Keep as string if NaN, otherwise convert to number
+  } else {
+    model.value = value;
+  }
+};
 
 const inputClasses = useCva(
     props,
