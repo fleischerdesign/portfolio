@@ -8,8 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import mermaid from 'mermaid'
-
 const container = ref<HTMLDivElement | null>(null)
 const slotRef = ref<HTMLElement | null>(null)
 let lastDiagramCode = ''
@@ -21,6 +19,7 @@ const renderDiagram = async (code: string) => {
   container.value.innerHTML = ''
   if (!code.trim()) return
   try {
+    const { default: mermaid } = await import('mermaid')
     mermaid.initialize({ startOnLoad: false })
     const { svg } = await mermaid.render(diagramId, code)
     container.value.innerHTML = svg

@@ -153,6 +153,8 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     download: true,
+    preload: true,
+    display: 'swap',
     families: {
       Roboto: true,
     }

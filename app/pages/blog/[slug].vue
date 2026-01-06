@@ -5,7 +5,7 @@
     <div class="absolute inset-0 pointer-events-none -z-10">
         <!-- 1. Ambient Glows -->
         <div class="absolute -right-[10%] top-0 h-[600px] w-[600px] rounded-full bg-secondary-500/10 blur-[120px] dark:bg-secondary-500/10"></div>
-        <div class="absolute left-[10%] top-[20%] h-[400px] w-[400px] rounded-full bg-secondary-400/5 blur-[100px]"></div>
+        <div class="absolute left-[10%] top-40 h-[400px] w-[400px] rounded-full bg-secondary-400/5 blur-[100px]"></div>
         
         <!-- 2. Ultra-Fine Noise Texture -->
         <div class="absolute inset-0 opacity-[0.05] mix-blend-overlay" 
@@ -20,7 +20,7 @@
         <header class="mb-16 flex w-full max-w-5xl flex-col items-start gap-8">
           
           <!-- Meta Row (Visible & Clean) -->
-          <div class="flex flex-wrap items-center gap-4 animate-fade-in-up" style="animation-delay: 100ms;">
+          <div class="flex flex-wrap items-center gap-4">
              <!-- Date & Time -->
              <div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
                 <span class="flex items-center gap-2">
@@ -42,21 +42,21 @@
           </div>
 
           <!-- Title -->
-          <h1 class="animate-fade-in-up text-5xl font-black tracking-tight text-neutral-950 dark:text-white sm:text-6xl lg:text-7xl leading-[1.1]" style="animation-delay: 200ms;">
+          <h1 class="text-5xl font-black tracking-tight text-neutral-950 dark:text-white sm:text-6xl lg:text-7xl leading-[1.1]">
             {{ post.title }}
           </h1>
 
           <!-- Aesthetic Accent Line -->
-          <div class="h-2 w-24 animate-fade-in-up rounded-full bg-gradient-to-r from-secondary-500 to-transparent" style="animation-delay: 250ms;"></div>
+          <div class="h-2 w-24 rounded-full bg-gradient-to-r from-secondary-500 to-transparent"></div>
 
           <!-- Description / Lead -->
-          <p class="max-w-3xl animate-fade-in-up text-2xl leading-relaxed text-neutral-600 dark:text-neutral-400" style="animation-delay: 300ms;">
+          <p class="max-w-3xl text-2xl leading-relaxed text-neutral-600 dark:text-neutral-400">
             {{ post.description }}
           </p>
 
           <!-- Author -->
-          <div class="animate-fade-in-up flex items-center gap-4 pt-4" style="animation-delay: 350ms;">
-              <NuxtImg :src="post.author.avatar" class="h-12 w-12 rounded-2xl border border-neutral-200 dark:border-neutral-700" alt="Author" />
+          <div class="flex items-center gap-4 pt-4">
+              <NuxtImg :src="post.author.avatar" width="48" height="48" class="h-12 w-12 rounded-2xl border border-neutral-200 dark:border-neutral-700" alt="Author" />
                           <div class="flex flex-col">
                               <span class="text-base font-bold text-neutral-900 dark:text-white">Philipp Fleischer</span>
                               <span class="text-xs font-medium uppercase tracking-wider text-secondary-500">{{ $t("blog.author") }}</span>
@@ -65,7 +65,7 @@
 
 
         <!-- 2. FEATURED IMAGE (The Stage) -->
-        <div class="animate-fade-in-up group relative mb-20 w-full overflow-hidden rounded-[2.5rem] border border-neutral-200/50 bg-neutral-100 shadow-2xl dark:border-neutral-800/50 dark:bg-neutral-900" style="animation-delay: 450ms;">
+        <div class="group relative mb-20 w-full aspect-[21/9] overflow-hidden rounded-[2.5rem] border border-neutral-200/50 bg-neutral-100 shadow-2xl dark:border-neutral-800/50 dark:bg-neutral-900">
             <!-- Ambient Glow effects behind image (Local) -->
             <div class="pointer-events-none absolute -right-20 -top-20 z-10 h-96 w-96 rounded-full bg-secondary-500/10 blur-[100px]"></div>
             
@@ -75,6 +75,7 @@
               sizes="100vw lg:1280px"
               class="aspect-[21/9] h-full max-h-[700px] w-full object-cover transition duration-1000 group-hover:scale-105"
               placeholder
+              preload
             />
             
             <!-- Image Overlay Gradient -->
@@ -142,21 +143,3 @@ if (!post.value) {
   })
 }
 </script>
-
-<style scoped>
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  opacity: 0;
-  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-</style>
