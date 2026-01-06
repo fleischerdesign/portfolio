@@ -1,45 +1,127 @@
 <template>
-  <article>
-    <div>
-      <div class="relative flex min-h-screen items-center bg-neutral-100 2xl:min-h-[600px] dark:bg-transparent">
-        <NuxtImg
-sizes="100vw sm:100vw" :placeholder="[50, 25, 75, 5]" :src="post?.image?.src" class="absolute z-0 h-full w-full object-cover opacity-40"
-          :alt="post?.title || 'Post Background'" />
-        <div class="z-1 container relative flex max-w-screen-xl flex-col items-start gap-4">
-          <div class="flex items-center gap-2 drop-shadow-md">
-            <UiChip size="lg" variant="gradient" class="gap-2">
-              <NuxtLink class="flex items-center gap-2"><NuxtImg :src="post?.author.avatar" class="h-6 w-6 rounded-full" alt="Avatar" />Philipp
-                Fleischer</NuxtLink>
-            </UiChip>
-            <span>{{ $t("blogPost.date.on") }} {{ formattedDate }}</span>
-          </div>
-    <UiSectionHeader :level="1" :title="post!.title" :subtitle="post!.description!" class="!mb-0"/>
-          <div class="flex flex-wrap gap-2">
-            <UiTag v-for="(tag, index) in post?.tags" :key="index" class="drop-shadow-md" variant="gradient" interactive>
-              {{ tag }}
-            </UiTag>
-          </div>
+  <div class="relative overflow-hidden">
+    
+    <!-- BACKGROUND ATMOSPHERE (Global for Post) -->
+    <div class="absolute inset-0 pointer-events-none -z-10">
+        <!-- 1. Ambient Glows -->
+        <div class="absolute -right-[10%] top-0 h-[600px] w-[600px] rounded-full bg-secondary-500/10 blur-[120px] dark:bg-secondary-500/10"></div>
+        <div class="absolute left-[10%] top-[20%] h-[400px] w-[400px] rounded-full bg-secondary-400/5 blur-[100px]"></div>
+        
+        <!-- 2. Ultra-Fine Noise Texture -->
+        <div class="absolute inset-0 opacity-[0.05] mix-blend-overlay" 
+             style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.99%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E'); background-size: 150px 150px;">
         </div>
-      </div>
     </div>
-    <div class="container max-w-screen-xl">
-    <div class="prose prose-neutral my-8 max-w-none dark:prose-invert prose-h1:text-4xl prose-h2:border-l-4 prose-h2:border-secondary-400 prose-h2:pl-4 prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl prose-a:prose-headings:no-underline">
-      <ContentRenderer v-if="post" :value="post" />
+
+    <div class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
+      
+      <article v-if="post" class="flex flex-col items-start">
+        <!-- 1. ARTICLE HEADER (Left-Aligned Editorial Style) -->
+        <header class="mb-16 flex w-full max-w-5xl flex-col items-start gap-8">
+          
+          <!-- Meta Row (Visible & Clean) -->
+          <div class="flex flex-wrap items-center gap-4 animate-fade-in-up" style="animation-delay: 100ms;">
+             <!-- Date & Time -->
+             <div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+                <span class="flex items-center gap-2">
+                    <Icon name="heroicons:calendar" size="16" class="text-secondary-500" />
+                    {{ formattedDate }}
+                </span>
+                <span class="h-1 w-1 rounded-full bg-secondary-500"></span>
+                <span class="flex items-center gap-2">
+                    <Icon name="heroicons:clock" size="16" class="text-secondary-500" />
+                    {{ post.readingTime }} min read
+                </span>
+             </div>
+
+             <!-- Tags -->
+             <div class="flex gap-2">
+                <UiTag v-for="tag in post.tags" :key="tag" variant="glow" size="sm" interactive>
+                   {{ tag }}
+                </UiTag>
+             </div>
+          </div>
+
+          <!-- Title -->
+          <h1 class="animate-fade-in-up text-5xl font-black tracking-tight text-neutral-950 dark:text-white sm:text-6xl lg:text-7xl leading-[1.1]" style="animation-delay: 200ms;">
+            {{ post.title }}
+          </h1>
+
+          <!-- Aesthetic Accent Line -->
+          <div class="h-2 w-24 animate-fade-in-up rounded-full bg-gradient-to-r from-secondary-500 to-transparent" style="animation-delay: 250ms;"></div>
+
+          <!-- Description / Lead -->
+          <p class="max-w-3xl animate-fade-in-up text-2xl leading-relaxed text-neutral-600 dark:text-neutral-400" style="animation-delay: 300ms;">
+            {{ post.description }}
+          </p>
+
+          <!-- Author -->
+          <div class="animate-fade-in-up flex items-center gap-4 pt-4" style="animation-delay: 350ms;">
+              <NuxtImg :src="post.author.avatar" class="h-12 w-12 rounded-2xl border border-neutral-200 dark:border-neutral-700" alt="Author" />
+              <div class="flex flex-col">
+                  <span class="text-base font-bold text-neutral-900 dark:text-white">Philipp Fleischer</span>
+                  <span class="text-xs font-medium uppercase tracking-wider text-secondary-500">Author</span>
+              </div>
+          </div>
+        </header>
+
+
+        <!-- 2. FEATURED IMAGE (The Stage) -->
+        <div class="animate-fade-in-up group relative mb-20 w-full overflow-hidden rounded-[2.5rem] border border-neutral-200/50 bg-neutral-100 shadow-2xl dark:border-neutral-800/50 dark:bg-neutral-900" style="animation-delay: 450ms;">
+            <!-- Ambient Glow effects behind image (Local) -->
+            <div class="pointer-events-none absolute -right-20 -top-20 z-10 h-96 w-96 rounded-full bg-secondary-500/10 blur-[100px]"></div>
+            
+            <NuxtImg
+              :src="post.image?.src"
+              :alt="post.image?.alt || post.title"
+              sizes="100vw lg:1280px"
+              class="aspect-[21/9] h-full max-h-[700px] w-full object-cover transition duration-1000 group-hover:scale-105"
+              placeholder
+            />
+            
+            <!-- Image Overlay Gradient -->
+            <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/20 to-transparent opacity-60"></div>
+        </div>
+
+
+        <!-- 3. CONTENT AREA -->
+        <div class="w-full max-w-4xl">
+            <div class="prose prose-lg prose-neutral max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-secondary-500 prose-a:no-underline hover:prose-a:underline prose-img:rounded-3xl prose-img:shadow-2xl prose-blockquote:border-secondary-500 prose-blockquote:bg-secondary-500/5 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl">
+              <ContentRenderer :value="post" />
+            </div>
+
+            <!-- Footer Actions -->
+            <footer class="mt-20 flex flex-col items-start gap-10 border-t border-neutral-200/30 pt-16 dark:border-neutral-800/30">
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-xl font-bold text-neutral-900 dark:text-white">Did you enjoy this post?</h3>
+                    <p class="text-neutral-500">Feel free to share it or connect with me.</p>
+                </div>
+                <div class="flex gap-4">
+                    <SocialLinks />
+                </div>
+                <NuxtLink :to="$localePath('/blog')" class="group flex items-center gap-2 text-sm font-bold text-neutral-500 transition-colors hover:text-secondary-500">
+                    <Icon name="heroicons:arrow-left" class="transition-transform group-hover:-translate-x-1" />
+                    Back to Overview
+                </NuxtLink>
+            </footer>
+        </div>
+
+      </article>
     </div>
-    </div>
-  </article>
+  </div>
 </template>
 
 <script lang="ts" setup>
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const route = useRoute()
 
-const { data: post } = await useAsyncData(() => {
+const { data: post } = await useAsyncData(route.path, () => {
   return queryCollection("blog")
   .where('locale', '=', locale.value)
   .where("slug", "=", route.params.slug).first()
 })
-const formattedDate = computed(() => formatDate(post.value?.date))
+
+const formattedDate = computed(() => post.value ? formatDate(post.value.date) : '')
 
 useSeoMeta({
   title: post.value?.title || 'Blog Post',
@@ -47,7 +129,7 @@ useSeoMeta({
   description: post.value?.description || 'Blog Post Description',
   ogDescription: post.value?.description || 'Blog Post Description',
   ogUrl: route.fullPath,
-  ogType: 'website', 
+  ogType: 'article', 
   ogLocale: locale.value,
   twitterTitle: post.value?.title || 'Blog Post',
   twitterCard: 'summary_large_image',
@@ -62,3 +144,21 @@ if (!post.value) {
   })
 }
 </script>
+
+<style scoped>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+</style>
