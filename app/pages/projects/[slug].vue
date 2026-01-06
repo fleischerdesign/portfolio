@@ -14,23 +14,23 @@
       
       <article v-if="project" class="flex flex-col items-start">
         
-        <!-- 1. HEADER (Streamlined) -->
-        <header class="mb-12 flex w-full flex-col gap-8">
+        <!-- 1. HEADER (Redesigned with UiSectionHeader) -->
+        <header class="mb-16 flex w-full flex-col gap-10">
             <!-- Breadcrumb -->
             <NuxtLink :to="$localePath('/projects')" class="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-neutral-500 transition-colors hover:text-secondary-500">
                 <Icon name="heroicons:arrow-left" class="transition-transform group-hover:-translate-x-1" />
                 {{ $t("project.back_projects") }}
             </NuxtLink>
 
-            <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-                <div class="flex flex-col gap-4">
-                    <h1 class="max-w-4xl text-5xl font-black tracking-tight text-neutral-900 dark:text-white sm:text-6xl lg:text-7xl">
-                        {{ project.title }}
-                    </h1>
-                    <p class="max-w-2xl text-2xl leading-relaxed text-neutral-600 dark:text-neutral-400">
-                        {{ project.subtitle }}
-                    </p>
-                </div>
+            <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+                <UiSectionHeader 
+                    :level="1" 
+                    :title="project.title" 
+                    :subtitle="project.subtitle" 
+                    :symbol="project.icon"
+                    variant="glow"
+                    class="!mb-0 flex-1 [&_svg]:fill-secondary-600 [&_svg_g]:fill-secondary-600 [&_svg_path]:fill-secondary-600 dark:[&_svg]:fill-secondary-400 dark:[&_svg_g]:fill-secondary-400 dark:[&_svg_path]:fill-secondary-400"
+                />
 
                 <!-- Actions -->
                 <div class="flex gap-4">
@@ -65,15 +65,6 @@
 
             <!-- FLOATING GLASS INFO BADGE -->
             <div class="absolute bottom-8 left-8 z-20 flex items-center gap-6 md:bottom-12 md:left-12 transition-transform duration-500 group-hover:-translate-y-2">
-                <!-- Icon Box -->
-                <div v-if="project.icon" class="flex h-24 w-24 items-center justify-center rounded-3xl border border-white/20 bg-white/10 shadow-2xl backdrop-blur-xl transition-all duration-500 group-hover:border-secondary-500/40 group-hover:bg-secondary-500/10">
-                     <Icon 
-                        :name="project.icon" 
-                        mode="svg"
-                        class="h-12 w-12 fill-white text-white drop-shadow-lg transition-colors duration-500 [&>g]:fill-white group-hover:fill-secondary-400 group-hover:text-secondary-400 group-hover:[&>g]:fill-secondary-400" 
-                     />
-                </div>
-                
                 <!-- Project Context Info -->
                 <div class="flex flex-col gap-1">
                     <div class="flex items-center gap-2">

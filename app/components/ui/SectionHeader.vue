@@ -39,8 +39,13 @@
                      <!-- Animated Outer Glow -->
                      <div class="absolute -inset-2 rounded-3xl bg-secondary-500/20 blur-xl transition duration-500 group-hover:bg-secondary-500/30"></div>
                      
-                     <div class="relative inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-white/50 bg-gradient-to-br from-white/80 to-white/40 shadow-xl backdrop-blur-xl transition-transform duration-500 group-hover:scale-105 dark:border-white/10 dark:from-white/10 dark:to-white/5">
-                         <Icon :name="symbol" size="32" class="text-secondary-600 drop-shadow-sm dark:text-secondary-400" />
+                     <div class="relative inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-white/50 bg-gradient-to-br from-white/80 to-white/40 shadow-xl backdrop-blur-xl transition-all duration-500 group-hover:scale-105 group-hover:border-secondary-500/50 dark:border-white/10 dark:from-white/10 dark:to-white/5">
+                         <Icon 
+                            :name="symbol" 
+                            size="32" 
+                            mode="svg"
+                            class="text-secondary-600 drop-shadow-sm transition-colors duration-500 group-hover:text-secondary-500 dark:text-secondary-400 dark:group-hover:text-secondary-300" 
+                         />
                      </div>
                  </div>
 
