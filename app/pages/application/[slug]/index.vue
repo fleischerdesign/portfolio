@@ -8,7 +8,25 @@ const { renderMarkdown } = useMarkdown();
 const { getSalutation } = useSalutation();
 
 const salutation = computed(() => {
-  return getSalutation(application.value?.contacts, { format: 'lastname', multiple: 'individual' });
+  const contacts = isEditing.value ? editableApplication.value?.selectedContacts : application.value?.contacts;
+  return getSalutation(contacts, { format: 'lastname', multiple: 'individual' });
+});
+
+const displayDate = computed(() => {
+  const app = isEditing.value ? editableApplication.value : application.value;
+  return getDisplayDate(app);
+});
+
+const bodyStats = computed(() => {
+  const text = isEditing.value ? editableApplication.value?.body : application.value?.body;
+  const words = text?.trim().split(/\s+/).filter(Boolean).length || 0;
+  const chars = text?.length || 0;
+  return { 
+    words, 
+    chars, 
+    readingTime: Math.max(1, Math.ceil(words / 200)),
+    isLong: chars > 2800 
+  };
 });
 
 definePageMeta({
@@ -124,7 +142,7 @@ onMounted(() => {
                 <div>
                     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">Aktueller Status</p>
                     <div class="mt-1">
-                        <UiChip unstyled size="md" :class="[getStatusChipClasses(application.currentStatus), getStatusTextClasses(application.currentStatus), 'rounded-xl border-none px-4 py-1 text-[10px] font-black uppercase tracking-widest shadow-sm shadow-secondary-500/10']">
+                        <UiChip unstyled size="sm" :class="[getStatusChipClasses(application.currentStatus), getStatusTextClasses(application.currentStatus), 'px-3 py-0.5 text-xs font-bold rounded-lg border shadow-sm']">
                             {{ application.currentStatus }}
                         </UiChip>
                     </div>
@@ -290,11 +308,10 @@ onMounted(() => {
 
         <!-- Body Content (The "Document") -->
         <div v-if="(!isEditing && application.body) || isEditing" class="group relative">
-            <!-- Massive Ambient Glows (Consistency with Hero.vue) - Always visible, intensifies on hover -->
-            <div class="pointer-events-none absolute -left-20 -top-20 -z-10 h-80 w-80 rounded-full bg-secondary-500/10 blur-[100px] opacity-40 transition-opacity duration-1000 group-hover:opacity-100 dark:bg-secondary-500/5"></div>
-            <div class="pointer-events-none absolute -right-20 -bottom-20 -z-10 h-80 w-80 rounded-full bg-secondary-400/10 blur-[100px] opacity-40 transition-opacity duration-1000 group-hover:opacity-100"></div>
+            <!-- Massive Ambient Glow (Consistency with Hero.vue) - Subtle constant aura -->
+            <div class="pointer-events-none absolute -left-20 -top-20 -z-10 h-80 w-80 rounded-full bg-secondary-500/10 blur-[100px] opacity-40 dark:bg-secondary-500/5"></div>
             
-            <UiCard hover class="relative bg-white/90 shadow-2xl dark:bg-neutral-900/80 overflow-hidden">
+            <UiCard class="relative bg-white/90 shadow-2xl dark:bg-neutral-900/80 overflow-hidden">
                 <UiCardContainer class="p-8 md:p-16 lg:p-24">
                     <!-- Dashboard-style Header for Document -->
                     <div class="mb-16 flex items-start gap-5 border-b border-neutral-100 pb-10 dark:border-neutral-800">
@@ -305,7 +322,7 @@ onMounted(() => {
                             <div class="flex items-center justify-between">
                                 <h3 class="text-3xl font-black text-neutral-900 dark:text-white">Anschreiben</h3>
                                 <div class="text-right hidden sm:block">
-                                     <p class="text-sm font-black uppercase tracking-widest text-neutral-900 dark:text-white">{{ getDisplayDate(application) }}</p>
+                                     <p class="text-sm font-black uppercase tracking-widest text-neutral-900 dark:text-white">{{ displayDate }}</p>
                                      <p class="text-[10px] uppercase tracking-widest text-neutral-400">Bewerbungsdatum</p>
                                 </div>
                             </div>
@@ -316,43 +333,85 @@ onMounted(() => {
                     <!-- Recipient -->
                     <div class="mb-12">
                         <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500 mb-2">Empfänger</p>
-                        <p class="text-xl font-bold text-neutral-900 dark:text-white">{{ application.company.name }}</p>
-                        <div v-if="application.company.address" class="mt-1 text-neutral-600 dark:text-neutral-400 text-sm">
-                            <p>{{ application.company.address.street }} {{ application.company.address.houseNumber }}</p>
-                            <p>{{ application.company.address.zipcode }} {{ application.company.address.city }}</p>
+                        <p class="text-xl font-bold text-neutral-900 dark:text-white">
+                            {{ isEditing ? editableApplication?.selectedCompany?.name : application.company.name }}
+                        </p>
+                        <div v-if="(isEditing ? editableApplication?.selectedCompany?.address : application.company.address)" class="mt-1 text-neutral-600 dark:text-neutral-400 text-sm">
+                            <template v-if="isEditing && editableApplication?.selectedCompany?.address">
+                                <p>{{ editableApplication.selectedCompany.address.street }} {{ editableApplication.selectedCompany.address.houseNumber }}</p>
+                                <p>{{ editableApplication.selectedCompany.address.zipcode }} {{ editableApplication.selectedCompany.address.city }}</p>
+                            </template>
+                            <template v-else-if="application.company.address">
+                                <p>{{ application.company.address.street }} {{ application.company.address.houseNumber }}</p>
+                                <p>{{ application.company.address.zipcode }} {{ application.company.address.city }}</p>
+                            </template>
                         </div>
                     </div>
 
                     <!-- Subject Line -->
                     <div class="mb-12">
                         <h3 class="text-3xl font-black text-neutral-900 dark:text-white">
-                            {{ application.title }}
+                            {{ isEditing ? editableApplication.title : application.title }}
                         </h3>
-                        <p v-if="application.subtitle" class="mt-2 text-xl font-medium text-neutral-500 dark:text-neutral-400">
-                            {{ application.subtitle }}
+                        <p v-if="(isEditing ? editableApplication.subtitle : application.subtitle)" class="mt-2 text-xl font-medium text-neutral-500 dark:text-neutral-400">
+                            {{ isEditing ? editableApplication.subtitle : application.subtitle }}
                         </p>
                     </div>
                     
                     <!-- Salutation -->
-                    <p v-if="!isEditing" class="mb-8 text-lg font-bold text-neutral-900 dark:text-white">
+                    <p class="mb-8 text-lg font-bold text-neutral-900 dark:text-white">
                         {{ salutation }},
                     </p>
 
                     <!-- eslint-disable-next-line vue/no-v-html -->
                     <div v-if="!isEditing" class="prose prose-lg prose-neutral max-w-none dark:prose-invert" v-html="renderMarkdown(application.body || '')"></div>
-                    <div v-else-if="editableApplication">
-                        <UiInput
-                            id="body"
-                            v-model="editableApplication.body"
-                            as="textarea"
-                            label="Anschreiben (Markdown)"
-                            class="min-h-[600px] border-none !bg-transparent !p-0 focus:ring-0 text-lg"
-                        />
+                    <div v-else-if="editableApplication" class="space-y-8">
+                        <!-- Editor Suite Toolbar -->
+                        <div class="flex items-center justify-between rounded-2xl bg-secondary-50/50 dark:bg-secondary-900/10 p-3 px-6 border border-secondary-100/50 dark:border-secondary-500/10">
+                            <div class="flex items-center gap-8">
+                                <div class="flex flex-col">
+                                    <span class="text-[9px] font-black uppercase tracking-widest text-secondary-500/60">Wörter</span>
+                                    <span class="text-lg font-black text-secondary-600">{{ bodyStats.words }}</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[9px] font-black uppercase tracking-widest text-neutral-400">Zeichen</span>
+                                    <span class="text-lg font-bold text-neutral-600 dark:text-neutral-300" :class="{ 'text-amber-500': bodyStats.isLong }">{{ bodyStats.chars }}</span>
+                                </div>
+                                <div class="hidden sm:flex h-8 w-px bg-neutral-200 dark:bg-neutral-700 mx-2"></div>
+                                <div class="hidden sm:flex flex-col">
+                                    <span class="text-[9px] font-black uppercase tracking-widest text-neutral-400">Lesezeit</span>
+                                    <span class="text-sm font-bold text-neutral-600 dark:text-neutral-300">~ {{ bodyStats.readingTime }} Min.</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <div v-if="bodyStats.isLong" class="hidden lg:flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 rounded-lg border border-amber-100 dark:border-amber-800">
+                                    <Icon name="heroicons:exclamation-triangle" size="14" />
+                                    Über eine Seite
+                                </div>
+                                <div class="hidden lg:flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-400 px-3 py-1">
+                                    <Icon name="mdi:markdown" size="18" />
+                                    Markdown
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Focused Writing Area -->
+                        <div class="relative group/editor border-l-2 border-transparent focus-within:border-secondary-500/30 transition-all pl-8 -ml-8">
+                            <UiInput
+                                id="body"
+                                v-model="editableApplication.body"
+                                as="textarea"
+                                label=""
+                                placeholder="Schreibe hier dein Anschreiben... Nutze Markdown für Formatierungen."
+                                class="min-h-[600px] border-none !bg-transparent !p-0 focus:ring-0 text-lg leading-relaxed selection:bg-secondary-100 dark:selection:bg-secondary-900/50"
+                            />
+                        </div>
                     </div>
 
                     <!-- Letter Footer: Closing & Signature -->
-                    <div v-if="!isEditing" class="mt-20 pt-10 border-t border-neutral-50 dark:border-neutral-800/50">
-                        <p class="text-lg font-medium">Mit freundlichen Grüßen,</p>
+                    <div class="mt-20 pt-10 border-t border-neutral-50 dark:border-neutral-800/50">
+                        <p class="text-lg font-medium text-neutral-900 dark:text-white">Mit freundlichen Grüßen,</p>
                         <div class="mt-8">
                             <p class="text-xl font-black text-neutral-900 dark:text-white">Philipp Fleischer</p>
                             <NuxtImg src="/img/signature.png" alt="Unterschrift" height="70" class="mt-4 dark:invert opacity-90 transition-opacity hover:opacity-100" />

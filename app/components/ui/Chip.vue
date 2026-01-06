@@ -11,12 +11,14 @@ interface Props {
   size?: 'sm' | 'md' | 'lg';
   variant?: 'default' | 'glass' | 'secondary' | 'danger' | 'success' | 'warning' | 'gradient';
   interactive?: boolean;
+  unstyled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 'md',
   variant: 'glass', // Set glass as default
   interactive: false,
+  unstyled: false,
 });
 
 const chipClasses = useCva(
@@ -28,7 +30,7 @@ const chipClasses = useCva(
       md: 'px-3.5 py-1 text-sm gap-2',
       lg: 'px-5 py-2 text-base gap-2.5',
     },
-    variant: {
+    variant: props.unstyled ? {} : {
       glass: 'bg-white/50 backdrop-blur-md border-neutral-200/60 text-neutral-700 dark:bg-neutral-900/50 dark:border-neutral-800/60 dark:text-neutral-300 shadow-sm',
       secondary: 'bg-secondary-50 border-secondary-200/50 text-secondary-700 dark:bg-secondary-900/20 dark:border-secondary-500/20 dark:text-secondary-400',
       gradient: 'bg-gradient-to-br from-secondary-500 to-secondary-600 text-white border-transparent shadow-lg shadow-secondary-500/20',
