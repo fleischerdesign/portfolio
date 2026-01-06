@@ -99,13 +99,7 @@
     "blog": {
       "title": "Blog",
       "subtitle": "Eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleite mich auf meine Reise in die Informatik.",
-      "view_all": "Alle Artikel",
-      "read_article": "Artikel lesen",
-      "back_overview": "Zur Übersicht",
-      "author": "Autor",
-      "enjoyed_post": "Hat dir dieser Beitrag gefallen?",
-      "share_connect": "Teile ihn gerne oder vernetze dich mit mir.",
-      "min_read": "Min Lesezeit"
+      "view_all": "Alle Artikel"
     },
     "contact": {
       "title": "Kontakt",
@@ -137,11 +131,11 @@
       "title": "Frühe Jahre",
       "subtitle": "Ich wurde in Demmin, Mecklenburg-Vorpommern, geboren, und von klein auf definierte mich eine unstillbare Neugier. Dieser Antrieb hat mich mein ganzes Leben lang dazu gebracht, hart zu arbeiten und neue Horizonte zu erkunden.",
       "content": {
-      "quote": "Die Begeisterung für Technologie war bei mir schon immer mehr als nur ein Hobby - es war eine Leidenschaft, die mich antrieb.",
-      "imgCaption": "Mein erster Computer",
-      "title1": "Aufgewachsen in der digitalen Welt",
-      "title2": "Prägende Schuljahre",
-      "title3": "Erste Programmiererfahrungen",
+        "quote": "Die Begeisterung für Technologie war bei mir schon immer mehr als nur ein Hobby - es war eine Leidenschaft, die mich antrieb.",
+        "imgCaption": "Mein erster Computer",
+        "title1": "Aufgewachsen in der digitalen Welt",
+        "title2": "Prägende Schuljahre",
+        "title3": "Erste Programmiererfahrungen",
         "paragraph1": "Meine fasszination für Computer und Technologie begann unglaublich früh. Mit nur sechs Jahren bekam ich meinen ersten Computer, der eine Welt voller Möglichkeiten und Interaktionen eröffnete, die mich sofort in ihren Bann zog. Ich interessierte mich nicht nur für die technische Seite; ich war auch ein sehr kreatives Kind, verbrachte Stunden mit Malen, Zeichnen und ließ meiner Fantasie freien Lauf.",
         "paragraph2": "Ich hatte das Glück, einen Grundschullehrer, Herrn Frank, zu haben, der meine Begeisterung für Technologie teilte. Dank ihm war unser Klassenzimmer einzigartig mit zahlreichen Computern ausgestattet, was unser Verständnis und Engagement für Technik erheblich förderte. Diese frühe Exposition, kombiniert mit meiner angeborenen Neugier, legte den Grundstein für meine Zukunft.",
         "paragraph3": "Meine erste Berührung mit dem Programmieren hatte ich im Alter von acht Jahren. Ich erinnere mich daran, wie ich meine erste Codezeile mit AutoIt programmierte, um Mechaniken in Videospielen zu automatisieren. Diese frühe Erfahrung ging nicht nur um Problemlösung; es ging darum, das unglaubliche Potenzial der Technologie zu erkennen, Ideen zum Leben zu erwecken und neue Interaktionen zu schaffen. Diese prägenden Jahre festigten meine Leidenschaft für die digitale Welt und setzten mich auf einen Pfad kontinuierlicher Entdeckung und Innovation."
@@ -200,7 +194,13 @@
   },
   "blog": {
     "title": "Blog",
-    "subtitle": "Entdecke eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleite mich auf meine Reise in die Informatik."
+    "subtitle": "Entdecke eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleite mich auf meine Reise in die Informatik.",
+    "read_article": "Artikel lesen",
+    "back_overview": "Zur Übersicht",
+    "author": "Autor",
+    "enjoyed_post": "Hat dir dieser Beitrag gefallen?",
+    "share_connect": "Teile ihn gerne oder vernetze dich mit mir.",
+    "min_read": "Lesezeit"
   },
   "blogPost": {
     "date": {
