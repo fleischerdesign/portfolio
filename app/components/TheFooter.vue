@@ -1,31 +1,82 @@
 <template>
-  <footer class="border-t border-neutral-300 bg-gradient-to-br from-neutral-100 to-neutral-200 py-5 dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800 print:hidden">
-    <div class="container max-w-screen-xl">
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <div class="flex flex-col gap-4">
-          <h3 class="text-3xl font-medium">Philipp Fleischer</h3>
-          <p class="border-l-4 border-secondary-400  pl-4 text-neutral-600 dark:text-neutral-400">{{ $t("home.hero.summary") }}</p>
-          <SocialLinks />
+  <footer class="relative mt-24 border-t border-neutral-200/50 bg-white/50 py-16 backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-950/50 print:hidden">
+    <!-- Ambient Glow at Footer Top -->
+    <div class="pointer-events-none absolute left-1/2 top-0 -z-10 h-32 w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-secondary-500/5 blur-[80px]"></div>
+
+    <div class="container mx-auto max-w-screen-xl px-4 md:px-8">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Brand & Summary -->
+        <div class="flex flex-col gap-6">
+          <div class="flex flex-col gap-2">
+            <h3 class="text-3xl font-black tracking-tight text-neutral-900 dark:text-white">Philipp Fleischer</h3>
+            <div class="h-1 w-12 rounded-full bg-secondary-500"></div>
+          </div>
+          <p class="text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
+            {{ $t("home.hero.summary") }}
+          </p>
+          <div class="pt-2">
+            <SocialLinks />
+          </div>
         </div>
+
+        <!-- Contact Info -->
         <div class="md:ml-auto lg:mx-auto">
-          <h3 class="pb-4 text-xl font-medium">{{ $t("footer.contact") }}</h3>
-          <p class="text-neutral-600 dark:text-neutral-400">+49 176 31099324</p>
-          <p class="text-neutral-600 dark:text-neutral-400">hello@fleischer.design</p>
-          <p class="text-neutral-600 dark:text-neutral-400">17036 Neubrandenburg</p>
+          <h3 class="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-secondary-500">{{ $t("footer.contact") }}</h3>
+          <div class="space-y-4">
+            <a href="tel:+4917631099324" class="group flex items-center gap-3 text-neutral-600 transition-colors hover:text-secondary-600 dark:text-neutral-400 dark:hover:text-secondary-400">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-900 dark:group-hover:bg-secondary-900/30">
+                    <Icon name="mage:phone" size="20" />
+                </div>
+                <span class="text-lg font-medium">+49 176 31099324</span>
+            </a>
+            <a href="mailto:hello@fleischer.design" class="group flex items-center gap-3 text-neutral-600 transition-colors hover:text-secondary-600 dark:text-neutral-400 dark:hover:text-secondary-400">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-900 dark:group-hover:bg-secondary-900/30">
+                    <Icon name="mage:email" size="20" />
+                </div>
+                <span class="text-lg font-medium">hello@fleischer.design</span>
+            </a>
+            <div class="group flex items-center gap-3 text-neutral-600 dark:text-neutral-400">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 dark:bg-neutral-900">
+                    <Icon name="mage:map-marker" size="20" />
+                </div>
+                <span class="text-lg font-medium">17036 Neubrandenburg</span>
+            </div>
+          </div>
         </div>
+
+        <!-- Sitemap / Links -->
         <div class="ml-0 lg:ml-auto">
-          <h3 class="pb-4 text-xl font-medium">{{ $t("footer.sitemap") }}</h3>
-          <ul class="grid grid-cols-1 gap-x-6 gap-y-2 text-neutral-600 md:grid-cols-3 lg:grid-cols-3 dark:text-neutral-400">
-            <li><NuxtLink :to="$localePath('/')">{{ $t("navigation.home") }}</NuxtLink></li>
-            <li><NuxtLink :to="$localePath('/store')">{{ $t("navigation.store") }}</NuxtLink></li>
-            <li><NuxtLink :to="$localePath('/projects')">{{ $t("navigation.projects") }}</NuxtLink></li>
-            <li><NuxtLink :to="$localePath('/blog')">{{ $t("navigation.blog") }}</NuxtLink></li>
-            <li><NuxtLink :to="$localePath('/about')">{{ $t("navigation.about") }}</NuxtLink></li>
-            <li><NuxtLink :to="$localePath('/legal')">{{ $t("navigation.legal") }}</NuxtLink></li>
+          <h3 class="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-secondary-500">{{ $t("footer.sitemap") }}</h3>
+          <ul class="grid grid-cols-2 gap-4 text-neutral-600 dark:text-neutral-400">
+            <li v-for="link in [
+                { path: '/', label: 'navigation.home' },
+                { path: '/store', label: 'navigation.store' },
+                { path: '/projects', label: 'navigation.projects' },
+                { path: '/blog', label: 'navigation.blog' },
+                { path: '/about', label: 'navigation.about' },
+                { path: '/legal', label: 'navigation.legal' }
+            ]" :key="link.path">
+                <NuxtLink 
+                    :to="$localePath(link.path)" 
+                    class="text-lg font-medium transition-colors hover:text-secondary-600 dark:hover:text-secondary-400"
+                >
+                    {{ $t(link.label) }}
+                </NuxtLink>
+            </li>
           </ul>
         </div>
       </div>
+
+      <!-- Copyright Bar -->
+      <div class="mt-20 flex flex-col items-center justify-between border-t border-neutral-200/30 pt-8 dark:border-neutral-800/30 md:flex-row">
+        <p class="text-sm font-medium text-neutral-500 dark:text-neutral-500">
+            {{ $t("footer.copyright") }}
+        </p>
+        <div class="mt-4 flex gap-6 text-sm md:mt-0">
+            <NuxtLink :to="$localePath('/legal')" class="hover:text-secondary-500">Impressum</NuxtLink>
+            <NuxtLink :to="$localePath('/legal')" class="hover:text-secondary-500">Datenschutz</NuxtLink>
+        </div>
+      </div>
     </div>
-    <p class="container mx-auto max-w-screen-xl pb-16 pt-4 text-sm text-neutral-400 dark:text-neutral-600">{{ $t("footer.copyright") }}</p>
   </footer>
 </template>

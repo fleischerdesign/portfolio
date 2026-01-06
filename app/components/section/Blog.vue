@@ -1,6 +1,6 @@
 <template>
   <div class="mb-24">
-      <UiSectionHeader :title="$t('home.blog.title')" :subtitle="$t('home.blog.subtitle')" variant="glow" symbol="mage:edit" />
+      <UiSectionHeader :title="$t('home.blog.title')" :subtitle="$t('home.blog.subtitle')" variant="glow" symbol="heroicons:pencil-square" />
     <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
       <BlogPostCard v-for="(post, index) in posts" :key="index" :post="post" />
     </div>

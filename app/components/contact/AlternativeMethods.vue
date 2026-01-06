@@ -1,53 +1,80 @@
 <template>
-    <div class="space-y-8">
-        <div>
-            <h3 class="mb-2 text-2xl font-semibold">{{ $t('contact.social.title') }}</h3>
-            <p class="mb-4 text-neutral-400">{{ $t('contact.social.description') }}</p>
-            <SocialLinks />
-        </div>
-        <div>
-            <h3 class="mb-2 text-2xl font-semibold">{{ $t('contact.email.title') }}</h3>
-            <p class="mb-4 text-neutral-400">{{ $t('contact.email.description') }}</p>
-            <div class="flex w-full items-center gap-4 rounded-lg border border-neutral-300 bg-gradient-to-br from-neutral-100 to-neutral-200 px-4 py-3 shadow-sm dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800">
-                <Icon name="mdi:email-outline" class="text-2xl text-neutral-400" />
-                <span class="text-lg">hello@fleischer.design</span>
-                <UiButton class="ml-auto" :aria-label="$t('contact.email.copy')" @click="copyEmail">
-                    <Icon :name="copyIcon" class="text-xl" />
-                </UiButton>
+    <div class="space-y-10">
+        <!-- Social Media Section -->
+        <div class="flex flex-col gap-4">
+            <div>
+                <h3 class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">{{ $t('contact.social.title') }}</h3>
+                <p class="mt-1 text-neutral-500 dark:text-neutral-400">{{ $t('contact.social.description') }}</p>
+            </div>
+            <div class="pt-2">
+                <SocialLinks />
             </div>
         </div>
-        <div>
-            <h3 class="mb-2 text-2xl font-semibold">{{ $t('contact.phone.title') }}</h3>
-            <p class="mb-4 text-neutral-400">{{ $t('contact.phone.description') }}</p>
-            <div class="flex w-full items-center gap-4 rounded-lg border border-neutral-300 bg-gradient-to-br from-neutral-100 to-neutral-200 px-4 py-3 shadow-sm dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800">
-                <Icon name="mdi:phone-outline" class="text-2xl text-neutral-400" />
-                <span class="text-lg">+49 176 31099324</span>
-                <UiButton class="ml-auto" :aria-label="$t('contact.phone.copy')" @click="copyPhone">
-                    <Icon :name="phoneCopyIcon" class="text-xl" />
-                </UiButton>
+
+        <!-- Contact Cards -->
+        <div class="grid grid-cols-1 gap-6">
+            <!-- Email Card -->
+            <div class="flex flex-col gap-3">
+                <h4 class="text-xs font-bold uppercase tracking-widest text-secondary-500">{{ $t('contact.email.title') }}</h4>
+                <div class="group relative flex items-center gap-4 rounded-2xl border border-neutral-200/60 bg-white/50 p-4 backdrop-blur-md transition-all duration-500 hover:border-secondary-500/30 hover:shadow-[0_0_25px_rgba(16,185,129,0.1)] dark:border-neutral-800/60 dark:bg-neutral-900/50 dark:hover:border-secondary-400/30">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-100 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-800 dark:group-hover:bg-secondary-900/30">
+                        <Icon name="mage:email" size="24" class="text-neutral-600 dark:text-neutral-400 dark:group-hover:text-secondary-400" />
+                    </div>
+                    <span class="text-lg font-medium text-neutral-800 dark:text-white">hello@fleischer.design</span>
+                    <UiButton 
+                        variant="glass" 
+                        size="icon" 
+                        class="ml-auto" 
+                        :aria-label="$t('contact.email.copy')" 
+                        @click="copyEmail"
+                    >
+                        <Icon :name="copyIcon" size="20" />
+                    </UiButton>
+                </div>
+            </div>
+
+            <!-- Phone Card -->
+            <div class="flex flex-col gap-3">
+                <h4 class="text-xs font-bold uppercase tracking-widest text-secondary-500">{{ $t('contact.phone.title') }}</h4>
+                <div class="group relative flex items-center gap-4 rounded-2xl border border-neutral-200/60 bg-white/50 p-4 backdrop-blur-md transition-all duration-500 hover:border-secondary-500/30 hover:shadow-[0_0_25px_rgba(16,185,129,0.1)] dark:border-neutral-800/60 dark:bg-neutral-900/50 dark:hover:border-secondary-400/30">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-100 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-800 dark:group-hover:bg-secondary-900/30">
+                        <Icon name="mage:phone" size="24" class="text-neutral-600 dark:text-neutral-400 dark:group-hover:text-secondary-400" />
+                    </div>
+                    <span class="text-lg font-medium text-neutral-800 dark:text-white">+49 176 31099324</span>
+                    <UiButton 
+                        variant="glass" 
+                        size="icon" 
+                        class="ml-auto" 
+                        :aria-label="$t('contact.phone.copy')" 
+                        @click="copyPhone"
+                    >
+                        <Icon :name="phoneCopyIcon" size="20" />
+                    </UiButton>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-const copyIcon = ref('mdi:content-copy');
-const phoneCopyIcon = ref('mdi:content-copy');
+import { ref } from 'vue';
+
+const copyIcon = ref('mage:copy');
+const phoneCopyIcon = ref('mage:copy');
 
 const copyEmail = () => {
     navigator.clipboard.writeText('hello@fleischer.design');
-    copyIcon.value = 'mdi:check';
+    copyIcon.value = 'mage:check-circle';
     setTimeout(() => {
-        copyIcon.value = 'mdi:content-copy';
+        copyIcon.value = 'mage:copy';
     }, 2000);
 };
 
 const copyPhone = () => {
     navigator.clipboard.writeText('+4917631099324');
-    phoneCopyIcon.value = 'mdi:check';
+    phoneCopyIcon.value = 'mage:check-circle';
     setTimeout(() => {
-        phoneCopyIcon.value = 'mdi:content-copy';
+        phoneCopyIcon.value = 'mage:copy';
     }, 2000);
 };
 </script>
-

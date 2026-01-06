@@ -1,27 +1,37 @@
 <template>
-  <div class="group relative" :class="{ 'has-error': hasError }">
-    <component
-      :is="as"
-      :id="id"
-      :value="model"
-      :class="inputClasses"
-      :required="required"
-      placeholder=" "
-      :type="type"
-      :rows="as === 'textarea' ? 5 : undefined"
-      @input="handleInput"
-    />
+  <div class="flex flex-col gap-2" :class="{ 'has-error': hasError }">
+    <!-- Label positioned outside for better clarity and design consistency -->
     <label
+      v-if="label"
       :for="id"
-      class="absolute -top-2.5 left-4 bg-neutral-100 px-1 text-sm text-neutral-400 transition-all group-[.has-error]:text-red-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:bg-transparent peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-400 peer-focus:-top-2.5 peer-focus:bg-neutral-100 peer-focus:text-sm peer-focus:text-secondary-400 group-[.has-error]:peer-focus:text-red-500 dark:bg-neutral-900 dark:peer-focus:bg-neutral-900"
+      class="text-sm font-bold uppercase tracking-widest text-neutral-500 transition-colors group-focus-within:text-secondary-500 dark:text-neutral-400"
     >
-      {{ label }}
+      {{ label }} <span v-if="required" class="text-secondary-500">*</span>
     </label>
-    <p v-if="error" class="mt-1 text-sm text-red-500">{{ error }}</p>
+
+    <div class="relative">
+      <component
+        :is="as"
+        :id="id"
+        :value="model"
+        :class="inputClasses"
+        :required="required"
+        :type="type"
+        :rows="as === 'textarea' ? 5 : undefined"
+        @input="handleInput"
+      />
+      
+      <!-- Subtle internal glow/border on focus (Optional decorative element) -->
+      <div class="pointer-events-none absolute inset-0 rounded-xl border border-secondary-500/0 transition-all duration-300 peer-focus:border-secondary-500/20 shadow-none peer-focus:shadow-[0_0_15px_rgba(16,185,129,0.05)]"></div>
+    </div>
+
+    <p v-if="error" class="mt-1 text-xs font-medium text-red-500">{{ error }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 const model = defineModel<string | number>();
 
 interface Props {
@@ -46,20 +56,19 @@ const handleInput = (event: Event) => {
   const value = (event.target as HTMLInputElement).value;
   if (props.type === 'number') {
     const numVal = Number(value);
-    model.value = isNaN(numVal) ? value : numVal; // Keep as string if NaN, otherwise convert to number
+    model.value = isNaN(numVal) ? value : numVal;
   } else {
     model.value = value;
   }
 };
 
-const inputClasses = useCva(
-    props,
-    'peer w-full rounded-lg bg-gradient-to-br from-neutral-100 to-neutral-200 px-4 py-3 placeholder-transparent placeholder-opacity-0 shadow-sm transition focus:placeholder-neutral-400 focus:outline-none focus:ring-2 peer-focus:placeholder-opacity-100 dark:from-neutral-900 dark:to-neutral-800 dark:focus:placeholder-neutral-600',
-    {
-        hasError: {
-            false: 'border border-neutral-300 dark:border-neutral-700 focus:ring-secondary-400',
-            true: 'border border-red-500 focus:ring-red-500 text-red-500',
-        },
-    },
-);
+const inputClasses = computed(() => {
+  const base = 'peer w-full rounded-xl bg-white/50 dark:bg-neutral-900/40 px-4 py-3 text-neutral-900 dark:text-white border transition-all duration-300 backdrop-blur-md outline-none placeholder-neutral-400';
+  
+  const state = props.hasError 
+    ? 'border-red-500/50 focus:border-red-500 focus:ring-4 focus:ring-red-500/10' 
+    : 'border-neutral-200/60 dark:border-neutral-800/60 focus:border-secondary-500/50 focus:ring-4 focus:ring-secondary-500/10 dark:focus:border-secondary-400/40';
+  
+  return `${base} ${state}`;
+});
 </script>

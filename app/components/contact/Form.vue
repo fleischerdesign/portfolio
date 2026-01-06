@@ -1,31 +1,39 @@
 <template>
-    <form class="flex h-full flex-col space-y-6" @submit.prevent="onSubmit">
-        <div v-if="success" class="rounded-lg border border-green-700 bg-green-900/50 p-4 text-center text-green-400">
-            {{ $t('contact.form.success') }}
+    <form class="flex h-full flex-col space-y-8" @submit.prevent="onSubmit">
+        <!-- Status Messages with Glow -->
+        <div v-if="success" class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center backdrop-blur-md shadow-lg shadow-emerald-500/10">
+            <Icon name="mage:check-circle-fill" size="32" class="mx-auto mb-2 text-emerald-500" />
+            <p class="font-bold text-emerald-700 dark:text-emerald-400">{{ $t('contact.form.success') }}</p>
         </div>
-        <div v-if="submitError" class="rounded-lg border border-red-700 bg-red-900/50 p-4 text-center text-red-400">
-            {{ $t('contact.form.error') }}
+        
+        <div v-if="submitError" class="rounded-2xl border border-red-500/30 bg-red-500/10 p-6 text-center backdrop-blur-md shadow-lg shadow-red-500/10">
+            <Icon name="mage:exclamation-circle-fill" size="32" class="mx-auto mb-2 text-red-500" />
+            <p class="font-bold text-red-700 dark:text-red-400">{{ $t('contact.form.error') }}</p>
         </div>
 
-        <UiInput
-            id="name" 
-            v-model="form.name" 
-            :label="$t('contact.form.label.name')" 
-            :error="errors.name" 
-            required />
-        <UiInput
-            id="email" 
-            v-model="form.email" 
-            type="email" 
-            :label="$t('contact.form.label.email')" 
-            :error="errors.email" 
-            required />
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <UiInput
+                id="name" 
+                v-model="form.name" 
+                :label="$t('contact.form.label.name')" 
+                :error="errors.name" 
+                required />
+            <UiInput
+                id="email" 
+                v-model="form.email" 
+                type="email" 
+                :label="$t('contact.form.label.email')" 
+                :error="errors.email" 
+                required />
+        </div>
+
         <UiInput
             id="subject" 
             v-model="form.subject" 
             :label="$t('contact.form.label.subject')" 
             :error="errors.subject" 
             required />
+            
         <UiInput
             id="message" 
             v-model="form.message" 
@@ -35,22 +43,36 @@
             class="flex-grow"
             required />
 
-        <UiButton type="submit" variant="secondary" class="flex w-full items-center justify-center" :disabled="loading">
-            <span v-if="!loading">{{ $t('contact.form.label.submit') }}</span>
-            <svg
-v-else class="h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path
-class="opacity-75" fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                </path>
-            </svg>
+        <UiButton 
+            type="submit" 
+            variant="secondary" 
+            size="lg"
+            class="group relative w-full overflow-hidden shadow-xl transition-all duration-500 hover:shadow-secondary-500/20" 
+            :disabled="loading"
+        >
+            <span v-if="!loading" class="relative z-10 flex items-center gap-2">
+                {{ $t('contact.form.label.submit') }}
+                <Icon name="heroicons:paper-airplane-20-solid" class="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+            </span>
+            <div v-else class="relative z-10 flex items-center gap-2">
+                <Icon name="mdi:loading" class="h-5 w-5 animate-spin" />
+                <span>Sending...</span>
+            </div>
+            
+            <!-- Animated Shimmer Highlight -->
+            <div class="absolute inset-0 -z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
         </UiButton>
     </form>
 </template>
 
 <script setup lang="ts">
-
 const { form, errors, loading, success, submitError, onSubmit } = useContactForm();
 </script>
+
+<style scoped>
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+</style>

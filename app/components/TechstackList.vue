@@ -1,26 +1,61 @@
 <template>
-  <div class="flex flex-col gap-2 overflow-hidden">
+  <div class="flex flex-col gap-1 overflow-hidden py-2">
     <template v-if="scroll">
       <div
-v-for="(row, rowIndex) in rowItems" :key="'marquee-row-' + rowIndex"
-        class="marquee-row w-full overflow-hidden">
+        v-for="(row, rowIndex) in rowItems" :key="'marquee-row-' + rowIndex"
+        class="marquee-row w-full overflow-hidden py-1">
         <div
-:ref="el => setMarqueeRef(el as HTMLElement | null, rowIndex)"
-          class="marquee flex gap-2 whitespace-nowrap"
+          :ref="el => setMarqueeRef(el as HTMLElement | null, rowIndex)"
+          class="marquee flex gap-3 whitespace-nowrap"
           :style="{ animationDuration: animationDurations[rowIndex] + 's' }">
-          <UiTag v-for="(item, index) in [...row, ...row]" :key="index" :gradient="gradient" fill>
-            <Icon v-if="techIcons[item]" :name="techIcons[item]" class="text-xl" />
-            <span>{{ item }}</span>
-          </UiTag>
+          
+          <!-- Modern Tech Module -->
+          <div 
+            v-for="(item, index) in [...row, ...row]" 
+            :key="index" 
+            class="group relative flex items-center gap-3 rounded-xl border border-neutral-200/50 bg-white/40 px-4 py-2 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-secondary-500/30 hover:bg-white/80 dark:border-neutral-800/50 dark:bg-neutral-900/40 dark:hover:border-secondary-400/30 dark:hover:bg-neutral-900/80"
+          >
+            <!-- Background Glow -->
+            <div class="absolute inset-0 -z-10 bg-gradient-to-br from-secondary-500/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>
+            
+            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-100 p-1.5 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-800 dark:group-hover:bg-secondary-900/30">
+                <Icon 
+                    v-if="techIcons[item]" 
+                    :name="techIcons[item]" 
+                    class="text-xl text-neutral-600 transition-colors group-hover:text-secondary-500 dark:text-neutral-400 dark:group-hover:text-secondary-400" 
+                />
+                <Icon v-else name="mage:box-3d" class="text-xl text-neutral-400" />
+            </div>
+            
+            <span class="text-sm font-bold tracking-tight text-neutral-700 transition-colors group-hover:text-neutral-900 dark:text-neutral-300 dark:group-hover:text-white">
+                {{ item }}
+            </span>
+          </div>
+
         </div>
       </div>
     </template>
+
     <template v-else>
-      <div v-for="(row, rowIndex) in rowItems" :key="'static-row-' + rowIndex" class="flex flex-wrap gap-2">
-        <UiTag v-for="(item, index) in row" :key="index" :gradient="gradient" fill>
-          <Icon v-if="techIcons[item]" :name="techIcons[item]" class="text-xl" />
-          <span>{{ item }}</span>
-        </UiTag>
+      <div v-for="(row, rowIndex) in rowItems" :key="'static-row-' + rowIndex" class="flex flex-wrap gap-3 py-1">
+        <!-- Modern Tech Module (Static) -->
+        <div 
+          v-for="(item, index) in row" 
+          :key="index" 
+          class="group relative flex items-center gap-3 rounded-xl border border-neutral-200/50 bg-white/40 px-4 py-2 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-secondary-500/30 hover:bg-white/80 dark:border-neutral-800/50 dark:bg-neutral-900/40 dark:hover:border-secondary-400/30 dark:hover:bg-neutral-900/80"
+        >
+          <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-100 p-1.5 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-800 dark:group-hover:bg-secondary-900/30">
+              <Icon 
+                  v-if="techIcons[item]" 
+                  :name="techIcons[item]" 
+                  class="text-xl text-neutral-600 transition-colors group-hover:text-secondary-500 dark:text-neutral-400 dark:group-hover:text-secondary-400" 
+              />
+              <Icon v-else name="mage:box-3d" class="text-xl text-neutral-400" />
+          </div>
+          <span class="text-sm font-bold tracking-tight text-neutral-700 transition-colors group-hover:text-neutral-900 dark:text-neutral-300 dark:group-hover:text-white">
+              {{ item }}
+          </span>
+        </div>
       </div>
     </template>
   </div>
@@ -65,13 +100,11 @@ const techIcons: Record<string, string> = {
 const props = defineProps<{
   items: string[],
   scroll?: boolean,
-  rows?: number,
-  gradient?: boolean
+  rows?: number
 }>();
 
 const scroll = computed(() => props.scroll ?? false);
 const rows = computed(() => props.rows ?? 1);
-const gradient = computed(() => props.gradient ?? false);
 
 function chunkArray<T>(arr: T[], chunkCount: number): T[][] {
   const result: T[][] = Array.from({ length: chunkCount }, () => []);
@@ -124,13 +157,8 @@ watch([rowItems, scroll], () => {
 }
 
 @keyframes marquee-scroll {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
 .marquee-row {

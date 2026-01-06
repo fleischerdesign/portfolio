@@ -24,11 +24,12 @@
 </template>
 
 <script setup lang="ts">
+import { computed, useAttrs } from 'vue';
 
 interface Props {
     to?: string;
-    variant?: 'default' | 'secondary' | 'danger' | 'ghost' | 'link';
-    size?: 'sm' | 'md' | 'lg';
+    variant?: 'default' | 'secondary' | 'danger' | 'ghost' | 'link' | 'glass';
+    size?: 'sm' | 'md' | 'lg' | 'icon';
     type?: 'button' | 'submit' | 'reset';
     external?: boolean;
     isLoading?: boolean;
@@ -44,24 +45,28 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const attrs = useAttrs();
-
 const isDisabled = computed(() => !!attrs.disabled);
 
 const buttonClasses = useCva(
     props,
-    'rounded-lg flex items-center justify-center gap-2 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed',
+    'rounded-xl flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.98]',
     {
         variant: {
-            default: 'shadow-sm hover:shadow-inner bg-gradient-to-br from-neutral-100 to-neutral-200 dark:from-neutral-900 dark:to-neutral-800 dark:border-neutral-700 border border-neutral-300 hover:bg-gradient-to-br dark:hover:from-neutral-800 hover:from-neutral-200 dark:hover:to-neutral-900 hover:to-neutral-100 dark:hover:border-neutral-600 hover:border-neutral-400 active:brightness-95',
-            secondary: 'shadow-sm hover:shadow-inner bg-secondary-400 text-neutral-900 font-medium hover:bg-secondary-300 hover:drop-shadow-glow active:bg-secondary-500 active:drop-shadow-none',
-            danger: 'shadow-sm hover:shadow-inner bg-red-500 text-white font-medium hover:bg-red-600 active:bg-red-700',
-            ghost: 'text-neutral-900 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 active:bg-neutral-300 dark:active:bg-neutral-700',
-            link: 'text-secondary-500 dark:text-secondary-400 hover:underline underline-offset-4 active:brightness-90',
+            default: 'shadow-sm border border-neutral-200 bg-white hover:border-neutral-300 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 dark:hover:bg-neutral-800',
+            secondary: 'bg-secondary-500 text-neutral-900 font-bold hover:bg-secondary-400 hover:shadow-lg hover:shadow-secondary-500/25 active:bg-secondary-600',
+            
+            // IMPROVED GLASS / SOCIAL VARIANT
+            glass: 'border border-neutral-200 bg-white/50 text-neutral-600 shadow-sm backdrop-blur-sm hover:border-secondary-300 hover:bg-secondary-50 hover:text-secondary-600 hover:shadow-md hover:shadow-secondary-500/10 dark:border-neutral-800 dark:bg-neutral-900/50 dark:text-neutral-400 dark:hover:border-secondary-700 dark:hover:bg-secondary-900/30 dark:hover:text-secondary-400',
+            
+            danger: 'bg-red-500 text-white font-medium hover:bg-red-600 active:bg-red-700',
+            ghost: 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800',
+            link: 'text-secondary-500 dark:text-secondary-400 hover:underline underline-offset-4',
         },
         size: {
-            sm: 'py-2 px-3 text-sm',
-            md: 'py-3 px-5 text-base',
-            lg: 'py-4 px-6 text-lg',
+            icon: 'p-3', // Slightly larger hit area
+            sm: 'py-2 px-4 text-sm',
+            md: 'py-3 px-6 text-base',
+            lg: 'py-4 px-8 text-lg',
         },
     },
 );

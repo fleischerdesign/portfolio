@@ -1,4 +1,122 @@
+<template>
+  <div ref="rootEl" class="group relative flex flex-col gap-2" :class="{ 'has-error': hasError }">
+    <!-- Label (Outside) -->
+    <label
+      v-if="label"
+      :id="`${id}-label`"
+      :for="id"
+      class="text-sm font-bold uppercase tracking-widest text-neutral-500 transition-colors group-focus-within:text-secondary-500 dark:text-neutral-400"
+    >
+      {{ label }} <span v-if="required" class="text-secondary-500">*</span>
+    </label>
+
+    <!-- Hidden Input for Logic -->
+    <input
+      :id="`${id}-hidden`"
+      ref="hiddenInputEl"
+      type="text"
+      class="peer pointer-events-none absolute inset-0 opacity-0"
+      placeholder=" "
+      :value="hasValue ? 'has-value' : ''"
+      tabindex="-1"
+      readonly
+    />
+
+    <!-- Custom Select Button -->
+    <button
+      :id="id"
+      ref="buttonEl"
+      type="button"
+      :class="selectButtonClasses"
+      :aria-expanded="isOpen"
+      :aria-haspopup="true"
+      :aria-labelledby="`${id}-label`"
+      @click="toggleOpen"
+      @keydown="handleKeydown"
+    >
+      <div class="flex min-h-[1.5rem] flex-wrap items-center gap-2 text-left">
+        <template v-if="hasValue">
+          <template v-if="multiple && selectedOptions.length > 0">
+            <slot v-for="opt in selectedOptions" name="display" :option="opt">
+              <UiTag size="sm" variant="glow" interactive>{{ opt }}</UiTag>
+            </slot>
+          </template>
+          <template v-else-if="!multiple && selectedOption">
+            <slot name="display" :option="selectedOption">
+              <span class="text-neutral-900 dark:text-white">{{ selectedOption }}</span>
+            </slot>
+          </template>
+        </template>
+        <span v-else class="text-neutral-400">Select an option...</span>
+      </div>
+
+      <!-- Arrow Icon -->
+      <Icon 
+        name="heroicons:chevron-down" 
+        class="ml-auto h-5 w-5 text-neutral-400 transition-transform duration-300"
+        :class="{ 'rotate-180': isOpen }" 
+      />
+    </button>
+
+    <!-- Dropdown Menu (Teleported to body to avoid clipping/z-index issues) -->
+    <Teleport to="body">
+      <Transition
+        enter-active-class="transition duration-200 ease-out"
+        enter-from-class="transform scale-95 opacity-0 translate-y-2"
+        enter-to-class="transform scale-100 opacity-100 translate-y-0"
+        leave-active-class="transition duration-150 ease-in"
+        leave-from-class="transform scale-100 opacity-100 translate-y-0"
+        leave-to-class="transform scale-95 opacity-0 translate-y-2"
+      >
+        <div
+          v-if="isOpen"
+          ref="dropdownEl"
+          class="fixed z-[9999] mt-2 overflow-hidden rounded-xl border border-neutral-200/60 bg-white/80 shadow-2xl backdrop-blur-xl dark:border-neutral-800/60 dark:bg-neutral-900/80"
+          :style="dropdownStyle"
+          role="listbox"
+          :aria-labelledby="`${id}-label`"
+        >
+          <ul class="max-h-60 overflow-auto py-1">
+            <li 
+              v-if="creatable" 
+              class="cursor-pointer px-4 py-2.5 text-secondary-500 transition hover:bg-secondary-50 dark:hover:bg-secondary-900/30" 
+              @click="handleCreate"
+            >
+              <slot name="create">
+                <span class="flex items-center gap-2 font-medium">
+                  <Icon name="heroicons:plus" />
+                  Neuen Eintrag erstellen
+                </span>
+              </slot>
+            </li>
+            <li
+              v-for="(option, index) in options"
+              :key="index"
+              class="cursor-pointer px-4 py-2.5 transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+              :class="{
+                'bg-secondary-50 text-secondary-700 dark:bg-secondary-900/20 dark:text-secondary-400': !multiple && selectedOption && areEqual(option, selectedOption),
+                'bg-secondary-50/50 text-secondary-700 dark:bg-secondary-900/10 dark:text-secondary-400': multiple && Array.isArray(modelValue) && modelValue.some(v => areEqual(v, option))
+              }"
+              role="option"
+              :aria-selected="!multiple && selectedOption && areEqual(option, selectedOption)"
+              @click="selectOption(option)"
+            >
+              <slot name="option" :option="option">
+                <span>{{ option }}</span>
+              </slot>
+            </li>
+          </ul>
+        </div>
+      </Transition>
+    </Teleport>
+    
+    <p v-if="error" class="mt-1 text-xs font-medium text-red-500">{{ error }}</p>
+  </div>
+</template>
+
 <script setup lang="ts" generic="T extends Record<string, any> | string">
+import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue';
+
 const props = withDefaults(defineProps<{
   id: string;
   modelValue: T | T[] | null | undefined;
@@ -9,20 +127,24 @@ const props = withDefaults(defineProps<{
   hasError?: boolean;
   creatable?: boolean;
   multiple?: boolean;
+  required?: boolean;
 }>(), {
   by: undefined,
   error: '',
   hasError: false,
   creatable: false,
   multiple: false,
+  required: false,
 });
 
 const emit = defineEmits(['update:modelValue', 'create']);
 
 const rootEl = ref<HTMLElement | null>(null);
 const buttonEl = ref<HTMLButtonElement | null>(null);
+const dropdownEl = ref<HTMLElement | null>(null);
 const hiddenInputEl = ref<HTMLInputElement | null>(null);
 const isOpen = ref(false);
+const dropdownStyle = ref({});
 
 const hasValue = computed(() => {
   if (Array.isArray(props.modelValue)) {
@@ -52,6 +174,33 @@ const selectedOption = computed(() => {
 const selectedOptions = computed(() => {
   if (!props.multiple || !Array.isArray(props.modelValue)) return [];
   return props.modelValue.map(val => props.options.find(opt => areEqual(opt, val))).filter(Boolean) as T[];
+});
+
+function updateDropdownPosition() {
+  if (!buttonEl.value || !isOpen.value) return;
+  const rect = buttonEl.value.getBoundingClientRect();
+  dropdownStyle.value = {
+    top: `${rect.bottom}px`,
+    left: `${rect.left}px`,
+    width: `${rect.width}px`
+  };
+}
+
+// Update position on scroll/resize to keep it attached
+function handleScrollResize() {
+  if (isOpen.value) updateDropdownPosition();
+}
+
+watch(isOpen, async (val) => {
+  if (val) {
+    await nextTick();
+    updateDropdownPosition();
+    window.addEventListener('scroll', handleScrollResize, true);
+    window.addEventListener('resize', handleScrollResize);
+  } else {
+    window.removeEventListener('scroll', handleScrollResize, true);
+    window.removeEventListener('resize', handleScrollResize);
+  }
 });
 
 function selectOption(option: T) {
@@ -84,7 +233,11 @@ function toggleOpen() {
 }
 
 function handleClickOutside(event: MouseEvent) {
-  if (rootEl.value && !rootEl.value.contains(event.target as Node)) {
+  // Check if click is outside BOTH the button AND the teleported dropdown
+  const isClickInButton = rootEl.value && rootEl.value.contains(event.target as Node);
+  const isClickInDropdown = dropdownEl.value && dropdownEl.value.contains(event.target as Node);
+  
+  if (!isClickInButton && !isClickInDropdown) {
     isOpen.value = false;
   }
 }
@@ -105,110 +258,18 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
+  window.removeEventListener('scroll', handleScrollResize, true);
+  window.removeEventListener('resize', handleScrollResize);
 });
 
 const selectButtonClasses = useCva(
   props,
-  'relative w-full rounded-lg px-4 py-3 text-left shadow-sm transition outline-none',
+  'relative flex w-full items-center justify-between rounded-xl px-4 py-3 text-left shadow-sm transition-all duration-300 outline-none backdrop-blur-md',
   {
     hasError: {
-      false: 'border border-neutral-300 bg-gradient-to-br from-neutral-100 to-neutral-200 focus:ring-2 focus:ring-secondary-400 dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800',
-      true: 'border border-red-500 bg-gradient-to-br from-neutral-100 to-neutral-200 focus:ring-2 focus:ring-red-500 text-red-500 dark:border-red-500 dark:from-neutral-900 dark:to-neutral-800',
+      false: 'border border-neutral-200/60 bg-white/50 focus:border-secondary-500/50 focus:ring-4 focus:ring-secondary-500/10 dark:border-neutral-800/60 dark:bg-neutral-900/40 dark:focus:border-secondary-400/40',
+      true: 'border border-red-500/50 bg-red-50/50 focus:border-red-500 focus:ring-4 focus:ring-red-500/10 text-red-500 dark:bg-red-900/10',
     },
   },
 );
 </script>
-
-<template>
-  <div ref="rootEl" class="group relative" :class="{ 'has-error': hasError }">
-    <input
-      :id="`${id}-hidden`"
-      ref="hiddenInputEl"
-      type="text"
-      class="peer pointer-events-none absolute inset-0 opacity-0"
-      placeholder=" "
-      :value="hasValue ? 'has-value' : ''"
-      tabindex="-1"
-      readonly
-    />
-
-    <button
-      :id="id"
-      ref="buttonEl"
-      type="button"
-      :class="selectButtonClasses"
-      :aria-expanded="isOpen"
-      :aria-haspopup="true"
-      :aria-labelledby="`${id}-label`"
-      @click="toggleOpen"
-      @keydown="handleKeydown"
-    >
-      <div class="flex min-h-[1.5rem] flex-wrap items-center gap-2">
-        <template v-if="hasValue">
-          <template v-if="multiple && selectedOptions.length > 0">
-            <slot v-for="opt in selectedOptions" name="display" :option="opt">
-              <UiTag size="sm">{{ opt }}</UiTag>
-            </slot>
-          </template>
-          <template v-else-if="!multiple && selectedOption">
-            <slot name="display" :option="selectedOption">
-              <span>{{ selectedOption }}</span>
-            </slot>
-          </template>
-        </template>
-      </div>
-    </button>
-
-    <label
-      :id="`${id}-label`"
-      :for="id"
-      class="pointer-events-none absolute -top-2.5 left-4 bg-neutral-100 px-1 text-sm text-neutral-400 transition-all group-focus-within:-top-2.5 group-focus-within:bg-neutral-100 group-focus-within:text-sm group-focus-within:text-secondary-400 group-[.has-error]:text-red-500 group-[.has-error]:group-focus-within:text-red-500 peer-placeholder-shown:top-3.5 peer-placeholder-shown:bg-transparent peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-400 dark:bg-neutral-900 dark:group-focus-within:bg-neutral-900"
-    >
-      {{ label }}
-    </label>
-
-    <Transition
-      enter-active-class="transition duration-100 ease-out"
-      enter-from-class="transform scale-95 opacity-0"
-      enter-to-class="transform scale-100 opacity-100"
-      leave-active-class="transition duration-75 ease-in"
-      leave-from-class="transform scale-100 opacity-100"
-      leave-to-class="transform scale-95 opacity-0"
-    >
-      <div
-        v-if="isOpen"
-        class="absolute z-10 mt-2 w-full rounded-lg border border-neutral-300 bg-white shadow-lg dark:border-neutral-700 dark:bg-neutral-800"
-        role="listbox"
-        :aria-labelledby="`${id}-label`"
-      >
-        <ul class="max-h-60 overflow-auto py-1">
-          <li v-if="creatable" class="cursor-pointer px-4 py-2.5 text-secondary-500 transition hover:bg-neutral-100 dark:hover:bg-neutral-700" @click="handleCreate">
-            <slot name="create">
-              <span class="flex items-center gap-2">
-                <Icon name="heroicons:plus" />
-                Neuen Eintrag erstellen
-              </span>
-            </slot>
-          </li>
-          <li
-            v-for="(option, index) in options"
-            :key="index"
-            class="cursor-pointer px-4 py-2.5 transition hover:bg-neutral-100 dark:hover:bg-neutral-700"
-            :class="{
-              'bg-secondary-50 dark:bg-secondary-900/20': !multiple && selectedOption && areEqual(option, selectedOption),
-              'bg-blue-50 dark:bg-blue-900/20': multiple && Array.isArray(modelValue) && modelValue.some(v => areEqual(v, option))
-            }"
-            role="option"
-            :aria-selected="!multiple && selectedOption && areEqual(option, selectedOption)"
-            @click="selectOption(option)"
-          >
-            <slot name="option" :option="option">
-              <span>{{ option }}</span>
-            </slot>
-          </li>
-        </ul>
-      </div>
-    </Transition>
-    <p v-if="error" class="mt-1 text-sm text-red-500">{{ error }}</p>
-  </div>
-</template>

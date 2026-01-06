@@ -1,12 +1,10 @@
 <template>
-  <div class="container max-w-screen-xl">
+  <div>
+    <!-- Hero Section (Full Width) -->
+    <SectionHero />
 
-
-
-
-
-    <div>
-      <SectionHero />
+    <!-- Main Content (Contained) -->
+    <div class="container mx-auto max-w-screen-xl px-4 md:px-8">
       <SectionOverview />
       <SectionProjects />
       <SectionBlog />
@@ -16,12 +14,9 @@
 </template>
 
 <script lang="ts" setup>
-
-
 const { locale } = useI18n();
 const { t } = useI18n();
 const route = useRoute();
-
 
 useSeoMeta({
   title: t("navigation.home"),
@@ -36,14 +31,4 @@ useSeoMeta({
   twitterDescription: t("home.hero.summary"),
   robots: 'index, follow',
 })
-
-
-
-
-
-
-
-
-
-
 </script>

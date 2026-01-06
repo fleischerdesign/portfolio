@@ -1,17 +1,80 @@
 <template>
-  <div class="flex min-h-screen items-center 2xl:min-h-[600px]">
-    <div class="flex flex-col items-start gap-4">
-      <NowIndicator />
-      <h1 class="text-5xl font-semibold">{{ $t("home.hero.greeting") }}</h1>
-      <p class="w-full text-neutral-600 lg:w-2/3 dark:text-neutral-400">{{ $t("home.hero.summary") }}</p>
-      <SocialLinks>
-        <a class="my-auto flex" href="#overview">
-          <Icon name="mage:arrow-down" size="30" class="animate-pulse hover:animate-none" />
+  <div class="relative flex min-h-[80vh] w-full items-center justify-center overflow-hidden py-24 2xl:min-h-[850px]">
+    
+    <!-- FULL WIDTH BACKGROUND WRAPPER (With Fade Out at Bottom) -->
+    <div class="absolute inset-0 h-full w-full [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]">
+        
+        <!-- 1. Ambient Glows -->
+        <div class="absolute -right-[10%] -top-[10%] z-0 h-[800px] w-[800px] rounded-full bg-secondary-500/10 blur-[150px] dark:bg-secondary-500/10"></div>
+        <div class="absolute left-[60%] top-[40%] z-0 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-secondary-400/5 blur-[120px]"></div>
+        
+        <!-- 2. Full Width Dot Grid Pattern -->
+        <div class="absolute inset-0 z-0 [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]">
+            <div class="h-full w-full bg-[radial-gradient(#80808066_1.5px,transparent_1.5px)] bg-[size:40px_40px] dark:bg-[radial-gradient(#ffffff15_1.5px,transparent_1.5px)]"></div>
+        </div>
+
+        <!-- 3. Improved Noise: Zero Color Shift -->
+        <!-- Using mix-blend-overlay with ultra-low opacity to only add grain without graying out colors -->
+        <div class="absolute inset-0 z-0 opacity-[0.05] mix-blend-overlay [mask-image:radial-gradient(closest-side,black,transparent)]" 
+             style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.99%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E'); background-size: 150px 150px;">
+        </div>
+    </div>
+
+
+    <!-- CONTENT CONTAINER -->
+    <div class="container relative z-10 flex w-full flex-col items-start gap-10 px-4 md:px-8">
+      
+      <!-- Status Badge -->
+      <div class="animate-fade-in-up" style="animation-delay: 100ms;">
+        <NowIndicator />
+      </div>
+
+      <!-- Headline -->
+      <div class="flex flex-col gap-4">
+          <h1 class="max-w-4xl animate-fade-in-up text-5xl font-black tracking-tight text-neutral-950 dark:text-white sm:text-6xl lg:text-7xl" style="animation-delay: 200ms;">
+            {{ $t("home.hero.greeting") }}
+          </h1>
+          <!-- Aesthetic Accent Line -->
+          <div class="h-2 w-24 animate-fade-in-up rounded-full bg-gradient-to-r from-secondary-500 to-transparent" style="animation-delay: 250ms;"></div>
+      </div>
+
+      <!-- Summary Text -->
+      <p class="max-w-3xl animate-fade-in-up text-xl leading-relaxed text-neutral-600 dark:text-neutral-400 sm:text-2xl" style="animation-delay: 350ms;">
+        {{ $t("home.hero.summary") }}
+      </p>
+
+      <!-- Actions / Socials -->
+      <div class="flex animate-fade-in-up flex-wrap items-center gap-6 pt-4" style="animation-delay: 450ms;">
+        <SocialLinks />
+        
+        <!-- Scroll Down Indicator -->
+        <a href="#overview" class="group flex items-center gap-3 rounded-2xl border border-neutral-200/60 bg-white/40 px-6 py-3 text-sm font-bold uppercase tracking-widest text-neutral-500 backdrop-blur-md transition-all hover:border-secondary-500/40 hover:bg-white/80 hover:text-secondary-600 dark:border-neutral-800/60 dark:bg-neutral-950/50 dark:text-neutral-400 dark:hover:text-secondary-400">
+            <span>Explore</span>
+            <Icon name="mage:arrow-down" size="18" class="animate-bounce" />
         </a>
-      </SocialLinks>
+      </div>
+
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 </script>
+
+<style scoped>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+</style>

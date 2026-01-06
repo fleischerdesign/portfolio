@@ -93,7 +93,7 @@
                   />
               </div>
               <div class="absolute -bottom-8 -right-8 hidden xl:block">
-                  <div class="max-w-xs rounded-2xl bg-white p-8 shadow-2xl dark:bg-neutral-800">
+                  <div class="max-w-xs rounded-2xl bg-white/80 p-8 shadow-2xl backdrop-blur-md dark:bg-neutral-800/80">
                        <Icon name="fa6-solid:quote-left" size="32" class="mb-4 text-secondary-400/50" />
                        <p class="text-lg italic leading-relaxed text-neutral-700 dark:text-neutral-300">
                           {{ $t('about.earlyLife.content.quote') }}
@@ -162,10 +162,10 @@
              <UiCard v-for="(items, category) in interests" :key="category" class="flex flex-col p-8 transition-all hover:-translate-y-2 hover:shadow-xl">
                 <div class="mb-6 flex items-center gap-3">
                     <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 dark:bg-secondary-900/40 dark:text-secondary-400">
-                        <Icon v-if="category === 'technology'" name="mage:code" size="24" />
-                        <Icon v-else-if="category === 'culture'" name="mage:music-note" size="24" />
-                        <Icon v-else-if="category === 'health'" name="mage:heart-health" size="24" />
-                        <Icon v-else-if="category === 'education'" name="mage:book" size="24" />
+                        <Icon v-if="category === 'technology'" name="heroicons:code-bracket" size="24" />
+                        <Icon v-else-if="category === 'culture'" name="heroicons:musical-note" size="24" />
+                        <Icon v-else-if="category === 'health'" name="heroicons:heart" size="24" />
+                        <Icon v-else-if="category === 'education'" name="heroicons:book-open" size="24" />
                     </div>
                     <h3 class="text-xl font-bold capitalize text-neutral-900 dark:text-white">{{ $t(`interests.${category}.title`) }}</h3>
                 </div>

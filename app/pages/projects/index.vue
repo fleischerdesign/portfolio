@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-auto max-w-screen-xl py-16">
         <div class="mb-24">
-              <UiSectionHeader :level="1" :title="$t('projects.title')" :subtitle="$t('projects.subtitle')" />
+              <UiSectionHeader :level="1" :title="$t('projects.title')" :subtitle="$t('projects.subtitle')" symbol="heroicons:code-bracket" />
             <div class="mt-4 grid grid-cols-1 gap-3">
             <ProjectCard
                 v-for="(project, index) in data"

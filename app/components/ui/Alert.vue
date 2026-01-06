@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 
 interface Props {
     variant?: 'info' | 'success' | 'warning' | 'error';
@@ -18,28 +19,37 @@ const show = ref(true);
 
 const alertClasses = useCva(
     props,
-    'p-4 rounded-lg shadow-md flex items-start space-x-4 border',
+    'relative overflow-hidden p-4 rounded-2xl shadow-sm flex items-start space-x-4 border backdrop-blur-md transition-all',
     {
         variant: {
-            info: 'bg-blue-100 border-blue-500 text-blue-800 dark:bg-blue-900 dark:border-blue-600 dark:text-blue-200',
-            success: 'bg-green-100 border-green-500 text-green-800 dark:bg-green-900 dark:border-green-600 dark:text-green-200',
-            warning: 'bg-yellow-100 border-yellow-500 text-yellow-800 dark:bg-yellow-900 dark:border-yellow-600 dark:text-yellow-200',
-            error: 'bg-red-100 border-red-500 text-red-800 dark:bg-red-900 dark:border-red-600 dark:text-red-200',
+            info: 'bg-blue-50/60 border-blue-200/50 text-blue-900 dark:bg-blue-900/30 dark:border-blue-800/50 dark:text-blue-100',
+            success: 'bg-emerald-50/60 border-emerald-200/50 text-emerald-900 dark:bg-emerald-900/30 dark:border-emerald-800/50 dark:text-emerald-100',
+            warning: 'bg-amber-50/60 border-amber-200/50 text-amber-900 dark:bg-amber-900/30 dark:border-amber-800/50 dark:text-amber-100',
+            error: 'bg-red-50/60 border-red-200/50 text-red-900 dark:bg-red-900/30 dark:border-red-800/50 dark:text-red-100',
         },
     },
 );
 
+const iconContainerClasses = useCva(
+    props,
+    'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/50 shadow-sm dark:bg-white/10',
+    {
+        variant: {
+            info: 'text-blue-600 dark:text-blue-300',
+            success: 'text-emerald-600 dark:text-emerald-300',
+            warning: 'text-amber-600 dark:text-amber-300',
+            error: 'text-red-600 dark:text-red-300',
+        }
+    }
+);
+
 const iconName = computed(() => {
     switch (props.variant) {
-        case 'success':
-            return 'mdi:check-circle';
-        case 'warning':
-            return 'mdi:alert';
-        case 'error':
-            return 'mdi:alert-circle';
+        case 'success': return 'mdi:check-circle';
+        case 'warning': return 'mdi:alert';
+        case 'error': return 'mdi:alert-circle';
         case 'info':
-        default:
-            return 'mdi:information';
+        default: return 'mdi:information';
     }
 });
 
@@ -50,19 +60,23 @@ const closeAlert = () => {
 
 <template>
     <div v-if="show" :class="alertClasses">
-        <Icon v-if="showIcon" :name="iconName" class="h-5 w-5 flex-shrink-0" />
-        <div class="flex-1">
-            <h3 v-if="title" class="mb-1 text-lg font-semibold">{{ title }}</h3>
-            <div class="text-sm">
+        <!-- Ambient Glow Background -->
+        <div class="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-current opacity-10 blur-3xl"></div>
+
+        <div v-if="showIcon" :class="iconContainerClasses">
+            <Icon :name="iconName" class="h-6 w-6" />
+        </div>
+        
+        <div class="flex-1 pt-1">
+            <h3 v-if="title" class="mb-1 text-base font-bold">{{ title }}</h3>
+            <div class="text-sm leading-relaxed opacity-90">
                 <slot />
             </div>
         </div>
-        <button v-if="closable" class="-mx-1.5 -my-1.5 ml-auto inline-flex h-8 w-8 rounded-lg p-1.5 focus:ring-2 focus:ring-current" @click="closeAlert">
+        
+        <button v-if="closable" class="-mx-1.5 -my-1.5 ml-auto inline-flex h-8 w-8 items-center justify-center rounded-lg p-1.5 transition-colors hover:bg-black/5 dark:hover:bg-white/10 focus:ring-2 focus:ring-current" @click="closeAlert">
             <span class="sr-only">Close</span>
-            <Icon name="mdi:close" class="h-5 w-5" />
+            <Icon name="mdi:close" class="h-5 w-5 opacity-70" />
         </button>
     </div>
 </template>
-
-<style scoped>
-</style>

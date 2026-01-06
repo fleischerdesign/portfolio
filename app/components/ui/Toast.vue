@@ -1,19 +1,24 @@
 <template>
   <div :class="toastClasses" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="flex items-center">
-      <Icon v-if="showIcon" :name="iconName" class="h-5 w-5 flex-shrink-0" />
-      <div class="ml-3 text-sm font-medium flex-grow">
-        {{ message }}
-      </div>
-      <button v-if="dismissible" @click="$emit('dismiss')" :class="buttonClasses">
-        <span class="sr-only">Close</span>
-        <Icon name="heroicons:x-mark-20-solid" class="h-5 w-5" />
-      </button>
+    <!-- Icon Container with Glow -->
+    <div :class="iconContainerClasses">
+      <Icon v-if="showIcon" :name="iconName" class="h-6 w-6" />
     </div>
+
+    <div class="ml-4 flex-grow text-sm font-medium">
+      {{ message }}
+    </div>
+
+    <button v-if="dismissible" @click="$emit('dismiss')" :class="buttonClasses">
+      <span class="sr-only">Close</span>
+      <Icon name="heroicons:x-mark-20-solid" class="h-5 w-5" />
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 interface Props {
   message: string;
   type?: 'info' | 'success' | 'warning' | 'error';
@@ -31,26 +36,39 @@ defineEmits(['dismiss']);
 
 const toastClasses = useCva(
   props,
-  'flex items-center w-full max-w-xs p-4 rounded-lg shadow-lg',
+  'flex items-center w-full max-w-sm p-2 pr-4 rounded-2xl shadow-xl backdrop-blur-xl border transition-all duration-500 animate-slide-in-right',
   {
     type: {
-      info: 'bg-blue-100 border border-blue-300 text-blue-800 dark:bg-blue-900/50 dark:border-blue-700 dark:text-blue-200',
-      success: 'bg-green-100 border border-green-300 text-green-800 dark:bg-green-900/50 dark:border-green-700 dark:text-green-200',
-      warning: 'bg-yellow-100 border border-yellow-300 text-yellow-800 dark:bg-yellow-900/50 dark:border-yellow-700 dark:text-yellow-200',
-      error: 'bg-red-100 border border-red-300 text-red-800 dark:bg-red-900/50 dark:border-red-700 dark:text-red-200',
+      info: 'bg-blue-50/80 border-blue-200/50 text-blue-900 dark:bg-blue-900/60 dark:border-blue-700/50 dark:text-blue-100',
+      success: 'bg-emerald-50/80 border-emerald-200/50 text-emerald-900 dark:bg-emerald-900/60 dark:border-emerald-700/50 dark:text-emerald-100 shadow-emerald-500/10',
+      warning: 'bg-amber-50/80 border-amber-200/50 text-amber-900 dark:bg-amber-900/60 dark:border-amber-700/50 dark:text-amber-100',
+      error: 'bg-red-50/80 border-red-200/50 text-red-900 dark:bg-red-900/60 dark:border-red-700/50 dark:text-red-100 shadow-red-500/10',
+    },
+  },
+);
+
+const iconContainerClasses = useCva(
+  props,
+  'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-sm',
+  {
+    type: {
+      info: 'bg-blue-100 text-blue-600 dark:bg-blue-800/50 dark:text-blue-200',
+      success: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-800/50 dark:text-emerald-200',
+      warning: 'bg-amber-100 text-amber-600 dark:bg-amber-800/50 dark:text-amber-200',
+      error: 'bg-red-100 text-red-600 dark:bg-red-800/50 dark:text-red-200',
     },
   },
 );
 
 const buttonClasses = useCva(
   props,
-  '-mx-1.5 -my-1.5 ml-auto inline-flex h-8 w-8 rounded-lg p-1.5 focus:ring-2',
+  'ml-auto inline-flex h-8 w-8 items-center justify-center rounded-lg transition-colors focus:ring-2 focus:outline-none',
   {
     type: {
-      info: 'text-blue-500 hover:bg-blue-200 focus:ring-blue-400 dark:hover:bg-blue-800',
-      success: 'text-green-500 hover:bg-green-200 focus:ring-green-400 dark:hover:bg-green-800',
-      warning: 'text-yellow-500 hover:bg-yellow-200 focus:ring-yellow-400 dark:hover:bg-yellow-800',
-      error: 'text-red-500 hover:bg-red-200 focus:ring-red-400 dark:hover:bg-red-800',
+      info: 'text-blue-500 hover:bg-blue-100 focus:ring-blue-400 dark:text-blue-300 dark:hover:bg-blue-800',
+      success: 'text-emerald-500 hover:bg-emerald-100 focus:ring-emerald-400 dark:text-emerald-300 dark:hover:bg-emerald-800',
+      warning: 'text-amber-500 hover:bg-amber-100 focus:ring-amber-400 dark:text-amber-300 dark:hover:bg-amber-800',
+      error: 'text-red-500 hover:bg-red-100 focus:ring-red-400 dark:text-red-300 dark:hover:bg-red-800',
     },
   },
 );
@@ -65,3 +83,19 @@ const iconName = computed(() => {
   }
 });
 </script>
+
+<style scoped>
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.animate-slide-in-right {
+  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+</style>

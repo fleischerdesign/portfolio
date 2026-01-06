@@ -1,74 +1,64 @@
 <template>
-    <div class="fixed bottom-0 z-20 my-2 flex w-full print:hidden">
-        <div class="m-auto flex gap-2">
-            <div
-class="group flex cursor-pointer rounded-lg border border-neutral-300/40 bg-gradient-to-br from-neutral-100/40 to-neutral-200/40 p-3 shadow-sm backdrop-blur-md transition hover:border-neutral-400/40 hover:bg-gradient-to-br hover:from-neutral-200/40 hover:to-neutral-100/40 hover:shadow-inner dark:border-neutral-700/40 dark:from-neutral-900/40 dark:to-neutral-800/40 dark:hover:border-neutral-600/40 dark:hover:from-neutral-800/40 dark:hover:to-neutral-900/40"
-                @click="$toggleDarkMode()">
+    <div class="fixed bottom-0 z-20 my-4 flex w-full justify-center print:hidden">
+        <div class="flex items-center gap-3">
+            <!-- Theme Toggle Button -->
+            <button
+                class="group relative flex h-11 w-11 items-center justify-center rounded-xl border border-neutral-200/50 bg-white/70 shadow-lg backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-neutral-800/50 dark:bg-neutral-900/70 dark:hover:bg-secondary-900/20"
+                aria-label="Toggle Dark Mode"
+                @click="$toggleDarkMode()"
+            >
                 <ClientOnly>
-                    <template v-if="colorMode.value == 'light'">
-                        <Icon
-name="mage:moon" size="30"
-                            class="opacity-40 transition hover:-translate-y-1 group-hover:opacity-0" />
-                        <Icon
-name="mage:moon-fill" size="30"
-                            class="absolute opacity-0 transition group-hover:opacity-40" />
-                    </template>
-                    <template v-else>
-                        <Icon
-name="mage:sun" size="30"
-                            class="opacity-40 transition hover:-translate-y-1 group-hover:opacity-0" />
-                        <Icon
-name="mage:sun-fill" size="30"
-                            class="absolute opacity-0 transition group-hover:opacity-40" />
-                    </template>
+                    <div class="relative h-6 w-6">
+                        <template v-if="colorMode.value === 'light'">
+                            <!-- Moon Outline -->
+                            <Icon name="mage:moon" size="24" class="absolute inset-0 text-neutral-500 transition-all duration-300 group-hover:opacity-0 group-hover:scale-90" />
+                            <!-- Moon Filled -->
+                            <Icon name="mage:moon-fill" size="24" class="absolute inset-0 text-secondary-600 opacity-0 transition-all duration-300 scale-90 group-hover:opacity-100 group-hover:scale-100" />
+                        </template>
+                        <template v-else>
+                            <!-- Sun Outline -->
+                            <Icon name="mage:sun" size="24" class="absolute inset-0 text-neutral-400 transition-all duration-300 group-hover:opacity-0 group-hover:scale-90" />
+                            <!-- Sun Filled -->
+                            <Icon name="mage:sun-fill" size="24" class="absolute inset-0 text-secondary-400 opacity-0 transition-all duration-300 scale-90 group-hover:opacity-100 group-hover:scale-100" />
+                        </template>
+                    </div>
                     <template #fallback>
-                        <Icon name="mage:moon" size="30" class="opacity-40" />
+                        <Icon name="mage:moon" size="24" class="text-neutral-500" />
                     </template>
                 </ClientOnly>
-            </div>
-            <div
-                class="flex gap-3 rounded-lg border border-neutral-300/40 bg-gradient-to-br from-neutral-100/40 to-neutral-200/40 p-3 shadow-sm backdrop-blur-md transition hover:border-neutral-400/40 hover:bg-gradient-to-br hover:from-neutral-200/40 hover:to-neutral-100/40 hover:shadow-inner dark:border-neutral-700/40 dark:from-neutral-900/40 dark:to-neutral-800/40 dark:hover:border-neutral-600/40 dark:hover:from-neutral-800/40 dark:hover:to-neutral-900/40">
-                <NuxtLink :to="$localePath('/')" class="group flex" active-class="active">
-                    <Icon
-name="mage:home" size="30"
-                        class="opacity-40 transition group-hover:opacity-0 group-[.active]:opacity-0" />
-                    <Icon
-name="mage:home-fill" size="30"
-                        class="absolute opacity-0 transition group-hover:opacity-40 group-[.active]:text-secondary-400 group-[.active]:opacity-100" />
+            </button>
+
+            <!-- Navigation Bar -->
+            <nav
+                class="flex items-center gap-1 rounded-2xl border border-neutral-200/50 bg-white/70 p-1.5 shadow-xl backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-900/70"
+            >
+                <NuxtLink 
+                    v-for="link in navLinks" 
+                    :key="link.path"
+                    :to="$localePath(link.path)" 
+                    class="group relative flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 hover:bg-secondary-50 dark:hover:bg-secondary-900/20"
+                    active-class="active-nav-item"
+                >
+                    <div class="relative h-6 w-6 transition-transform duration-300 group-active:scale-95">
+                        <!-- Outline Icon -->
+                        <Icon
+                            :name="link.icon" 
+                            size="24"
+                            class="absolute inset-0 text-neutral-500 transition-all duration-300 group-hover:opacity-0 group-hover:scale-90 group-[.active-nav-item]:opacity-0 dark:text-neutral-400" 
+                        />
+                        
+                        <!-- Filled Icon -->
+                        <Icon
+                            :name="link.activeIcon" 
+                            size="24"
+                            class="absolute inset-0 text-secondary-600 opacity-0 transition-all duration-300 scale-90 group-hover:opacity-100 group-hover:scale-100 group-[.active-nav-item]:opacity-100 group-[.active-nav-item]:scale-100 dark:text-secondary-400" 
+                        />
+                    </div>
+                    
+                    <!-- Active Indicator: Small glowing line at the bottom -->
+                    <div class="absolute bottom-1 h-0.5 w-4 rounded-full bg-secondary-500 opacity-0 shadow-[0_0_8px_rgba(16,185,129,0.8)] transition-all duration-300 group-[.active-nav-item]:opacity-100"></div>
                 </NuxtLink>
-                <NuxtLink :to="$localePath('/about')" class="group flex" active-class="active">
-                    <Icon
-name="mage:user-square" size="30"
-                        class="opacity-40 transition group-hover:opacity-0 group-[.active]:opacity-0" />
-                    <Icon
-name="mage:user-square-fill" size="30"
-                        class="absolute opacity-0 transition group-hover:opacity-40 group-[.active]:text-secondary-400 group-[.active]:opacity-100" />
-                </NuxtLink>
-                <NuxtLink :to="$localePath('/blog')" class="group flex" active-class="active">
-                    <Icon
-name="mage:note" size="30"
-                        class="opacity-40 transition group-hover:opacity-0 group-[.active]:opacity-0" />
-                    <Icon
-name="mage:note-fill" size="30"
-                        class="absolute opacity-0 transition group-hover:opacity-40 group-[.active]:text-secondary-400 group-[.active]:opacity-100" />
-                </NuxtLink>
-                <NuxtLink :to="$localePath('/projects')" class="group flex" active-class="active">
-                    <Icon
-name="mage:briefcase" size="30"
-                        class="opacity-40 transition group-hover:opacity-0 group-[.active]:opacity-0" />
-                    <Icon
-name="mage:briefcase-fill" size="30"
-                        class="absolute opacity-0 transition group-hover:opacity-40 group-[.active]:text-secondary-400 group-[.active]:opacity-100" />
-                </NuxtLink>
-                <NuxtLink :to="$localePath('/store')" class="group flex" active-class="active">
-                    <Icon
-name="mage:shop" size="30"
-                        class="opacity-40 transition group-hover:opacity-0 group-[.active]:opacity-0" />
-                    <Icon
-name="mage:shop-fill" size="30"
-                        class="absolute opacity-0 transition group-hover:opacity-40 group-[.active]:text-secondary-400 group-[.active]:opacity-100" />
-                </NuxtLink>
-            </div>
+            </nav>
         </div>
     </div>
 </template>
@@ -78,4 +68,12 @@ const colorMode = useColorMode()
 const $toggleDarkMode = () => {
     colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
+
+const navLinks = [
+    { path: '/', icon: 'mage:home', activeIcon: 'mage:home-fill' },
+    { path: '/about', icon: 'mage:user-square', activeIcon: 'mage:user-square-fill' },
+    { path: '/blog', icon: 'mage:note', activeIcon: 'mage:note-fill' },
+    { path: '/projects', icon: 'mage:briefcase', activeIcon: 'mage:briefcase-fill' },
+    { path: '/store', icon: 'mage:shop', activeIcon: 'mage:shop-fill' },
+]
 </script>
