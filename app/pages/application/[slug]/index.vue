@@ -105,7 +105,7 @@ onMounted(() => {
   <div v-if="application" class="container mx-auto max-w-screen-xl py-16">
     <!-- Header -->
     <div class="mb-12">
-      <UiSectionHeader :title="application.title" :subtitle="`Bewerbung an ${application.company.name}`" />
+      <UiSectionHeader symbol="heroicons:briefcase" :title="application.title" :subtitle="`Bewerbung an ${application.company.name}`" />
     </div>
 
     <!-- Main Grid -->

@@ -64,13 +64,15 @@ const stats = computed(() => [
 
 <template>
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-    <UiCard v-for="stat in stats" :key="stat.key">
-      <UiCardContainer class="flex items-center justify-center gap-4">
-        <div class="flex-shrink-0 rounded-full bg-primary-100 p-3 dark:bg-primary-900/50">
-          <Icon :name="stat.icon" class="h-6 w-6 text-primary-500 dark:text-primary-400" />
+    <UiCard v-for="stat in stats" :key="stat.key" class="border-secondary-500/10 shadow-lg shadow-secondary-500/5">
+      <UiCardContainer class="!flex-row items-center justify-center gap-4">
+        <div class="flex-shrink-0 rounded-xl bg-secondary-50 p-3 dark:bg-secondary-900/20 border border-secondary-200/50 dark:border-secondary-500/10">
+          <Icon :name="stat.icon" class="h-6 w-6 text-secondary-600 dark:text-secondary-400" />
         </div>
-        <span class="text-2xl font-bold">{{ stat.value }}</span>
-        <span class="text-sm text-neutral-500 dark:text-neutral-400">{{ stat.label }}</span>
+        <div class="flex flex-col">
+          <span class="text-2xl font-bold text-neutral-900 dark:text-white">{{ stat.value }}</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">{{ stat.label }}</span>
+        </div>
       </UiCardContainer>
     </UiCard>
   </div>

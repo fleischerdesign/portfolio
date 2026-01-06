@@ -67,31 +67,33 @@ useSeoMeta({
 <template>
   <div class="container mx-auto max-w-screen-xl py-16">
     <div class="mb-24 space-y-8">
-      <UiSectionHeader :level="1" title="Bewerbungsübersicht" subtitle="Eine Liste aller erstellten und versendeten Bewerbungen." />
+      <UiSectionHeader :level="1" symbol="heroicons:briefcase" title="Bewerbungsübersicht" subtitle="Eine Liste aller erstellten und versendeten Bewerbungen." />
       
       <ApplicationStats :applications="filteredApplications" />
 
-      <div class="mt-4 flex flex-col gap-4 md:flex-row md:items-center">
-        <UiInput id="search-applications" v-model="searchTerm" label="Suchen" class="w-full md:flex-grow" />
-        <div class="flex flex-col gap-4 md:flex-shrink-0 md:flex-row md:items-center">
-          <UiSelect id="filter-status" v-model="statusFilter" :options="availableStatuses" label="Status filtern" class="md:w-auto">
-            <template #display="{ option }">
-              <span v-if="option === 'all'">Alle Status</span>
-              <span v-else>{{ option.charAt(0).toUpperCase() + option.slice(1) }}</span>
-            </template>
-            <template #option="{ option }">
-              <span v-if="option === 'all'">Alle Status</span>
-              <span v-else>{{ option.charAt(0).toUpperCase() + option.slice(1) }}</span>
-            </template>
-          </UiSelect>
-          <NuxtLink :to="$localePath('/application/new')">
-            <UiButton>
-              <Icon name="heroicons:plus" class="mr-2 h-5 w-5" />
-              Neue Bewerbung
-            </UiButton>
-          </NuxtLink>
-        </div>
-      </div>
+      <UiCard class="mt-8">
+        <UiCardContainer class="flex flex-col gap-4 md:flex-row md:items-end">
+          <UiInput id="search-applications" v-model="searchTerm" label="Suchen" class="w-full md:flex-grow" />
+          <div class="flex flex-col gap-4 md:flex-shrink-0 md:flex-row md:items-end">
+            <UiSelect id="filter-status" v-model="statusFilter" :options="availableStatuses" label="Status filtern" class="w-full md:w-48">
+              <template #display="{ option }">
+                <span v-if="option === 'all'">Alle Status</span>
+                <span v-else>{{ option.charAt(0).toUpperCase() + option.slice(1) }}</span>
+              </template>
+              <template #option="{ option }">
+                <span v-if="option === 'all'">Alle Status</span>
+                <span v-else>{{ option.charAt(0).toUpperCase() + option.slice(1) }}</span>
+              </template>
+            </UiSelect>
+            <NuxtLink :to="$localePath('/application/new')" class="w-full md:w-auto">
+              <UiButton variant="secondary" class="w-full justify-center">
+                <Icon name="heroicons:plus" class="mr-2 h-5 w-5" />
+                Neue Bewerbung
+              </UiButton>
+            </NuxtLink>
+          </div>
+        </UiCardContainer>
+      </UiCard>
 
       <div v-if="filteredApplications && filteredApplications.length > 0" class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <ApplicationCard

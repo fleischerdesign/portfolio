@@ -104,25 +104,25 @@ onUnmounted(() => {
             <div
               v-if="isMenuOpen"
               ref="menu"
-              class="absolute right-4 top-12 z-50 w-48 origin-top-right rounded-lg border border-neutral-300/40 bg-gradient-to-br from-neutral-100/40 to-neutral-200/40 px-3 py-2 text-neutral-950 shadow-lg backdrop-blur-md dark:border-neutral-700/40 dark:from-neutral-900/40 dark:to-neutral-800/40 dark:text-white"
+              class="absolute right-4 top-12 z-50 w-48 origin-top-right rounded-xl border border-neutral-200/60 bg-white/80 px-2 py-2 text-neutral-900 shadow-xl backdrop-blur-xl dark:border-neutral-800/60 dark:bg-neutral-900/80 dark:text-white"
               @click.stop.prevent
             >
               <ul class="flex flex-col gap-1">
                 <li>
-                  <NuxtLink :to="$localePath({ path: `/application/${application.slug}`, query: { edit: 'true' } })" class="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50">
-                    <Icon name="mdi:pencil" class="h-5 w-5" />
+                  <NuxtLink :to="$localePath({ path: `/application/${application.slug}`, query: { edit: 'true' } })" class="flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm font-medium hover:bg-secondary-50 hover:text-secondary-700 dark:hover:bg-secondary-900/20 dark:hover:text-secondary-400 transition-colors">
+                    <Icon name="mdi:pencil" class="h-4 w-4" />
                     <span>Bearbeiten</span>
                   </NuxtLink>
                 </li>
                 <li>
-                  <button class="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50" @click="shareApplication">
-                    <Icon name="mdi:share-variant" class="h-5 w-5" />
+                  <button class="flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm font-medium hover:bg-secondary-50 hover:text-secondary-700 dark:hover:bg-secondary-900/20 dark:hover:text-secondary-400 transition-colors" @click="shareApplication">
+                    <Icon name="mdi:share-variant" class="h-4 w-4" />
                     <span>Teilen</span>
                   </button>
                 </li>
                 <li>
-                  <button class="flex w-full items-center gap-3 rounded-md p-2 text-left text-red-500 hover:bg-red-500/10" @click="showDeleteModal = true">
-                    <Icon name="mdi:delete" class="h-5 w-5" />
+                  <button class="flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400 transition-colors" @click="showDeleteModal = true">
+                    <Icon name="mdi:delete" class="h-4 w-4" />
                     <span>Entfernen</span>
                   </button>
                 </li>
@@ -132,7 +132,7 @@ onUnmounted(() => {
           
           <div class="flex-grow">
             <div class="flex items-center justify-between">
-              <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ application.company.name }}</h2>
+              <h2 class="text-xl font-semibold text-neutral-900 dark:text-white">{{ application.company.name }}</h2>
             </div>
             <p class="mt-2 text-neutral-600 dark:text-neutral-300">{{ application.title }}</p>
           </div>

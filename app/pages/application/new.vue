@@ -130,7 +130,7 @@ function handleCancelContactForm() {
 <template>
   <div class="container mx-auto max-w-screen-xl py-16">
     <div class="mb-12">
-      <UiSectionHeader title="Neue Bewerbung erstellen" subtitle="Fülle die Details für die neue Bewerbung aus." />
+      <UiSectionHeader symbol="heroicons:briefcase" title="Neue Bewerbung erstellen" subtitle="Fülle die Details für die neue Bewerbung aus." />
     </div>
     <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-4 lg:items-start">
       <div class="space-y-8 lg:col-span-3">
