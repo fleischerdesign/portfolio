@@ -1,25 +1,27 @@
 <template>
   <div id="overview" class="mb-32 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
     
-    <!-- 1. GITHUB ACTIVITY (Wide) -->
+    <!-- 1. GITHUB ACTIVITY -->
     <UiCard class="col-span-1 border-neutral-200/50 bg-white/50 p-0 dark:border-neutral-800/50 dark:bg-neutral-900/50 md:col-span-2">
       <UiCardContainer class="h-full flex-col justify-between p-8">
         <div class="flex items-start justify-between">
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-1">
                 <div class="flex items-center gap-3">
                     <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white">
                         <Icon name="mdi:github" size="24" />
                     </div>
                     <h3 class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">{{ $t("home.overview.github.title") }}</h3>
                 </div>
-                <p class="max-w-md text-lg text-neutral-500 dark:text-neutral-400">{{ subtitle }}</p>
+                <!-- Subtitle closer to title -->
+                <p class="max-w-md text-base text-neutral-500 dark:text-neutral-400">{{ subtitle }}</p>
             </div>
             <UiButton variant="glass" size="icon" to="https://github.com/fleischerdesign" target="_blank" external>
                 <Icon name="heroicons:arrow-top-right-on-square" />
             </UiButton>
         </div>
         
-        <div class="mt-8 overflow-hidden rounded-xl border border-neutral-200/50 bg-white/50 p-4 backdrop-blur-sm dark:border-neutral-800/50 dark:bg-black/20">
+        <!-- Content closer to Header (mt-6 instead of mt-8) -->
+        <div class="mt-6 overflow-hidden rounded-xl border border-neutral-200/50 bg-white/50 p-4 backdrop-blur-sm dark:border-neutral-800/50 dark:bg-black/20">
             <ClientOnly>
               <GithubChart :contributions="contributions" @displayed-weeks-count-changed="onDisplayedWeeksCountChanged" />
             </ClientOnly>
@@ -27,7 +29,7 @@
       </UiCardContainer>
     </UiCard >
 
-    <!-- 2. PROFILE PICTURE (Portrait Highlight) -->
+    <!-- 2. PROFILE PICTURE -->
     <UiCard class="group relative col-span-1 min-h-[340px] overflow-hidden border-0 bg-neutral-900 p-0 md:row-span-2">
       <NuxtImg
         src="/img/profile.jpg"
@@ -51,7 +53,8 @@
 
     <!-- 3. TECH STACK -->
     <UiCard class="col-span-1 overflow-hidden border-neutral-200/50 bg-white/50 dark:border-neutral-800/50 dark:bg-neutral-900/50">
-      <UiCardContainer class="flex-col gap-6 p-8">
+      <!-- Reduced gap to gap-4 -->
+      <UiCardContainer class="flex-col gap-4 p-8">
         <div class="flex items-center gap-3">
             <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
                 <Icon name="heroicons:square-3-stack-3d" size="24" />
@@ -65,7 +68,8 @@
 
     <!-- 4. STATISTICS -->
     <UiCard class="col-span-1 border-neutral-200/50 bg-white/50 dark:border-neutral-800/50 dark:bg-neutral-900/50">
-      <UiCardContainer class="flex-col gap-6 p-8">
+      <!-- Reduced gap to gap-4 -->
+      <UiCardContainer class="flex-col gap-4 p-8">
         <div class="flex items-center gap-3">
             <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
                 <Icon name="heroicons:presentation-chart-line" size="24" />
@@ -76,12 +80,11 @@
       </UiCardContainer>
     </UiCard >
 
-    <!-- 5. JOB SEARCH (Call to Action) -->
+    <!-- 5. JOB SEARCH -->
     <UiCard 
         interactive 
         class="group relative col-span-1 overflow-hidden border-secondary-500/20 bg-secondary-50/50 dark:border-secondary-500/20 dark:bg-secondary-900/20 md:col-span-2 lg:col-span-2"
     >
-      <!-- Animated Background Mesh -->
       <div class="absolute inset-0 -z-10 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:20px_20px] opacity-50 transition-opacity group-hover:opacity-100"></div>
       <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-secondary-500/10 blur-[80px] transition-all duration-500 group-hover:bg-secondary-500/20"></div>
 

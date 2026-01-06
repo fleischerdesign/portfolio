@@ -31,7 +31,7 @@ const stats = [
 </script>
 
 <template>
-  <div class="flex flex-col gap-3">
+  <div class="flex flex-col gap-3 py-2">
     <div
       v-for="(stat, index) in stats"
       :key="index" 

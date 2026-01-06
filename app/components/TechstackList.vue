@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-1 overflow-hidden py-2">
+  <div class="flex flex-col gap-0 overflow-hidden py-2">
     <template v-if="scroll">
       <div
         v-for="(row, rowIndex) in rowItems" :key="'marquee-row-' + rowIndex"
