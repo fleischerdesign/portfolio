@@ -128,7 +128,7 @@ function handleCancelContactForm() {
 </script>
 
 <template>
-  <div class="container mx-auto max-w-screen-xl py-16">
+  <div class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
     <div class="mb-12">
       <UiSectionHeader symbol="heroicons:briefcase" title="Neue Bewerbung erstellen" subtitle="Fülle die Details für die neue Bewerbung aus." />
     </div>
@@ -138,8 +138,8 @@ function handleCancelContactForm() {
           <UiCardContainer class="flex h-full flex-col gap-4">
             <h3 class="text-2xl font-medium">Basis-Informationen</h3>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <UiInput id="title" v-model="form.title" label="Jobtitel" required />
-              <UiInput id="subtitle" v-model="form.subtitle" label="Untertitel / Slogan" />
+              <UiInput id="title" v-model="form.title" label="Betreff / Position" required />
+              <UiInput id="subtitle" v-model="form.subtitle" label="Zusatz / Slogan" />
               <UiInput id="slug" v-model="form.slug" label="URL-Slug" required @input="manualSlugInput" />
               <UiInput id="url" v-model="form.url" label="URL zur Ausschreibung" />
             </div>

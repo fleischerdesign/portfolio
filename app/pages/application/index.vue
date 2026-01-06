@@ -65,7 +65,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="container mx-auto max-w-screen-xl py-16">
+  <div class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
     <div class="mb-24 space-y-8">
       <UiSectionHeader :level="1" symbol="heroicons:briefcase" title="Bewerbungsübersicht" subtitle="Eine Liste aller erstellten und versendeten Bewerbungen." />
       
