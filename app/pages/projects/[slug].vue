@@ -17,10 +17,7 @@
         <!-- 1. HEADER (Redesigned with UiSectionHeader) -->
         <header class="mb-16 flex w-full flex-col gap-10">
             <!-- Breadcrumb -->
-            <NuxtLink :to="$localePath('/projects')" class="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-neutral-500 transition-colors hover:text-secondary-500">
-                <Icon name="heroicons:arrow-left" class="transition-transform group-hover:-translate-x-1" />
-                {{ $t("project.back_projects") }}
-            </NuxtLink>
+            <UiBackButton :to="$localePath('/projects')" />
 
             <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
                 <UiSectionHeader 

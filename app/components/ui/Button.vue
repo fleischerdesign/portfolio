@@ -1,9 +1,8 @@
 <template>
     <NuxtLink v-if="to" :to="to" :class="buttonClasses" :external="external">
         <slot name="icon-left" />
-        <span v-if="isLoading" class="flex items-center gap-2">
+        <span v-if="isLoading" class="flex items-center justify-center">
             <Icon name="mdi:loading" class="h-5 w-5 animate-spin" />
-            Loading...
         </span>
         <template v-else>
             <slot />
@@ -12,9 +11,8 @@
     </NuxtLink>
     <button v-else :type="type" :class="buttonClasses" :disabled="isDisabled || isLoading">
         <slot name="icon-left" />
-        <span v-if="isLoading" class="flex items-center gap-2">
+        <span v-if="isLoading" class="flex items-center justify-center">
             <Icon name="mdi:loading" class="h-5 w-5 animate-spin" />
-            Loading...
         </span>
         <template v-else>
             <slot />

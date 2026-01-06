@@ -130,31 +130,31 @@ function handleCancelContactForm() {
 <template>
   <div class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
     <div class="mb-12">
-      <UiSectionHeader symbol="heroicons:briefcase" title="Neue Bewerbung erstellen" subtitle="Fülle die Details für die neue Bewerbung aus." />
+      <UiSectionHeader symbol="heroicons:briefcase" :title="$t('applications.new.title')" :subtitle="$t('applications.new.subtitle')" />
     </div>
     <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-4 lg:items-start">
       <div class="space-y-8 lg:col-span-3">
         <UiCard>
           <UiCardContainer class="flex h-full flex-col gap-4">
-            <h3 class="text-2xl font-medium">Basis-Informationen</h3>
+            <h3 class="text-2xl font-medium">{{ $t('applications.new.base_info') }}</h3>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <UiInput id="title" v-model="form.title" label="Betreff / Position" required />
-              <UiInput id="subtitle" v-model="form.subtitle" label="Zusatz / Slogan" />
+              <UiInput id="title" v-model="form.title" :label="$t('applications.detail.config.title_label')" required />
+              <UiInput id="subtitle" v-model="form.subtitle" :label="$t('applications.detail.config.subtitle_label')" />
               <UiInput id="slug" v-model="form.slug" label="URL-Slug" required @input="manualSlugInput" />
-              <UiInput id="url" v-model="form.url" label="URL zur Ausschreibung" />
+              <UiInput id="url" v-model="form.url" :label="$t('applications.detail.config.url_label')" />
             </div>
           </UiCardContainer>
         </UiCard>
 
         <UiCard>
           <UiCardContainer class="flex h-full flex-col gap-4">
-            <h3 class="text-2xl font-medium">Unternehmen</h3>
+            <h3 class="text-2xl font-medium">{{ $t('applications.detail.config.company') }}</h3>
             <div class="flex items-center gap-2">
               <UiSelect
                 id="company-select"
                 v-model="selectedCompany"
                 :options="allCompanies"
-                label="Bestehende Firma auswählen"
+                :label="$t('applications.new.select_existing_company')"
                 by="id"
                 class="w-full"
                 :disabled="showNewCompanyForm"
@@ -167,22 +167,22 @@ function handleCancelContactForm() {
                 </template>
               </UiSelect>
               <UiButton variant="outline" @click="showNewCompanyForm = !showNewCompanyForm">
-                {{ showNewCompanyForm ? 'Bestehende wählen' : 'Neue Firma' }}
+                {{ showNewCompanyForm ? $t('applications.new.existing_company') : $t('applications.new.new_company') }}
               </UiButton>
             </div>
 
             <div v-if="showNewCompanyForm" class="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <UiInput id="new-company-name" v-model="newCompanyName" label="Firmenname" required />
+              <UiInput id="new-company-name" v-model="newCompanyName" :label="$t('applications.new.company_name')" required />
               <div />
-              <UiInput id="new-company-street" v-model="newCompanyStreet" label="Straße" />
-              <UiInput id="new-company-housenumber" v-model="newCompanyHouseNumber" label="Hausnummer" />
-              <UiInput id="new-company-zipcode" v-model="newCompanyZipcode" type="number" label="PLZ" />
-              <UiInput id="new-company-city" v-model="constNewCompanyCity" label="Stadt" />
+              <UiInput id="new-company-street" v-model="newCompanyStreet" :label="$t('applications.new.street')" />
+              <UiInput id="new-company-housenumber" v-model="newCompanyHouseNumber" :label="$t('applications.new.house_number')" />
+              <UiInput id="new-company-zipcode" v-model="newCompanyZipcode" type="number" :label="$t('applications.new.zipcode')" />
+              <UiInput id="new-company-city" v-model="constNewCompanyCity" :label="$t('applications.new.city')" />
             </div>
             <p v-else-if="selectedCompany" class="text-neutral-500">
-              Ausgewählte Firma: {{ selectedCompany.name }}
+              {{ $t('applications.new.selected_company', { name: selectedCompany.name }) }}
             </p>
-            <p v-else class="text-neutral-500">Bitte Firma auswählen oder neue anlegen.</p>
+            <p v-else class="text-neutral-500">{{ $t('applications.new.please_select_company') }}</p>
           </UiCardContainer>
         </UiCard>
 
@@ -192,7 +192,7 @@ function handleCancelContactForm() {
               id="contact-select"
               v-model="selectedContacts"
               :options="allContacts"
-              label="Bestehende Kontakte auswählen"
+              :label="$t('applications.new.select_existing_contacts')"
               by="id"
               multiple
               creatable
@@ -212,12 +212,12 @@ function handleCancelContactForm() {
 
         <UiCard>
             <UiCardContainer>
-                <h3 class="mb-4 text-2xl font-medium">Inhalt (Anschreiben)</h3>
+                <h3 class="mb-4 text-2xl font-medium">{{ $t('applications.detail.document.title') }}</h3>
                 <UiInput
                     id="body"
                     v-model="form.body"
                     as="textarea"
-                    label="Inhalt (Markdown)"
+                    :label="$t('applications.new.body_label')"
                     class="min-h-64"
                 />
             </UiCardContainer>
@@ -228,11 +228,11 @@ function handleCancelContactForm() {
         <div class="rounded-lg bg-white shadow dark:bg-neutral-900">
           <div class="flex w-full flex-col gap-2">
             <UiButton class="w-full" :is-loading="isLoading" @click="createApplication">
-              Speichern & Erstellen
+              {{ $t('applications.new.save_create') }}
             </UiButton>
             <NuxtLink :to="$localePath('/application')">
               <UiButton class="w-full" variant="secondary">
-                Abbrechen
+                {{ $t('applications.detail.actions.cancel') }}
               </UiButton>
             </NuxtLink>
           </div>
@@ -242,7 +242,7 @@ function handleCancelContactForm() {
 
     <!-- Modals -->
     <UiModal v-model="showContactFormModal">
-      <template #header><h3 class="text-xl font-semibold">Neuen Kontakt erstellen</h3></template>
+      <template #header><h3 class="text-xl font-semibold">{{ $t('applications.modals.new_contact') }}</h3></template>
       <template #body>
         <ApplicationContactForm
           :company-id="companyIdForNewContact"

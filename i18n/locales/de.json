@@ -22,7 +22,151 @@
     "digital_media": "Digitale Medien",
     "secondary_school_diploma": "Realschulabschluss",
     "elementary_school_diploma": "Grundschulabschluss",
-    "summary": "Zusammenfassung"
+    "summary": "Zusammenfassung",
+    "back_overview": "Zur Übersicht"
+  },
+  "ui": {
+    "button": {
+      "loading": "Lädt..."
+    },
+    "select": {
+      "placeholder": "Option wählen...",
+      "create": "Neuen Eintrag erstellen"
+    }
+  },
+  "applications": {
+    "index": {
+      "title": "Bewerbungsübersicht",
+      "subtitle": "Eine Liste aller erstellten und versendeten Bewerbungen.",
+      "search": "Suchen",
+      "filter_status": "Status filtern",
+      "all_statuses": "Alle Status",
+      "new_application": "Neue Bewerbung",
+      "no_applications": "Keine Bewerbungen gefunden.",
+      "stats": {
+        "total": "Gesamt",
+        "response_rate": "Antwortrate",
+        "interview_rate": "Interview-Rate",
+        "offer_rate": "Angebots-Rate"
+      }
+    },
+    "status": {
+      "draft": "Entwurf",
+      "applied": "Beworben",
+      "interview": "Interview",
+      "offer": "Angebot",
+      "rejected": "Abgesagt",
+      "withdrawn": "Zurückgezogen"
+    },
+    "card": {
+      "edit": "Bearbeiten",
+      "share": "Teilen",
+      "delete": "Entfernen",
+      "last_activity": "Letzte Aktivität",
+      "share_title": "Bewerbung: {title}",
+      "share_text": "Schau dir diese Bewerbung an: {title} bei {company}",
+      "share_success": "Bewerbung erfolgreich geteilt!",
+      "copy_success": "Link in Zwischenablage kopiert!",
+      "copy_error": "Fehler beim Kopieren des Links!",
+      "delete_success": "Bewerbung erfolgreich gelöscht.",
+      "delete_error": "Fehler beim Löschen der Bewerbung.",
+      "delete_confirm_title": "Bewerbung löschen",
+      "delete_confirm_text": "Möchten Sie die Bewerbung für \"{title}\" bei \"{company}\" wirklich endgültig löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "detail": {
+      "loading": "Lade Bewerbungsdaten...",
+      "config": {
+        "title": "Konfiguration",
+        "subtitle": "Stammdaten der Bewerbung anpassen",
+        "general": "Allgemein",
+        "title_label": "Betreff / Position",
+        "subtitle_label": "Zusatz / Slogan",
+        "url_label": "Ausschreibungs-URL",
+        "company": "Unternehmen",
+        "select_company": "Firma auswählen",
+        "address_add": "Adresse hinzufügen",
+        "contacts": "Ansprechpartner",
+        "link_contacts": "Kontakte verknüpfen"
+      },
+      "document": {
+        "title": "Anschreiben",
+        "subtitle": "Offizielles Dokument",
+        "document_type": "Bewerbungsunterlage",
+        "applied_to": "Bewerbung an {company}",
+        "current_status": "Aktueller Status",
+        "activity": "Aktivität",
+        "listing": "Ausschreibung",
+        "date_label": "Bewerbungsdatum",
+        "date_prefix": "den",
+        "recipient_label": "Empfänger",
+        "creation_date": "Erstellungsdatum",
+        "created_at": "Erstellt am",
+        "applied_at": "Beworben am",
+        "location": "Neubrandenburg",
+        "closing": "Mit freundlichen Grüßen"
+      },
+      "editor": {
+        "words": "Wörter",
+        "chars": "Zeichen",
+        "reading_time": "Lesezeit",
+        "over_page_limit": "Über eine Seite",
+        "placeholder": "Schreibe hier dein Anschreiben... Nutze Markdown für Formatierungen."
+      },
+      "notes": {
+        "title": "Interne Notizen",
+        "subtitle": "Gedanken und Details zum Prozess",
+        "placeholder": "Notizen (eine pro Zeile)"
+      },
+      "history": {
+        "title": "Bewerbungshistorie",
+        "subtitle": "Alle Interaktionen und Statusänderungen",
+        "add_entry": "Eintrag hinzufügen",
+        "empty_state": "Noch keine Einträge im Verlauf vorhanden.",
+        "create_first": "Ersten Eintrag erstellen"
+      },
+      "preview": "Vorschau",
+      "actions": {
+        "save": "Änderungen speichern",
+        "cancel": "Abbrechen",
+        "undo": "Rückgängig",
+        "edit": "Bearbeiten",
+        "print": "Druckansicht",
+        "download_pdf": "Download PDF",
+        "update_pdf": "PDF aktualisieren",
+        "generate_pdf": "PDF generieren"
+      }
+    },
+    "new": {
+      "title": "Neue Bewerbung erstellen",
+      "subtitle": "Fülle die Details für die neue Bewerbung aus.",
+      "base_info": "Basis-Informationen",
+      "select_existing_company": "Bestehende Firma auswählen",
+      "new_company": "Neue Firma",
+      "existing_company": "Bestehende wählen",
+      "company_name": "Firmenname",
+      "street": "Straße",
+      "house_number": "Hausnummer",
+      "zipcode": "PLZ",
+      "city": "Stadt",
+      "selected_company": "Ausgewählte Firma: {name}",
+      "please_select_company": "Bitte Firma auswählen oder neue anlegen.",
+      "select_existing_contacts": "Bestehende Kontakte auswählen",
+      "body_label": "Inhalt (Markdown)",
+      "save_create": "Speichern & Erstellen"
+    },
+    "modals": {
+      "new_history": "Neuer Verlaufseintrag",
+      "edit_history": "Eintrag bearbeiten",
+      "delete_history": "Eintrag löschen",
+      "delete_history_confirm": "Möchten Sie diesen Verlaufseintrag wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "new_contact": "Neuer Kontakt",
+      "company_address": "Firmenadresse",
+      "status": "Status",
+      "interview_date": "Interview Datum",
+      "date": "Datum",
+      "notes": "Notizen",
+      "optional": "optional"
+    }
   },
   "softskills": {
     "leadership": "Führung",
@@ -196,7 +340,6 @@
     "title": "Blog",
     "subtitle": "Entdecke eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleite mich auf meine Reise in die Informatik.",
     "read_article": "Artikel lesen",
-    "back_overview": "Zur Übersicht",
     "author": "Autor",
     "enjoyed_post": "Hat dir dieser Beitrag gefallen?",
     "share_connect": "Teile ihn gerne oder vernetze dich mit mir.",
@@ -322,7 +465,6 @@
     "live": "Live",
     "case_study": "Case Study",
     "technologies": "Genutzte Technologien",
-    "back_projects": "Zurück zu Projekte",
     "visit_live": "Besuchen",
     "github": "GitHub",
     "key_features": "Hauptmerkmale"

@@ -11,7 +11,7 @@ definePageMeta({
 const { data, pending: _pending, error: _error } = await useFetch<{ applications: ApplicationResponsePayload[] }>('/api/applications');
 const applications = ref(data.value?.applications ?? []);
 
-const { locale } = useI18n();
+const { locale, t } = useI18n();
 const route = useRoute();
 
 // Filter and search state
@@ -50,16 +50,16 @@ watch(data, (newData) => {
 
 
 useSeoMeta({
-  title: "Bewerbungsübersicht",
-  ogTitle: "Bewerbungsübersicht",
-  description: "Eine Liste aller erstellten und versendeten Bewerbungen.",
-  ogDescription: "Eine Liste aller erstellten und versendeten Bewerbungen.",
+  title: () => t("applications.index.title"),
+  ogTitle: () => t("applications.index.title"),
+  description: () => t("applications.index.subtitle"),
+  ogDescription: () => t("applications.index.subtitle"),
   ogUrl: route.fullPath,
   ogType: 'website',
   ogLocale: locale.value,
-  twitterTitle: "Bewerbungsübersicht",
+  twitterTitle: () => t("applications.index.title"),
   twitterCard: 'summary_large_image',
-  twitterDescription: "Eine Liste aller erstellten und versendeten Bewerbungen.",
+  twitterDescription: () => t("applications.index.subtitle"),
   robots: 'noindex, nofollow',
 })
 </script>
@@ -67,28 +67,28 @@ useSeoMeta({
 <template>
   <div class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
     <div class="mb-24 space-y-8">
-      <UiSectionHeader :level="1" symbol="heroicons:briefcase" title="Bewerbungsübersicht" subtitle="Eine Liste aller erstellten und versendeten Bewerbungen." />
+      <UiSectionHeader :level="1" symbol="heroicons:briefcase" :title="$t('applications.index.title')" :subtitle="$t('applications.index.subtitle')" />
       
       <ApplicationStats :applications="filteredApplications" />
 
       <UiCard class="mt-8">
         <UiCardContainer class="flex flex-col gap-4 md:flex-row md:items-end">
-          <UiInput id="search-applications" v-model="searchTerm" label="Suchen" class="w-full md:flex-grow" />
+          <UiInput id="search-applications" v-model="searchTerm" :label="$t('applications.index.search')" class="w-full md:flex-grow" />
           <div class="flex flex-col gap-4 md:flex-shrink-0 md:flex-row md:items-end">
-            <UiSelect id="filter-status" v-model="statusFilter" :options="availableStatuses" label="Status filtern" class="w-full md:w-48">
+            <UiSelect id="filter-status" v-model="statusFilter" :options="availableStatuses" :label="$t('applications.index.filter_status')" class="w-full md:w-48">
               <template #display="{ option }">
-                <span v-if="option === 'all'">Alle Status</span>
-                <span v-else>{{ option.charAt(0).toUpperCase() + option.slice(1) }}</span>
+                <span v-if="option === 'all'">{{ $t('applications.index.all_statuses') }}</span>
+                <span v-else>{{ $t(`applications.status.${option}`) }}</span>
               </template>
               <template #option="{ option }">
-                <span v-if="option === 'all'">Alle Status</span>
-                <span v-else>{{ option.charAt(0).toUpperCase() + option.slice(1) }}</span>
+                <span v-if="option === 'all'">{{ $t('applications.index.all_statuses') }}</span>
+                <span v-else>{{ $t(`applications.status.${option}`) }}</span>
               </template>
             </UiSelect>
             <NuxtLink :to="$localePath('/application/new')" class="w-full md:w-auto">
               <UiButton variant="secondary" class="w-full justify-center">
                 <Icon name="heroicons:plus" class="mr-2 h-5 w-5" />
-                Neue Bewerbung
+                {{ $t('applications.index.new_application') }}
               </UiButton>
             </NuxtLink>
           </div>
@@ -104,7 +104,7 @@ useSeoMeta({
         />
       </div>
       <div v-else class="mt-8 text-center text-neutral-500 dark:text-neutral-400">
-        <p>Keine Bewerbungen gefunden.</p>
+        <p>{{ $t('applications.index.no_applications') }}</p>
       </div>
     </div>
   </div>

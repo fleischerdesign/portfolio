@@ -131,10 +131,10 @@ async function handleAddressUpdateSuccess(updatedCompany: CompanyResponse) {
   }
 }
 useSeoMeta({
-  title: () => application.value?.title || 'Bewerbung',
-  ogTitle: () => application.value?.title || 'Bewerbung',
-  description: () => application.value?.subtitle || `Bewerbung bei ${application.value?.company.name || 'einem Unternehmen'}`,
-  ogDescription: () => application.value?.subtitle || `Bewerbung bei ${application.value?.company.name || 'einem Unternehmen'} `,
+  title: () => application.value?.title || t('applications.detail.document.title'),
+  ogTitle: () => application.value?.title || t('applications.detail.document.title'),
+  description: () => application.value?.subtitle || t('applications.detail.document.document_type'),
+  ogDescription: () => application.value?.subtitle || t('applications.detail.document.document_type'),
   ogUrl: route.fullPath,
   ogType: 'website',
   robots: 'noindex, nofollow',
@@ -151,7 +151,7 @@ onMounted(() => {
   <div v-if="application" class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
     <!-- Header -->
     <div class="mb-12">
-      <UiSectionHeader symbol="heroicons:briefcase" :title="application.title" :subtitle="`Bewerbung an ${application.company.name}`" />
+      <UiSectionHeader symbol="heroicons:briefcase" :title="application.title" :subtitle="$t('applications.detail.document.applied_to', { company: application.company.name })" />
     </div>
 
     <!-- Consolidated Dashboard Header (View Mode) -->
@@ -163,10 +163,10 @@ onMounted(() => {
                     <Icon name="heroicons:signal" size="28" />
                 </div>
                 <div>
-                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">Aktueller Status</p>
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">{{ $t('applications.detail.document.current_status') }}</p>
                     <div class="mt-1">
                         <UiChip unstyled size="sm" :class="[getStatusChipClasses(application.currentStatus), getStatusTextClasses(application.currentStatus), 'px-3 py-0.5 text-xs font-bold rounded-lg border shadow-sm']">
-                            {{ application.currentStatus }}
+                            {{ $t(`applications.status.${application.currentStatus}`) }}
                         </UiChip>
                     </div>
                 </div>
@@ -178,7 +178,7 @@ onMounted(() => {
                     <Icon name="heroicons:building-office" size="28" />
                 </div>
                 <div class="min-w-0">
-                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">Unternehmen</p>
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">{{ $t('applications.detail.config.company') }}</p>
                     <p class="mt-0.5 text-xl font-bold text-neutral-900 dark:text-white truncate" :title="application.company.name">{{ application.company.name }}</p>
                     <p v-if="application.company.address" class="text-xs font-medium text-neutral-500 dark:text-neutral-400 truncate">{{ application.company.address.city }}</p>
                 </div>
@@ -190,10 +190,10 @@ onMounted(() => {
                     <Icon name="heroicons:clock" size="28" />
                 </div>
                 <div>
-                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">Aktivität</p>
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">{{ $t('applications.detail.document.activity') }}</p>
                     <p class="mt-0.5 text-xl font-bold text-neutral-900 dark:text-white">{{ getFormattedLastActivityDate(application) }}</p>
                     <p class="text-xs font-medium text-neutral-500 dark:text-neutral-400 whitespace-nowrap">
-                        {{ application.currentStatus === 'draft' ? 'Erstellt am' : 'Beworben am' }} {{ getDisplayDate(application) }}
+                        {{ application.currentStatus === 'draft' ? $t('applications.detail.document.created_at') : $t('applications.detail.document.applied_at') }} {{ getDisplayDate(application) }}
                     </p>
                 </div>
             </div>
@@ -202,7 +202,7 @@ onMounted(() => {
             <div v-if="application.url" class="ml-auto hidden xl:block">
                 <a :href="application.url" target="_blank" rel="noopener noreferrer">
                     <UiButton variant="glass" size="lg" class="group !rounded-2xl border-secondary-200/50 transition-all duration-500 hover:bg-secondary-500 hover:text-white">
-                        Ausschreibung
+                        {{ $t('applications.detail.document.listing') }}
                         <Icon name="heroicons:arrow-top-right-on-square" class="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                     </UiButton>
                 </a>
@@ -224,8 +224,8 @@ onMounted(() => {
                         <Icon name="heroicons:adjustments-horizontal" size="24" />
                     </div>
                     <div>
-                        <h3 class="text-2xl font-black text-neutral-900 dark:text-white">Konfiguration</h3>
-                        <p class="text-xs font-medium text-neutral-500">Stammdaten der Bewerbung anpassen</p>
+                        <h3 class="text-2xl font-black text-neutral-900 dark:text-white">{{ $t('applications.detail.config.title') }}</h3>
+                        <p class="text-xs font-medium text-neutral-500">{{ $t('applications.detail.config.subtitle') }}</p>
                     </div>
                 </div>
                 
@@ -234,12 +234,12 @@ onMounted(() => {
                     <div class="space-y-8">
                          <div class="flex items-center gap-2">
                              <div class="h-1 w-4 rounded-full bg-secondary-500"></div>
-                             <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Allgemein</p>
+                             <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">{{ $t('applications.detail.config.general') }}</p>
                          </div>
                          <div class="space-y-6">
-                             <UiInput id="edit-title" v-model="editableApplication.title" label="Betreff / Position" required class="dashboard-input" />
-                             <UiInput id="edit-subtitle" v-model="editableApplication.subtitle" label="Zusatz / Slogan" class="dashboard-input" />
-                             <UiInput id="edit-url" v-model="editableApplication.url" label="Ausschreibungs-URL" class="dashboard-input" />
+                             <UiInput id="edit-title" v-model="editableApplication.title" :label="$t('applications.detail.config.title_label')" required class="dashboard-input" />
+                             <UiInput id="edit-subtitle" v-model="editableApplication.subtitle" :label="$t('applications.detail.config.subtitle_label')" class="dashboard-input" />
+                             <UiInput id="edit-url" v-model="editableApplication.url" :label="$t('applications.detail.config.url_label')" class="dashboard-input" />
                          </div>
                     </div>
                     
@@ -247,14 +247,14 @@ onMounted(() => {
                     <div class="space-y-8 border-neutral-100 dark:border-neutral-800 md:border-l md:pl-10">
                          <div class="flex items-center gap-2">
                              <div class="h-1 w-4 rounded-full bg-secondary-500"></div>
-                             <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Unternehmen</p>
+                             <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">{{ $t('applications.detail.config.company') }}</p>
                          </div>
                          <div class="space-y-6">
                              <UiSelect 
                                 id="company-select" 
                                 v-model="editableApplication.selectedCompany" 
                                 :options="allCompanies" 
-                                label="Firma auswählen" 
+                                :label="$t('applications.detail.config.select_company')" 
                                 by="id" 
                              >
                                 <template #display="{ option }">{{ option.name }}</template>
@@ -275,7 +275,7 @@ onMounted(() => {
                              </div>
                              <UiButton v-else variant="ghost" size="sm" class="w-full border-dashed border-neutral-200" @click="showCompanyAddressModal = true">
                                  <Icon name="heroicons:map-pin" class="mr-2 h-4 w-4" />
-                                 Adresse hinzufügen
+                                 {{ $t('applications.detail.config.address_add') }}
                              </UiButton>
                          </div>
                     </div>
@@ -284,13 +284,13 @@ onMounted(() => {
                     <div class="space-y-8 border-neutral-100 dark:border-neutral-800 lg:border-l lg:pl-10">
                          <div class="flex items-center gap-2">
                              <div class="h-1 w-4 rounded-full bg-secondary-500"></div>
-                             <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Ansprechpartner</p>
+                             <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">{{ $t('applications.detail.config.contacts') }}</p>
                          </div>
                          <UiSelect 
                             id="contact-select" 
                             v-model="editableApplication.selectedContacts" 
                             :options="allContacts" 
-                            label="Kontakte verknüpfen" 
+                            :label="$t('applications.detail.config.link_contacts')" 
                             by="id" 
                             multiple 
                             creatable 
@@ -343,19 +343,19 @@ onMounted(() => {
                         </div>
                         <div class="flex-1">
                             <div class="flex items-center justify-between">
-                                <h3 class="text-3xl font-black text-neutral-900 dark:text-white">Anschreiben</h3>
+                                <h3 class="text-3xl font-black text-neutral-900 dark:text-white">{{ $t('applications.detail.document.title') }}</h3>
                                 <div class="text-right hidden sm:block">
                                      <p class="text-sm font-black uppercase tracking-widest text-neutral-900 dark:text-white">{{ displayDate }}</p>
-                                     <p class="text-[10px] uppercase tracking-widest text-neutral-400">Bewerbungsdatum</p>
+                                     <p class="text-[10px] uppercase tracking-widest text-neutral-400">{{ $t('applications.detail.document.date_label') }}</p>
                                 </div>
                             </div>
-                            <p class="mt-1 text-lg font-medium text-neutral-500 dark:text-neutral-400">Offizielles Dokument</p>
+                            <p class="mt-1 text-lg font-medium text-neutral-500 dark:text-neutral-400">{{ $t('applications.detail.document.subtitle') }}</p>
                         </div>
                     </div>
 
                     <!-- Recipient -->
                     <div class="mb-12">
-                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500 mb-2">Empfänger</p>
+                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500 mb-2">{{ $t('applications.detail.document.recipient_label') }}</p>
                         <p class="text-xl font-bold text-neutral-900 dark:text-white">
                             {{ isEditing ? editableApplication?.selectedCompany?.name : application.company.name }}
                         </p>
@@ -393,16 +393,16 @@ onMounted(() => {
                         <div class="flex items-center justify-between rounded-2xl bg-secondary-50/50 dark:bg-secondary-900/10 p-3 px-6 border border-secondary-100/50 dark:border-secondary-500/10">
                             <div class="flex items-center gap-8">
                                 <div class="flex flex-col">
-                                    <span class="text-[9px] font-black uppercase tracking-widest text-secondary-500/60">Wörter</span>
+                                    <span class="text-[9px] font-black uppercase tracking-widest text-secondary-500/60">{{ $t('applications.detail.editor.words') }}</span>
                                     <span class="text-lg font-black text-secondary-600">{{ bodyStats.words }}</span>
                                 </div>
                                 <div class="flex flex-col">
-                                    <span class="text-[9px] font-black uppercase tracking-widest text-neutral-400">Zeichen</span>
+                                    <span class="text-[9px] font-black uppercase tracking-widest text-neutral-400">{{ $t('applications.detail.editor.chars') }}</span>
                                     <span class="text-lg font-bold text-neutral-600 dark:text-neutral-300" :class="{ 'text-amber-500': bodyStats.isLong }">{{ bodyStats.chars }}</span>
                                 </div>
                                 <div class="hidden sm:flex h-8 w-px bg-neutral-200 dark:bg-neutral-700 mx-2"></div>
                                 <div class="hidden sm:flex flex-col">
-                                    <span class="text-[9px] font-black uppercase tracking-widest text-neutral-400">Lesezeit</span>
+                                    <span class="text-[9px] font-black uppercase tracking-widest text-neutral-400">{{ $t('applications.detail.editor.reading_time') }}</span>
                                     <span class="text-sm font-bold text-neutral-600 dark:text-neutral-300">~ {{ bodyStats.readingTime }} Min.</span>
                                 </div>
                             </div>
@@ -410,7 +410,7 @@ onMounted(() => {
                             <div class="flex gap-2">
                                 <div v-if="bodyStats.isLong" class="hidden lg:flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 rounded-lg border border-amber-100 dark:border-amber-800">
                                     <Icon name="heroicons:exclamation-triangle" size="14" />
-                                    Über eine Seite
+                                    {{ $t('applications.detail.editor.over_page_limit') }}
                                 </div>
                                 <div class="hidden lg:flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-400 px-3 py-1">
                                     <Icon name="mdi:markdown" size="18" />
@@ -427,7 +427,7 @@ onMounted(() => {
                                 v-model="editableApplication.body"
                                 as="textarea"
                                 label=""
-                                placeholder="Schreibe hier dein Anschreiben... Nutze Markdown für Formatierungen."
+                                :placeholder="$t('applications.detail.editor.placeholder')"
                                 class="min-h-[600px] border-none !bg-transparent !p-0 focus:ring-0 text-lg leading-relaxed selection:bg-secondary-100 dark:selection:bg-secondary-900/50 resize-none overflow-hidden"
                                 @input="adjustTextareaHeight"
                             />
@@ -436,7 +436,7 @@ onMounted(() => {
 
                     <!-- Letter Footer: Closing & Signature -->
                     <div class="mt-20 pt-10 border-t border-neutral-50 dark:border-neutral-800/50">
-                        <p class="text-lg font-medium text-neutral-900 dark:text-white">Mit freundlichen Grüßen,</p>
+                        <p class="text-lg font-medium text-neutral-900 dark:text-white">{{ $t('applications.detail.document.closing') }}</p>
                         <div class="mt-8">
                             <p class="text-xl font-black text-neutral-900 dark:text-white">Philipp Fleischer</p>
                             <NuxtImg src="/img/signature.png" alt="Unterschrift" height="70" class="mt-4 dark:invert opacity-90 transition-opacity hover:opacity-100" />
@@ -455,8 +455,8 @@ onMounted(() => {
                             <Icon name="heroicons:pencil-square" size="24" />
                         </div>
                         <div>
-                            <h3 class="text-xl font-black text-neutral-900 dark:text-white">Interne Notizen</h3>
-                            <p class="text-xs font-medium text-neutral-500">Gedanken und Details zum Prozess</p>
+                            <h3 class="text-xl font-black text-neutral-900 dark:text-white">{{ $t('applications.detail.notes.title') }}</h3>
+                            <p class="text-xs font-medium text-neutral-500">{{ $t('applications.detail.notes.subtitle') }}</p>
                         </div>
                     </div>
                     
@@ -467,7 +467,7 @@ onMounted(() => {
                         </ul>
                     </div>
                     <div v-else class="space-y-4">
-                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Notizen (eine pro Zeile)</p>
+                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">{{ $t('applications.detail.notes.placeholder') }}</p>
                         <UiInput 
                             id="notes"
                             v-model="notesAsText"
@@ -489,13 +489,13 @@ onMounted(() => {
                             <Icon name="heroicons:clock" size="24" />
                         </div>
                         <div>
-                            <h3 class="text-2xl font-black text-neutral-900 dark:text-white">Bewerbungshistorie</h3>
-                            <p class="text-xs font-medium text-neutral-500">Alle Interaktionen und Statusänderungen</p>
+                            <h3 class="text-2xl font-black text-neutral-900 dark:text-white">{{ $t('applications.detail.history.title') }}</h3>
+                            <p class="text-xs font-medium text-neutral-500">{{ $t('applications.detail.history.subtitle') }}</p>
                         </div>
                     </div>
                     <UiButton v-if="isEditing" size="sm" variant="secondary" @click="showAddHistoryModal = true">
                         <Icon name="heroicons:plus" class="mr-2 h-5 w-5" />
-                        Eintrag hinzufügen
+                        {{ $t('applications.detail.history.add_entry') }}
                     </UiButton>
                 </div>
 
@@ -517,13 +517,13 @@ onMounted(() => {
                         :class="index % 2 === 0 ? 'md:justify-end' : 'justify-start'"
                       >
                         <UiButton v-if="!item._deleted" size="sm" variant="ghost" class="!px-3 !py-1 text-[10px] font-bold uppercase tracking-widest" @click="startEditHistory(item)">
-                          Bearbeiten
+                          {{ $t('applications.card.edit') }}
                         </UiButton>
                         <UiButton v-if="!item._deleted" size="sm" variant="ghost" color="danger" class="!px-3 !py-1 text-[10px] font-bold uppercase tracking-widest" @click="startDeleteHistory(item)">
-                          Löschen
+                          {{ $t('applications.card.delete') }}
                         </UiButton>
                         <UiButton v-else size="sm" variant="ghost" class="!px-3 !py-1 text-[10px] font-bold uppercase tracking-widest" @click="undoDeleteHistory(item)">
-                          Rückgängig
+                          {{ $t('applications.detail.actions.undo') }}
                         </UiButton>
                       </div>
                     </template>
@@ -531,9 +531,9 @@ onMounted(() => {
                 
                 <div v-else class="flex flex-col items-center justify-center py-12 text-center text-neutral-500 border-2 border-dashed border-neutral-100 dark:border-neutral-800 rounded-3xl">
                     <Icon name="heroicons:clock" class="mb-4 h-12 w-12 opacity-20" />
-                    <p class="font-medium text-sm">Noch keine Einträge im Verlauf vorhanden.</p>
+                    <p class="font-medium text-sm">{{ $t('applications.detail.history.empty_state') }}</p>
                     <UiButton v-if="isEditing" variant="link" class="mt-2" @click="showAddHistoryModal = true">
-                        Ersten Eintrag erstellen
+                        {{ $t('applications.detail.history.create_first') }}
                     </UiButton>
                 </div>
             </UiCardContainer>
@@ -590,13 +590,13 @@ onMounted(() => {
 
                         <UiButton class="w-full" variant="secondary" :is-loading="isLoading" @click="saveApplication">
 
-                          Änderungen speichern
+                          {{ $t('applications.detail.actions.save') }}
 
                         </UiButton>
 
                         <UiButton class="w-full" variant="ghost" @click="cancelEditing">
 
-                          Abbrechen
+                          {{ $t('applications.detail.actions.cancel') }}
 
                         </UiButton>
 
@@ -608,7 +608,7 @@ onMounted(() => {
 
                           <Icon name="heroicons:pencil-square" class="mr-2" />
 
-                          Bearbeiten
+                          {{ $t('applications.detail.actions.edit') }}
 
                         </UiButton>
 
@@ -620,7 +620,7 @@ onMounted(() => {
 
                           <Icon name="heroicons:printer" class="mr-2" />
 
-                          Druckansicht
+                          {{ $t('applications.detail.actions.print') }}
 
                       </UiButton>
 
@@ -630,13 +630,13 @@ onMounted(() => {
 
                               <Icon name="heroicons:document-arrow-down" class="mr-2" />
 
-                              Download PDF
+                              {{ $t('applications.detail.actions.download_pdf') }}
 
                           </UiButton>
 
                           <UiButton v-if="isPdfOutdated" variant="ghost" size="sm" class="w-full text-xs" :is-loading="isLoading" :disabled="isLoading" @click="generatePdf">
 
-                              PDF aktualisieren
+                              {{ $t('applications.detail.actions.update_pdf') }}
 
                           </UiButton>
 
@@ -646,7 +646,7 @@ onMounted(() => {
 
                           <UiButton variant="glass" class="w-full" :is-loading="isLoading" :disabled="isLoading" @click="generatePdf">
 
-                              PDF generieren
+                              {{ $t('applications.detail.actions.generate_pdf') }}
 
                           </UiButton>
 
@@ -661,79 +661,79 @@ onMounted(() => {
 
     <!-- Modals -->
     <UiModal v-model="showAddHistoryModal">
-      <template #header><h3 class="text-2xl font-black">Neuer Verlaufseintrag</h3></template>
+      <template #header><h3 class="text-2xl font-black">{{ $t('applications.modals.new_history') }}</h3></template>
       <template #body>
         <form class="flex flex-col gap-4" @submit.prevent="addHistory">
-          <UiSelect id="add-history-status" v-model="newHistoryStatus" :options="availableStatuses" label="Status">
+          <UiSelect id="add-history-status" v-model="newHistoryStatus" :options="availableStatuses" :label="$t('applications.modals.status')">
             <template #display="{ option }">
               <span class="flex items-center gap-3">
                 <Icon name="mdi:circle" class="h-4 w-4" :class="getStatusTextClasses(option)" />
-                <span class="font-medium">{{ option }}</span>
+                <span class="font-medium">{{ $t(`applications.status.${option}`) }}</span>
               </span>
             </template>
             <template #option="{ option }">
               <span class="flex items-center gap-3">
                 <Icon name="mdi:circle" class="h-4 w-4" :class="getStatusTextClasses(option)" />
-                <span class="font-medium">{{ option }}</span>
+                <span class="font-medium">{{ $t(`applications.status.${option}`) }}</span>
               </span>
             </template>
           </UiSelect>
-          <UiInput v-if="newHistoryStatus === 'interview'" id="add-history-scheduled-at" v-model="newHistoryScheduledAt" type="datetime-local" label="Interview Datum" />
-          <UiInput id="add-history-notes" v-model="newHistoryNotes" as="textarea" label="Notizen (optional)" />
-          <UiInput id="add-history-date" v-model="newHistoryCreatedAt" type="datetime-local" label="Datum" />
+          <UiInput v-if="newHistoryStatus === 'interview'" id="add-history-scheduled-at" v-model="newHistoryScheduledAt" type="datetime-local" :label="$t('applications.modals.interview_date')" />
+          <UiInput id="add-history-notes" v-model="newHistoryNotes" as="textarea" :label="`${$t('applications.modals.notes')} (${$t('applications.modals.optional')})`" />
+          <UiInput id="add-history-date" v-model="newHistoryCreatedAt" type="datetime-local" :label="$t('applications.modals.date')" />
         </form>
       </template>
       <template #footer>
-        <UiButton variant="secondary" @click="showAddHistoryModal = false">Abbrechen</UiButton>
-        <UiButton @click="addHistory">Speichern</UiButton>
+        <UiButton variant="secondary" @click="showAddHistoryModal = false">{{ $t('applications.detail.actions.cancel') }}</UiButton>
+        <UiButton @click="addHistory">{{ $t('applications.detail.actions.save') }}</UiButton>
       </template>
     </UiModal>
 
     <UiModal v-if="editableHistoryEntry" v-model="showEditHistoryModal">
-      <template #header><h3 class="text-2xl font-black">Eintrag bearbeiten</h3></template>
+      <template #header><h3 class="text-2xl font-black">{{ $t('applications.modals.edit_history') }}</h3></template>
       <template #body>
         <form class="flex flex-col gap-4" @submit.prevent="updateHistory">
-          <UiSelect id="edit-history-status" v-model="editableHistoryEntry.status" :options="availableStatuses" label="Status">
+          <UiSelect id="edit-history-status" v-model="editableHistoryEntry.status" :options="availableStatuses" :label="$t('applications.modals.status')">
             <template #display="{ option }">
               <span class="flex items-center gap-3">
                 <Icon name="mdi:circle" class="h-4 w-4" :class="getStatusTextClasses(option)" />
-                <span class="font-medium">{{ option }}</span>
+                <span class="font-medium">{{ $t(`applications.status.${option}`) }}</span>
               </span>
             </template>
             <template #option="{ option }">
               <span class="flex items-center gap-3">
                 <Icon name="mdi:circle" class="h-4 w-4" :class="getStatusTextClasses(option)" />
-                <span class="font-medium">{{ option }}</span>
+                <span class="font-medium">{{ $t(`applications.status.${option}`) }}</span>
               </span>
             </template>
           </UiSelect>
-          <UiInput v-if="editableHistoryEntry.status === 'interview'" id="edit-history-scheduled-at" v-model="editableHistoryEntry.scheduled_at" type="datetime-local" label="Interview Datum" />
-          <UiInput id="edit-history-notes" v-model="editableHistoryEntry.notes" as="textarea" label="Notizen" />
-          <UiInput id="edit-history-date" v-model="editableHistoryEntry.createdAt" type="datetime-local" label="Datum" />
+          <UiInput v-if="editableHistoryEntry.status === 'interview'" id="edit-history-scheduled-at" v-model="editableHistoryEntry.scheduled_at" type="datetime-local" :label="$t('applications.modals.interview_date')" />
+          <UiInput id="edit-history-notes" v-model="editableHistoryEntry.notes" as="textarea" :label="$t('applications.modals.notes')" />
+          <UiInput id="edit-history-date" v-model="editableHistoryEntry.createdAt" type="datetime-local" :label="$t('applications.modals.date')" />
         </form>
       </template>
       <template #footer>
-        <UiButton variant="secondary" @click="showEditHistoryModal = false">Abbrechen</UiButton>
-        <UiButton @click="updateHistory">Speichern</UiButton>
+        <UiButton variant="secondary" @click="showEditHistoryModal = false">{{ $t('applications.detail.actions.cancel') }}</UiButton>
+        <UiButton @click="updateHistory">{{ $t('applications.detail.actions.save') }}</UiButton>
       </template>
     </UiModal>
 
     <UiModal v-if="deletableHistoryEntry" v-model="showDeleteHistoryModal">
-      <template #header><h3 class="text-2xl font-black">Eintrag löschen</h3></template>
+      <template #header><h3 class="text-2xl font-black">{{ $t('applications.modals.delete_history') }}</h3></template>
       <template #body>
-        <p>Möchten Sie diesen Verlaufseintrag wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.</p>
+        <p>{{ $t('applications.modals.delete_history_confirm') }}</p>
         <p class="mt-2 rounded-lg bg-neutral-100 p-2 dark:bg-neutral-800">
           <strong>{{ deletableHistoryEntry.title }}:</strong> {{ deletableHistoryEntry.description }}
         </p>
       </template>
       <template #footer>
-        <UiButton variant="secondary" @click="showDeleteHistoryModal = false">Abbrechen</UiButton>
-        <UiButton color="danger" @click="deleteHistory">Löschen</UiButton>
+        <UiButton variant="secondary" @click="showDeleteHistoryModal = false">{{ $t('applications.detail.actions.cancel') }}</UiButton>
+        <UiButton color="danger" @click="deleteHistory">{{ $t('applications.card.delete') }}</UiButton>
       </template>
     </UiModal>
 
     <UiModal v-model="showContactFormModal">
-      <template #header><h3 class="text-2xl font-black">Neuer Kontakt</h3></template>
+      <template #header><h3 class="text-2xl font-black">{{ $t('applications.modals.new_contact') }}</h3></template>
       <template #body>
         <ApplicationContactForm
           :company-id="companyIdForNewContact"
@@ -745,7 +745,7 @@ onMounted(() => {
     </UiModal>
 
     <UiModal v-if="editableApplication?.selectedCompany" v-model="showCompanyAddressModal">
-      <template #header><h3 class="text-2xl font-black">Firmenadresse</h3></template>
+      <template #header><h3 class="text-2xl font-black">{{ $t('applications.modals.company_address') }}</h3></template>
       <template #body>
         <CompanyAddressForm
           :company="editableApplication.selectedCompany"
@@ -756,7 +756,7 @@ onMounted(() => {
     </UiModal>
   </div>
   <div v-else class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
-    <p>Lade Bewerbungsdaten...</p>
+    <p>{{ $t('applications.detail.loading') }}</p>
   </div>
 </template>
 

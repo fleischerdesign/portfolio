@@ -34,28 +34,30 @@ const offerRate = computed(() => {
   return Math.round((offerCount / totalApplications.value) * 100);
 });
 
+const { t } = useI18n();
+
 const stats = computed(() => [
   { 
     key: 'total', 
-    label: 'Gesamt', 
+    label: t('applications.index.stats.total'), 
     value: totalApplications.value,
     icon: 'heroicons:folder'
   },
   { 
     key: 'response', 
-    label: 'Antwortrate', 
+    label: t('applications.index.stats.response_rate'), 
     value: `${responseRate.value}%`,
     icon: 'heroicons:arrow-uturn-left'
   },
   { 
     key: 'interview', 
-    label: 'Interview-Rate', 
+    label: t('applications.index.stats.interview_rate'), 
     value: `${interviewRate.value}%`,
     icon: 'heroicons:chat-bubble-left-right'
   },
   { 
     key: 'offer', 
-    label: 'Angebots-Rate', 
+    label: t('applications.index.stats.offer_rate'), 
     value: `${offerRate.value}%`,
     icon: 'heroicons:gift'
   },

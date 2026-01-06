@@ -22,7 +22,151 @@
     "digital_media": "Digital Media",
     "secondary_school_diploma": "Secondary School Diploma",
     "elementary_school_diploma": "Elementary School Diploma",
-    "summary": "Summary"
+    "summary": "Summary",
+    "back_overview": "Back to Overview"
+  },
+  "ui": {
+    "button": {
+      "loading": "Loading..."
+    },
+    "select": {
+      "placeholder": "Select an option...",
+      "create": "Create new entry"
+    }
+  },
+  "applications": {
+    "index": {
+      "title": "Applications Overview",
+      "subtitle": "A list of all created and sent applications.",
+      "search": "Search",
+      "filter_status": "Filter Status",
+      "all_statuses": "All Statuses",
+      "new_application": "New Application",
+      "no_applications": "No applications found.",
+      "stats": {
+        "total": "Total",
+        "response_rate": "Response Rate",
+        "interview_rate": "Interview Rate",
+        "offer_rate": "Offer Rate"
+      }
+    },
+    "status": {
+      "draft": "Draft",
+      "applied": "Applied",
+      "interview": "Interview",
+      "offer": "Offer",
+      "rejected": "Rejected",
+      "withdrawn": "Withdrawn"
+    },
+    "card": {
+      "edit": "Edit",
+      "share": "Share",
+      "delete": "Delete",
+      "last_activity": "Last Activity",
+      "share_title": "Application: {title}",
+      "share_text": "Check out this application: {title} at {company}",
+      "share_success": "Application shared successfully!",
+      "copy_success": "Link copied to clipboard!",
+      "copy_error": "Failed to copy link!",
+      "delete_success": "Application deleted successfully.",
+      "delete_error": "Failed to delete application.",
+      "delete_confirm_title": "Delete Application",
+      "delete_confirm_text": "Are you sure you want to permanently delete the application for \"{title}\" at \"{company}\"? This action cannot be undone."
+    },
+    "detail": {
+      "loading": "Loading application data...",
+      "config": {
+        "title": "Configuration",
+        "subtitle": "Adjust application master data",
+        "general": "General",
+        "title_label": "Subject / Position",
+        "subtitle_label": "Suffix / Slogan",
+        "url_label": "Job URL",
+        "company": "Company",
+        "select_company": "Select Company",
+        "address_add": "Add Address",
+        "contacts": "Contacts",
+        "link_contacts": "Link Contacts"
+      },
+      "document": {
+        "title": "Cover Letter",
+        "subtitle": "Official Document",
+        "document_type": "Application Document",
+        "applied_to": "Application to {company}",
+        "current_status": "Current Status",
+        "activity": "Activity",
+        "listing": "Job Listing",
+        "date_label": "Application Date",
+        "date_prefix": "on",
+        "recipient_label": "Recipient",
+        "creation_date": "Creation Date",
+        "created_at": "Created on",
+        "applied_at": "Applied on",
+        "location": "Neubrandenburg",
+        "closing": "Sincerely"
+      },
+      "editor": {
+        "words": "Words",
+        "chars": "Characters",
+        "reading_time": "Reading Time",
+        "over_page_limit": "Exceeds one page",
+        "placeholder": "Write your cover letter here... Use Markdown for formatting."
+      },
+      "notes": {
+        "title": "Internal Notes",
+        "subtitle": "Thoughts and details about the process",
+        "placeholder": "Notes (one per line)"
+      },
+      "history": {
+        "title": "Application History",
+        "subtitle": "All interactions and status changes",
+        "add_entry": "Add Entry",
+        "empty_state": "No history entries found.",
+        "create_first": "Create first entry"
+      },
+      "preview": "Preview",
+      "actions": {
+        "save": "Save Changes",
+        "cancel": "Cancel",
+        "undo": "Undo",
+        "edit": "Edit",
+        "print": "Print View",
+        "download_pdf": "Download PDF",
+        "update_pdf": "Update PDF",
+        "generate_pdf": "Generate PDF"
+      }
+    },
+    "new": {
+      "title": "Create New Application",
+      "subtitle": "Fill in the details for the new application.",
+      "base_info": "Base Information",
+      "select_existing_company": "Select existing company",
+      "new_company": "New Company",
+      "existing_company": "Select Existing",
+      "company_name": "Company Name",
+      "street": "Street",
+      "house_number": "House Number",
+      "zipcode": "Zipcode",
+      "city": "City",
+      "selected_company": "Selected company: {name}",
+      "please_select_company": "Please select a company or create a new one.",
+      "select_existing_contacts": "Select existing contacts",
+      "body_label": "Content (Markdown)",
+      "save_create": "Save & Create"
+    },
+    "modals": {
+      "new_history": "New History Entry",
+      "edit_history": "Edit Entry",
+      "delete_history": "Delete Entry",
+      "delete_history_confirm": "Are you sure you want to delete this history entry? This action cannot be undone.",
+      "new_contact": "New Contact",
+      "company_address": "Company Address",
+      "status": "Status",
+      "interview_date": "Interview Date",
+      "date": "Date",
+      "notes": "Notes",
+      "optional": "optional"
+    }
   },
   "softskills": {
     "leadership": "Leadership",
@@ -196,7 +340,6 @@
     "title": "Blog",
     "subtitle": "Discover a collection of my blog posts where I share learnings, experiences, and practical advice related to Coding, Hacking, UI & UX. Join me as I explore and document my journey in Computer Science.",
     "read_article": "Read Article",
-    "back_overview": "Back to Overview",
     "author": "Author",
     "enjoyed_post": "Did you enjoy this post?",
     "share_connect": "Feel free to share it or connect with me.",
@@ -322,7 +465,6 @@
     "live": "Live",
     "case_study": "Case Study",
     "technologies": "Technologies Used",
-    "back_projects": "Back to Projects",
     "visit_live": "Visit",
     "github": "GitHub",
     "key_features": "Key Features"

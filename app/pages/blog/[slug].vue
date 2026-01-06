@@ -18,6 +18,8 @@
       <article v-if="post" class="flex flex-col items-start">
         <!-- 1. ARTICLE HEADER (Left-Aligned Editorial Style) -->
         <header class="mb-16 flex w-full max-w-5xl flex-col items-start gap-8">
+          <!-- Breadcrumb -->
+          <UiBackButton :to="$localePath('/blog')" />
           
           <!-- Meta Row (Visible & Clean) -->
           <div class="flex flex-wrap items-center gap-4">
@@ -98,10 +100,7 @@
                 <div class="flex gap-4">
                     <SocialLinks />
                 </div>
-                <NuxtLink :to="$localePath('/blog')" class="group flex items-center gap-2 text-sm font-bold text-neutral-500 transition-colors hover:text-secondary-500">
-                    <Icon name="heroicons:arrow-left" class="transition-transform group-hover:-translate-x-1" />
-                    {{ $t("blog.back_overview") }}
-                </NuxtLink>
+                <UiBackButton :to="$localePath('/blog')" />
             </footer>
         </div>
 
