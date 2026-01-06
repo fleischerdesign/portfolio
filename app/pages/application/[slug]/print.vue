@@ -35,15 +35,10 @@ const softSkills = softSkillsData(t);
 const techStack = techStackData;
 
 const { renderMarkdown } = useMarkdown();
-const { getFormattedApplicationDate, formatDate } = useApplicationUtils();
+const { formatDate, getDisplayDate } = useApplicationUtils();
 
 const printDate = computed(() => {
-  const formattedAppDate = getFormattedApplicationDate(application.value);
-  if (formattedAppDate && formattedAppDate !== 'N/A') {
-    return formattedAppDate;
-  }
-  // Fallback to creation date if no 'applied' date is found
-  return formatDate(application.value?.createdAt);
+  return getDisplayDate(application.value);
 });
 
 

@@ -3,8 +3,13 @@ import type { ApplicationResponsePayload } from '#shared/schemas/application.sch
 import type { CompanyResponse } from '#shared/schemas/company.schema';
 
 
-const { getStatusChipClasses, getStatusTextClasses, getApplicationDate, getResponseDate, getLastActivityDate, getFormattedApplicationDate, getFormattedResponseDate, getFormattedLastActivityDate } = useApplicationUtils();
+const { getStatusChipClasses, getStatusTextClasses, getApplicationDate, getResponseDate, getLastActivityDate, getFormattedApplicationDate, getFormattedResponseDate, getFormattedLastActivityDate, getDisplayDate } = useApplicationUtils();
 const { renderMarkdown } = useMarkdown(); 
+const { getSalutation } = useSalutation();
+
+const salutation = computed(() => {
+  return getSalutation(application.value?.contacts, { format: 'lastname', multiple: 'individual' });
+});
 
 definePageMeta({
   middleware: 'authorize',
@@ -108,16 +113,74 @@ onMounted(() => {
       <UiSectionHeader symbol="heroicons:briefcase" :title="application.title" :subtitle="`Bewerbung an ${application.company.name}`" />
     </div>
 
+    <!-- Consolidated Dashboard Header (View Mode) -->
+    <UiCard v-if="application && !isEditing" class="mb-12 border-secondary-500/10 shadow-xl shadow-secondary-500/5">
+        <UiCardContainer class="!flex-row flex-wrap items-center justify-between gap-8 px-8 py-6">
+            <!-- Status Item -->
+            <div class="flex items-center gap-5">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
+                    <Icon name="heroicons:signal" size="28" />
+                </div>
+                <div>
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">Aktueller Status</p>
+                    <div class="mt-1">
+                        <UiChip unstyled size="md" :class="[getStatusChipClasses(application.currentStatus), getStatusTextClasses(application.currentStatus), 'rounded-xl border-none px-4 py-1 text-[10px] font-black uppercase tracking-widest shadow-sm shadow-secondary-500/10']">
+                            {{ application.currentStatus }}
+                        </UiChip>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Item -->
+            <div class="flex flex-1 min-w-0 items-center gap-5 border-neutral-100 pl-4 dark:border-neutral-800 md:border-l md:pl-10">
+                <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
+                    <Icon name="heroicons:building-office" size="28" />
+                </div>
+                <div class="min-w-0">
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">Unternehmen</p>
+                    <p class="mt-0.5 text-xl font-bold text-neutral-900 dark:text-white truncate" :title="application.company.name">{{ application.company.name }}</p>
+                    <p v-if="application.company.address" class="text-xs font-medium text-neutral-500 dark:text-neutral-400 truncate">{{ application.company.address.city }}</p>
+                </div>
+            </div>
+
+            <!-- Dates Item -->
+            <div class="flex items-center gap-5 border-neutral-100 pl-4 dark:border-neutral-800 md:border-l md:pl-10">
+                <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
+                    <Icon name="heroicons:clock" size="28" />
+                </div>
+                <div>
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">Aktivität</p>
+                    <p class="mt-0.5 text-xl font-bold text-neutral-900 dark:text-white">{{ getFormattedLastActivityDate(application) }}</p>
+                    <p class="text-xs font-medium text-neutral-500 dark:text-neutral-400 whitespace-nowrap">
+                        {{ application.currentStatus === 'draft' ? 'Erstellt am' : 'Beworben am' }} {{ getDisplayDate(application) }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Job Link -->
+            <div v-if="application.url" class="ml-auto hidden xl:block">
+                <a :href="application.url" target="_blank" rel="noopener noreferrer">
+                    <UiButton variant="glass" size="lg" class="group !rounded-2xl border-secondary-200/50 transition-all duration-500 hover:bg-secondary-500 hover:text-white">
+                        Ausschreibung
+                        <Icon name="heroicons:arrow-top-right-on-square" class="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                    </UiButton>
+                </a>
+            </div>
+        </UiCardContainer>
+    </UiCard>
+
     <!-- Main Grid -->
-    <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-4 lg:items-start">
+    <div class="mt-8 grid grid-cols-1 gap-12 lg:grid-cols-4 lg:items-start">
       
       <!-- Main Content -->
-      <div class="space-y-8 lg:col-span-3">
-        <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+      <div class="space-y-12 lg:col-span-3">
+        
+        <!-- Edit Mode Headers Grid -->
+        <div v-if="isEditing" class="grid grid-cols-1 gap-8 md:grid-cols-3">
           <!-- Details Card -->
           <UiCard class="md:col-span-1">
             <UiCardContainer class="flex h-full flex-col gap-4">
-              <h3 class="text-2xl font-medium">Details</h3>
+              <h3 class="text-2xl font-bold text-neutral-900 dark:text-white">Details</h3>
               
               <div class="flex flex-col gap-3">
                 <div class="flex items-center justify-between">
@@ -154,18 +217,8 @@ onMounted(() => {
           <!-- Company Card -->
           <UiCard class="md:col-span-1">
             <UiCardContainer class="flex h-full flex-col gap-4">
-              <h3 class="text-2xl font-medium">Unternehmen</h3>
-              <div v-if="!isEditing">
-                <p class="font-bold">{{ application.company.name }}</p>
-                <div v-if="application.company.address">
-                  <p>{{ application.company.address.street }} {{ application.company.address.houseNumber }}</p>
-                  <p>{{ application.company.address.zipcode }} {{ application.company.address.city }}</p>
-                </div>
-                <div v-else>
-                  <p class="text-neutral-500">Keine Adresse vorhanden.</p>
-                </div>
-              </div>
-              <div v-else-if="editableApplication">
+              <h3 class="text-2xl font-bold text-neutral-900 dark:text-white">Unternehmen</h3>
+              <div v-if="editableApplication">
                 <UiSelect
                   id="company-select"
                   v-model="editableApplication.selectedCompany"
@@ -203,17 +256,8 @@ onMounted(() => {
           <!-- Contacts Card -->
           <UiCard class="md:col-span-1">
             <UiCardContainer class="flex h-full flex-col gap-4">
-              <h3 class="text-2xl font-medium">Ansprechpartner</h3>
-              
-              <div v-if="!isEditing && application.contacts && application.contacts.length > 0" class="grid grid-cols-1 gap-4">
-                <div v-for="contact in application.contacts" :key="contact.id">
-                  <p class="font-bold">{{ contact.name }}</p>
-                  <p v-if="contact.position" class="text-sm text-neutral-500">{{ contact.position }}</p>
-                  <p v-if="contact.email" class="mt-2">{{ contact.email }}</p>
-                  <p v-if="contact.phone">{{ contact.phone }}</p>
-                </div>
-              </div>
-              <div v-else-if="isEditing && editableApplication" class="grid grid-cols-1 gap-4">
+              <h3 class="text-2xl font-bold text-neutral-900 dark:text-white">Ansprechpartner</h3>
+              <div v-if="isEditing && editableApplication" class="grid grid-cols-1 gap-4">
                 <UiSelect
                   id="contact-select"
                   v-model="editableApplication.selectedContacts"
@@ -234,146 +278,298 @@ onMounted(() => {
                   </template>
                 </UiSelect>
               </div>
-              <p v-else class="text-neutral-500">Keine Ansprechpartner vorhanden.</p>
             </UiCardContainer>
           </UiCard>
         </div>
 
-        <!-- Timeline Card -->
-        <UiCard>
-            <UiCardContainer class="flex h-full flex-col gap-4">
-              <div class="flex items-center justify-between">
-                <h3 class="text-2xl font-medium">Verlauf</h3>
-                <UiButton v-if="isEditing" size="sm" variant="ghost" @click="showAddHistoryModal = true">
-                  <Icon name="heroicons:plus" class="h-5 w-5" />
-                  Hinzufügen
+        <!-- Ansprechpartner (View Mode - Clean List) -->
+        <div v-if="!isEditing && application.contacts && application.contacts.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <UiCard v-for="contact in application.contacts" :key="contact.id" class="border-secondary-500/5">
+                <UiCardContainer class="!flex-row items-center gap-4">
+                    <div class="h-12 w-12 flex-shrink-0 rounded-full bg-secondary-100 flex items-center justify-center text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400">
+                        <Icon name="heroicons:user" size="24" />
+                    </div>
+                    <div>
+                        <p class="font-bold text-neutral-900 dark:text-white">{{ contact.name }}</p>
+                        <p class="text-xs text-neutral-500 dark:text-neutral-400">{{ contact.position || 'Ansprechpartner' }}</p>
+                        <div class="mt-1 flex gap-3 text-xs text-secondary-600 dark:text-secondary-400">
+                            <span v-if="contact.email" class="flex items-center gap-1"><Icon name="heroicons:envelope" /> {{ contact.email }}</span>
+                            <span v-if="contact.phone" class="flex items-center gap-1"><Icon name="heroicons:phone" /> {{ contact.phone }}</span>
+                        </div>
+                    </div>
+                </UiCardContainer>
+            </UiCard>
+        </div>
+
+        <!-- Body Content (The "Document") -->
+        <div v-if="(!isEditing && application.body) || isEditing" class="group relative">
+            <!-- Massive Ambient Glows (Consistency with Hero.vue) - Always visible, intensifies on hover -->
+            <div class="pointer-events-none absolute -left-20 -top-20 -z-10 h-80 w-80 rounded-full bg-secondary-500/10 blur-[100px] opacity-40 transition-opacity duration-1000 group-hover:opacity-100 dark:bg-secondary-500/5"></div>
+            <div class="pointer-events-none absolute -right-20 -bottom-20 -z-10 h-80 w-80 rounded-full bg-secondary-400/10 blur-[100px] opacity-40 transition-opacity duration-1000 group-hover:opacity-100"></div>
+            
+            <UiCard hover class="relative bg-white/90 shadow-2xl dark:bg-neutral-900/80 overflow-hidden">
+                <UiCardContainer class="p-8 md:p-16 lg:p-24">
+                    <!-- Letter Header: Sender & Date -->
+                    <div class="mb-12 flex flex-col md:flex-row justify-between gap-8 text-sm text-neutral-500">
+                        <div>
+                            <p class="font-black uppercase tracking-widest text-neutral-900 dark:text-white">Philipp Fleischer</p>
+                            <p class="mt-1">Hufelandstr. 55, 17036 Neubrandenburg</p>
+                        </div>
+                        <div class="md:text-right">
+                            <p class="font-bold text-neutral-900 dark:text-white">Neubrandenburg</p>
+                            <p class="mt-1">den {{ getDisplayDate(application) }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Recipient -->
+                    <div class="mb-16">
+                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500 mb-2">Empfänger</p>
+                        <p class="text-xl font-bold text-neutral-900 dark:text-white">{{ application.company.name }}</p>
+                        <div v-if="application.company.address" class="mt-1 text-neutral-600 dark:text-neutral-400">
+                            <p>{{ application.company.address.street }} {{ application.company.address.houseNumber }}</p>
+                            <p>{{ application.company.address.zipcode }} {{ application.company.address.city }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Subject Line -->
+                    <div class="mb-12 border-b border-neutral-100 pb-10 dark:border-neutral-800">
+                        <h3 class="text-3xl font-black tracking-tight text-neutral-900 dark:text-white leading-tight">
+                            {{ application.title }}
+                        </h3>
+                        <p v-if="application.subtitle" class="mt-3 text-xl font-medium text-neutral-500 dark:text-neutral-400">{{ application.subtitle }}</p>
+                    </div>
+                    
+                    <!-- Salutation -->
+                    <p v-if="!isEditing" class="mb-8 text-lg font-bold text-neutral-900 dark:text-white">
+                        {{ salutation }},
+                    </p>
+
+                    <!-- eslint-disable-next-line vue/no-v-html -->
+                    <div v-if="!isEditing" class="prose prose-lg prose-neutral max-w-none dark:prose-invert" v-html="renderMarkdown(application.body || '')"></div>
+                    <div v-else-if="editableApplication">
+                        <UiInput
+                            id="body"
+                            v-model="editableApplication.body"
+                            as="textarea"
+                            label="Anschreiben (Markdown)"
+                            class="min-h-[600px] border-none !bg-transparent !p-0 focus:ring-0 text-lg"
+                        />
+                    </div>
+
+                    <!-- Letter Footer: Closing & Signature -->
+                    <div v-if="!isEditing" class="mt-20 pt-10 border-t border-neutral-50 dark:border-neutral-800/50">
+                        <p class="text-lg font-medium">Mit freundlichen Grüßen,</p>
+                        <div class="mt-8">
+                            <p class="text-xl font-black tracking-tight text-neutral-900 dark:text-white">Philipp Fleischer</p>
+                            <NuxtImg src="/img/signature.png" alt="Unterschrift" height="70" class="mt-4 dark:invert opacity-90 transition-opacity hover:opacity-100" />
+                        </div>
+                    </div>
+                </UiCardContainer>
+            </UiCard>
+        </div>
+
+        <!-- Notes Section -->
+        <div v-if="(!isEditing && application.notes && application.notes.length > 0) || isEditing" class="pt-8">
+            <UiCard class="border-dashed border-neutral-200 bg-neutral-50/20 shadow-none dark:border-neutral-800 dark:bg-neutral-900/20">
+                <UiCardContainer class="flex h-full flex-col gap-6 p-8">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-200/50 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400">
+                            <Icon name="heroicons:pencil-square" size="20" />
+                        </div>
+                        <h3 class="text-xl font-bold text-neutral-900 dark:text-white">Interne Notizen</h3>
+                    </div>
+                    
+                    <div v-if="!isEditing" class="prose prose-neutral max-w-none dark:prose-invert" >
+                        <ul class="list-disc space-y-3 pl-5">
+                            <!-- eslint-disable-next-line vue/no-v-html -->
+                            <li v-for="(note, index) in application.notes" :key="index" class="text-neutral-600 dark:text-neutral-400" v-html="renderMarkdown(note)"></li>
+                        </ul>
+                    </div>
+                    <div v-else>
+                        <UiInput 
+                            id="notes"
+                            v-model="notesAsText"
+                            as="textarea"
+                            label="Notizen (eine pro Zeile)"
+                            class="bg-transparent"
+                        />
+                    </div>
+                </UiCardContainer>
+            </UiCard>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="flex flex-col gap-10 pt-12">
+            <div class="flex items-center justify-between px-1">
+                <div class="flex flex-col gap-1">
+                    <h3 class="text-3xl font-black tracking-tight text-neutral-900 dark:text-white">Bewerbungshistorie</h3>
+                    <div class="h-1.5 w-12 rounded-full bg-secondary-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                </div>
+                <UiButton v-if="isEditing" size="sm" variant="secondary" @click="showAddHistoryModal = true">
+                    <Icon name="heroicons:plus" class="mr-2 h-5 w-5" />
+                    Eintrag hinzufügen
                 </UiButton>
-              </div>
-              <BaseTimeline v-if="timelineItems.length" :items="timelineItems">
+            </div>
+
+            <BaseTimeline v-if="timelineItems.length" :items="timelineItems">
                 <template #default="{ item, index }">
                   <div :class="{ 'md:text-right': index % 2 === 0 }">
-                    <span class="text-sm font-semibold text-secondary-400">{{ item.date }}</span>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-secondary-500">{{ item.date }}</span>
                     <h3
-                      class="mt-1 flex gap-2 text-xl font-bold"
+                      class="mt-1 text-xl font-bold text-neutral-900 dark:text-white"
                       :class="{ 'md:justify-end': index % 2 === 0 }"
                     >
                       {{ item.title }}
                     </h3>
-                    <p class="text-gray-600 dark:text-gray-300">{{ item.description }}</p>
+                    <p class="mt-2 text-neutral-600 dark:text-neutral-400">{{ item.description }}</p>
                   </div>
                   <div
                     v-if="isEditing"
-                    class="mt-2 flex gap-2"
+                    class="mt-4 flex gap-2"
                     :class="index % 2 === 0 ? 'md:justify-end' : 'justify-start'"
                   >
-                    <UiButton v-if="!item._deleted" size="sm" variant="ghost" @click="startEditHistory(item)">
+                    <UiButton v-if="!item._deleted" size="sm" variant="ghost" class="!px-3 !py-1 text-[10px] font-bold uppercase tracking-widest" @click="startEditHistory(item)">
                       Bearbeiten
                     </UiButton>
-                    <UiButton v-if="!item._deleted" size="sm" variant="ghost" color="danger" @click="startDeleteHistory(item)">
+                    <UiButton v-if="!item._deleted" size="sm" variant="ghost" color="danger" class="!px-3 !py-1 text-[10px] font-bold uppercase tracking-widest" @click="startDeleteHistory(item)">
                       Löschen
                     </UiButton>
-                    <UiButton v-else size="sm" variant="ghost" @click="undoDeleteHistory(item)">
+                    <UiButton v-else size="sm" variant="ghost" class="!px-3 !py-1 text-[10px] font-bold uppercase tracking-widest" @click="undoDeleteHistory(item)">
                       Rückgängig
                     </UiButton>
                   </div>
                 </template>
-              </BaseTimeline>
-              <p v-else class="text-neutral-500">Keine Verlaufsdaten vorhanden.</p>
-            </UiCardContainer>
-        </UiCard>
-
-        <!-- Notes Card -->
-        <UiCard v-if="(!isEditing && application.notes && application.notes.length > 0) || isEditing">
-            <UiCardContainer class="flex h-full flex-col gap-4">
-                <h3 class="text-2xl font-medium">Notizen</h3>
-                <div v-if="!isEditing" class="prose prose-neutral max-w-none dark:prose-invert" >
-                    <ul class="list-disc space-y-2 pl-5">
-                        <!-- eslint-disable-next-line vue/no-v-html -->
-                        <li v-for="(note, index) in application.notes" :key="index" v-html="renderMarkdown(note)"></li>
-                    </ul>
-                </div>
-                <div v-else>
-                    <UiInput 
-                        id="notes"
-                        v-model="notesAsText"
-                        as="textarea"
-                        label="Notizen (eine pro Zeile)"
-                    />
-                </div>
-            </UiCardContainer>
-        </UiCard>
-
-        <!-- Body Content -->
-        <UiCard v-if="(!isEditing && application.body) || isEditing">
-            <UiCardContainer>
-                <h3 class="mb-4 text-2xl font-medium">Inhalt</h3>
-                <!-- eslint-disable-next-line vue/no-v-html -->
-                <div v-if="!isEditing" class="prose prose-neutral max-w-none dark:prose-invert" v-html="renderMarkdown(application.body || '')"></div>
-                <div v-else-if="editableApplication">
-                    <UiInput
-                        id="body"
-                        v-model="editableApplication.body"
-                        as="textarea"
-                        label="Inhalt (Markdown)"
-                    />
-                </div>
-            </UiCardContainer>
-        </UiCard>
-      </div>
-
-      <!-- Sidebar -->
-      <div class="sticky top-10 flex flex-col gap-2 lg:col-span-1">
-        <UiCard>
-            <UiCardContainer class="flex h-full flex-col gap-4">
-                <h3 class="text-2xl font-medium">Vorschau</h3>
-                <div
-                    class="w-full overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-700"
-                    style="aspect-ratio: 1 / 1.4142"
-                >
-                    <iframe
-                        :src="printUrl"
-                        class="h-full w-full"
-                        style="transform-origin: top left; transform: scale(0.5); width: 200%; height: 200%;"
-                        title="Application Preview"
-                    />
-                </div>
-            </UiCardContainer>
-        </UiCard>
-        <div class="rounded-lg bg-white shadow dark:bg-neutral-900">
-          <div class="flex w-full flex-col gap-2">
-              <template v-if="isEditing">
-                <UiButton class="w-full" :is-loading="isLoading" @click="saveApplication">
-                  Speichern
-                </UiButton>
-                <UiButton class="w-full" variant="secondary" @click="cancelEditing">
-                  Abbrechen
-                </UiButton>
-              </template>
-              <template v-else>
-                <UiButton class="w-full" @click="startEditing">
-                  Bearbeiten
-                </UiButton>
-              </template>
-              <hr class="my-2 border-neutral-200 dark:border-neutral-700">
-              <UiButton class="w-full" :to="printUrl" target="_blank">
-                  Vollbild-Vorschau
-              </UiButton>
-              <template v-if="application.pdfGeneratedAt">
-                  <UiButton class="w-full" :to="`/api/applications/${slug}/pdf/download`" external>
-                      Download PDF
-                  </UiButton>
-                  <UiButton v-if="isPdfOutdated" class="w-full" :is-loading="isLoading" :disabled="isLoading" @click="generatePdf">
-                      PDF neu generieren
-                  </UiButton>
-              </template>
-              <template v-else>
-                  <UiButton class="w-full" :is-loading="isLoading" :disabled="isLoading" @click="generatePdf">
-                      PDF generieren
-                  </UiButton>
-              </template>
-          </div>
+            </BaseTimeline>
+            
+            <UiCard v-else class="border-dashed border-neutral-300 bg-transparent shadow-none dark:border-neutral-700">
+                <UiCardContainer class="flex flex-col items-center justify-center py-12 text-center text-neutral-500">
+                    <Icon name="heroicons:clock" class="mb-4 h-12 w-12 opacity-30" />
+                    <p class="font-medium">Noch keine Einträge im Verlauf.</p>
+                    <UiButton v-if="isEditing" variant="link" class="mt-2" @click="showAddHistoryModal = true">
+                        Ersten Eintrag erstellen
+                    </UiButton>
+                </UiCardContainer>
+            </UiCard>
         </div>
       </div>
+
+        
+
+              <!-- Sidebar -->
+
+              <div class="sticky top-10 flex flex-col gap-6 lg:col-span-1">
+
+                <UiCard class="border-secondary-500/5 shadow-lg">
+
+                    <UiCardContainer class="flex h-full flex-col gap-4">
+
+                        <h3 class="text-xl font-bold text-neutral-900 dark:text-white">Vorschau</h3>
+
+                        <div
+
+                            class="w-full overflow-hidden rounded-xl border border-neutral-100 shadow-sm transition-all hover:shadow-md dark:border-neutral-800"
+
+                            style="aspect-ratio: 1 / 1.4142"
+
+                        >
+
+                            <iframe
+
+                                :src="printUrl"
+
+                                class="h-full w-full"
+
+                                style="transform-origin: top left; transform: scale(0.5); width: 200%; height: 200%;"
+
+                                title="Application Preview"
+
+                            />
+
+                        </div>
+
+                    </UiCardContainer>
+
+                </UiCard>
+
+        
+
+                                <UiCard shadow="none">
+
+        
+
+                                  <UiCardContainer class="flex w-full flex-col gap-3">
+
+                      <template v-if="isEditing">
+
+                        <UiButton class="w-full" variant="secondary" :is-loading="isLoading" @click="saveApplication">
+
+                          Änderungen speichern
+
+                        </UiButton>
+
+                        <UiButton class="w-full" variant="ghost" @click="cancelEditing">
+
+                          Abbrechen
+
+                        </UiButton>
+
+                      </template>
+
+                      <template v-else>
+
+                        <UiButton class="w-full" variant="secondary" @click="startEditing">
+
+                          <Icon name="heroicons:pencil-square" class="mr-2" />
+
+                          Bearbeiten
+
+                        </UiButton>
+
+                      </template>
+
+                      <hr class="my-2 border-neutral-100 dark:border-neutral-800">
+
+                      <UiButton variant="glass" class="w-full" :to="printUrl" target="_blank">
+
+                          <Icon name="heroicons:printer" class="mr-2" />
+
+                          Druckansicht
+
+                      </UiButton>
+
+                      <template v-if="application.pdfGeneratedAt">
+
+                          <UiButton variant="glass" class="w-full" :to="`/api/applications/${slug}/pdf/download`" external>
+
+                              <Icon name="heroicons:document-arrow-down" class="mr-2" />
+
+                              Download PDF
+
+                          </UiButton>
+
+                          <UiButton v-if="isPdfOutdated" variant="ghost" size="sm" class="w-full text-xs" :is-loading="isLoading" :disabled="isLoading" @click="generatePdf">
+
+                              PDF aktualisieren
+
+                          </UiButton>
+
+                      </template>
+
+                      <template v-else>
+
+                          <UiButton variant="glass" class="w-full" :is-loading="isLoading" :disabled="isLoading" @click="generatePdf">
+
+                              PDF generieren
+
+                          </UiButton>
+
+                      </template>
+
+                  </UiCardContainer>
+
+                </UiCard>
+
+              </div>
     </div>
 
     <!-- Modals -->

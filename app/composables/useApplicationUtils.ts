@@ -83,6 +83,12 @@ export const useApplicationUtils = () => {
     return date ? formatDate(date) : 'N/A';
   }
 
+  const getDisplayDate = (application: ApplicationResponsePayload | null | undefined) => {
+    if (!application) return 'N/A';
+    const appDate = getApplicationDate(application);
+    return appDate ? formatDate(appDate) : formatDate(application.createdAt);
+  }
+
   const formatForDateTimeLocal = (isoString: string | null | undefined): string => {
     if (!isoString) return '';
     const d = new Date(isoString);
@@ -100,6 +106,7 @@ export const useApplicationUtils = () => {
     getFormattedApplicationDate,
     getFormattedResponseDate,
     getFormattedLastActivityDate,
+    getDisplayDate,
     formatForDateTimeLocal,
   }
 }
