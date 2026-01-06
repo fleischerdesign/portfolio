@@ -55,7 +55,8 @@
         "programming": "Am programmieren"
       },
       "greeting": "Moin, ich bin Philipp!",
-      "summary": "Als angehender Informatiker lebe ich für sauberen Code, reibungslose Nutzererfahrungen und innovative Lösungen, die Konzepte Wirklichkeit werden lassen."
+      "summary": "Als angehender Informatiker lebe ich für sauberen Code, reibungslose Nutzererfahrungen und innovative Lösungen, die Konzepte Wirklichkeit werden lassen.",
+      "explore": "Erkunden"
     },
     "overview": {
       "github": {
@@ -85,7 +86,9 @@
       },
       "searching": {
         "title": "Praktikum gesucht!",
-        "subtitle": "Im Rahmen meiner Umschulung zum Fachinformatiker suche ich ein 6-monatiges Pflichtpraktikum. Ich bin bereit, mit vollem Engagement zu lernen und Ihr Team zu unterstützen."
+        "subtitle": "Im Rahmen meiner Umschulung zum Fachinformatiker suche ich ein 6-monatiges Pflichtpraktikum. Ich bin bereit, mit vollem Engagement zu lernen und Ihr Team zu unterstützen.",
+        "action": "Kontakt aufnehmen",
+        "status": "Verfügbar für Arbeit"
       }
     },
     "projects": {
@@ -96,7 +99,13 @@
     "blog": {
       "title": "Blog",
       "subtitle": "Eine Sammlung meiner Blogbeiträge, in denen ich Erkenntnisse, Erfahrungen und praktische Ratschläge zu Coding, Hacking, UI & UX teile. Begleite mich auf meine Reise in die Informatik.",
-      "view_all": "Alle Artikel"
+      "view_all": "Alle Artikel",
+      "read_article": "Artikel lesen",
+      "back_overview": "Zur Übersicht",
+      "author": "Autor",
+      "enjoyed_post": "Hat dir dieser Beitrag gefallen?",
+      "share_connect": "Teile ihn gerne oder vernetze dich mit mir.",
+      "min_read": "Min Lesezeit"
     },
     "contact": {
       "title": "Kontakt",
@@ -133,7 +142,7 @@
       "title1": "Aufgewachsen in der digitalen Welt",
       "title2": "Prägende Schuljahre",
       "title3": "Erste Programmiererfahrungen",
-        "paragraph1": "Meine Faszination für Computer und Technologie begann unglaublich früh. Mit nur sechs Jahren bekam ich meinen ersten Computer, der eine Welt voller Möglichkeiten und Interaktionen eröffnete, die mich sofort in ihren Bann zog. Ich interessierte mich nicht nur für die technische Seite; ich war auch ein sehr kreatives Kind, verbrachte Stunden mit Malen, Zeichnen und ließ meiner Fantasie freien Lauf.",
+        "paragraph1": "Meine fasszination für Computer und Technologie begann unglaublich früh. Mit nur sechs Jahren bekam ich meinen ersten Computer, der eine Welt voller Möglichkeiten und Interaktionen eröffnete, die mich sofort in ihren Bann zog. Ich interessierte mich nicht nur für die technische Seite; ich war auch ein sehr kreatives Kind, verbrachte Stunden mit Malen, Zeichnen und ließ meiner Fantasie freien Lauf.",
         "paragraph2": "Ich hatte das Glück, einen Grundschullehrer, Herrn Frank, zu haben, der meine Begeisterung für Technologie teilte. Dank ihm war unser Klassenzimmer einzigartig mit zahlreichen Computern ausgestattet, was unser Verständnis und Engagement für Technik erheblich förderte. Diese frühe Exposition, kombiniert mit meiner angeborenen Neugier, legte den Grundstein für meine Zukunft.",
         "paragraph3": "Meine erste Berührung mit dem Programmieren hatte ich im Alter von acht Jahren. Ich erinnere mich daran, wie ich meine erste Codezeile mit AutoIt programmierte, um Mechaniken in Videospielen zu automatisieren. Diese frühe Erfahrung ging nicht nur um Problemlösung; es ging darum, das unglaubliche Potenzial der Technologie zu erkennen, Ideen zum Leben zu erwecken und neue Interaktionen zu schaffen. Diese prägenden Jahre festigten meine Leidenschaft für die digitale Welt und setzten mich auf einen Pfad kontinuierlicher Entdeckung und Innovation."
       }
@@ -177,7 +186,16 @@
     },
     "resume": {
       "title": "Lebenslauf",
-      "subtitle": "Tauche tiefer in meine Qualifikationen und Erfolge ein. Dieser Abschnitt bietet einen umfassenden Überblick über meine Fähigkeiten, Ausbildung und beruflichen Meilensteine."
+      "subtitle": "Tauche tiefer in meine Qualifikationen und Erfolge ein. Dieser Abschnitt bietet einen umfassenden Überblick über meine Fähigkeiten, Ausbildung und beruflichen Meilensteine.",
+      "details": {
+        "birthday": "Geburtstag",
+        "birthplace": "Geburtsort",
+        "marital_status_label": "Familienstand",
+        "marital_status": "Ledig",
+        "drivers_license_label": "Führerschein",
+        "drivers_license": "Klasse B",
+        "address_label": "Wohnort"
+      }
     }
   },
   "blog": {
@@ -187,7 +205,8 @@
   "blogPost": {
     "date": {
       "on": "am"
-    }
+    },
+    "readingTimeSuffix": "Min Lesezeit"
   },
   "projects": {
     "title": "Projekte",
@@ -246,7 +265,8 @@
   },
   "legal": {
     "title": "Impressum",
-    "subtitle": "Hier findest du alle rechtlichen Informationen zu meiner Website, einschließlich Impressum und Datenschutzerklärung."
+    "subtitle": "Hier findest du alle rechtlichen Informationen zu meiner Website, einschließlich Impressum und Datenschutzerklärung.",
+    "privacy": "Datenschutz"
   },
   "cv": {
     "timeline": {
@@ -297,7 +317,15 @@
       "title": "Status",
       "published": "Veröffentlicht",
       "notpublished": "Unveröffentlicht"
-    }
+    },
+    "details": "Projektdetails",
+    "live": "Live",
+    "case_study": "Case Study",
+    "technologies": "Genutzte Technologien",
+    "back_projects": "Zurück zu Projekte",
+    "visit_live": "Besuchen",
+    "github": "GitHub",
+    "key_features": "Hauptmerkmale"
   },
   "resume": {
     "personal": {

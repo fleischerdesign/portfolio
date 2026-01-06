@@ -33,9 +33,9 @@
                         </div>
                         <span class="h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-700"></span>
                         <div class="flex items-center gap-1.5">
-                            <Icon name="mage:clock" size="14" class="text-secondary-500" />
-                            <span>{{ post.readingTime }} min</span>
-                        </div>
+                        <Icon name="mage:clock" size="16" class="text-secondary-400" />
+                        {{ post.readingTime }} {{ $t("blogPost.readingTimeSuffix") }}
+                    </div>
                     </div>
 
                     <h3 class="text-2xl font-bold tracking-tight text-neutral-900 transition-colors duration-300 group-hover:text-secondary-600 dark:text-white dark:group-hover:text-secondary-400">
@@ -50,7 +50,7 @@
                     <div class="mt-6 flex items-center gap-3">
                         <div class="h-0.5 w-12 rounded-full bg-secondary-500/30 transition-all duration-500 group-hover:w-20 group-hover:bg-secondary-500"></div>
                         <span class="text-xs font-bold uppercase tracking-widest text-secondary-500 opacity-0 transition-all duration-500 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0">
-                            Read Article
+                            {{ $t("blog.read_article") }}
                         </span>
                     </div>
                 </div>

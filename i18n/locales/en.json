@@ -55,7 +55,8 @@
         "programming": "Now programming"
       },
       "greeting": "Hi, I'm Philipp Fleischer",
-      "summary": "I’m an aspiring Computer Science Expert who thrives on clean code, seamless user experiences, and innovative solutions that bring ideas to life."
+      "summary": "I’m an aspiring Computer Science Expert who thrives on clean code, seamless user experiences, and innovative solutions that bring ideas to life.",
+      "explore": "Explore"
     },
     "overview": {
       "github": {
@@ -85,7 +86,9 @@
       },
       "searching": {
         "title": "Internship Wanted!",
-        "subtitle": "As part of my retraining to become a certified IT specialist, I am looking for a 6-month mandatory internship. I am ready to learn with full commitment and support your team."
+        "subtitle": "As part of my retraining to become a certified IT specialist, I am looking for a 6-month mandatory internship. I am ready to learn with full commitment and support your team.",
+        "action": "Get in touch",
+        "status": "Available for work"
       }
     },
     "projects": {
@@ -191,12 +194,19 @@
   },
   "blog": {
     "title": "Blog",
-    "subtitle": "Discover a collection of my blog posts where I share learnings, experiences, and practical advice related to Coding, Hacking, UI & UX. Join me as I explore and document my journey in Computer Science."
+    "subtitle": "Discover a collection of my blog posts where I share learnings, experiences, and practical advice related to Coding, Hacking, UI & UX. Join me as I explore and document my journey in Computer Science.",
+    "read_article": "Read Article",
+    "back_overview": "Back to Overview",
+    "author": "Author",
+    "enjoyed_post": "Did you enjoy this post?",
+    "share_connect": "Feel free to share it or connect with me.",
+    "min_read": "min read"
   },
   "blogPost": {
     "date": {
       "on": "on"
-    }
+    },
+    "readingTimeSuffix": "min read"
   },
   "projects": {
     "title": "Projects",
@@ -255,7 +265,8 @@
   },
   "legal": {
     "title": "Imprint",
-    "subtitle": "Here you'll find all legal information about my website, including legal notice and privacy policy."
+    "subtitle": "Here you'll find all legal information about my website, including legal notice and privacy policy.",
+    "privacy": "Privacy Policy"
   },
   "cv": {
     "timeline": {
@@ -306,7 +317,15 @@
       "title": "Status",
       "published": "Published",
       "notpublished": "Unpublished"
-    }
+    },
+    "details": "Project Details",
+    "live": "Live",
+    "case_study": "Case Study",
+    "technologies": "Technologies Used",
+    "back_projects": "Back to Projects",
+    "visit_live": "Visit",
+    "github": "GitHub",
+    "key_features": "Key Features"
   },
   "resume": {
     "personal": {

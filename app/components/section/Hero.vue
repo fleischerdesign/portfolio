@@ -48,9 +48,9 @@
         <SocialLinks />
         
         <!-- Scroll Down Indicator -->
-        <a href="#overview" class="group flex items-center gap-3 rounded-2xl border border-neutral-200/60 bg-white/40 px-6 py-3 text-sm font-bold uppercase tracking-widest text-neutral-500 backdrop-blur-md transition-all hover:border-secondary-500/40 hover:bg-white/80 hover:text-secondary-600 dark:border-neutral-800/60 dark:bg-neutral-950/50 dark:text-neutral-400 dark:hover:text-secondary-400">
-            <span>Explore</span>
-            <Icon name="mage:arrow-down" size="18" class="animate-bounce" />
+        <a href="#overview" class="group flex items-center gap-3 rounded-2xl border border-neutral-200/60 bg-white/50 px-6 py-3 text-sm font-bold uppercase tracking-[0.2em] text-neutral-500 backdrop-blur-md transition-all hover:border-secondary-500/40 hover:bg-white/80 hover:text-secondary-600 dark:border-neutral-800/60 dark:bg-neutral-950/50 dark:text-neutral-400 dark:hover:text-secondary-400">
+            <span>{{ $t("home.hero.explore") }}</span>
+            <Icon name="mage:arrow-down" size="20" class="animate-bounce" />
         </a>
       </div>
 

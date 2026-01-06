@@ -46,7 +46,7 @@
                 <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                 <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
               </span>
-              Available for work
+              {{ $t("home.overview.searching.status") }}
           </div>
       </div>
     </UiCard >
@@ -102,8 +102,8 @@
         <div class="flex shrink-0 items-center gap-4">
             <NuxtLink :to="$localePath('/contact')">
                 <UiButton variant="secondary" size="lg" class="shadow-xl shadow-secondary-500/20 transition-all hover:scale-105 hover:shadow-secondary-500/30">
-                    Get in touch
-                    <template #icon-right><Icon name="mage:message-round" /></template>
+                    {{ $t("home.overview.searching.action") }}
+                    <template #icon-right><Icon name="heroicons:chat-bubble-left-right" /></template>
                 </UiButton>
             </NuxtLink>
         </div>

@@ -19,7 +19,7 @@
             <!-- Breadcrumb -->
             <NuxtLink :to="$localePath('/projects')" class="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-neutral-500 transition-colors hover:text-secondary-500">
                 <Icon name="heroicons:arrow-left" class="transition-transform group-hover:-translate-x-1" />
-                Back to Projects
+                {{ $t("project.back_projects") }}
             </NuxtLink>
 
             <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -35,11 +35,11 @@
                 <!-- Actions -->
                 <div class="flex gap-4">
                     <UiButton variant="secondary" size="lg" class="shadow-lg shadow-secondary-500/20">
-                        Besuchen
+                        {{ $t("project.visit_live") }}
                         <template #icon-right><Icon name="heroicons:arrow-top-right-on-square" /></template>
                     </UiButton>
                     <UiButton variant="glass" size="lg">
-                        GitHub
+                        {{ $t("project.github") }}
                         <template #icon-right><Icon name="mdi:github" /></template>
                     </UiButton>
                 </div>
@@ -97,7 +97,7 @@
             <div class="flex flex-col gap-16">
                 <!-- Case Study Content -->
                 <section>
-                    <UiSectionHeader title="Case Study" class="!mb-8" />
+                    <UiSectionHeader :title="$t('project.case_study')" class="!mb-8" />
                     <div class="prose prose-lg prose-neutral max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-secondary-500 prose-a:no-underline hover:prose-a:underline prose-img:rounded-3xl prose-img:shadow-2xl">
                         <ContentRenderer :value="project" />
                     </div>
@@ -105,7 +105,7 @@
 
                 <!-- Tech Stack -->
                 <section>
-                    <UiSectionHeader title="Technologies Used" class="!mb-8" />
+                    <UiSectionHeader :title="$t('project.technologies')" class="!mb-8" />
                     <TechstackList :items="project.techstack || []" :rows="2" />
                 </section>
             </div>
@@ -117,7 +117,7 @@
                     
                     <!-- Key Facts -->
                     <UiCard class="p-8">
-                        <h3 class="mb-6 text-xs font-bold uppercase tracking-widest text-secondary-500">Project Details</h3>
+                        <h3 class="mb-6 text-xs font-bold uppercase tracking-widest text-secondary-500">{{ $t("project.details") }}</h3>
                         <div class="flex flex-col gap-6">
                             <div v-for="item in details" :key="item.label" class="flex flex-col gap-1">
                                 <span class="text-sm font-medium text-neutral-500 dark:text-neutral-400">{{ item.label }}</span>
@@ -129,7 +129,7 @@
                     <!-- Challenges -->
                     <UiCard v-if="project.challenges?.length" class="p-8">
                         <h3 class="mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-500">
-                            <Icon name="mage:exclamation-circle" class="text-amber-500" size="16" /> Challenges
+                            <Icon name="mage:exclamation-circle" class="text-amber-500" size="16" /> {{ $t("project.challenges") }}
                         </h3>
                         <ul class="flex flex-col gap-4">
                             <li v-for="challenge in project.challenges" :key="challenge" class="flex gap-3 text-sm font-medium leading-relaxed text-neutral-700 dark:text-neutral-300">
@@ -142,7 +142,7 @@
                     <!-- Features -->
                     <UiCard v-if="project.features?.length" class="p-8">
                         <h3 class="mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-secondary-500">
-                            <Icon name="heroicons:check-circle" class="text-secondary-500" size="16" /> Key Features
+                            <Icon name="heroicons:check-circle" class="text-secondary-500" size="16" /> {{ $t("project.key_features") }}
                         </h3>
                         <ul class="flex flex-col gap-4">
                             <li v-for="feature in project.features" :key="feature" class="flex gap-3 text-sm font-medium leading-relaxed text-neutral-700 dark:text-neutral-300">

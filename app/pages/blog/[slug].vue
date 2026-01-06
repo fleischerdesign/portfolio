@@ -28,11 +28,10 @@
                     {{ formattedDate }}
                 </span>
                 <span class="h-1 w-1 rounded-full bg-secondary-500"></span>
-                <span class="flex items-center gap-2">
-                    <Icon name="heroicons:clock" size="16" class="text-secondary-500" />
-                    {{ post.readingTime }} min read
-                </span>
-             </div>
+                              <span class="flex items-center gap-2">
+                                  <Icon name="heroicons:clock" size="16" class="text-secondary-500" />
+                                  {{ post.readingTime }} {{ $t("blog.min_read") }}
+                              </span>             </div>
 
              <!-- Tags -->
              <div class="flex gap-2">
@@ -58,11 +57,10 @@
           <!-- Author -->
           <div class="animate-fade-in-up flex items-center gap-4 pt-4" style="animation-delay: 350ms;">
               <NuxtImg :src="post.author.avatar" class="h-12 w-12 rounded-2xl border border-neutral-200 dark:border-neutral-700" alt="Author" />
-              <div class="flex flex-col">
-                  <span class="text-base font-bold text-neutral-900 dark:text-white">Philipp Fleischer</span>
-                  <span class="text-xs font-medium uppercase tracking-wider text-secondary-500">Author</span>
-              </div>
-          </div>
+                          <div class="flex flex-col">
+                              <span class="text-base font-bold text-neutral-900 dark:text-white">Philipp Fleischer</span>
+                              <span class="text-xs font-medium uppercase tracking-wider text-secondary-500">{{ $t("blog.author") }}</span>
+                          </div>          </div>
         </header>
 
 
@@ -93,15 +91,15 @@
             <!-- Footer Actions -->
             <footer class="mt-20 flex flex-col items-start gap-10 border-t border-neutral-200/30 pt-16 dark:border-neutral-800/30">
                 <div class="flex flex-col gap-4">
-                    <h3 class="text-xl font-bold text-neutral-900 dark:text-white">Did you enjoy this post?</h3>
-                    <p class="text-neutral-500">Feel free to share it or connect with me.</p>
+                    <h3 class="text-xl font-bold text-neutral-900 dark:text-white">{{ $t("blog.enjoyed_post") }}</h3>
+                    <p class="text-neutral-500">{{ $t("blog.share_connect") }}</p>
                 </div>
                 <div class="flex gap-4">
                     <SocialLinks />
                 </div>
                 <NuxtLink :to="$localePath('/blog')" class="group flex items-center gap-2 text-sm font-bold text-neutral-500 transition-colors hover:text-secondary-500">
                     <Icon name="heroicons:arrow-left" class="transition-transform group-hover:-translate-x-1" />
-                    Back to Overview
+                    {{ $t("blog.back_overview") }}
                 </NuxtLink>
             </footer>
         </div>

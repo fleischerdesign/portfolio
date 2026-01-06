@@ -73,8 +73,8 @@
             {{ $t("footer.copyright") }}
         </p>
         <div class="mt-4 flex gap-6 text-sm md:mt-0">
-            <NuxtLink :to="$localePath('/legal')" class="hover:text-secondary-500">Impressum</NuxtLink>
-            <NuxtLink :to="$localePath('/legal')" class="hover:text-secondary-500">Datenschutz</NuxtLink>
+            <NuxtLink :to="$localePath('/legal')" class="hover:text-secondary-500">{{ $t("legal.title") }}</NuxtLink>
+            <NuxtLink :to="$localePath('/legal')" class="hover:text-secondary-500">{{ $t("legal.privacy") }}</NuxtLink>
         </div>
       </div>
     </div>

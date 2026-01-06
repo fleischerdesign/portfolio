@@ -22,7 +22,7 @@
                 <!-- Category Label -->
                 <div class="mb-4 flex translate-y-4 items-center gap-2 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
                     <span class="h-1.5 w-1.5 rounded-full bg-secondary-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
-                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-secondary-400">Project Case Study</span>
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-secondary-400">{{ $t("project.case_study") }}</span>
                 </div>
 
                 <div class="flex items-center gap-6">
@@ -57,7 +57,7 @@
                 <div class="mt-8 flex items-center gap-4">
                     <div class="h-1 w-12 rounded-full bg-secondary-500/30 transition-all duration-700 group-hover:w-24 group-hover:bg-secondary-500 shadow-[0_0_10px_rgba(16,185,129,0.2)] group-hover:shadow-secondary-500/40"></div>
                     <span class="text-xs font-bold uppercase tracking-widest text-white opacity-0 transition-all duration-500 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0">
-                        View Details
+                        {{ $t("project.details") }}
                     </span>
                 </div>
 
