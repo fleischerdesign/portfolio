@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
+    <div class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44">
       
       <article v-if="project" class="flex flex-col items-start">
         
@@ -24,10 +24,25 @@
                     :level="1" 
                     :title="project.title" 
                     :subtitle="project.subtitle" 
-                    :symbol="project.icon"
                     variant="glow"
-                    class="!mb-0 flex-1 [&_svg]:fill-secondary-600 [&_svg_g]:fill-secondary-600 [&_svg_path]:fill-secondary-600 dark:[&_svg]:fill-secondary-400 dark:[&_svg_g]:fill-secondary-400 dark:[&_svg_path]:fill-secondary-400"
-                />
+                    class="!mb-0 flex-1"
+                >
+                    <template #prefix>
+                        <div class="relative group">
+                            <!-- Animated Outer Glow -->
+                            <div class="absolute -inset-2 rounded-3xl bg-secondary-500/20 blur-xl transition duration-500 group-hover:bg-secondary-500/30"></div>
+                            
+                            <div class="relative inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-white/50 bg-gradient-to-br from-white/80 to-white/40 shadow-xl backdrop-blur-xl transition-all duration-500 group-hover:scale-105 dark:border-white/10 dark:from-white/10 dark:to-white/5">
+                                <Icon 
+                                    :name="project.icon" 
+                                    size="32" 
+                                    mode="svg"
+                                    class="text-secondary-600 transition-colors duration-500 group-hover:text-secondary-500 dark:text-secondary-400 dark:group-hover:text-secondary-300 [&_*]:!fill-current" 
+                                />
+                            </div>
+                        </div>
+                    </template>
+                </UiSectionHeader>
 
                 <!-- Actions -->
                 <div class="flex gap-4">

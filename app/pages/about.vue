@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
+  <div class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44">
     
     <!-- Hero Section -->
     <section class="mb-32 flex flex-col items-center gap-12 lg:flex-row lg:items-start">

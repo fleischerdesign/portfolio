@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto max-w-screen-xl py-16">
+    <div class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44">
         <div class="mb-24">
               <UiSectionHeader :level="1" :title="$t('blog.title')" :subtitle="$t('blog.subtitle')" symbol="heroicons:pencil-square" />
             <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">

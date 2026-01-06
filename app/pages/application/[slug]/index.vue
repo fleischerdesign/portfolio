@@ -148,7 +148,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="application" class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
+  <div v-if="application" class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44">
     <!-- Header -->
     <div class="mb-12">
       <UiSectionHeader symbol="heroicons:briefcase" :title="application.title" :subtitle="$t('applications.detail.document.applied_to', { company: application.company.name })" />
@@ -755,7 +755,7 @@ onMounted(() => {
       </template>
     </UiModal>
   </div>
-  <div v-else class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
+  <div v-else class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44">
     <p>{{ $t('applications.detail.loading') }}</p>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex min-h-[80vh] w-full items-center justify-center overflow-hidden py-24 2xl:min-h-[850px]">
+  <div class="relative flex min-h-[80vh] w-full items-center justify-center overflow-hidden pb-24 pt-24 lg:pt-48 2xl:min-h-[850px]">
     
     <!-- FULL WIDTH BACKGROUND WRAPPER (With Fade Out at Bottom) -->
     <div class="absolute inset-0 h-full w-full [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]">

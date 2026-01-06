@@ -65,7 +65,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
+  <div class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44">
     <div class="mb-24 space-y-8">
       <UiSectionHeader :level="1" symbol="heroicons:briefcase" :title="$t('applications.index.title')" :subtitle="$t('applications.index.subtitle')" />
       

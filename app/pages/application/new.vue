@@ -128,7 +128,7 @@ function handleCancelContactForm() {
 </script>
 
 <template>
-  <div class="container mx-auto max-w-screen-xl px-4 py-16 md:px-8">
+  <div class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44">
     <div class="mb-12">
       <UiSectionHeader symbol="heroicons:briefcase" :title="$t('applications.new.title')" :subtitle="$t('applications.new.subtitle')" />
     </div>

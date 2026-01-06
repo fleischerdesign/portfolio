@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto max-w-screen-xl py-16">
+    <div class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44">
         <SectionContact heading-type="page" />
     </div>
 </template>

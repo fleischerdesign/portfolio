@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto max-w-screen-xl py-16">
+    <div class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44">
       <UiSectionHeader :level="1" :title="$t('legal.title')" :subtitle="$t('legal.subtitle')" symbol="heroicons:scale" />
 <p>Angaben gemäß § 5 DDG</p><p>Philipp Fleischer<br> 
 <br> 
