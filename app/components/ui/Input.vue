@@ -13,6 +13,7 @@
       <component
         :is="as"
         :id="id"
+        v-bind="$attrs"
         :value="model"
         :class="inputClasses"
         :required="required"
@@ -31,6 +32,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
+defineOptions({
+  inheritAttrs: false
+});
 
 const model = defineModel<string | number>();
 

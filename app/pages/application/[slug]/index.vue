@@ -7,28 +7,6 @@ const { getStatusChipClasses, getStatusTextClasses, getApplicationDate, getRespo
 const { renderMarkdown } = useMarkdown(); 
 const { getSalutation } = useSalutation();
 
-const salutation = computed(() => {
-  const contacts = isEditing.value ? editableApplication.value?.selectedContacts : application.value?.contacts;
-  return getSalutation(contacts, { format: 'lastname', multiple: 'individual' });
-});
-
-const displayDate = computed(() => {
-  const app = isEditing.value ? editableApplication.value : application.value;
-  return getDisplayDate(app);
-});
-
-const bodyStats = computed(() => {
-  const text = isEditing.value ? editableApplication.value?.body : application.value?.body;
-  const words = text?.trim().split(/\s+/).filter(Boolean).length || 0;
-  const chars = text?.length || 0;
-  return { 
-    words, 
-    chars, 
-    readingTime: Math.max(1, Math.ceil(words / 200)),
-    isLong: chars > 2800 
-  };
-});
-
 definePageMeta({
   middleware: 'authorize',
   ability: isAdmin
@@ -62,6 +40,51 @@ const {
   handleContactCreated,
   handleCancelContactForm,
 } = useApplicationEditor(application, refresh, toRef(route.params as { slug: string }, 'slug')); // Pass application ref, refresh function, and slug ref
+
+const salutation = computed(() => {
+  const contacts = isEditing.value ? editableApplication.value?.selectedContacts : application.value?.contacts;
+  return getSalutation(contacts, { format: 'lastname', multiple: 'individual' });
+});
+
+const displayDate = computed(() => {
+  const app = isEditing.value ? editableApplication.value : application.value;
+  return getDisplayDate(app);
+});
+
+const bodyStats = computed(() => {
+  const text = isEditing.value ? editableApplication.value?.body : application.value?.body;
+  const words = text?.trim().split(/\s+/).filter(Boolean).length || 0;
+  const chars = text?.length || 0;
+  return { 
+    words, 
+    chars, 
+    readingTime: Math.max(1, Math.ceil(words / 200)),
+    isLong: chars > 2800 
+  };
+});
+
+const textareaRef = ref<any>(null);
+const adjustTextareaHeight = () => {
+  if (!textareaRef.value) return;
+  // We target the internal textarea of the UiInput component
+  const el = textareaRef.value?.$el?.querySelector('textarea');
+  if (el) {
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight}px`;
+  }
+};
+
+watch(() => editableApplication.value?.body, () => {
+  if (isEditing.value) {
+    nextTick(adjustTextareaHeight);
+  }
+});
+
+watch(isEditing, (val) => {
+  if (val) {
+    nextTick(adjustTextareaHeight);
+  }
+});
 
 // Initialize History Manager Composable
 const {
@@ -397,14 +420,16 @@ onMounted(() => {
                         </div>
 
                         <!-- Focused Writing Area -->
-                        <div class="relative group/editor border-l-2 border-transparent focus-within:border-secondary-500/30 transition-all pl-8 -ml-8">
+                        <div class="relative group/editor">
                             <UiInput
                                 id="body"
+                                ref="textareaRef"
                                 v-model="editableApplication.body"
                                 as="textarea"
                                 label=""
                                 placeholder="Schreibe hier dein Anschreiben... Nutze Markdown für Formatierungen."
-                                class="min-h-[600px] border-none !bg-transparent !p-0 focus:ring-0 text-lg leading-relaxed selection:bg-secondary-100 dark:selection:bg-secondary-900/50"
+                                class="min-h-[600px] border-none !bg-transparent !p-0 focus:ring-0 text-lg leading-relaxed selection:bg-secondary-100 dark:selection:bg-secondary-900/50 resize-none overflow-hidden"
+                                @input="adjustTextareaHeight"
                             />
                         </div>
                     </div>
