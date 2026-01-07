@@ -25,7 +25,7 @@
     <div class="relative flex flex-col gap-6" :class="contentAlignClasses">
         
         <!-- DECORATIVE TOP (Icon or Lines) - Not shown for 'none' variant -->
-        <div v-if="variant !== 'none'" class="flex items-center gap-4">
+        <div v-if="variant !== 'none' && (symbol || variant === 'tech' || $slots.prefix)" class="flex items-center gap-4">
              <!-- Tech Variant Line -->
              <div v-if="variant === 'tech'" class="font-mono text-sm font-bold tracking-widest text-secondary-500">
                 // 0{{ Math.floor(Math.random() * 9) + 1 }}
@@ -51,9 +51,6 @@
                  <div v-else-if="variant === 'nebula' && symbol" class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary-100/50 text-secondary-500 dark:bg-secondary-900/40">
                     <Icon :name="symbol" size="32" />
                  </div>
-
-                 <!-- DEFAULT: Pill -->
-                 <div v-else-if="!symbol && variant !== 'tech'" class="h-2 w-16 rounded-full bg-secondary-500"></div>
                  
                  <!-- DEFAULT: Simple Icon -->
                  <div v-else-if="symbol" class="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 dark:bg-secondary-900/40 dark:text-secondary-400">
