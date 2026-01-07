@@ -24,8 +24,8 @@
 
     <div class="relative flex flex-col gap-6" :class="contentAlignClasses">
         
-        <!-- DECORATIVE TOP (Icon or Lines) -->
-        <div class="flex items-center gap-4">
+        <!-- DECORATIVE TOP (Icon or Lines) - Not shown for 'none' variant -->
+        <div v-if="variant !== 'none'" class="flex items-center gap-4">
              <!-- Tech Variant Line -->
              <div v-if="variant === 'tech'" class="font-mono text-sm font-bold tracking-widest text-secondary-500">
                 // 0{{ Math.floor(Math.random() * 9) + 1 }}
@@ -102,7 +102,7 @@ const props = withDefaults(defineProps<{
   subtitle?: string
   symbol?: string
   level?: 1 | 2,
-  variant?: 'minimal' | 'glow' | 'tech' | 'nebula'
+  variant?: 'minimal' | 'glow' | 'tech' | 'nebula' | 'none'
   // Deprecated props for compatibility
   align?: string 
 }>(), {
@@ -115,7 +115,8 @@ const tag = computed(() => `h${props.level}`)
 
 const rootClasses = computed(() => {
     return [
-        'relative mb-20 flex flex-col',
+        'relative flex flex-col',
+        props.variant === 'none' ? 'mb-8' : 'mb-20',
         props.variant === 'nebula' ? 'items-center' : '',
     ]
 })
@@ -143,6 +144,7 @@ const subtitleClasses = useCva(
          glow: 'max-w-2xl font-medium text-neutral-600 dark:text-neutral-300 mt-2',
          nebula: 'mx-auto max-w-2xl',
          tech: 'max-w-3xl font-mono text-sm uppercase tracking-wide opacity-80',
+         none: 'max-w-3xl',
       }
    }
 )

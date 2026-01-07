@@ -1,5 +1,5 @@
 <template>
-  <div class="relative py-10">
+  <div class="relative" :class="compact ? 'py-4' : 'py-10'">
     <!-- Center Line (With Glow) -->
     <div 
       class="absolute left-5 top-0 h-full w-px bg-gradient-to-b from-transparent via-secondary-500/50 to-transparent shadow-[0_0_15px_rgba(16,185,129,0.3)]" 
@@ -11,11 +11,12 @@
       :class="{'hidden': isPrintView, 'md:block': !isPrintView}"
     ></div>
 
-    <div v-for="(item, index) in items" :key="index" class="relative" :class="isPrintView ? 'mb-8' : 'mb-16'">
+    <div v-for="(item, index) in items" :key="index" class="relative" :class="[isPrintView ? (compact ? 'mb-4' : 'mb-8') : (compact ? 'mb-8' : 'mb-16')]">
       <div class="flex items-center">
         
         <!-- Timeline Dot/Icon (Mobile) -->
         <div 
+          v-if="!compact"
           class="absolute left-5 z-10 flex h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-xl border border-secondary-500/30 bg-white shadow-xl shadow-secondary-500/10 backdrop-blur-md dark:bg-neutral-900" 
           :class="{'md:hidden': !isPrintView, 'hidden': isPrintView}"
         >
@@ -25,6 +26,7 @@
         
         <!-- Timeline Dot/Icon (Desktop) -->
         <div 
+          v-if="!compact"
           class="absolute left-1/2 z-10 hidden h-12 w-12 -translate-x-1/2 transform items-center justify-center rounded-2xl border border-secondary-500/30 bg-white shadow-2xl shadow-secondary-500/10 backdrop-blur-md dark:bg-neutral-900" 
           :class="{'hidden': isPrintView, 'md:flex': !isPrintView}"
         >
@@ -37,8 +39,9 @@
           shadow="md"
           hover
           :class="[
-            'flex-col p-6 lg:p-8',
-            isPrintView ? 'ml-0' : 'ml-14',
+            'flex-col',
+            compact ? 'p-4' : 'p-6 lg:p-8',
+            (isPrintView || compact) ? 'ml-0' : 'ml-14',
             'w-full',
             {'md:ml-0': !isPrintView},
             {'md:w-[42%]': !isPrintView},
@@ -49,13 +52,14 @@
         >
           <slot :item="item" :index="index">
             <div class="flex flex-col gap-1">
-              <span class="text-xs font-bold uppercase tracking-widest text-secondary-500">{{ item.date }}</span>
-              <h3 class="flex items-center gap-3 text-2xl font-bold text-neutral-900 dark:text-white" :class="{'md:flex-row-reverse': !isPrintView && index % 2 === 0}">
+              <span class="text-xs font-bold uppercase tracking-widest text-secondary-500" :class="{'text-[10px]': compact}">{{ item.date }}</span>
+              <h3 class="flex items-center gap-3 font-bold text-neutral-900 dark:text-white" :class="[compact ? 'text-lg' : 'text-2xl', {'md:flex-row-reverse': !isPrintView && index % 2 === 0}]">
+                <Icon v-if="compact" :name="item.icon" class="text-secondary-500 opacity-50" size="18" />
                 {{ item.title }}
               </h3>
             </div>
             
-            <p class="mt-4 text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">{{ item.description }}</p>
+            <p class="mt-2 leading-relaxed text-neutral-600 dark:text-neutral-400" :class="compact ? 'text-sm' : 'text-lg'">{{ item.description }}</p>
             
             <div 
               v-if="item.skills && item.skills.length && !isPrintView" 
@@ -88,6 +92,10 @@ defineProps({
     required: true
   },
   isPrintView: {
+    type: Boolean,
+    default: false
+  },
+  compact: {
     type: Boolean,
     default: false
   }
