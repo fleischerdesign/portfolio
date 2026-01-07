@@ -156,9 +156,9 @@ onMounted(() => {
 
     <!-- Consolidated Dashboard Header (View Mode) -->
     <UiCard v-if="application && !isEditing" class="mb-12 border-secondary-500/10 shadow-xl shadow-secondary-500/5">
-        <UiCardContainer class="!flex-row flex-wrap items-center justify-between gap-8 px-8 py-6">
+        <UiCardContainer class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-8 px-8 py-6">
             <!-- Status Item -->
-            <div class="flex items-center gap-5">
+            <div class="flex items-center gap-5 w-full lg:w-auto">
                 <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
                     <Icon name="heroicons:signal" size="28" />
                 </div>
@@ -173,11 +173,11 @@ onMounted(() => {
             </div>
 
             <!-- Company Item -->
-            <div class="flex flex-1 min-w-0 items-center gap-5 border-neutral-100 pl-4 dark:border-neutral-800 md:border-l md:pl-10">
+            <div class="flex items-center gap-5 w-full lg:flex-1 lg:min-w-0 border-t border-neutral-100 pt-6 lg:border-t-0 lg:pt-0 lg:border-l dark:border-neutral-800 lg:pl-8">
                 <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
                     <Icon name="heroicons:building-office" size="28" />
                 </div>
-                <div class="min-w-0">
+                <div class="min-w-0 flex-1">
                     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">{{ $t('applications.detail.config.company') }}</p>
                     <p class="mt-0.5 text-xl font-bold text-neutral-900 dark:text-white truncate" :title="application.company.name">{{ application.company.name }}</p>
                     <p v-if="application.company.address" class="text-xs font-medium text-neutral-500 dark:text-neutral-400 truncate">{{ application.company.address.city }}</p>
@@ -185,7 +185,7 @@ onMounted(() => {
             </div>
 
             <!-- Dates Item -->
-            <div class="flex items-center gap-5 border-neutral-100 pl-4 dark:border-neutral-800 md:border-l md:pl-10">
+            <div class="flex items-center gap-5 w-full lg:w-auto border-t border-neutral-100 pt-6 lg:border-t-0 lg:pt-0 lg:border-l dark:border-neutral-800 lg:pl-8">
                 <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
                     <Icon name="heroicons:clock" size="28" />
                 </div>
@@ -199,11 +199,11 @@ onMounted(() => {
             </div>
 
             <!-- Job Link -->
-            <div v-if="application.url" class="ml-auto hidden xl:block">
+            <div v-if="application.url" class="w-full lg:w-auto lg:ml-auto border-t border-neutral-100 pt-6 lg:border-t-0 lg:pt-0 dark:border-neutral-800">
                 <a :href="application.url" target="_blank" rel="noopener noreferrer">
-                    <UiButton variant="glass" size="lg" class="group !rounded-2xl border-secondary-200/50 transition-all duration-500 hover:bg-secondary-500 hover:text-white">
-                        {{ $t('applications.detail.document.listing') }}
-                        <Icon name="heroicons:arrow-top-right-on-square" class="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                    <UiButton variant="glass" size="lg" class="group w-full lg:w-auto !rounded-2xl border-secondary-200/50 transition-all duration-500 hover:bg-secondary-500 hover:text-white">
+                        <span class="inline lg:hidden xl:inline">{{ $t('applications.detail.document.listing') }}</span>
+                        <Icon name="heroicons:arrow-top-right-on-square" class="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 ml-3 lg:ml-0 xl:ml-3" />
                     </UiButton>
                 </a>
             </div>
