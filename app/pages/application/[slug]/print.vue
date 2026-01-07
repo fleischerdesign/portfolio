@@ -85,12 +85,22 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
         <div class="text-center space-y-6">
            <UiSectionHeader 
              :level="1" 
-             symbol="logo:fleischerdesign" 
              :title="personal.name" 
              :subtitle="personal.subtitle" 
              variant="nebula"
              class="!mb-0"
-           />
+           >
+             <template #prefix>
+                <div class="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-secondary-100 text-secondary-600 shadow-sm border border-secondary-200/50">
+                    <Icon 
+                        name="logo:fleischerdesign" 
+                        size="40" 
+                        mode="svg"
+                        class="[&_*]:!fill-current"
+                    />
+                </div>
+             </template>
+           </UiSectionHeader>
            <div class="h-1 w-32 bg-secondary-500 mx-auto rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)]"></div>
         </div>
 

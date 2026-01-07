@@ -1,9 +1,0 @@
-feat(print): refine resume design and language proficiency representation
-
-- Standardize section titles with bold, large typography and consistent boxed icons.
-- Redesign "Kurse" (Courses) section with a clean, card-like list and limited to 5 items.
-- Improve project card visuals by overlaying emerald-colored icons on lightened images.
-- Add decorative background glows to all resume pages for brand consistency.
-- Refactor `languages.data.ts` to include a numeric score for more accurate progress bar rendering.
-- Fix spacing issues between section headers and content.
-- Center and style the portfolio link under the projects grid.
