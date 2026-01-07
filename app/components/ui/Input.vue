@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-2" :class="{ 'has-error': hasError }">
+  <div class="group flex flex-col gap-2" :class="{ 'has-error': hasError }">
     <!-- Label positioned outside for better clarity and design consistency -->
     <label
       v-if="label"
