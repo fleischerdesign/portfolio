@@ -208,8 +208,12 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
     </div>
     
     <!-- ==================== PAGE 3: RESUME PART 1 ==================== -->
-    <div class="main-content-pages relative h-[371mm] p-[25mm] flex flex-col gap-6">
+    <div class="main-content-pages relative h-[371mm] p-[25mm] flex flex-col gap-6 overflow-hidden">
       
+      <!-- Decorative Background Elements -->
+      <div class="absolute -top-32 -right-32 w-96 h-96 bg-secondary-400/10 rounded-full blur-[100px] print:block"></div>
+      <div class="absolute bottom-1/4 -left-32 w-80 h-80 bg-secondary-500/5 rounded-full blur-[80px] print:block"></div>
+
       <!-- Header -->
       <div class="flex flex-col mb-2">
         <UiSectionHeader
@@ -251,10 +255,6 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
                       <span class="font-medium text-neutral-800">{{ personal.driversLicense }}</span>
                    </div>
                    <div class="flex flex-col">
-                      <span class="font-black text-[10px] uppercase tracking-wider text-neutral-400 mb-0.5">{{ $t('resume.details.address_label') }}</span>
-                      <span class="font-medium text-neutral-800">{{ personal.address.street }}, {{ personal.address.postalCode }} {{ personal.address.city }}</span>
-                   </div>
-                   <div class="flex flex-col">
                       <span class="font-black text-[10px] uppercase tracking-wider text-neutral-400 mb-0.5">{{ $t('home.contact.title') }}</span>
                       <div class="flex items-center gap-2">
                          <Icon name="heroicons:envelope" size="14" class="text-secondary-500" />
@@ -276,7 +276,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
                   <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
                      <Icon name="heroicons:language" size="20" />
                   </div>
-                  <h3 class="font-black text-xs uppercase tracking-[0.2em] text-neutral-400">{{ $t('languages.title') }}</h3>
+                  <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">{{ $t('languages.title') }}</h3>
                </div>
                <div class="grid grid-cols-1 gap-3">
                  <div v-for="lang in languages" :key="lang.name" class="flex flex-col gap-1">
@@ -285,7 +285,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
                      <span class="text-[10px] font-black uppercase text-secondary-600 tracking-wider">{{ lang.level }}</span>
                    </div>
                    <div class="h-1.5 w-full bg-neutral-100 rounded-full overflow-hidden">
-                      <div class="h-full bg-secondary-400 rounded-full" :style="{ width: lang.level.includes('Native') ? '100%' : lang.level.includes('Business') ? '90%' : '70%' }"></div>
+                      <div class="h-full bg-secondary-400 rounded-full" :style="{ width: lang.score + '%' }"></div>
                    </div>
                  </div>
                </div>
@@ -299,7 +299,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
                   <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
                      <Icon name="heroicons:sparkles" size="20" />
                   </div>
-                  <h3 class="font-black text-xs uppercase tracking-[0.2em] text-neutral-400">Softskills</h3>
+                  <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">Softskills</h3>
                </div>
                <TechstackList :items="softSkills" :scroll="false" :gradient="true" size="sm" hide-icons />
              </UiCardContainer>
@@ -346,9 +346,11 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
              </div>
              <div class="grid grid-cols-1 gap-3">
                <div v-for="project in projects.slice(0,3)" :key="project.slug" class="group rounded-2xl border border-neutral-100 bg-white p-3 shadow-sm flex gap-4 items-center transition-all hover:border-secondary-200 hover:shadow-md">
-                  <div class="h-14 w-14 flex-shrink-0 rounded-xl bg-neutral-50 overflow-hidden border border-neutral-100">
-                     <img v-if="project.image" :src="project.image" class="h-full w-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all" />
-                     <Icon v-else :name="project.icon || 'heroicons:folder'" class="h-full w-full p-3 text-neutral-300" />
+                  <div class="h-14 w-14 flex-shrink-0 rounded-xl bg-neutral-50 overflow-hidden border border-neutral-100 relative">
+                     <img v-if="project.image" :src="typeof project.image === 'string' ? project.image : project.image.src" class="h-full w-full object-cover grayscale opacity-30 group-hover:grayscale-0 group-hover:opacity-100 transition-all" />
+                     <div class="absolute inset-0 flex items-center justify-center">
+                        <Icon :name="project.icon || 'heroicons:folder'" mode="svg" class="[&_*]:!fill-current text-secondary-600 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" size="24" />
+                     </div>
                   </div>
                   <div class="flex-grow">
                      <h4 class="font-black text-sm text-neutral-900 tracking-tight">{{ project.title }}</h4>
@@ -360,14 +362,9 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
                </div>
              </div>
              
-             <div class="mt-auto pt-4 flex items-center justify-between">
-                <div class="flex items-center gap-2 text-[10px] text-secondary-500 bg-secondary-50/50 px-3 py-1.5 rounded-full border border-secondary-100 font-bold">
-                   <Icon name="heroicons:globe-alt" size="12" />
-                   Portfolio: fleischer.design/projects
-                </div>
-                <div class="text-[9px] font-black uppercase tracking-widest text-neutral-300">
-                   Stand: Januar 2026
-                </div>
+             <div class="mt-4 mx-auto flex items-center gap-2 text-[10px] text-secondary-500 bg-secondary-50/50 px-3 py-1.5 rounded-full border border-secondary-100 font-medium w-fit">
+                <Icon name="heroicons:cursor-arrow-rays" size="12" />
+                <span>Mehr Projekte auf <span class="font-black">fleischer.design/projects</span></span>
              </div>
           </div>
 
@@ -378,8 +375,12 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
     </div>
 
     <!-- ==================== PAGE 4: RESUME PART 2 ==================== -->
-    <div class="main-content-pages relative h-[371mm] break-inside-avoid-page p-[25mm] flex flex-col gap-6">
+    <div class="main-content-pages relative h-[371mm] break-inside-avoid-page p-[25mm] flex flex-col gap-6 overflow-hidden">
       
+      <!-- Decorative Background Elements -->
+      <div class="absolute -top-32 -left-32 w-96 h-96 bg-secondary-400/10 rounded-full blur-[100px] print:block"></div>
+      <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gradient-to-t from-secondary-100/20 to-transparent blur-3xl print:block"></div>
+
       <div class="grid grid-cols-12 gap-8 h-full pt-4">
          
          <!-- Left Column (Interests, Courses) -->
@@ -392,7 +393,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
                     <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
                        <Icon name="heroicons:heart" size="20" />
                     </div>
-                    <h3 class="font-black text-xs uppercase tracking-[0.2em] text-neutral-400">{{ $t('interests.title') }}</h3>
+                    <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">{{ $t('interests.title') }}</h3>
                  </div>
                  <ul class="space-y-4 text-xs">
                    <li v-for="(items, key) in interests" :key="key">
@@ -404,13 +405,13 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
             </UiCard>
 
             <!-- Courses -->
-            <UiCard class="shadow-none border-neutral-200/60 flex-grow">
+            <UiCard class="shadow-none border-neutral-200/60">
               <UiCardContainer class="p-6">
                  <div class="flex items-center gap-4 mb-4">
                     <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
                        <Icon name="heroicons:academic-cap" size="20" />
                     </div>
-                    <h3 class="font-black text-xs uppercase tracking-[0.2em] text-neutral-400">Kurse</h3>
+                    <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">Kurse</h3>
                  </div>
                  <div class="space-y-3">
                     <div v-for="(skill, index) in courses.slice(0, 5)" :key="skill.title" class="flex flex-col rounded-xl border border-neutral-100 bg-neutral-50/50 p-3">

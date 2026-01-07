@@ -1,9 +1,0 @@
-feat(print): redesign application print page with modern emerald liquid glass aesthetic
-
-- Complete overhaul of `print.vue` for better A4/Puppeteer compatibility (0.8 zoom).
-- Implement new design language: boxed icons, glassmorphism, and emerald accents.
-- Enhance `BaseTimeline` with a `compact` prop for space-efficient layouts.
-- Update `TechstackList` with `size` and `hideIcons` props for finer control.
-- Add `none` variant to `UiSectionHeader` for clean, minimalist section titles.
-- Improve typography, spacing, and readability across all resume pages.
-- Standardize card designs and section headers for a consistent dashboard look.
