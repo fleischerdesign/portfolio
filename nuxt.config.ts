@@ -94,7 +94,7 @@ export default defineNuxtConfig({
   autoTranslate: {
     apiProvider: 'openai', // or 'anthropic', 'google'
     apiBaseUrl: 'https://openrouter.ai/api/v1',
-    model: 'deepseek/deepseek-v3.2-exp',
+    model: 'deepseek/deepseek-v3.2',
     paths: [
       {
         sourcePath: 'blog',

@@ -37,12 +37,12 @@ export default defineNuxtModule<TranslationConfig>({
   setup(options, nuxt) {
     nuxt.hook('build:before', async () => {
       console.log('🔄 Starting automatic translation...')
-      await translateMarkdownFiles(options)
+      await translateMarkdownFiles(options, nuxt.options.runtimeConfig)
     })
   }
 })
 
-async function translateMarkdownFiles(config: TranslationConfig) {
+async function translateMarkdownFiles(config: TranslationConfig, runtimeConfig: any) {
   const contentDir = 'content'
 
   try {
@@ -65,7 +65,7 @@ async function translateMarkdownFiles(config: TranslationConfig) {
 
         if (await needsTranslation(sourcePath, targetPath)) {
           console.log(`🔄 Translating: ${file}`)
-          await translateFile(sourcePath, targetPath, mergedConfig)
+          await translateFile(sourcePath, targetPath, mergedConfig, runtimeConfig)
         }
       }
     }
@@ -92,12 +92,13 @@ async function needsTranslation(sourcePath: string, targetPath: string): Promise
 async function translateFile(
   sourcePath: string,
   targetPath: string,
-  config: TranslationConfig
+  config: TranslationConfig,
+  runtimeConfig: any
 ): Promise<void> {
   try {
     const content = await fs.readFile(sourcePath, 'utf-8')
 
-    const translatedContent = await translateCompleteDocument(content, config)
+    const translatedContent = await translateCompleteDocument(content, config, runtimeConfig)
 
     await fs.writeFile(targetPath, translatedContent, 'utf-8')
 
@@ -111,7 +112,7 @@ async function translateFile(
   }
 }
 
-async function translateCompleteDocument(content: string, config: TranslationConfig): Promise<string> {
+async function translateCompleteDocument(content: string, config: TranslationConfig, runtimeConfig: any): Promise<string> {
   const systemPrompt = `Du bist ein professioneller Übersetzer. Übersetze das folgende Markdown-Dokument von Deutsch ins Englische.
 
 WICHTIGE REGELN:
@@ -141,40 +142,47 @@ slug: "mein-artikel"
 # German Headline  
 German text with **bold** formatting.`
 
-  return await callLLMWithPrompt(content, systemPrompt, config)
+  return await callLLMWithPrompt(content, systemPrompt, config, runtimeConfig)
 }
 
-async function callLLMWithPrompt(text: string, systemPrompt: string, config: TranslationConfig): Promise<string> {
+async function callLLMWithPrompt(text: string, systemPrompt: string, config: TranslationConfig, runtimeConfig: any): Promise<string> {
   switch (config.apiProvider) {
     case 'openai':
-      return await callOpenAIWithPrompt(text, systemPrompt, config)
+      return await callOpenAIWithPrompt(text, systemPrompt, config, runtimeConfig)
     case 'anthropic':
-      return await callAnthropicWithPrompt(text, systemPrompt, config)
+      return await callAnthropicWithPrompt(text, systemPrompt, config, runtimeConfig)
     case 'google':
-      return await callGoogleWithPrompt(text, systemPrompt, config)
+      return await callGoogleWithPrompt(text, systemPrompt, config, runtimeConfig)
     default:
       throw new Error(`Unknown API provider: ${config.apiProvider}`)
   }
 }
 
-async function callOpenAIWithPrompt(text: string, systemPrompt: string, config: TranslationConfig): Promise<string> {
-  const runtimeConfig = useRuntimeConfig()
-  const apiKey = runtimeConfig.openai.apiKey
+async function callOpenAIWithPrompt(text: string, systemPrompt: string, config: TranslationConfig, runtimeConfig: any): Promise<string> {
+  const apiKey = runtimeConfig.openai?.apiKey || process.env.NUXT_OPENAI_API_KEY
   if (!apiKey) {
-    throw new Error('OPENAI_API_KEY is not set in runtimeConfig')
+    throw new Error('OPENAI_API_KEY is not set in runtimeConfig or process.env (NUXT_OPENAI_API_KEY)')
   }
 
   const baseUrl = (config.apiBaseUrl || 'https://api.openai.com/v1').replace(/\/$/, '');
   const endpoint = `${baseUrl}/chat/completions`;
+  const isOpenRouter = baseUrl.includes('openrouter.ai');
 
-  console.log(`📞 Calling API endpoint: ${endpoint}`);
+  console.log(`📞 Calling API endpoint: ${endpoint} (Provider: ${isOpenRouter ? 'OpenRouter' : 'OpenAI'})`);
+
+  const headers: Record<string, string> = {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  };
+
+  if (isOpenRouter) {
+    headers['HTTP-Referer'] = 'https://fleischer.design'; // Update with your actual site URL
+    headers['X-Title'] = 'Fleischer.design Portfolio';
+  }
 
   const response = await fetch(endpoint, {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json'
-    },
+    headers,
     body: JSON.stringify({
       model: config.model,
       messages: [{
@@ -190,18 +198,19 @@ async function callOpenAIWithPrompt(text: string, systemPrompt: string, config: 
 
   if (!response.ok) {
     const errorBody = await response.text()
-    throw new Error(`OpenAI API Error: ${response.statusText} - ${errorBody}`)
+    throw new Error(`API Error (${isOpenRouter ? 'OpenRouter' : 'OpenAI'}): ${response.status} ${response.statusText} - ${errorBody}`)
   }
 
   const data = await response.json()
+  
+  // OpenRouter response structure is compatible with OpenAI
   return data.choices[0].message.content
 }
 
-async function callAnthropicWithPrompt(text: string, systemPrompt: string, config: TranslationConfig): Promise<string> {
-  const runtimeConfig = useRuntimeConfig()
-  const apiKey = runtimeConfig.anthropic.apiKey
+async function callAnthropicWithPrompt(text: string, systemPrompt: string, config: TranslationConfig, runtimeConfig: any): Promise<string> {
+  const apiKey = runtimeConfig.anthropic?.apiKey || process.env.NUXT_ANTHROPIC_API_KEY
   if (!apiKey) {
-    throw new Error('ANTHROPIC_API_KEY is not set in runtimeConfig')
+    throw new Error('ANTHROPIC_API_KEY is not set in runtimeConfig or process.env (NUXT_ANTHROPIC_API_KEY)')
   }
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -230,11 +239,10 @@ async function callAnthropicWithPrompt(text: string, systemPrompt: string, confi
   return data.content[0].text
 }
 
-async function callGoogleWithPrompt(text: string, systemPrompt: string, config: TranslationConfig): Promise<string> {
-  const runtimeConfig = useRuntimeConfig()
-  const apiKey = runtimeConfig.google.apiKey
+async function callGoogleWithPrompt(text: string, systemPrompt: string, config: TranslationConfig, runtimeConfig: any): Promise<string> {
+  const apiKey = runtimeConfig.google?.apiKey || process.env.NUXT_GOOGLE_API_KEY
   if (!apiKey) {
-    throw new Error('GOOGLE_API_KEY is not set in runtimeConfig')
+    throw new Error('GOOGLE_API_KEY is not set in runtimeConfig or process.env (NUXT_GOOGLE_API_KEY)')
   }
 
   const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${config.model}:generateContent?key=${apiKey}`, {
