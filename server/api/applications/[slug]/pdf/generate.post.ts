@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
       scale: .8
     });
 
-    const outputPath = path.join(process.cwd(), 'data', 'applications', `${slug}.pdf`);
+    const outputPath = path.join(process.cwd(), '.data', 'applications', `${slug}.pdf`);
     console.log(`Writing PDF to: ${outputPath}`);
 
     const outputDir = path.dirname(outputPath);
