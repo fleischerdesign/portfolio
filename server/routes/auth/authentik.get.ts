@@ -2,10 +2,10 @@ import { users } from '../../db/schema';
 import { eq } from 'drizzle-orm';
 import { dbUserSchema, type DbUser } from '#shared/schemas/user.schema';
 
-export default defineOAuthAuthentikEventHandler({
+const authHandler = defineOAuthAuthentikEventHandler({
   async onSuccess(event, { user: authUser }) {
-    const query = getQuery(event);
-    const redirectTo = (query.redirect as string) || '/';
+    const redirectTo = getCookie(event, 'return_to') || '/';
+    deleteCookie(event, 'return_to');
 
     // Use the DbUserSchema to validate the data before processing
     const validatedAuthUser = dbUserSchema.pick({ authProviderId: true, email: true, name: true }).parse({
@@ -62,4 +62,17 @@ export default defineOAuthAuthentikEventHandler({
     console.error('Authentik OAuth error:', error);
     return sendRedirect(event, '/login-error');
   }
+});
+
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event);
+  if (query.redirect) {
+    setCookie(event, 'return_to', query.redirect as string, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 10 // 10 minutes
+    });
+  }
+  return authHandler(event);
 });
