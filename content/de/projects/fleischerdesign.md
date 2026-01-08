@@ -53,7 +53,7 @@ challenges:
   - Komplexes State-Management für Formulare und Tabellen
 url:
   project: https://fleischer.design
-  repository: https://github.com/fleischer_design/portfolio
+  repository: https://github.com/fleischerdesign/portfolio
 ---
 
 ### 1. Einleitung und Motivation

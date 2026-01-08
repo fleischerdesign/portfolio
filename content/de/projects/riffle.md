@@ -48,7 +48,7 @@ challenges:
   - Gestaltung einer intuitiven UI für komplexe Management-Aufgaben
 url:
   project: https://riffle.app
-  repository: https://github.com/fleischer_design/riffle
+  repository: https://github.com/fleischerdesign/riffle
 ---
 
 ### 1. Einleitung und Motivation

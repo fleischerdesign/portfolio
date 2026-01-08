@@ -53,7 +53,7 @@ challenges:
   - Complex state management for forms and tables
 url:
   project: https://fleischer.design
-  repository: https://github.com/fleischer_design/portfolio
+  repository: https://github.com/fleischerdesign/portfolio
 ---
 
 ### 1. Introduction and Motivation

@@ -46,11 +46,26 @@
 
                 <!-- Actions -->
                 <div class="flex gap-4">
-                    <UiButton variant="secondary" size="lg" class="shadow-lg shadow-secondary-500/20">
+                    <UiButton 
+                        v-if="project.url?.project"
+                        :to="project.url.project"
+                        :external="true"
+                        target="_blank"
+                        variant="secondary" 
+                        size="lg" 
+                        class="shadow-lg shadow-secondary-500/20"
+                    >
                         {{ $t("project.visit_live") }}
                         <template #icon-right><Icon name="heroicons:arrow-top-right-on-square" /></template>
                     </UiButton>
-                    <UiButton variant="glass" size="lg">
+                    <UiButton 
+                        v-if="project.url?.repository"
+                        :to="project.url.repository"
+                        :external="true"
+                        target="_blank"
+                        variant="glass" 
+                        size="lg"
+                    >
                         {{ $t("project.github") }}
                         <template #icon-right><Icon name="mdi:github" /></template>
                     </UiButton>
