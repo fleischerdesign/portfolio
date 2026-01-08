@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :to="$localePath(`/projects/${project?.slug}`)" class="group block h-full">
+    <NuxtLink :to="$localePath(`/projects/${project?.slug}`)" class="group block h-full" :aria-label="$t('project.details_for', { title: project.title })">
         <UiCard interactive class="relative h-[400px] w-full overflow-hidden border-neutral-200/50 bg-neutral-100/50 dark:border-neutral-800/50 dark:bg-neutral-900/50">
             <!-- 1. Background Image -->
             <div class="absolute inset-0 h-full w-full">

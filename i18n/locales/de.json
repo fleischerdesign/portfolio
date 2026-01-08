@@ -462,6 +462,7 @@
       "notpublished": "Unveröffentlicht"
     },
     "details": "Projektdetails",
+    "details_for": "Projektdetails für {title}",
     "live": "Live",
     "case_study": "Case Study",
     "technologies": "Genutzte Technologien",

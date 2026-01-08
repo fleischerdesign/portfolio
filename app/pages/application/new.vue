@@ -10,6 +10,7 @@ definePageMeta({
 
 const router = useRouter();
 const localePath = useLocalePath();
+const { showToast } = useToast();
 const isLoading = ref(false);
 
 // Refs for Companies and Contacts
@@ -87,6 +88,7 @@ async function createApplication() {
     } else if (!selectedCompany.value) {
       // Handle error: no company selected or created
       console.error("No company selected or created.");
+      showToast('Bitte wähle ein Unternehmen aus oder erstelle ein neues.', { type: 'error' });
       isLoading.value = false;
       return;
     }
@@ -100,12 +102,12 @@ async function createApplication() {
     if (newSlug) {
       router.push(localePath(`/application/${newSlug}`));
     } else {
-      // TODO: Fallback or error handling
+      showToast('Bewerbung erstellt, aber Weiterleitung fehlgeschlagen.', { type: 'warning' });
       router.push(localePath('/application'));
     }
   } catch (error) {
     console.error('Failed to create application', error);
-    // TODO: Add user-facing error handling
+    showToast('Fehler beim Erstellen der Bewerbung.', { type: 'error' });
   } finally {
     isLoading.value = false;
   }

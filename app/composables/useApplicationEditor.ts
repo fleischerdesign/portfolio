@@ -44,7 +44,7 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
       isEditing.value = true;
     } catch (error) {
       console.error('Failed to start editing', error);
-      // TODO: Handle error feedback to user
+      showToast('Fehler beim Laden der Formulardaten.', { type: 'error' });
     } finally {
       isLoading.value = false;
     }

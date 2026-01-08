@@ -178,6 +178,10 @@ watch([rowItems, scroll], () => {
   backface-visibility: hidden;
 }
 
+.marquee-row:hover .marquee {
+  animation-play-state: paused;
+}
+
 @keyframes marquee-scroll {
   0% { transform: translate3d(0, 0, 0); }
   100% { transform: translate3d(-50%, 0, 0); }
