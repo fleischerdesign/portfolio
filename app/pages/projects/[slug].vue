@@ -28,7 +28,7 @@
                     class="!mb-0 flex-1"
                 >
                     <template #prefix>
-                        <div class="relative group">
+                        <div v-if="project.icon" class="relative group">
                             <!-- Animated Outer Glow -->
                             <div class="absolute -inset-2 rounded-3xl bg-secondary-500/20 blur-xl transition duration-500 group-hover:bg-secondary-500/30"></div>
                             

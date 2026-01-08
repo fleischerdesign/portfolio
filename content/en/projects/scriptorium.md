@@ -3,77 +3,99 @@ slug: scriptorium
 locale: en
 date: 2025-08-18
 published: true
-category: Command Line
+category: CLI & Backend
 techstack:
-  - Java
+  - Java 21
   - Gradle
-  - SQL
-  - BCrypt
+  - SQLite
+  - JDBC
+  - Picocli
+  - JLine3
+  - Javalin
   - Jackson
-  - Mockito
-  - JUnit
+  - JUnit 5
 tags:
-  - Java
   - CLI
-  - Database
+  - Interactive Shell
+  - Java
+  - Clean Architecture
   - API Integration
-  - System Architecture
 image:
   src: /img/olena-bohovyk-Ft_Wn-K5YH8-unsplash.jpg
   alt: "Placeholder image for the Scriptorium project"
-title: "Scriptorium – A Library System"
-subtitle: "A robust, command-line-based library system in Java for managing books, authors, and users."
+title: "Scriptorium – Modular Library CLI"
+subtitle: "A modern CLI tool built in Java with an interactive shell (JLine3), optional REST API server (Javalin), and Clean Architecture."
 features:
-  - "Comprehensive user, book, author, and publisher management"
-  - "Secure password storage through BCrypt hashing"
-  - "Direct integration of the Open Library API for importing book data"
-  - "Persistent data storage in a lightweight SQLite database"
-  - "Intuitive interactive shell for easy command execution"
+  - Interactive REPL shell with history (JLine3)
+  - Modular CLI command structure (Picocli)
+  - Integrated, optional REST API server (Javalin)
+  - Automated data import via Open Library API
+  - Persistence via raw JDBC & SQLite (Repository Pattern)
+  - Manual Dependency Injection (Composition Root)
 learned:
-  - "Design and implementation of a robust CLI architecture with Picocli."
-  - "Secure password storage using BCrypt hashing and best practices."
-  - "Integration of external APIs (Open Library) for data enrichment in a Java application."
-  - "Efficient data persistence and transaction management with SQLite."
+  - Implementation of a robust CLI application with interactive mode (REPL)
+  - Building a modular architecture ("Core" logic vs. CLI/Web interfaces)
+  - Manual management of JDBC transactions without ORM frameworks
+  - Integration of micro web frameworks (Javalin) into a CLI application
+  - Robust handling of inconsistent JSON APIs with Jackson
 challenges:
-  - "Designing an intuitive and error-resistant command-line interface."
-  - "Efficiently parsing and processing the nested JSON responses from the Open Library API."
-  - "Ensuring data integrity and consistent relationships in the SQLite database."
+  - Synchronization of CLI and API access to the same database
+  - Mapping relational SQL data to Java objects (ResultSet parsing)
+  - Implementing a custom Dependency Injection mechanism without Spring
+  - Error-resilient parsing of variable JSON structures (Open Library API)
 url:
   project: https://github.com/fleischerdesign/Scriptorium
   repository: https://github.com/fleischerdesign/Scriptorium
 ---
 
-### 1. Project Overview
+### 1. Introduction and Motivation
 
-Scriptorium is a robust, console-based library system developed in Java. It enables comprehensive management of users, authors, publishers, and books through an intuitive command-line interface (CLI). A core feature is the direct integration with the Open Library API, which significantly simplifies importing book data and reduces manual data entry.
+Scriptorium is primarily a powerful command-line application (CLI) for managing a library. The project demonstrates how to create a user experience with modern Java libraries (Picocli, JLine3) that doesn't have to hide behind graphical interfaces. Additionally, it shows how a clean architecture ("Clean Architecture") enables the same application core to optionally be provided as a REST API (via Javalin).
 
-### 2. Problem Statement and Objectives
+### 2. Problem Statement and Goals
 
-**Problem:** Smaller libraries or private collections often need simple yet powerful management software without the overhead of large, graphical applications. The solution should be platform-independent, resource-efficient, and controllable via the command line.
+**Problem:** CLI tools are often clunky, don't support interactive input, and are difficult to extend. On the other hand, "enterprise" web applications are often over-engineered for local use cases.
 
-**Objectives:**
-*   **Efficient Data Management:** Quick creation, viewing, updating, and deletion of all relevant entities (books, users, etc.).
-*   **Security:** User passwords must be securely stored using established hashing algorithms (BCrypt).
-*   **Automated Data Entry:** Reduction of manual effort through importing book information from an external source like Open Library.
-*   **User-Friendliness:** Despite being purely text-based, operation should be simple through an interactive shell with help functions and a clear command structure.
+**Goals:**
+*   **Interactive Shell:** Starting the application in a REPL mode (Read-Eval-Print-Loop) with command history and autocomplete.
+*   **Modularity:** Separation of input/output (CLI) and business logic (Core) to easily add a web interface later.
+*   **Lightweight:** Avoiding heavy frameworks like Spring Boot in favor of focused libraries (Javalin, Picocli).
+*   **Transparency:** Using JDBC instead of Hibernate to maintain full control over SQL queries.
 
-### 3. Technology Choice and Architecture
+### 3. System Architecture and Design
 
-**Architecture:**
-The application follows a clear layered architecture that separates business logic, data access, and presentation layer (CLI) from each other. This promotes maintainability and testability of the code.
+**Architecture Overview:**
+The core of the application is independent of the presentation layer. This enabled the seamless integration of the API server as a mere "feature" of the CLI.
 
-*   **Presentation Layer:** `Picocli` is used to create the command-line commands, options, and interactive shell. It converts user input into method calls within the application.
-*   **Service Layer:** This is where the core application logic resides. Services like `UserService` or `BookService` coordinate operations and interact with the data access layer.
-*   **Data Access Layer (DAO):** Responsible for all database communication. It abstracts the SQL queries for the SQLite database.
-*   **Model:** Simple Java objects (POJOs) that represent data structures like `User`, `Book`, etc.
+1.  **Interactive CLI (`org.scriptorium.application.Main`):** Uses **JLine3** for the REPL. If no arguments are passed, the interactive shell starts (`scriptorium> `).
+2.  **Command Parsing (`org.scriptorium.cli`):** **Picocli** defines the command structure (`book import`, `server start`) and converts inputs into method calls.
+3.  **API Server (`org.scriptorium.api`):** An integrated **Javalin** server that can be started via the CLI command `server start`. It uses the same services as the CLI.
+4.  **Data Layer:** Pure **JDBC** and **SQLite** provide persistent data storage without installation overhead.
 
-**Technology Justification:**
-*   **Java 21:** A modern, stable, and platform-independent language.
-*   **Gradle:** Powerful build tool that simplifies dependency management and the build process.
-*   **Picocli:** A framework that drastically simplifies CLI development in Java while providing powerful features like auto-completion.
-*   **SQLite:** A lightweight, serverless database perfect for a self-contained desktop/CLI application.
-*   **Jackson:** The de-facto standard for JSON processing in Java, necessary for communication with the Open Library API.
+**Dependency Injection:**
+A custom `DependencyFactory` acts as the Composition Root. It instantiates all repositories and services at startup and injects them into the Picocli commands. This avoids "magic" and makes the application startup extremely fast.
 
-### 4. Result
+### 4. Implementation Highlights
 
-The result is a fully functional, performant, and portable command-line application for library management. It is easy to use and can be built and executed easily through the Gradle wrapper scripts. The codebase is well secured by unit and integration tests with JUnit 5 and Mockito.
+**Import & Resilience:**
+The `BookImportService` uses Jackson to load books from the Open Library API. Since the API can deliver unpredictable data structures (Array vs. Single Object), the service implements intelligent fallback strategies during JSON parsing.
+
+**Hybrid Mode:**
+The application is a hybrid solution. It can be used as a pure admin tool (`scriptorium book list`) or started as a server to provide data for other applications (e.g., a frontend) (`GET /api/books`).
+
+### 5. Results and Outlook
+
+**Achieved Goals:**
+Scriptorium feels "snappy." The interactive shell is fun to use, and the ability to spawn a web server on demand makes the tool extremely flexible.
+
+**Next Steps:**
+*   **TUI Dashboard:** Extending the CLI with a text-based dashboard (using `lanterna`) for statistics.
+*   **Native Image:** Thanks to the chosen libraries, compilation with GraalVM is possible to create a standalone binary without JVM dependency.
+
+### 6. Personal Growth and Lessons Learned
+
+**SQL & JDBC:**
+Avoiding ORM frameworks sharpened my understanding of relational databases and transaction management. I had to learn how to map ResultSets efficiently and manually avoid N+1 problems.
+
+**CLI UX:**
+I learned that a good CLI is more than just parsing arguments. A consistent command structure, good help texts, and an interactive shell significantly increase the tool's acceptance.

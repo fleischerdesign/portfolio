@@ -459,7 +459,7 @@
     "state": {
       "title": "Status",
       "published": "Veröffentlicht",
-      "notpublished": "Unveröffentlicht"
+      "unpublished": "Unveröffentlicht"
     },
     "details": "Projektdetails",
     "details_for": "Projektdetails für {title}",

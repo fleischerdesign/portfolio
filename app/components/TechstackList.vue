@@ -113,6 +113,13 @@ const techIcons: Record<string, string> = {
   'GraphQL': 'simple-icons:graphql',
   'Java': 'devicon-plain:java',
   'Gradle': 'simple-icons:gradle',
+  'Niri': 'mdi:window-shutter',
+  'Quickshell': 'mdi:console-line',
+  'Qt Quick (QML)': 'simple-icons:qt',
+  'Wayland': 'simple-icons:wayland',
+  'Home Manager': 'mdi:home-cog',
+  'Fish': 'mdi:fish',
+  'direnv': 'mdi:folder-arrow-up-down',
 };
 
 const props = defineProps<{

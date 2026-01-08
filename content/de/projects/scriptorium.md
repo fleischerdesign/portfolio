@@ -3,77 +3,99 @@ slug: scriptorium
 locale: de
 date: 2025-08-18
 published: true
-category: Kommandozeile
+category: CLI & Backend
 techstack:
-  - Java
+  - Java 21
   - Gradle
-  - SQL
-  - BCrypt
+  - SQLite
+  - JDBC
+  - Picocli
+  - JLine3
+  - Javalin
   - Jackson
-  - Mockito
-  - JUnit
+  - JUnit 5
 tags:
-  - Java
   - CLI
-  - Datenbank
-  - API-Integration
-  - Systemarchitektur
+  - Interactive Shell
+  - Java
+  - Clean Architecture
+  - API Integration
 image:
   src: /img/olena-bohovyk-Ft_Wn-K5YH8-unsplash.jpg
   alt: "Platzhalterbild für das Scriptorium Projekt"
-title: "Scriptorium – Ein Bibliothekssystem"
-subtitle: "Ein robustes, kommandozeilenbasiertes Bibliothekssystem in Java zur Verwaltung von Büchern, Autoren und Benutzern."
+title: "Scriptorium – Modulares Bibliotheks-CLI"
+subtitle: "Ein modernes, in Java entwickeltes CLI-Tool mit interaktiver Shell (JLine3), optionalem REST-API-Server (Javalin) und Clean Architecture."
 features:
-  - "Umfassende Benutzer-, Buch-, Autoren- und Verlagsverwaltung"
-  - "Sichere Passwortspeicherung durch BCrypt-Hashing"
-  - "Direkte Integration der Open Library API zum Importieren von Buchdaten"
-  - "Persistente Datenspeicherung in einer leichten SQLite-Datenbank"
-  - "Intuitive interaktive Shell für einfache Befehlsausführung"
+  - Interaktive REPL-Shell mit History (JLine3)
+  - Modulare CLI-Befehlsstruktur (Picocli)
+  - Integrierter, optionaler REST-API-Server (Javalin)
+  - Automatisierter Datenimport via Open Library API
+  - Persistenz via Raw JDBC & SQLite (Repository Pattern)
+  - Manuelle Dependency Injection (Composition Root)
 learned:
-  - "Entwurf und Implementierung einer robusten CLI-Architektur mit Picocli."
-  - "Sichere Passwortspeicherung mittels BCrypt-Hashing und Best Practices."
-  - "Integration externer APIs (Open Library) zur Datenanreicherung in einer Java-Anwendung."
-  - "Effiziente Datenpersistenz und Transaktionsmanagement mit SQLite."
+  - Implementierung einer robusten CLI-Anwendung mit interaktivem Modus (REPL)
+  - Aufbau einer modularen Architektur ("Core" Logik vs. CLI/Web Interfaces)
+  - Manuelle Verwaltung von JDBC-Transaktionen ohne ORM-Frameworks
+  - Integration von Micro-Web-Frameworks (Javalin) in eine CLI-Anwendung
+  - Robuste Verarbeitung inkonsistenter JSON-APIs mit Jackson
 challenges:
-  - "Gestaltung einer intuitiven und fehlerresistenten Kommandozeilen-Schnittstelle."
-  - "Effizientes Parsen und Verarbeiten der verschachtelten JSON-Antworten von der Open Library API."
-  - "Sicherstellung der Datenintegrität und konsistenter Beziehungen in der SQLite-Datenbank."
+  - Synchronisation von CLI- und API-Zugriffen auf dieselbe Datenbasis
+  - Mapping von relationalen SQL-Daten auf Java-Objekte (ResultSet Parsing)
+  - Implementierung eines eigenen Dependency-Injection-Mechanismus ohne Spring
+  - Fehlerresistentes Parsen variabler JSON-Strukturen (Open Library API)
 url:
   project: https://github.com/fleischerdesign/Scriptorium
   repository: https://github.com/fleischerdesign/Scriptorium
 ---
 
-### 1. Projektübersicht
+### 1. Einleitung und Motivation
 
-Scriptorium ist ein in Java entwickeltes, robustes und konsolenbasiertes Bibliothekssystem. Es ermöglicht die umfassende Verwaltung von Benutzern, Autoren, Verlagen und Büchern über eine intuitive Kommandozeilenschnittstelle (CLI). Eine Kernfunktion ist die direkte Integration mit der Open Library API, die das Importieren von Buchdaten erheblich vereinfacht und die manuelle Dateneingabe reduziert.
+Scriptorium ist primär eine leistungsfähige Kommandozeilenanwendung (CLI) zur Verwaltung einer Bibliothek. Das Projekt demonstriert, wie man mit modernen Java-Bibliotheken (Picocli, JLine3) eine User Experience schafft, die sich vor grafischen Oberflächen nicht verstecken muss. Zusätzlich zeigt es, wie eine saubere Architektur ("Clean Architecture") es ermöglicht, denselben Anwendungskern optional auch als REST-API (via Javalin) bereitzustellen.
 
 ### 2. Problemstellung und Ziele
 
-**Problem:** Kleinere Bibliotheken oder private Sammlungen benötigen oft eine einfache, aber leistungsstarke Verwaltungssoftware, ohne den Overhead großer, grafischer Anwendungen. Die Lösung sollte plattformunabhängig, ressourcenschonend und über die Kommandozeile steuerbar sein.
+**Problem:** CLI-Tools sind oft sperrig, unterstützen keine interaktive Eingabe und sind schwer zu erweitern. Andererseits sind "Enterprise"-Webanwendungen oft überladen für lokale Use-Cases.
 
 **Ziele:**
-*   **Effiziente Datenverwaltung:** Schnelles Erstellen, Anzeigen, Aktualisieren und Löschen aller relevanten Entitäten (Bücher, Benutzer etc.).
-*   **Sicherheit:** Passwörter der Benutzer müssen sicher mit etablierten Hashing-Algorithmen (BCrypt) gespeichert werden.
-*   **Automatisierte Dateneingabe:** Reduzierung des manuellen Aufwands durch den Import von Buchinformationen aus einer externen Quelle wie der Open Library.
-*   **Benutzerfreundlichkeit:** Trotz der reinen Text-Schnittstelle soll die Bedienung durch eine interaktive Shell mit Hilfefunktionen und klarer Befehlsstruktur einfach sein.
+*   **Interaktive Shell:** Starten der Anwendung in einem REPL-Modus (Read-Eval-Print-Loop) mit Command-History und Autocomplete.
+*   **Modularität:** Trennung von Ein-/Ausgabe (CLI) und Geschäftslogik (Core), um später einfach eine Web-Schnittstelle hinzufügen zu können.
+*   **Leichtgewicht:** Verzicht auf schwere Frameworks wie Spring Boot zugunsten von fokussierten Bibliotheken (Javalin, Picocli).
+*   **Transparenz:** Nutzung von JDBC statt Hibernate, um volle Kontrolle über die SQL-Queries zu behalten.
 
-### 3. Technologiewahl und Architektur
+### 3. Systemarchitektur und Design
 
-**Architektur:**
-Die Anwendung folgt einer klaren Schichtenarchitektur, die Geschäftslogik, Datenzugriff und Präsentationsschicht (CLI) voneinander trennt. Dies fördert die Wartbarkeit und Testbarkeit des Codes.
+**Architekturüberblick:**
+Der Kern der Anwendung ist unabhängig von der Präsentationsschicht. Dies ermöglichte die nahtlose Integration des API-Servers als bloßes "Feature" der CLI.
 
-*   **Präsentationsschicht:** `Picocli` wird verwendet, um die Kommandozeilenbefehle, Optionen und die interaktive Shell zu erstellen. Es wandelt Benutzereingaben in Methodenaufrufe innerhalb der Anwendung um.
-*   **Service-Schicht:** Hier liegt die Kernlogik der Anwendung. Services wie `UserService` oder `BookService` koordinieren die Operationen und interagieren mit der Datenzugriffsschicht.
-*   **Datenzugriffsschicht (DAO):** Verantwortlich für die gesamte Datenbankkommunikation. Sie abstrahiert die SQL-Abfragen für die SQLite-Datenbank.
-*   **Modell:** Einfache Java-Objekte (POJOs), die die Datenstrukturen wie `User`, `Book` etc. repräsentieren.
+1.  **Interactive CLI (`org.scriptorium.application.Main`):** Nutzt **JLine3** für die REPL. Wenn keine Argumente übergeben werden, startet die interaktive Shell (`scriptorium> `).
+2.  **Command Parsing (`org.scriptorium.cli`):** **Picocli** definiert die Befehlsstruktur (`book import`, `server start`) und wandelt Eingaben in Methodenaufrufe um.
+3.  **API Server (`org.scriptorium.api`):** Ein integrierter **Javalin**-Server, der über das CLI-Kommando `server start` hochgefahren werden kann. Er nutzt dieselben Services wie die CLI.
+4.  **Data Layer:** Reines **JDBC** und **SQLite** sorgen für persistente Datenhaltung ohne Installationsaufwand.
 
-**Technologie-Begründung:**
-*   **Java 21:** Eine moderne, stabile und plattformunabhängige Sprache.
-*   **Gradle:** Mächtiges Build-Tool, das die Verwaltung von Abhängigkeiten und den Build-Prozess vereinfacht.
-*   **Picocli:** Ein Framework, das die Entwicklung von CLIs in Java drastisch vereinfacht und gleichzeitig mächtige Features wie Autovervollständigung bietet.
-*   **SQLite:** Eine leichte, serverlose Datenbank, die perfekt für eine in sich geschlossene Desktop-/CLI-Anwendung geeignet ist.
-*   **Jackson:** Ein De-facto-Standard für die JSON-Verarbeitung in Java, notwendig für die Kommunikation mit der Open Library API.
+**Dependency Injection:**
+Ein eigenes `DependencyFactory` fungiert als Composition Root. Es instanziiert alle Repositories und Services beim Start und injiziert sie in die Picocli-Commands. Das vermeidet "Magie" und macht den Applikationsstart extrem schnell.
 
-### 4. Ergebnis
+### 4. Implementierungshighlights
 
-Das Ergebnis ist eine voll funktionsfähige, performante und portable Kommandozeilen-Anwendung zur Bibliotheksverwaltung. Sie ist einfach zu bedienen und durch die Gradle-Wrapper-Skripte leicht zu bauen und auszuführen. Die Codebasis ist durch Unit- und Integrationstests mit JUnit 5 und Mockito gut abgesichert.
+**Import & Resilienz:**
+Der `BookImportService` nutzt Jackson, um Bücher von der Open Library API zu laden. Da die API unvorhersehbare Datenstrukturen liefern kann (Array vs. Single Object), implementiert der Service intelligente Fallback-Strategien beim JSON-Parsen.
+
+**Hybrid-Modus:**
+Die Anwendung ist eine Hybrid-Lösung. Man kann sie als reines Admin-Tool nutzen (`scriptorium book list`) oder als Server starten, um Daten für andere Anwendungen (z.B. ein Frontend) bereitzustellen (`GET /api/books`).
+
+### 5. Ergebnisse und Ausblick
+
+**Erreichte Ziele:**
+Scriptorium fühlt sich "snappy" an. Die interaktive Shell macht Spaß bei der Benutzung, und die Möglichkeit, bei Bedarf einen Webserver zu spawnen, macht das Tool extrem flexibel.
+
+**Nächste Schritte:**
+*   **TUI Dashboard:** Erweiterung der CLI um ein textbasiertes Dashboard (mit `lanterna`) für Statistiken.
+*   **Native Image:** Dank der gewählten Bibliotheken ist eine Kompilierung mit GraalVM möglich, um eine Standalone-Binary ohne JVM-Abhängigkeit zu erzeugen.
+
+### 6. Persönliches Wachstum und Lessons Learned
+
+**SQL & JDBC:**
+Der Verzicht auf ORM-Frameworks hat mein Verständnis für relationale Datenbanken und Transaktionsmanagement geschärft. Ich musste lernen, ResultSets effizient zu mappen und N+1 Probleme manuell zu vermeiden.
+
+**CLI UX:**
+Ich habe gelernt, dass eine gute CLI mehr ist als nur Argumente parsen. Eine konsistente Befehlsstruktur, gute Hilfetexte und eine interaktive Shell erhöhen die Akzeptanz des Tools enorm.
