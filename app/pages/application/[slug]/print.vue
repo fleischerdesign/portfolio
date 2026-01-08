@@ -36,7 +36,7 @@ const softSkills = softSkillsData(t);
 const techStack = techStackData;
 
 const { renderMarkdown } = useMarkdown();
-const { formatDate, getDisplayDate } = useApplicationUtils();
+const { getDisplayDate } = useApplicationUtils();
 
 const printDate = computed(() => {
   return getDisplayDate(application.value);
@@ -65,24 +65,24 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
 </script>
 
 <template>
-  <div class="pdf-resume-container text-neutral-900 font-sans print:bg-neutral-100">
+  <div class="pdf-resume-container font-sans text-neutral-900 print:bg-neutral-100">
 
     <!-- ==================== PAGE 1: COVER ==================== -->
-    <div class="cover-page flex h-[371mm] w-full flex-col justify-between p-[25mm] relative overflow-hidden">
+    <div class="cover-page relative flex h-[371mm] w-full flex-col justify-between overflow-hidden p-[25mm]">
       
       <!-- Decorative Background Elements -->
-      <div class="absolute -top-32 -right-32 w-96 h-96 bg-secondary-400/20 rounded-full blur-[100px] print:block"></div>
-      <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gradient-to-t from-secondary-100/30 to-transparent blur-3xl print:block"></div>
+      <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-secondary-400/20 blur-[100px] print:block"></div>
+      <div class="absolute bottom-0 right-0 h-[500px] w-[500px] bg-gradient-to-t from-secondary-100/30 to-transparent blur-3xl print:block"></div>
 
-      <div class="relative z-10 flex flex-col h-full justify-center items-center gap-16">
+      <div class="relative z-10 flex h-full flex-col items-center justify-center gap-16">
         
         <!-- Profile Card -->
-        <UiCard class="relative h-[400px] w-[400px] overflow-hidden rounded-full shadow-2xl border-4 border-white/50 print:shadow-none">
+        <UiCard class="relative h-[400px] w-[400px] overflow-hidden rounded-full border-4 border-white/50 shadow-2xl print:shadow-none">
           <img src="/img/profile.jpg" alt="Profile Picture" class="h-full w-full object-cover" />
         </UiCard>
 
         <!-- Title & Name -->
-        <div class="text-center space-y-6">
+        <div class="space-y-6 text-center">
            <UiSectionHeader 
              :level="1" 
              :title="personal.name" 
@@ -91,7 +91,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
              class="!mb-0"
            >
              <template #prefix>
-                <div class="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-secondary-100 text-secondary-600 shadow-sm border border-secondary-200/50">
+                <div class="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-100 text-secondary-600 shadow-sm">
                     <Icon 
                         name="logo:fleischerdesign" 
                         size="40" 
@@ -101,12 +101,12 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
                 </div>
              </template>
            </UiSectionHeader>
-           <div class="h-1 w-32 bg-secondary-500 mx-auto rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)]"></div>
+           <div class="mx-auto h-1 w-32 rounded-full bg-secondary-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"></div>
         </div>
 
         <!-- Contact Grid -->
-        <UiCard class="w-full max-w-2xl backdrop-blur-md bg-white/60 border-neutral-200/50 shadow-lg print:shadow-none">
-          <UiCardContainer class="grid grid-cols-2 gap-y-6 gap-x-8 p-8">
+        <UiCard class="w-full max-w-2xl border-neutral-200/50 bg-white/60 shadow-lg backdrop-blur-md print:shadow-none">
+          <UiCardContainer class="grid grid-cols-2 gap-x-8 gap-y-6 p-8">
              <div class="flex items-center gap-4">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600">
                   <Icon name="heroicons:envelope" size="20" />
@@ -138,25 +138,25 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
     </div>
 
     <!-- ==================== PAGE 2: LETTER ==================== -->
-    <div class="main-content-pages relative h-[371mm] px-[25mm] pb-[25mm] pt-[45mm] flex flex-col overflow-hidden">
+    <div class="main-content-pages relative flex h-[371mm] flex-col overflow-hidden px-[25mm] pb-[25mm] pt-[25mm]">
       
       <!-- Decorative Background Elements -->
-      <div class="absolute -top-32 -left-32 w-96 h-96 bg-secondary-400/10 rounded-full blur-[100px] print:block"></div>
-      <div class="absolute bottom-1/4 -right-32 w-80 h-80 bg-secondary-500/5 rounded-full blur-[80px] print:block"></div>
+      <div class="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-secondary-400/10 blur-[100px] print:block"></div>
+      <div class="absolute -right-32 bottom-1/4 h-80 w-80 rounded-full bg-secondary-500/5 blur-[80px] print:block"></div>
 
       <!-- Address & Date Header (DIN 5008 style) -->
-      <div v-if="application && application.company" class="flex justify-between items-start mb-20 relative z-10">
+      <div v-if="application && application.company" class="relative z-10 mb-20 flex items-start justify-between">
         
         <!-- Address Block -->
         <div class="space-y-1">
           <!-- Sender Line (Small above address) -->
-          <div class="text-[9px] uppercase tracking-[0.2em] font-black text-secondary-600 mb-2 inline-block">
+          <div class="mb-2 inline-block text-[9px] font-black uppercase tracking-[0.2em] text-secondary-600">
              Philipp Fleischer <span class="mx-0.5">•</span> Hufelandstr. 55 <span class="mx-0.5">•</span> 17036 Neubrandenburg
           </div>
           
           <!-- Recipient -->
           <div class="pt-2">
-            <p class="font-bold text-lg text-neutral-900">{{ application.company.name }}</p>
+            <p class="text-lg font-bold text-neutral-900">{{ application.company.name }}</p>
             <p v-if="formattedContactNames" class="text-neutral-600">{{ formattedContactNames }}</p>
             <div v-if="application.company.address" class="text-neutral-600">
               <p>{{ application.company.address.street }} {{ application.company.address.houseNumber }}</p>
@@ -166,15 +166,15 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
         </div>
 
         <!-- Date Block -->
-        <div class="text-right pt-8">
-          <p class="text-neutral-500 font-medium">Neubrandenburg, {{ printDate }}</p>
+        <div class="pt-8 text-right">
+          <p class="font-medium text-neutral-500">Neubrandenburg, {{ printDate }}</p>
         </div>
       </div>
 
       <!-- Content Card -->
-      <div class="flex-grow flex flex-col relative z-10">
+      <div class="relative z-10 flex flex-grow flex-col">
          <!-- Document Background Glow -->
-         <div class="absolute -inset-4 bg-secondary-500/5 rounded-3xl blur-2xl -z-10"></div>
+         <div class="absolute -inset-4 -z-10 rounded-3xl bg-secondary-500/5 blur-2xl"></div>
          
          <div class="flex-grow bg-transparent">
              
@@ -194,7 +194,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
 
              <!-- Body -->
              <div class="text-base leading-relaxed text-neutral-800">
-               <p class="mb-6 font-bold text-lg">
+               <p class="mb-6 text-lg font-bold">
                   {{ salutation }},
                </p>
                
@@ -203,7 +203,7 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
                
                <div class="mt-16">
                   <p class="mb-6 font-medium">Mit freundlichen Grüßen,</p>
-                  <p class="font-bold text-lg mb-2">Philipp Fleischer</p>
+                  <p class="mb-2 text-lg font-bold">Philipp Fleischer</p>
                   <!-- Colorized Signature using Mask -->
                   <div 
                     class="h-20 w-64 bg-secondary-700 print:bg-secondary-700" 
@@ -218,14 +218,14 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
     </div>
     
     <!-- ==================== PAGE 3: RESUME PART 1 ==================== -->
-    <div class="main-content-pages relative h-[371mm] p-[25mm] flex flex-col gap-6 overflow-hidden">
+    <div class="main-content-pages relative flex h-[371mm] flex-col gap-6 overflow-hidden p-[25mm]">
       
       <!-- Decorative Background Elements -->
-      <div class="absolute -top-32 -right-32 w-96 h-96 bg-secondary-400/10 rounded-full blur-[100px] print:block"></div>
-      <div class="absolute bottom-1/4 -left-32 w-80 h-80 bg-secondary-500/5 rounded-full blur-[80px] print:block"></div>
+      <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-secondary-400/10 blur-[100px] print:block"></div>
+      <div class="absolute -left-32 bottom-1/4 h-80 w-80 rounded-full bg-secondary-500/5 blur-[80px] print:block"></div>
 
       <!-- Header -->
-      <div class="flex flex-col mb-2">
+      <div class="mb-2 flex flex-col">
         <UiSectionHeader
           :title="$t('about.overview.resume.title')"
           variant="none"
@@ -235,42 +235,42 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
         <div class="mt-4 h-1 w-24 rounded-full bg-gradient-to-r from-secondary-500 to-transparent shadow-[0_0_10px_rgba(16,185,129,0.4)]"></div>
       </div>
 
-      <div class="grid grid-cols-12 gap-6 h-full">
+      <div class="grid h-full grid-cols-12 gap-6">
         
         <!-- Left Column (Personal, Skills, Languages) -->
         <div class="col-span-4 flex flex-col gap-5">
           
           <!-- Profile & Personal Card -->
-          <UiCard class="shadow-none border-neutral-200/60 overflow-hidden">
+          <UiCard class="overflow-hidden border-neutral-200/60 shadow-none">
              <!-- Profile Image: Modern Rectangular -->
-             <div class="h-64 w-full relative">
+             <div class="relative h-64 w-full">
                 <img src="/img/profile.jpg" alt="Profile" class="h-full w-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
              </div>
              
-             <UiCardContainer class="px-5 pb-5 -mt-8 relative z-10">
-                <h3 class="font-black text-xl text-neutral-900 tracking-tight mb-4">{{ personal.name }}</h3>
+             <UiCardContainer class="relative z-10 -mt-8 px-5 pb-5">
+                <h3 class="mb-4 text-xl font-black tracking-tight text-neutral-900">{{ personal.name }}</h3>
                 
                 <div class="space-y-3 text-sm text-neutral-600">
                    <div class="flex flex-col">
-                      <span class="font-black text-[10px] uppercase tracking-wider text-neutral-400 mb-0.5">{{ $t('resume.details.birthday') }}</span>
-                      <span class="font-medium text-neutral-800">{{ personal.birth.date }} <span class="text-secondary-400 mx-1">•</span> {{ personal.birth.location }}</span>
+                      <span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{ $t('resume.details.birthday') }}</span>
+                      <span class="font-medium text-neutral-800">{{ personal.birth.date }} <span class="mx-1 text-secondary-400">•</span> {{ personal.birth.location }}</span>
                    </div>
                    <div class="flex flex-col">
-                      <span class="font-black text-[10px] uppercase tracking-wider text-neutral-400 mb-0.5">{{ $t('resume.details.marital_status_label') }}</span>
+                      <span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{ $t('resume.details.marital_status_label') }}</span>
                       <span class="font-medium text-neutral-800">{{ personal.maritalStatus }}</span>
                    </div>
                    <div class="flex flex-col">
-                      <span class="font-black text-[10px] uppercase tracking-wider text-neutral-400 mb-0.5">{{ $t('resume.details.drivers_license_label') }}</span>
+                      <span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{ $t('resume.details.drivers_license_label') }}</span>
                       <span class="font-medium text-neutral-800">{{ personal.driversLicense }}</span>
                    </div>
                    <div class="flex flex-col">
-                      <span class="font-black text-[10px] uppercase tracking-wider text-neutral-400 mb-0.5">{{ $t('home.contact.title') }}</span>
+                      <span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{ $t('home.contact.title') }}</span>
                       <div class="flex items-center gap-2">
                          <Icon name="heroicons:envelope" size="14" class="text-secondary-500" />
                          <span class="font-medium text-neutral-800">{{ contact.email }}</span>
                       </div>
-                      <div class="flex items-center gap-2 mt-1">
+                      <div class="mt-1 flex items-center gap-2">
                          <Icon name="heroicons:phone" size="14" class="text-secondary-500" />
                          <span class="font-medium text-neutral-800">{{ contact.phone }}</span>
                       </div>
@@ -280,22 +280,22 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
           </UiCard>
 
           <!-- Languages -->
-          <UiCard class="shadow-none border-neutral-200/60">
+          <UiCard class="border-neutral-200/60 shadow-none">
              <UiCardContainer class="p-5">
-               <div class="flex items-center gap-4 mb-4">
-                  <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
+               <div class="mb-4 flex items-center gap-4">
+                  <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
                      <Icon name="heroicons:language" size="20" />
                   </div>
-                  <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">{{ $t('languages.title') }}</h3>
+                  <h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">{{ $t('languages.title') }}</h3>
                </div>
                <div class="grid grid-cols-1 gap-3">
                  <div v-for="lang in languages" :key="lang.name" class="flex flex-col gap-1">
-                   <div class="flex justify-between items-center">
+                   <div class="flex items-center justify-between">
                      <span class="text-sm font-bold text-neutral-800">{{ lang.name }}</span>
-                     <span class="text-[10px] font-black uppercase text-secondary-600 tracking-wider">{{ lang.level }}</span>
+                     <span class="text-[10px] font-black uppercase tracking-wider text-secondary-600">{{ lang.level }}</span>
                    </div>
-                   <div class="h-1.5 w-full bg-neutral-100 rounded-full overflow-hidden">
-                      <div class="h-full bg-secondary-400 rounded-full" :style="{ width: lang.score + '%' }"></div>
+                   <div class="h-1.5 w-full overflow-hidden rounded-full bg-neutral-100">
+                      <div class="h-full rounded-full bg-secondary-400" :style="{ width: lang.score + '%' }"></div>
                    </div>
                  </div>
                </div>
@@ -303,13 +303,13 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
           </UiCard>
 
           <!-- Soft Skills -->
-          <UiCard class="shadow-none border-neutral-200/60 flex-grow">
+          <UiCard class="flex-grow border-neutral-200/60 shadow-none">
              <UiCardContainer class="p-5">
-               <div class="flex items-center gap-4 mb-4">
-                  <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
+               <div class="mb-4 flex items-center gap-4">
+                  <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
                      <Icon name="heroicons:sparkles" size="20" />
                   </div>
-                  <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">Softskills</h3>
+                  <h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Softskills</h3>
                </div>
                <TechstackList :items="softSkills" :scroll="false" :gradient="true" size="sm" hide-icons />
              </UiCardContainer>
@@ -321,58 +321,58 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
         <div class="col-span-8 flex flex-col gap-5">
           
           <!-- Summary -->
-          <UiCard class="shadow-none border-neutral-200/60">
+          <UiCard class="border-neutral-200/60 shadow-none">
              <UiCardContainer class="p-6">
-                <div class="flex items-center gap-4 mb-4">
-                   <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
+                <div class="mb-4 flex items-center gap-4">
+                   <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
                       <Icon name="heroicons:user-circle" size="20" />
                    </div>
-                   <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">Zusammenfassung</h3>
+                   <h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Zusammenfassung</h3>
                 </div>
-                <p class="text-sm leading-relaxed text-neutral-700 font-medium italic">"{{ t("home.hero.summary") }}"</p>
+                <p class="text-sm font-medium italic leading-relaxed text-neutral-700">"{{ t("home.hero.summary") }}"</p>
              </UiCardContainer>
           </UiCard>
 
           <!-- Tech Stack -->
-          <UiCard class="shadow-none border-neutral-200/60">
+          <UiCard class="border-neutral-200/60 shadow-none">
              <UiCardContainer class="p-6">
-                <div class="flex items-center gap-4 mb-4">
-                   <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
+                <div class="mb-4 flex items-center gap-4">
+                   <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
                       <Icon name="heroicons:cpu-chip" size="20" />
                    </div>
-                   <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">{{ $t('home.overview.techstack.title') }}</h3>
+                   <h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">{{ $t('home.overview.techstack.title') }}</h3>
                 </div>
                 <TechstackList :items="techStack" :scroll="false" :gradient="true" size="sm" />
              </UiCardContainer>
           </UiCard>
 
           <!-- Projects -->
-          <div class="flex-grow flex flex-col">
-             <div class="flex items-center gap-4 mb-4 px-1">
-                <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
+          <div class="flex flex-grow flex-col">
+             <div class="mb-4 flex items-center gap-4 px-1">
+                <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
                    <Icon name="heroicons:presentation-chart-bar" size="20" />
                 </div>
-                <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">Ausgewählte Projekte</h3>
+                <h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Ausgewählte Projekte</h3>
              </div>
              <div class="grid grid-cols-1 gap-3">
-               <div v-for="project in projects.slice(0,3)" :key="project.slug" class="group rounded-2xl border border-neutral-100 bg-white p-3 shadow-sm flex gap-4 items-center transition-all hover:border-secondary-200 hover:shadow-md">
-                  <div class="h-14 w-14 flex-shrink-0 rounded-xl bg-neutral-50 overflow-hidden border border-neutral-100 relative">
-                     <img v-if="project.image" :src="typeof project.image === 'string' ? project.image : project.image.src" class="h-full w-full object-cover grayscale opacity-30 group-hover:grayscale-0 group-hover:opacity-100 transition-all" />
+               <div v-for="project in projects.slice(0,3)" :key="project.slug" class="group flex items-center gap-4 rounded-2xl border border-neutral-100 bg-white p-3 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md">
+                  <div class="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50">
+                     <img v-if="project.image" :src="typeof project.image === 'string' ? project.image : project.image.src" class="h-full w-full object-cover opacity-30 grayscale transition-all group-hover:opacity-100 group-hover:grayscale-0" />
                      <div class="absolute inset-0 flex items-center justify-center">
-                        <Icon :name="project.icon || 'heroicons:folder'" mode="svg" class="[&_*]:!fill-current text-secondary-600 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" size="24" />
+                        <Icon :name="project.icon || 'heroicons:folder'" mode="svg" class="text-secondary-600 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] [&_*]:!fill-current" size="24" />
                      </div>
                   </div>
                   <div class="flex-grow">
-                     <h4 class="font-black text-sm text-neutral-900 tracking-tight">{{ project.title }}</h4>
-                     <p class="text-xs text-neutral-500 line-clamp-1 mt-0.5">{{ project.subtitle }}</p>
+                     <h4 class="text-sm font-black tracking-tight text-neutral-900">{{ project.title }}</h4>
+                     <p class="mt-0.5 line-clamp-1 text-xs text-neutral-500">{{ project.subtitle }}</p>
                   </div>
-                  <div class="text-[10px] font-black uppercase tracking-widest text-secondary-400 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-secondary-400 opacity-0 transition-opacity group-hover:opacity-100">
                      Details <Icon name="heroicons:arrow-right" size="10" />
                   </div>
                </div>
              </div>
              
-             <div class="mt-4 mx-auto flex items-center gap-2 text-[10px] text-secondary-500 bg-secondary-50/50 px-3 py-1.5 rounded-full border border-secondary-100 font-medium w-fit">
+             <div class="mx-auto mt-4 flex w-fit items-center gap-2 rounded-full border border-secondary-100 bg-secondary-50/50 px-3 py-1.5 text-[10px] font-medium text-secondary-500">
                 <Icon name="heroicons:cursor-arrow-rays" size="12" />
                 <span>Mehr Projekte auf <span class="font-black">fleischer.design/projects</span></span>
              </div>
@@ -385,54 +385,54 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
     </div>
 
     <!-- ==================== PAGE 4: RESUME PART 2 ==================== -->
-    <div class="main-content-pages relative h-[371mm] break-inside-avoid-page p-[25mm] flex flex-col gap-6 overflow-hidden">
+    <div class="main-content-pages relative flex h-[371mm] break-inside-avoid-page flex-col gap-6 overflow-hidden p-[25mm]">
       
       <!-- Decorative Background Elements -->
-      <div class="absolute -top-32 -left-32 w-96 h-96 bg-secondary-400/10 rounded-full blur-[100px] print:block"></div>
-      <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gradient-to-t from-secondary-100/20 to-transparent blur-3xl print:block"></div>
+      <div class="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-secondary-400/10 blur-[100px] print:block"></div>
+      <div class="absolute bottom-0 right-0 h-[500px] w-[500px] bg-gradient-to-t from-secondary-100/20 to-transparent blur-3xl print:block"></div>
 
-      <div class="grid grid-cols-12 gap-8 h-full pt-4">
+      <div class="grid h-full grid-cols-12 gap-8 pt-4">
          
          <!-- Left Column (Interests, Courses) -->
          <div class="col-span-4 flex flex-col gap-6">
             
             <!-- Interests -->
-            <UiCard class="shadow-none border-neutral-200/60">
+            <UiCard class="border-neutral-200/60 shadow-none">
               <UiCardContainer class="p-6">
-                 <div class="flex items-center gap-4 mb-4">
-                    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
+                 <div class="mb-4 flex items-center gap-4">
+                    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
                        <Icon name="heroicons:heart" size="20" />
                     </div>
-                    <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">{{ $t('interests.title') }}</h3>
+                    <h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">{{ $t('interests.title') }}</h3>
                  </div>
                  <ul class="space-y-4 text-xs">
                    <li v-for="(items, key) in interests" :key="key">
-                      <span class="block font-black text-[10px] uppercase tracking-wider text-secondary-500 mb-1">{{ $t(`interests.${key}.title`) }}</span>
-                      <p class="text-neutral-700 font-medium leading-relaxed">{{ items.join(', ') }}</p>
+                      <span class="mb-1 block text-[10px] font-black uppercase tracking-wider text-secondary-500">{{ $t(`interests.${key}.title`) }}</span>
+                      <p class="font-medium leading-relaxed text-neutral-700">{{ items.join(', ') }}</p>
                    </li>
                  </ul>
               </UiCardContainer>
             </UiCard>
 
             <!-- Courses -->
-            <UiCard class="shadow-none border-neutral-200/60">
+            <UiCard class="border-neutral-200/60 shadow-none">
               <UiCardContainer class="p-6">
-                 <div class="flex items-center gap-4 mb-4">
-                    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
+                 <div class="mb-4 flex items-center gap-4">
+                    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
                        <Icon name="heroicons:academic-cap" size="20" />
                     </div>
-                    <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">Kurse</h3>
+                    <h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Kurse</h3>
                  </div>
                  <div class="space-y-3">
-                    <div v-for="(skill, index) in courses.slice(0, 5)" :key="skill.title" class="flex flex-col rounded-xl border border-neutral-100 bg-neutral-50/50 p-3">
-                       <h4 class="text-sm font-bold text-neutral-900 leading-tight">{{ skill.title }}</h4>
+                    <div v-for="(skill) in courses.slice(0, 5)" :key="skill.title" class="flex flex-col rounded-xl border border-neutral-100 bg-neutral-50/50 p-3">
+                       <h4 class="text-sm font-bold leading-tight text-neutral-900">{{ skill.title }}</h4>
                        <div class="mt-2.5 flex flex-col gap-2">
                           <div class="flex">
-                             <span class="text-[10px] font-bold text-secondary-600 bg-secondary-50 px-2 py-0.5 rounded-md border border-secondary-100 whitespace-nowrap">
+                             <span class="whitespace-nowrap rounded-md border border-secondary-100 bg-secondary-50 px-2 py-0.5 text-[10px] font-bold text-secondary-600">
                                 {{ skill.date }}
                              </span>
                           </div>
-                          <span class="text-[11px] font-medium text-neutral-400 leading-tight">
+                          <span class="text-[11px] font-medium leading-tight text-neutral-400">
                              {{ skill.teacher.join(', ') }}
                           </span>
                        </div>
@@ -448,22 +448,22 @@ const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`,
             
             <!-- Education -->
             <div class="flex flex-col">
-               <div class="flex items-center gap-4 mb-3 px-1">
-                  <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
+               <div class="mb-3 flex items-center gap-4 px-1">
+                  <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
                      <Icon name="heroicons:book-open" size="20" />
                   </div>
-                  <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">Bildungsweg</h3>
+                  <h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Bildungsweg</h3>
                </div>
                <BaseTimeline :items="timeline.filter(item => item.type === 'education').splice(0, 4)" :is-print-view="true" compact />
             </div>
 
             <!-- Career -->
-            <div class="flex flex-col flex-grow">
-               <div class="flex items-center gap-4 mb-3 px-1">
-                  <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 border border-secondary-200/50">
+            <div class="flex flex-grow flex-col">
+               <div class="mb-3 flex items-center gap-4 px-1">
+                  <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
                      <Icon name="heroicons:briefcase" size="20" />
                   </div>
-                  <h3 class="font-black text-sm uppercase tracking-[0.2em] text-neutral-900">{{ $t('about.overview.careerPath.title') }}</h3>
+                  <h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">{{ $t('about.overview.careerPath.title') }}</h3>
                </div>
                <BaseTimeline :items="timeline.filter(item => item.type === 'career')" :is-print-view="true" compact />
             </div>
