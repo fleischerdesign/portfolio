@@ -7,7 +7,6 @@ import { applications } from '~~/server/db/schema';
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
   const slug = getRouterParam(event, 'slug');
-  console.log("generate!")
 
   if (!slug) {
     throw createError({

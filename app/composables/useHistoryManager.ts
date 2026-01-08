@@ -1,9 +1,7 @@
-// app/composables/useHistoryManager.ts
 import { ref, computed, type Ref } from 'vue';
 import { applicationHistoryBaseSchema, type ApplicationHistoryPayload, type ApplicationHistoryCreatePayload, type ApplicationHistoryUpdatePayload } from '#shared/schemas/application.schema';
 import { useApplicationUtils } from './useApplicationUtils';
 
-// Define local interfaces for the composable
 interface TimelineItem {
   id: number;
   type: 'history' | 'interview';
@@ -27,31 +25,25 @@ const statusIconMap: Record<string, string> = {
   withdrawn: 'heroicons:arrow-uturn-left',
 };
 
-// The composable now takes a reactive source and the editing flag
 export function useHistoryManager(source: Ref<any | null>, isEditing: Ref<boolean>) {
   const { formatForDateTimeLocal, formatDate, getStatusTextClasses } = useApplicationUtils();
   const availableStatuses = applicationHistoryBaseSchema.shape.status.options;
 
-  // Add History Modal state
   const showAddHistoryModal = ref(false);
   const newHistoryStatus = ref<ApplicationHistoryCreatePayload['status']>('draft');
   const newHistoryNotes = ref<string | null>(null);
   const newHistoryScheduledAt = ref<string | null>(null);
   const newHistoryCreatedAt = ref<string>(formatForDateTimeLocal(new Date().toISOString()));
 
-  // Edit History Modal state
   const showEditHistoryModal = ref(false);
   type EditableHistoryEntry = Partial<ApplicationHistoryPayload> & { createdAt: string };
   const editableHistoryEntry = ref<EditableHistoryEntry | null>(null);
 
-  // Delete History Modal state
   const showDeleteHistoryModal = ref(false);
   const deletableHistoryEntry = ref<TimelineItem | null>(null);
   
-  // Get the histories array reactively from the source
   const histories = computed(() => source.value?.histories || []);
 
-  // Functions now operate on the source's histories
   function addHistory() {
     if (!newHistoryStatus.value || !source.value?.histories) return;
     const newEntry: ApplicationHistoryPayload & { _deleted?: boolean } = {
@@ -140,7 +132,7 @@ export function useHistoryManager(source: Ref<any | null>, isEditing: Ref<boolea
     const items: TimelineItem[] = [];
     const historiesSource = source.value.histories || [];
     
-    // In view mode, filter out logically deleted items. In edit mode, show them.
+    // filter out deleted items in view mode
     const currentHistories = isEditing.value 
       ? historiesSource 
       : historiesSource.filter((h: any) => !h._deleted);

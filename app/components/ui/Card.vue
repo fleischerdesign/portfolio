@@ -24,8 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 // Base classes
 const baseClasses = 'relative flex rounded-2xl border border-neutral-200/60 bg-white/80 backdrop-blur-md transition-all duration-500 dark:border-neutral-800/60 dark:bg-neutral-900/60';
 
-// LUXURY HOVER: Inner & Outer Glow
-// This creates a multi-layered light effect that makes the border feel "thick" and luminous
+// Hover effects
 const hoverStyles = `
   hover:border-secondary-500/40 
   hover:shadow-[0_0_25px_rgba(16,185,129,0.15),inset_0_0_10px_rgba(16,185,129,0.1)] 

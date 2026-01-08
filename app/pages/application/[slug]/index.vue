@@ -21,7 +21,6 @@ if (error.value || !application.value) {
   throw createError({ statusCode: 404, statusMessage: 'Application not found', fatal: true });
 }
 
-// Initialize Application Editor Composable
 const {
   isEditing,
   isLoading,
@@ -39,7 +38,7 @@ const {
   handleCreateContactRequest,
   handleContactCreated,
   handleCancelContactForm,
-} = useApplicationEditor(application, refresh, toRef(route.params as { slug: string }, 'slug')); // Pass application ref, refresh function, and slug ref
+} = useApplicationEditor(application, refresh, toRef(route.params as { slug: string }, 'slug'));
 
 const salutation = computed(() => {
   const contacts = isEditing.value ? editableApplication.value?.selectedContacts : application.value?.contacts;
@@ -56,8 +55,8 @@ const bodyStats = computed(() => {
   const words = text?.trim().split(/\s+/).filter(Boolean).length || 0;
   const chars = text?.length || 0;
   return { 
-    words, 
-    chars, 
+    words,
+    chars,
     readingTime: Math.max(1, Math.ceil(words / 200)),
     isLong: chars > 2800 
   };
@@ -66,7 +65,6 @@ const bodyStats = computed(() => {
 const textareaRef = ref<any>(null);
 const adjustTextareaHeight = () => {
   if (!textareaRef.value) return;
-  // We target the internal textarea of the UiInput component
   const el = textareaRef.value?.$el?.querySelector('textarea');
   if (el) {
     el.style.height = 'auto';
@@ -86,7 +84,6 @@ watch(isEditing, (val) => {
   }
 });
 
-// Initialize History Manager Composable
 const {
   showAddHistoryModal,
   newHistoryStatus,
@@ -105,7 +102,7 @@ const {
   undoDeleteHistory,
   timelineItems,
   availableStatuses,
-  getStatusTextClasses: getHistoryStatusTextClasses, // Alias to avoid conflict with useApplicationUtils
+  getStatusTextClasses: getHistoryStatusTextClasses,
 } = useHistoryManager(
   computed(() => isEditing.value ? editableApplication.value : application.value),
   isEditing
@@ -149,15 +146,12 @@ onMounted(() => {
 
 <template>
   <div v-if="application" class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44">
-    <!-- Header -->
     <div class="mb-12">
       <UiSectionHeader symbol="heroicons:briefcase" :title="application.title" :subtitle="$t('applications.detail.document.applied_to', { company: application.company.name })" />
     </div>
 
-    <!-- Consolidated Dashboard Header (View Mode) -->
     <UiCard v-if="application && !isEditing" class="mb-12 border-secondary-500/10 shadow-xl shadow-secondary-500/5">
         <UiCardContainer class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-8 px-8 py-6">
-            <!-- Status Item -->
             <div class="flex items-center gap-5 w-full lg:w-auto">
                 <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
                     <Icon name="heroicons:signal" size="28" />
@@ -172,7 +166,6 @@ onMounted(() => {
                 </div>
             </div>
 
-            <!-- Company Item -->
             <div class="flex items-center gap-5 w-full lg:flex-1 lg:min-w-0 border-t border-neutral-100 pt-6 lg:border-t-0 lg:pt-0 lg:border-l dark:border-neutral-800 lg:pl-8">
                 <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
                     <Icon name="heroicons:building-office" size="28" />
@@ -184,7 +177,6 @@ onMounted(() => {
                 </div>
             </div>
 
-            <!-- Dates Item -->
             <div class="flex items-center gap-5 w-full lg:w-auto border-t border-neutral-100 pt-6 lg:border-t-0 lg:pt-0 lg:border-l dark:border-neutral-800 lg:pl-8">
                 <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
                     <Icon name="heroicons:clock" size="28" />
@@ -198,7 +190,6 @@ onMounted(() => {
                 </div>
             </div>
 
-            <!-- Job Link -->
             <div v-if="application.url" class="w-full lg:w-auto lg:ml-auto border-t border-neutral-100 pt-6 lg:border-t-0 lg:pt-0 dark:border-neutral-800">
                 <a :href="application.url" target="_blank" rel="noopener noreferrer">
                     <UiButton variant="glass" size="lg" class="group w-full lg:w-auto !rounded-2xl border-secondary-200/50 transition-all duration-500 hover:bg-secondary-500 hover:text-white">
@@ -210,13 +201,10 @@ onMounted(() => {
         </UiCardContainer>
     </UiCard>
 
-    <!-- Main Grid -->
     <div class="mt-8 grid grid-cols-1 gap-12 lg:grid-cols-4 lg:items-start">
       
-      <!-- Main Content -->
       <div class="space-y-12 lg:col-span-3">
         
-        <!-- Edit Mode: Application Configuration -->
         <UiCard v-if="isEditing" class="border-secondary-500/10 shadow-xl shadow-secondary-500/5">
             <UiCardContainer class="p-8 md:p-10">
                 <div class="flex items-center gap-4 mb-10">
@@ -230,7 +218,6 @@ onMounted(() => {
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    <!-- Column 1: General Details -->
                     <div class="space-y-8">
                          <div class="flex items-center gap-2">
                              <div class="h-1 w-4 rounded-full bg-secondary-500"></div>
@@ -243,7 +230,6 @@ onMounted(() => {
                          </div>
                     </div>
                     
-                    <!-- Column 2: Company -->
                     <div class="space-y-8 border-neutral-100 dark:border-neutral-800 md:border-l md:pl-10">
                          <div class="flex items-center gap-2">
                              <div class="h-1 w-4 rounded-full bg-secondary-500"></div>
@@ -280,7 +266,6 @@ onMounted(() => {
                          </div>
                     </div>
                     
-                    <!-- Column 3: Contacts -->
                     <div class="space-y-8 border-neutral-100 dark:border-neutral-800 lg:border-l lg:pl-10">
                          <div class="flex items-center gap-2">
                              <div class="h-1 w-4 rounded-full bg-secondary-500"></div>
@@ -310,7 +295,6 @@ onMounted(() => {
             </UiCardContainer>
         </UiCard>
 
-        <!-- Ansprechpartner (View Mode - Clean List) -->
         <div v-if="!isEditing && application.contacts && application.contacts.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <UiCard v-for="contact in application.contacts" :key="contact.id" class="border-secondary-500/5">
                 <UiCardContainer class="!flex-row items-center gap-4">
@@ -329,14 +313,11 @@ onMounted(() => {
             </UiCard>
         </div>
 
-        <!-- Body Content (The "Document") -->
         <div v-if="(!isEditing && application.body) || isEditing" class="group relative">
-            <!-- Massive Ambient Glow (Consistency with Hero.vue) - Subtle constant aura -->
             <div class="pointer-events-none absolute -left-20 -top-20 -z-10 h-80 w-80 rounded-full bg-secondary-500/10 blur-[100px] opacity-40 dark:bg-secondary-500/5"></div>
             
             <UiCard class="relative bg-white/90 shadow-2xl dark:bg-neutral-900/80 overflow-hidden">
                 <UiCardContainer class="p-8 md:p-16 lg:p-24">
-                    <!-- Dashboard-style Header for Document -->
                     <div class="mb-16 flex items-start gap-5 border-b border-neutral-100 pb-10 dark:border-neutral-800">
                         <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-secondary-100 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
                             <Icon name="heroicons:document-text" size="24" />
@@ -353,7 +334,6 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <!-- Recipient -->
                     <div class="mb-12">
                         <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500 mb-2">{{ $t('applications.detail.document.recipient_label') }}</p>
                         <p class="text-xl font-bold text-neutral-900 dark:text-white">
@@ -371,7 +351,6 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <!-- Subject Line -->
                     <div class="mb-12">
                         <h3 class="text-3xl font-black text-neutral-900 dark:text-white">
                             {{ isEditing ? editableApplication.title : application.title }}
@@ -381,15 +360,12 @@ onMounted(() => {
                         </p>
                     </div>
                     
-                    <!-- Salutation -->
                     <p class="mb-8 text-lg font-bold text-neutral-900 dark:text-white">
                         {{ salutation }},
                     </p>
 
-                    <!-- eslint-disable-next-line vue/no-v-html -->
                     <div v-if="!isEditing" class="prose prose-lg prose-neutral max-w-none dark:prose-invert" v-html="renderMarkdown(application.body || '')"></div>
                     <div v-else-if="editableApplication" class="space-y-8">
-                        <!-- Editor Suite Toolbar -->
                         <div class="flex items-center justify-between rounded-2xl bg-secondary-50/50 dark:bg-secondary-900/10 p-3 px-6 border border-secondary-100/50 dark:border-secondary-500/10">
                             <div class="flex items-center gap-8">
                                 <div class="flex flex-col">
@@ -419,7 +395,6 @@ onMounted(() => {
                             </div>
                         </div>
 
-                        <!-- Focused Writing Area -->
                         <div class="relative group/editor">
                             <UiInput
                                 id="body"
@@ -434,7 +409,6 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <!-- Letter Footer: Closing & Signature -->
                     <div class="mt-20 pt-10 border-t border-neutral-50 dark:border-neutral-800/50">
                         <p class="text-lg font-medium text-neutral-900 dark:text-white">{{ $t('applications.detail.document.closing') }}</p>
                         <div class="mt-8">
@@ -446,7 +420,6 @@ onMounted(() => {
             </UiCard>
         </div>
 
-        <!-- Notes Section -->
         <div v-if="(!isEditing && application.notes && application.notes.length > 0) || isEditing" class="pt-8">
             <UiCard class="border-dashed border-neutral-200 bg-neutral-50/20 shadow-none dark:border-neutral-800 dark:bg-neutral-900/20">
                 <UiCardContainer class="flex h-full flex-col gap-6 p-8">
@@ -462,7 +435,6 @@ onMounted(() => {
                     
                     <div v-if="!isEditing" class="prose prose-neutral max-w-none dark:prose-invert" >
                         <ul class="list-disc space-y-3 pl-5">
-                            <!-- eslint-disable-next-line vue/no-v-html -->
                             <li v-for="(note, index) in application.notes" :key="index" class="text-neutral-600 dark:text-neutral-400" v-html="renderMarkdown(note)"></li>
                         </ul>
                     </div>
@@ -480,7 +452,6 @@ onMounted(() => {
             </UiCard>
         </div>
 
-        <!-- Timeline Section -->
         <UiCard class="border-secondary-500/5 shadow-xl shadow-secondary-500/5">
             <UiCardContainer class="p-8 md:p-10">
                 <div class="flex items-center justify-between mb-10">
@@ -540,10 +511,6 @@ onMounted(() => {
         </UiCard>
       </div>
 
-        
-
-              <!-- Sidebar -->
-
               <div class="sticky top-10 flex flex-col gap-6 lg:col-span-1">
 
                 <UiCard class="border-secondary-500/5 shadow-lg">
@@ -577,13 +544,9 @@ onMounted(() => {
                     </UiCardContainer>
 
                 </UiCard>
-
         
-
                                 <UiCard shadow="none">
-
         
-
                                   <UiCardContainer class="flex w-full flex-col gap-3">
 
                       <template v-if="isEditing">

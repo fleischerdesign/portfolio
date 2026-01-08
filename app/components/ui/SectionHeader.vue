@@ -1,42 +1,28 @@
 <template>
   <div :class="rootClasses">
     
-    <!-- ==================== BACKGROUND EFFECTS ==================== -->
-    
-    <!-- Variant: GLOW (Enhanced Ambient Orb + Noise) -->
     <template v-if="variant === 'glow'">
-      <!-- Noise Texture (Adds organic feel to the glow) -->
       <div class="pointer-events-none absolute inset-0 -z-10 opacity-[0.15] mix-blend-overlay invert dark:invert-0 [mask-image:radial-gradient(closest-side,black,transparent)]"
            style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E&quot;)">
       </div>
 
-      <!-- Primary Deep Glow -->
       <div class="pointer-events-none absolute -left-32 -top-32 -z-20 h-96 w-96 rounded-full bg-secondary-500/20 blur-[100px] dark:bg-secondary-500/15"></div>
-      <!-- Secondary Highlight Glow -->
       <div class="pointer-events-none absolute -left-10 -top-10 -z-20 h-48 w-48 rounded-full bg-secondary-400/30 blur-[60px] dark:bg-secondary-400/20"></div>
     </template>
     
-    <!-- Variant: NEBULA (Center Gradient) -->
     <div v-if="variant === 'nebula'" class="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-32 w-2/3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-secondary-400/15 blur-[60px] dark:bg-secondary-500/15"></div>
 
 
-    <!-- ==================== CONTENT ==================== -->
-
     <div class="relative flex flex-col gap-6" :class="contentAlignClasses">
         
-        <!-- DECORATIVE TOP (Icon or Lines) - Not shown for 'none' variant -->
         <div v-if="variant !== 'none' && (symbol || variant === 'tech' || $slots.prefix)" class="flex items-center gap-4">
-             <!-- Tech Variant Line -->
              <div v-if="variant === 'tech'" class="font-mono text-sm font-bold tracking-widest text-secondary-500">
                 // 0{{ Math.floor(Math.random() * 9) + 1 }}
              </div>
 
-             <!-- Icons / Symbols -->
              <slot name="prefix">
                  
-                 <!-- GLOW: Premium Glassy Icon Box -->
                  <div v-if="variant === 'glow' && symbol" class="relative group">
-                     <!-- Animated Outer Glow -->
                      <div class="absolute -inset-2 rounded-3xl bg-secondary-500/20 blur-xl transition duration-500 group-hover:bg-secondary-500/30"></div>
                      
                      <div class="relative inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-white/50 bg-gradient-to-br from-white/80 to-white/40 shadow-xl backdrop-blur-xl transition-transform duration-500 group-hover:scale-105 dark:border-white/10 dark:from-white/10 dark:to-white/5">
@@ -44,25 +30,20 @@
                      </div>
                  </div>
 
-                 <!-- TECH: Simple Icon -->
                  <Icon v-else-if="variant === 'tech' && symbol" :name="symbol" size="32" class="text-secondary-500" />
 
-                 <!-- NEBULA: Floating Icon -->
                  <div v-else-if="variant === 'nebula' && symbol" class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary-100/50 text-secondary-500 dark:bg-secondary-900/40">
                     <Icon :name="symbol" size="32" />
                  </div>
                  
-                 <!-- DEFAULT: Simple Icon -->
                  <div v-else-if="symbol" class="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 dark:bg-secondary-900/40 dark:text-secondary-400">
                     <Icon :name="symbol" size="24" />
                  </div>
              </slot>
 
-             <!-- Tech Variant Long Line -->
              <div v-if="variant === 'tech'" class="h-px w-24 bg-gradient-to-r from-secondary-500 to-transparent opacity-50"></div>
         </div>
 
-        <!-- TEXT CONTENT -->
         <div class="flex flex-col gap-3">
             <component :is="tag" :class="titleClasses">
                 <template v-if="variant === 'tech'">
@@ -75,7 +56,6 @@
                 </template>
             </component>
             
-            <!-- GLOW: Luminous Accent Line -->
             <div v-if="variant === 'glow'" class="mt-1 flex items-center">
                  <div class="h-1 w-24 rounded-full bg-gradient-to-r from-secondary-500 to-transparent shadow-[0_0_15px_rgba(16,185,129,0.5)]"></div>
             </div>
@@ -100,7 +80,6 @@ const props = withDefaults(defineProps<{
   symbol?: string
   level?: 1 | 2,
   variant?: 'minimal' | 'glow' | 'tech' | 'nebula' | 'none'
-  // Deprecated props for compatibility
   align?: string 
 }>(), {
   level: 2,
