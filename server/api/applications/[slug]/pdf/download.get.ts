@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const filePath = path.join(process.cwd(), 'data', 'applications', `${slug}.pdf`);
+  const filePath = path.join(process.cwd(), '.data', 'applications', `${slug}.pdf`);
   console.log(`Reading PDF from: ${filePath}`);
 
   if (!fs.existsSync(filePath)) {
