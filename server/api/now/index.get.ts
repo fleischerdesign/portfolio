@@ -1,3 +1,6 @@
+import { desc } from 'drizzle-orm'
+import { nowEntries } from '../../db/schema'
+
 export default cachedEventHandler(async (event) => {
   const query = getQuery(event)
   const langParam = Array.isArray(query.lang) 
@@ -10,25 +13,27 @@ export default cachedEventHandler(async (event) => {
     || 'de'
   ) as string
 
-  const data = await useStorage('data').getItem<Record<string, string>>('now.json')
-
-  if (!data) {
-    return { status: 'No status set!', updatedAt: null , icon: 'mage:zap'}
-  }
-
   try {
+    const [latestEntry] = await db.select().from(nowEntries).orderBy(desc(nowEntries.createdAt)).limit(1)
+
+    if (!latestEntry) {
+      return { status: 'No status set!', updatedAt: null , icon: 'mage:zap'}
+    }
+
     return {
-      status: data[lang] || data.de,
-      icon: data.icon || 'info',
-      updatedAt: data.updatedAt
+      status: lang === 'de' ? latestEntry.contentDe : latestEntry.contentEn,
+      icon: latestEntry.icon || 'info',
+      updatedAt: latestEntry.createdAt
     }
   } catch (error) {
-    console.error('Failed to read or parse now.json:', error)
+    console.error('Failed to fetch now status:', error)
     throw createError({
       statusCode: 500,
-      statusMessage: 'Could not read or parse now.json',
+      statusMessage: 'Could not fetch status',
     })
   }
 }, {
-  maxAge: 1 * 60
+  maxAge: 1 * 60,
+  name: 'now-status'
 })
+

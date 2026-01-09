@@ -1,3 +1,5 @@
+import { nowEntries } from '../../db/schema'
+
 export default defineEventHandler(async (event) => {
   const token = getHeader(event, 'Authorization')?.replace('Bearer ', '')
   const { now: { apiToken } } = useRuntimeConfig()
@@ -15,27 +17,20 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Missing de/en translations' })
   }
 
-  const newData: Record<string, string> = {
-    de: body.de,
-    en: body.en,
-    icon: body.icon,
-    updatedAt: new Date().toISOString()
-  }
-
-  for (const key of Object.keys(body)) {
-    if (!['de', 'en'].includes(key) && typeof body[key] === 'string') {
-      newData[key] = body[key]
-    }
-  }
-
   try {
-    await useStorage('data').setItem('now.json', newData)
-    return { success: true, updatedAt: newData.updatedAt }
+    const result = await db.insert(nowEntries).values({
+      contentDe: body.de,
+      contentEn: body.en,
+      icon: body.icon
+    }).returning()
+
+    return { success: true, updatedAt: result[0].createdAt }
   } catch (error) {
-    console.error('Failed to write now.json:', error)
+    console.error('Failed to create now entry:', error)
     throw createError({
       statusCode: 500,
-      statusMessage: 'Could not write now.json'
+      statusMessage: 'Could not create entry'
     })
   }
 })
+

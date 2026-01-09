@@ -131,3 +131,11 @@ export const apiKeysRelations = relations(apiKeys, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export const nowEntries = sqliteTable('now_entries', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  contentDe: text('content_de').notNull(),
+  contentEn: text('content_en').notNull(),
+  icon: text('icon'),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
+});
