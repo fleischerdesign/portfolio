@@ -33,7 +33,9 @@ useHead({
   }
 })
 
-defineOgImageComponent('Default')
+if (import.meta.server) {
+  defineOgImageComponent('Default')
+}
 </script>
 
 

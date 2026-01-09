@@ -11,7 +11,8 @@ useHead({
   title: `Error ${props.error.statusCode}`
 })
 
-const handleError = () => clearError({ redirect: '/' })
+const localePath = useLocalePath()
+const handleError = () => clearError({ redirect: localePath('/') })
 </script>
 
 <template>
