@@ -13,7 +13,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const route = useRoute()
 const { data } = await useAsyncData(route.path, () => {
     return queryCollection('projects')
@@ -21,8 +21,6 @@ const { data } = await useAsyncData(route.path, () => {
         .select('title', 'subtitle', "image", "slug", "icon")
         .all()
 })
-
-const { t } = useI18n()
 
 useSeoMeta({
   title: t("navigation.projects"),

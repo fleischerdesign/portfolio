@@ -5,9 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const route = useRoute();
-const { locale } = useI18n();
 
 useSeoMeta({
   title: t("home.contact.title"),

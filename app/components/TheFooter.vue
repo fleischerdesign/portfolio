@@ -23,23 +23,23 @@
         <div class="md:ml-auto lg:mx-auto">
           <h3 class="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-secondary-500">{{ $t("footer.contact") }}</h3>
           <div class="space-y-4">
-            <a href="tel:+4917631099324" class="group flex items-center gap-3 text-neutral-600 transition-colors hover:text-secondary-600 dark:text-neutral-400 dark:hover:text-secondary-400">
+            <a :href="`tel:${contactData.phone.replace(/\s/g, '')}`" class="group flex items-center gap-3 text-neutral-600 transition-colors hover:text-secondary-600 dark:text-neutral-400 dark:hover:text-secondary-400">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-900 dark:group-hover:bg-secondary-900/30">
                     <Icon name="mage:phone" size="20" />
                 </div>
-                <span class="text-lg font-medium">+49 176 31099324</span>
+                <span class="text-lg font-medium">{{ contactData.phone }}</span>
             </a>
-            <a href="mailto:hello@fleischer.design" class="group flex items-center gap-3 text-neutral-600 transition-colors hover:text-secondary-600 dark:text-neutral-400 dark:hover:text-secondary-400">
+            <a :href="`mailto:${contactData.email}`" class="group flex items-center gap-3 text-neutral-600 transition-colors hover:text-secondary-600 dark:text-neutral-400 dark:hover:text-secondary-400">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-900 dark:group-hover:bg-secondary-900/30">
                     <Icon name="mage:email" size="20" />
                 </div>
-                <span class="text-lg font-medium">hello@fleischer.design</span>
+                <span class="text-lg font-medium">{{ contactData.email }}</span>
             </a>
             <div class="group flex items-center gap-3 text-neutral-600 dark:text-neutral-400">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 dark:bg-neutral-900">
                     <Icon name="mage:map-marker" size="20" />
                 </div>
-                <span class="text-lg font-medium">17036 Neubrandenburg</span>
+                <span class="text-lg font-medium">{{ personal.address.postalCode }} {{ personal.address.city }}</span>
             </div>
           </div>
         </div>
@@ -70,7 +70,7 @@
       <!-- Copyright Bar -->
       <div class="mt-20 flex flex-col items-center justify-between border-t border-neutral-200/30 pt-8 dark:border-neutral-800/30 md:flex-row">
         <p class="text-sm font-medium text-neutral-500 dark:text-neutral-500">
-            {{ $t("footer.copyright") }}
+            {{ $t("footer.copyright", { year: new Date().getFullYear() }) }}
         </p>
         <div class="mt-4 flex gap-6 text-sm md:mt-0">
             <NuxtLink :to="$localePath('/legal')" class="hover:text-secondary-500">{{ $t("legal.title") }}</NuxtLink>
@@ -80,3 +80,12 @@
     </div>
   </footer>
 </template>
+
+<script setup lang="ts">
+import { contactData } from '~/data/contact.data';
+import { personalData } from '~/data/personal.data';
+
+const { t } = useI18n();
+const personal = personalData(t);
+</script>
+

@@ -189,7 +189,7 @@
     "legal": "Impressum"
   },
   "footer": {
-    "copyright": "© 2026 Philipp Fleischer. Alle Rechte vorbehalten.",
+    "copyright": "© {year} Philipp Fleischer. Alle Rechte vorbehalten.",
     "contact": "Kontakt",
     "sitemap": "Sitemap"
   },

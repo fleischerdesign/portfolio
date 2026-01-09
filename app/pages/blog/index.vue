@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const route = useRoute()
 const { data } = await useAsyncData(route.path, () => {
     return queryCollection('blog')
@@ -18,8 +18,6 @@ const { data } = await useAsyncData(route.path, () => {
         .select('title', 'date', 'description', "image", "slug", "readingTime")
         .all()
 })
-
-const { t } = useI18n()
 
 useSeoMeta({
   title: t("navigation.blog"),

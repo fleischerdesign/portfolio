@@ -120,6 +120,10 @@ The project uses Drizzle ORM for database management.
     ```bash
     npm run db:migrate
     ```
+-   **Push schema changes (Directly to DB):**
+    ```bash
+    npm run db:push
+    ```
 -   **Explore the database with Drizzle Studio:**
     ```bash
     npm run db:studio
