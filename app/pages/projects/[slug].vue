@@ -1,5 +1,5 @@
 <template>
-  <div class="relative overflow-hidden">
+  <div class="relative overflow-hidden flex-1 w-full">
     
     <!-- BACKGROUND ATMOSPHERE -->
     <div class="absolute inset-0 pointer-events-none -z-10">

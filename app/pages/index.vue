@@ -4,7 +4,7 @@
     <SectionHero />
 
     <!-- Main Content (Contained) -->
-    <div class="container mx-auto max-w-screen-xl px-4 md:px-8">
+    <div class="container mx-auto max-w-screen-xl px-4 pb-16 md:px-8">
       <SectionOverview />
       <SectionProjects />
       <SectionBlog />

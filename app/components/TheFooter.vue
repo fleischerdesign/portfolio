@@ -1,5 +1,5 @@
 <template>
-  <footer class="relative mt-24 border-t border-neutral-200/50 bg-white/50 py-16 backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-950/50 print:hidden">
+  <footer class="relative border-t border-neutral-200/50 bg-white/50 py-16 backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-950/50 print:hidden">
     <!-- Ambient Glow at Footer Top -->
     <div class="pointer-events-none absolute left-1/2 top-0 -z-10 h-32 w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-secondary-500/5 blur-[80px]"></div>
 
