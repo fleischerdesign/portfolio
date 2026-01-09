@@ -188,6 +188,19 @@
     "resume": "Resume",
     "legal": "Legal"
   },
+  "error": {
+    "404": {
+      "title": "Page not found",
+      "heading": "Lost in Code?",
+      "message": "The page you are looking for seems to have vanished into digital nowhere."
+    },
+    "generic": {
+      "title": "An error occurred",
+      "heading": "Oops! Something went wrong",
+      "message": "Don't worry, even the best systems have a glitch every now and then."
+    },
+    "back_home": "Back to Home"
+  },
   "footer": {
     "copyright": "© {year} Philipp Fleischer. All rights reserved.",
     "contact": "Contact",

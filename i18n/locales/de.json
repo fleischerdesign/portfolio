@@ -188,6 +188,19 @@
     "resume": "Lebenslauf",
     "legal": "Impressum"
   },
+  "error": {
+    "404": {
+      "title": "Seite nicht gefunden",
+      "heading": "Verloren im Code?",
+      "message": "Die Seite, die du suchst, scheint ins digitale Nirgendwo verschwunden zu sein."
+    },
+    "generic": {
+      "title": "Ein Fehler ist aufgetreten",
+      "heading": "Ups! Etwas lief schief",
+      "message": "Keine Sorge, auch in den besten Systemen gibt es mal einen Glitch."
+    },
+    "back_home": "Zurück zur Startseite"
+  },
   "footer": {
     "copyright": "© {year} Philipp Fleischer. Alle Rechte vorbehalten.",
     "contact": "Kontakt",
