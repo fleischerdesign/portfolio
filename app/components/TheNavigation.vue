@@ -29,7 +29,7 @@
                 <!-- Studio Toggle Button (Mobile) -->
                 <NuxtLink
                     v-if="user?.role === 'admin'"
-                    :to="inStudio ? '/' : '/studio'"
+                    :to="inStudio ? $localePath('/') : $localePath('/studio')"
                     class="group relative flex h-11 w-11 items-center justify-center rounded-xl border border-neutral-200/50 bg-white/70 shadow-lg backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-neutral-800/50 dark:bg-neutral-900/70 dark:hover:bg-secondary-900/20"
                     :aria-label="inStudio ? 'Exit Studio' : 'Enter Studio'"
                 >
@@ -109,7 +109,7 @@
                 <!-- Studio Toggle Button (Desktop) -->
                 <NuxtLink
                     v-if="user?.role === 'admin'"
-                    :to="inStudio ? '/' : '/studio'"
+                    :to="inStudio ? $localePath('/') : $localePath('/studio')"
                     class="group relative flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-200/50 bg-white/70 shadow-xl backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-neutral-800/50 dark:bg-neutral-900/70 dark:hover:bg-secondary-900/20"
                     :aria-label="inStudio ? 'Exit Studio' : 'Enter Studio'"
                 >
