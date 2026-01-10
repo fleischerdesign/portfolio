@@ -1,5 +1,5 @@
 ---
-slug: operating-systems-for-developers
+slug: betriebssysteme-fuer-entwickler
 date: 2025-05-27
 published: true
 category: programming

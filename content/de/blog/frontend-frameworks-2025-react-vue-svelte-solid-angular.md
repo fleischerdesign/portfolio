@@ -1,5 +1,5 @@
 ---
-slug: frontend-frameworks-2025-react-vue-svelte-solid-angular
+slug: frontend-frameworks-2025-vergleich
 date: 2025-06-20
 published: true
 category: programming

@@ -1,5 +1,5 @@
 ---
-slug: devops-for-starters-what-is-devops
+slug: devops-fuer-einsteiger-was-ist-devops
 date: 2025-06-19
 published: true
 category: devops

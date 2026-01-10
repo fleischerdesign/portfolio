@@ -3,7 +3,10 @@
         <div class="mb-24">
               <UiSectionHeader :level="1" :title="$t('blog.title')" :subtitle="$t('blog.subtitle')" symbol="heroicons:pencil-square" />
             <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-                <BlogPostCard v-for="(post, index) in data" :key="index" :post="post" />
+                <BlogPostCard v-for="post in posts" :key="post.id" :post="post" />
+            </div>
+            <div v-if="!posts?.length" class="mt-12 text-center text-neutral-500">
+                {{ $t('blog.no_posts') }}
             </div>
         </div>
     </div>
@@ -12,12 +15,12 @@
 <script lang="ts" setup>
 const { locale, t } = useI18n()
 const route = useRoute()
-const { data } = await useAsyncData(route.path, () => {
-    return queryCollection('blog')
-        .where('locale', '=', locale.value)
-        .select('title', 'date', 'description', "image", "slug", "readingTime")
-        .all()
+
+const { data } = await useFetch('/api/blog', {
+    query: { locale: locale.value }
 })
+
+const posts = computed(() => data.value?.posts || [])
 
 useSeoMeta({
   title: t("navigation.blog"),

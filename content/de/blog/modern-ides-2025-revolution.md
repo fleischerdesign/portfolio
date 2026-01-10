@@ -1,5 +1,5 @@
 ---
-slug: modern-ides-2025-revolution
+slug: moderne-ides-2025-revolution
 date: 2025-06-20
 published: true
 category: programming

@@ -1,5 +1,5 @@
 ---
-slug: clean-code-in-cs
+slug: sauberer-code-fuer-informatiker
 date: 2025-06-20
 published: true
 category: softwareentwicklung

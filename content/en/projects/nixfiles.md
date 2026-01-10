@@ -30,8 +30,8 @@ title: "Nixfiles – Custom NixOS & Desktop Environment"
 subtitle: "A tailored NixOS configuration with a self-developed desktop interface based on Niri and Quickshell."
 features:
   - Declarative system configuration with Nix Flakes
-  - Niri: Scrollable Tiling Window Manager (Wayland)
-  - Quickshell: Custom desktop overlay (QML/JS)
+  - "Niri: Scrollable Tiling Window Manager (Wayland)"
+  - "Quickshell: Custom desktop overlay (QML/JS)"
   - Automated module detection (lib/helper.nix)
   - Intelligent dependency & conflict management
   - Full typing and reproducibility

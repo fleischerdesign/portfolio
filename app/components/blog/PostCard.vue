@@ -9,10 +9,11 @@
 
                 <!-- Post Image -->
                 <NuxtImg
+                    v-if="post?.coverImage"
                     sizes="500px" 
-                    :src="post?.image?.src"
+                    :src="post.coverImage"
                     class="h-full w-full object-cover transition duration-1000 group-hover:scale-110"
-                    :alt="post?.image?.alt" 
+                    :alt="post?.coverImageAlt || post?.title" 
                 />
                 
                 <!-- Overlay Gradient -->
@@ -25,14 +26,14 @@
                 <div class="pointer-events-none absolute -bottom-10 -left-10 -z-0 h-32 w-32 rounded-full bg-secondary-500/5 blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0"></div>
 
                 <div class="relative z-10 flex h-full flex-col">
-                    <!-- Technical Meta Info (New) -->
+                    <!-- Technical Meta Info -->
                     <div class="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-neutral-500 dark:text-neutral-400">
-                        <div class="flex items-center gap-1.5">
+                        <div class="flex items-center gap-1.5" v-if="post.publishedAt">
                             <Icon name="mage:calendar-2" size="14" class="text-secondary-500" />
                             <span>{{ formattedDate }}</span>
                         </div>
-                        <span class="h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-700"></span>
-                        <div class="flex items-center gap-1.5">
+                        <span v-if="post.publishedAt && post.readingTime" class="h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-700"></span>
+                        <div class="flex items-center gap-1.5" v-if="post.readingTime">
                         <Icon name="mage:clock" size="16" class="text-secondary-400" />
                         {{ post.readingTime }} {{ $t("blogPost.readingTimeSuffix") }}
                     </div>
@@ -43,7 +44,7 @@
                     </h3>
                     
                     <p class="mt-3 line-clamp-3 flex-1 text-base text-neutral-600 transition-colors duration-300 group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-neutral-200">
-                        {{ post?.description }}
+                        {{ post?.excerpt }}
                     </p>
 
                     <!-- Interactive Footer -->
@@ -61,17 +62,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { BlogPostResponse } from '~~/shared/schemas/blog.schema';
 
 const props = defineProps<{
-    post: {
-        title: string
-        description?: string
-        date: Date
-        image?: { src: string, alt: string }
-        slug: string
-        readingTime?: number
-    }
+    post: BlogPostResponse
 }>()
 
-const formattedDate = computed(() => formatDate(props.post.date))
+const formattedDate = computed(() => props.post.publishedAt ? formatDate(props.post.publishedAt) : '')
 </script>

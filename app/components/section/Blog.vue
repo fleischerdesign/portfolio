@@ -1,8 +1,9 @@
+
 <template>
   <div class="mb-24">
       <UiSectionHeader :title="$t('home.blog.title')" :subtitle="$t('home.blog.subtitle')" variant="glow" symbol="heroicons:pencil-square" />
     <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-      <BlogPostCard v-for="(post, index) in posts" :key="index" :post="post" />
+      <BlogPostCard v-for="post in posts" :key="post.id" :post="post" />
     </div>
     <div class="mt-8 text-center">
       <NuxtLinkLocale to="/blog" class="block w-full md:inline-block md:w-auto">
@@ -16,13 +17,10 @@
 
 <script lang="ts" setup>
 const { locale } = useI18n();
-const route = useRoute();
 
-const {data: posts} = await useAsyncData(route.path+'_posts', () => {
-  return queryCollection('blog')
-    .where('locale', '=', locale.value)
-    .select('title', 'date', 'description', "image", "slug", "readingTime")
-    .limit(3)
-    .all();
+const { data } = await useFetch('/api/blog', {
+  query: { locale: locale.value, limit: 3 }
 });
+
+const posts = computed(() => data.value?.posts || []);
 </script>

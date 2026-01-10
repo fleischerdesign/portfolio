@@ -1,3 +1,4 @@
+
 <template>
   <div class="relative overflow-hidden flex-1 w-full">
     
@@ -14,9 +15,8 @@
       
       <article v-if="project" class="flex flex-col items-start">
         
-        <!-- 1. HEADER (Redesigned with UiSectionHeader) -->
+        <!-- 1. HEADER -->
         <header class="mb-16 flex w-full flex-col gap-10">
-            <!-- Breadcrumb -->
             <UiBackButton :to="$localePath('/projects')" />
 
             <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
@@ -29,7 +29,6 @@
                 >
                     <template #prefix>
                         <div v-if="project.icon" class="relative group">
-                            <!-- Animated Outer Glow -->
                             <div class="absolute -inset-2 rounded-3xl bg-secondary-500/20 blur-xl transition duration-500 group-hover:bg-secondary-500/30"></div>
                             
                             <div class="relative inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-white/50 bg-gradient-to-br from-white/80 to-white/40 shadow-xl backdrop-blur-xl transition-all duration-500 group-hover:scale-105 dark:border-white/10 dark:from-white/10 dark:to-white/5">
@@ -47,8 +46,8 @@
                 <!-- Actions -->
                 <div class="flex gap-4">
                     <UiButton 
-                        v-if="project.url?.project"
-                        :to="project.url.project"
+                        v-if="project.projectUrl"
+                        :to="project.projectUrl"
                         :external="true"
                         target="_blank"
                         variant="secondary" 
@@ -59,8 +58,8 @@
                         <template #icon-right><Icon name="heroicons:arrow-top-right-on-square" /></template>
                     </UiButton>
                     <UiButton 
-                        v-if="project.url?.repository"
-                        :to="project.url.repository"
+                        v-if="project.repoUrl"
+                        :to="project.repoUrl"
                         :external="true"
                         target="_blank"
                         variant="glass" 
@@ -74,35 +73,32 @@
         </header>
 
 
-        <!-- 2. HERO IMAGE (With Integrated Icon Badge) -->
+        <!-- 2. HERO IMAGE -->
         <div class="group relative mb-20 w-full overflow-hidden rounded-[2.5rem] border border-neutral-200/50 bg-neutral-900 shadow-2xl dark:border-neutral-800/50">
-            <!-- Ambient Glow -->
             <div class="pointer-events-none absolute -right-20 -top-20 z-10 h-96 w-96 rounded-full bg-secondary-500/10 blur-[100px] transition-all duration-700 group-hover:bg-secondary-500/20"></div>
             
             <NuxtImg
-                :src="project.image?.src"
-                :alt="project.title"
+                v-if="project.coverImage"
+                :src="project.coverImage"
+                :alt="project.coverImageAlt || project.title"
                 sizes="100vw lg:1400px"
                 class="aspect-video w-full object-cover transition duration-1000 group-hover:scale-105"
                 placeholder
             />
             
-            <!-- Bottom Gradient -->
             <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent"></div>
 
-            <!-- FLOATING GLASS INFO BADGE -->
             <div class="absolute bottom-8 left-8 z-20 flex items-center gap-6 md:bottom-12 md:left-12 transition-transform duration-500 group-hover:-translate-y-2">
-                <!-- Project Context Info -->
                 <div class="flex flex-col gap-1">
                     <div class="flex items-center gap-2">
-                        <span class="flex h-6 px-2 items-center justify-center rounded-md border border-white/20 bg-black/30 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md">
-                            {{ new Date(project.date).getFullYear() }}
+                        <span v-if="project.publishedAt" class="flex h-6 px-2 items-center justify-center rounded-md border border-white/20 bg-black/30 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md">
+                            {{ new Date(project.publishedAt).getFullYear() }}
                         </span>
-                        <span v-if="project.published" class="flex h-6 px-2 items-center justify-center rounded-md border border-emerald-500/30 bg-emerald-500/20 text-xs font-bold uppercase tracking-wider text-emerald-400 backdrop-blur-md">
+                        <span v-if="project.status === 'published'" class="flex h-6 px-2 items-center justify-center rounded-md border border-emerald-500/30 bg-emerald-500/20 text-xs font-bold uppercase tracking-wider text-emerald-400 backdrop-blur-md">
                             Live
                         </span>
                     </div>
-                    <span class="text-2xl font-bold text-white">{{ project.category }}</span>
+                    <span v-if="project.category" class="text-2xl font-bold text-white">{{ project.category.name }}</span>
                 </div>
             </div>
         </div>
@@ -113,18 +109,18 @@
             
             <!-- LEFT COLUMN -->
             <div class="flex flex-col gap-16">
-                <!-- Case Study Content -->
                 <section>
                     <UiSectionHeader :title="$t('project.case_study')" class="!mb-8" />
-                    <div class="prose prose-lg prose-neutral max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-secondary-500 prose-a:no-underline hover:prose-a:underline prose-img:rounded-3xl prose-img:shadow-2xl">
-                        <ContentRenderer :value="project" />
+                    <div 
+                      class="prose prose-lg prose-neutral max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-secondary-500 prose-a:no-underline hover:prose-a:underline prose-img:rounded-3xl prose-img:shadow-2xl"
+                      v-html="renderedBody"
+                    >
                     </div>
                 </section>
 
-                <!-- Tech Stack -->
-                <section>
+                <section v-if="project.techstack?.length">
                     <UiSectionHeader :title="$t('project.technologies')" class="!mb-8" />
-                    <TechstackList :items="project.techstack || []" :rows="2" />
+                    <TechstackList :items="project.techstack.map(t => t.name)" :rows="2" />
                 </section>
             </div>
 
@@ -183,26 +179,13 @@
 <script lang="ts" setup>
 const { t, locale } = useI18n()
 const route = useRoute()
-const { data: project } = await useAsyncData(() => {
-    return queryCollection("projects")
-        .where('locale', '=', locale.value)
-        .where("slug", "=", route.params.slug).first()
-})
-const formattedDate = computed(() => project.value ? formatDate(project.value.date) : '')
+const { render } = useMarkdown()
 
-useSeoMeta({
-    title: project.value?.title || 'Project Post',
-    ogTitle: project.value?.title || 'Blog Post',
-    description: project.value?.subtitle || 'Blog Post Description',
-    ogDescription: project.value?.subtitle || 'Blog Post Description',
-    ogUrl: route.fullPath,
-    ogType: 'website',
-    ogLocale: locale.value,
-    twitterTitle: project.value?.title || 'Blog Post',
-    twitterCard: 'summary_large_image',
-    twitterDescription: project.value?.subtitle || 'Blog Post Description',
-    robots: 'index, follow',
+const { data } = await useFetch(`/api/projects/${route.params.slug}`, {
+    query: { locale: locale.value }
 })
+
+const project = computed(() => data.value?.project)
 
 if (!project.value) {
     throw createError({
@@ -211,12 +194,29 @@ if (!project.value) {
     })
 }
 
-const details = [
-  { label: t('project.category'), value: project?.value.category },
-  { label: t('project.date'), value: formattedDate },
+const renderedBody = computed(() => project.value ? render(project.value.body) : '')
+const formattedDate = computed(() => project.value?.publishedAt ? formatDate(project.value.publishedAt) : '')
+
+useSeoMeta({
+    title: project.value?.title || 'Project',
+    ogTitle: project.value?.title || 'Project',
+    description: project.value?.subtitle || '',
+    ogDescription: project.value?.subtitle || '',
+    ogUrl: route.fullPath,
+    ogType: 'website',
+    ogLocale: locale.value,
+    twitterTitle: project.value?.title || 'Project',
+    twitterCard: 'summary_large_image',
+    twitterDescription: project.value?.subtitle || '',
+    robots: 'index, follow',
+})
+
+const details = computed(() => [
+  { label: t('project.category'), value: project.value?.category?.name },
+  { label: t('project.date'), value: formattedDate.value },
   { 
     label: t('project.state.title'), 
-    value: project?.value.published ? t('project.state.published') : t('project.state.unpublished')
+    value: project.value?.status === 'published' ? t('project.state.published') : t('project.state.unpublished')
   }
-]
+])
 </script>

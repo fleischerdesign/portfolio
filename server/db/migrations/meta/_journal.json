@@ -64,6 +64,20 @@
       "when": 1767974026723,
       "tag": "0008_lively_leech",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1768005868120,
+      "tag": "0009_spooky_rocket_raccoon",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1768006534452,
+      "tag": "0010_mysterious_frightful_four",
+      "breakpoints": true
     }
   ]
 }

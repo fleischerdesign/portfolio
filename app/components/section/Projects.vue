@@ -1,8 +1,9 @@
+
 <template>
   <div class="mb-24">
       <UiSectionHeader :title="$t('home.projects.title')" :subtitle="$t('home.projects.subtitle')" variant="glow" symbol="heroicons:code-bracket" />
     <div class="mt-4 grid grid-cols-1 gap-3">
-      <ProjectCard v-for="(project, index) in projects" :key="index" hover class="group overflow-hidden" :project="project" />
+      <ProjectCard v-for="project in projects" :key="project.id" hover class="group overflow-hidden" :project="project" />
     </div>
     <div class="mt-8 text-center">
       <NuxtLinkLocale to="/projects" class="block w-full md:inline-block md:w-auto">
@@ -16,13 +17,10 @@
 
 <script lang="ts" setup>
 const { locale } = useI18n();
-const route = useRoute();
 
-const {data: projects} = await useAsyncData(route.path+'_projects', () => {
-  return queryCollection('projects')
-    .where('locale', '=', locale.value)
-    .select('title', 'date', 'subtitle', "image", "slug", "icon")
-    .limit(3)
-    .all();
+const { data } = await useFetch('/api/projects', {
+  query: { locale: locale.value, limit: 3 }
 });
+
+const projects = computed(() => data.value?.projects || []);
 </script>

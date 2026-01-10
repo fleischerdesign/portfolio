@@ -14,11 +14,11 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "db:migrate-md": "ts-node scripts/migrate-applications.ts"
+    "db:migrate-md": "ts-node scripts/migrate-applications.ts",
+    "db:sync-content": "ts-node scripts/migrate-content.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.15.15",
-    "@nuxt/content": "^3.5.1",
     "@nuxt/eslint": "^1.6.0",
     "@nuxt/icon": "^1.13.0",
     "@nuxt/image": "^1.10.0",

@@ -46,6 +46,11 @@ export default defineNuxtConfig({
   site: {
     url: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://fleischer.design'
   },
+  sitemap: {
+    sources: [
+      '/api/__sitemap__/urls'
+    ]
+  },
   compatibilityDate: '2024-11-01',
   devtools: {
     enabled: true,
@@ -59,7 +64,6 @@ export default defineNuxtConfig({
     '@nuxtjs/sitemap',
     '@nuxtjs/tailwindcss',
     '@nuxt/icon',
-    '@nuxt/content',
     '@nuxtjs/i18n',
     '@nuxt/image',
     '@nuxtjs/color-mode',
@@ -80,18 +84,8 @@ export default defineNuxtConfig({
     }
   },
 
-  hooks: {
-    'content:file:afterParse'(ctx) {
-      const { file, content } = ctx;
-
-      const wordsPerMinute = 180;
-      const text = typeof file.body === 'string' ? file.body : '';
-      const wordCount = text.split(/\s+/).length;
-
-      content.readingTime = Math.ceil(wordCount / wordsPerMinute);
-    }
-  },
   autoTranslate: {
+
     apiProvider: 'openai', // or 'anthropic', 'google'
     apiBaseUrl: 'https://openrouter.ai/api/v1',
     model: 'deepseek/deepseek-v3.2',

@@ -139,3 +139,216 @@ export const nowEntries = sqliteTable('now_entries', {
   icon: text('icon'),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
 });
+
+// --- Taxonomies ---
+
+export const categories = sqliteTable('categories', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  slug: text('slug').notNull().unique(),
+  name: text('name').notNull(),
+});
+
+export const tags = sqliteTable('tags', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  slug: text('slug').notNull().unique(),
+  name: text('name').notNull(),
+});
+
+export const technologies = sqliteTable('technologies', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  slug: text('slug').notNull().unique(),
+  name: text('name').notNull(),
+});
+
+// --- Content Entities (Language Neutral) ---
+
+export const blogPosts = sqliteTable('blog_posts', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  translationKey: text('translation_key').notNull().unique(), // e.g. "clean-code" (helper for migration/admin)
+  
+  status: text('status', { enum: ['draft', 'published', 'archived'] }).default('draft').notNull(),
+  publishedAt: integer('published_at', { mode: 'timestamp' }),
+  
+  coverImage: text('cover_image'),
+  coverImageAlt: text('cover_image_alt'), // Alt text is technically translatable, but often kept neutral or English for simplicity. Let's keep it here for now.
+  
+  authorId: integer('author_id').references(() => users.id),
+  categoryId: integer('category_id').references(() => categories.id),
+
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).$onUpdate(() => sql`(strftime('%s', 'now'))`),
+});
+
+export const projects = sqliteTable('projects', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  translationKey: text('translation_key').notNull().unique(),
+
+  status: text('status', { enum: ['draft', 'published', 'archived'] }).default('draft').notNull(),
+  publishedAt: integer('published_at', { mode: 'timestamp' }),
+
+  coverImage: text('cover_image'),
+  coverImageAlt: text('cover_image_alt'),
+  
+  repoUrl: text('repo_url'),
+  projectUrl: text('project_url'),
+
+  authorId: integer('author_id').references(() => users.id),
+  categoryId: integer('category_id').references(() => categories.id),
+
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).$onUpdate(() => sql`(strftime('%s', 'now'))`),
+});
+
+// --- Content Translations ---
+
+export const blogPostTranslations = sqliteTable('blog_post_translations', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  blogPostId: integer('blog_post_id').notNull().references(() => blogPosts.id, { onDelete: 'cascade' }),
+  locale: text('locale', { enum: ['de', 'en'] }).notNull(),
+  
+  slug: text('slug').notNull(),
+  title: text('title').notNull(),
+  excerpt: text('excerpt'),
+  body: text('body').notNull(),
+  readingTime: integer('reading_time'), // specific to language
+
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).$onUpdate(() => sql`(strftime('%s', 'now'))`),
+}, (t) => ({
+  slugLocaleIdx: uniqueIndex('blog_trans_slug_locale_idx').on(t.slug, t.locale),
+  postLocaleIdx: uniqueIndex('blog_trans_post_locale_idx').on(t.blogPostId, t.locale), // One translation per post per language
+}));
+
+export const projectTranslations = sqliteTable('project_translations', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  projectId: integer('project_id').notNull().references(() => projects.id, { onDelete: 'cascade' }),
+  locale: text('locale', { enum: ['de', 'en'] }).notNull(),
+
+  slug: text('slug').notNull(),
+  title: text('title').notNull(),
+  subtitle: text('subtitle'),
+  body: text('body').notNull(),
+
+  // These lists contain text, so they belong in translations
+  features: text('features', { mode: 'json' }).$type<string[]>(),
+  learned: text('learned', { mode: 'json' }).$type<string[]>(),
+  challenges: text('challenges', { mode: 'json' }).$type<string[]>(),
+
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).$onUpdate(() => sql`(strftime('%s', 'now'))`),
+}, (t) => ({
+  slugLocaleIdx: uniqueIndex('proj_trans_slug_locale_idx').on(t.slug, t.locale),
+  projectLocaleIdx: uniqueIndex('proj_trans_proj_locale_idx').on(t.projectId, t.locale),
+}));
+
+
+// --- Junction Tables (Linked to Entities) ---
+
+export const blogPostsToTags = sqliteTable('blog_posts_to_tags', {
+  blogPostId: integer('blog_post_id').notNull().references(() => blogPosts.id, { onDelete: 'cascade' }),
+  tagId: integer('tag_id').notNull().references(() => tags.id, { onDelete: 'cascade' }),
+}, (t) => ({
+  pk: uniqueIndex('blog_posts_tags_pk').on(t.blogPostId, t.tagId),
+}));
+
+export const projectsToTags = sqliteTable('projects_to_tags', {
+  projectId: integer('project_id').notNull().references(() => projects.id, { onDelete: 'cascade' }),
+  tagId: integer('tag_id').notNull().references(() => tags.id, { onDelete: 'cascade' }),
+}, (t) => ({
+  pk: uniqueIndex('projects_tags_pk').on(t.projectId, t.tagId),
+}));
+
+export const projectsToTechnologies = sqliteTable('projects_to_technologies', {
+  projectId: integer('project_id').notNull().references(() => projects.id, { onDelete: 'cascade' }),
+  technologyId: integer('technology_id').notNull().references(() => technologies.id, { onDelete: 'cascade' }),
+}, (t) => ({
+  pk: uniqueIndex('projects_tech_pk').on(t.projectId, t.technologyId),
+}));
+
+// --- Relations ---
+
+export const categoriesRelations = relations(categories, ({ many }) => ({
+  blogPosts: many(blogPosts),
+  projects: many(projects),
+}));
+
+export const tagsRelations = relations(tags, ({ many }) => ({
+  blogPosts: many(blogPostsToTags),
+  projects: many(projectsToTags),
+}));
+
+export const technologiesRelations = relations(technologies, ({ many }) => ({
+  projects: many(projectsToTechnologies),
+}));
+
+export const blogPostsRelations = relations(blogPosts, ({ one, many }) => ({
+  author: one(users, {
+    fields: [blogPosts.authorId],
+    references: [users.id],
+  }),
+  category: one(categories, {
+    fields: [blogPosts.categoryId],
+    references: [categories.id],
+  }),
+  tags: many(blogPostsToTags),
+  translations: many(blogPostTranslations),
+}));
+
+export const projectsRelations = relations(projects, ({ one, many }) => ({
+  author: one(users, {
+    fields: [projects.authorId],
+    references: [users.id],
+  }),
+  category: one(categories, {
+    fields: [projects.categoryId],
+    references: [categories.id],
+  }),
+  tags: many(projectsToTags),
+  techstack: many(projectsToTechnologies),
+  translations: many(projectTranslations),
+}));
+
+export const blogPostTranslationsRelations = relations(blogPostTranslations, ({ one }) => ({
+  post: one(blogPosts, {
+    fields: [blogPostTranslations.blogPostId],
+    references: [blogPosts.id],
+  }),
+}));
+
+export const projectTranslationsRelations = relations(projectTranslations, ({ one }) => ({
+  project: one(projects, {
+    fields: [projectTranslations.projectId],
+    references: [projects.id],
+  }),
+}));
+
+export const blogPostsToTagsRelations = relations(blogPostsToTags, ({ one }) => ({
+  post: one(blogPosts, {
+    fields: [blogPostsToTags.blogPostId],
+    references: [blogPosts.id],
+  }),
+  tag: one(tags, {
+    fields: [blogPostsToTags.tagId],
+    references: [tags.id],
+  }),
+}));
+
+export const projectsToTagsRelations = relations(projectsToTags, ({ one }) => ({
+  project: one(projects, {
+    fields: [projectsToTags.projectId],
+    references: [projects.id],
+  }),
+  tag: one(tags, {
+    fields: [projectsToTags.tagId],
+    references: [tags.id],
+  }),
+}));
+
+export const projectsToTechnologiesRelations = relations(projectsToTechnologies, ({ one }) => ({
+  project: one(projects, {
+    fields: [projectsToTechnologies.projectId],
+    references: [projects.id],
+  }),
+  technology: one(technologies, {
+    fields: [projectsToTechnologies.technologyId],
+    references: [technologies.id],
+  }),
+}));

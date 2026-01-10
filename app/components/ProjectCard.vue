@@ -1,11 +1,13 @@
+
 <template>
     <NuxtLink :to="$localePath(`/projects/${project?.slug}`)" class="group block h-full" :aria-label="$t('project.details_for', { title: project.title })">
         <UiCard interactive class="relative h-[400px] w-full overflow-hidden border-neutral-200/50 bg-neutral-100/50 dark:border-neutral-800/50 dark:bg-neutral-900/50">
             <!-- 1. Background Image -->
             <div class="absolute inset-0 h-full w-full">
                 <NuxtImg
-                    :src="project.image?.src" 
-                    :alt="project.image?.alt || project.title" 
+                    v-if="project.coverImage"
+                    :src="project.coverImage" 
+                    :alt="project.coverImageAlt || project.title" 
                     sizes="800px"
                     class="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" 
                 />
@@ -13,7 +15,7 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-transparent transition-opacity duration-500 group-hover:opacity-100 opacity-90"></div>
             </div>
 
-            <!-- 2. Ambient Accent Glow (Static & Dynamic) -->
+            <!-- 2. Ambient Accent Glow -->
             <div class="pointer-events-none absolute -right-16 -top-16 z-10 h-64 w-64 rounded-full bg-secondary-500/15 blur-[80px] transition-all duration-700 group-hover:bg-secondary-500/25 group-hover:blur-[100px]"></div>
 
             <!-- 3. Content Area -->
@@ -67,15 +69,10 @@
 </template>
 
 <script setup lang="ts">
+import type { ProjectResponse } from '~~/shared/schemas/project.schema';
+
 defineProps<{
-    project: {
-        title: string
-        subtitle?: string
-        date: string
-        image?: { src: string, alt?: string }
-        slug: string
-        icon?: string
-    },
+    project: ProjectResponse,
     compact?: boolean
 }>()
 </script>
