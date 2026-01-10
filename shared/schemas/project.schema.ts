@@ -17,6 +17,7 @@ export const projectBaseSchema = z.object({
   body: z.string(),
   status: z.enum(['draft', 'published', 'archived']).default('published'),
   publishedAt: z.union([z.string(), z.date()]).transform(val => new Date(val)).nullable(),
+  icon: z.string().nullable().optional(),
   coverImage: z.string().nullable(),
   coverImageAlt: z.string().nullable(),
   repoUrl: z.string().nullable(),

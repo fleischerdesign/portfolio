@@ -186,6 +186,7 @@ export const projects = sqliteTable('projects', {
   status: text('status', { enum: ['draft', 'published', 'archived'] }).default('draft').notNull(),
   publishedAt: integer('published_at', { mode: 'timestamp' }),
 
+  icon: text('icon'),
   coverImage: text('cover_image'),
   coverImageAlt: text('cover_image_alt'),
   
