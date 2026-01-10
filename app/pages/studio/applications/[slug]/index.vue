@@ -4,7 +4,7 @@ import type { CompanyResponse } from '#shared/schemas/company.schema';
 
 
 const { getStatusChipClasses, getStatusTextClasses, getApplicationDate, getResponseDate, getLastActivityDate, getFormattedApplicationDate, getFormattedResponseDate, getFormattedLastActivityDate, getDisplayDate } = useApplicationUtils();
-const { renderMarkdown } = useMarkdown(); 
+const { render } = useMarkdown(); 
 const { getSalutation } = useSalutation();
 
 definePageMeta({
@@ -364,7 +364,7 @@ onMounted(() => {
                         {{ salutation }},
                     </p>
 
-                    <div v-if="!isEditing" class="prose prose-lg prose-neutral max-w-none dark:prose-invert" v-html="renderMarkdown(application.body || '')"></div>
+                    <div v-if="!isEditing" class="prose prose-lg prose-neutral max-w-none dark:prose-invert" v-html="render(application.body || '')"></div>
                     <div v-else-if="editableApplication" class="space-y-8">
                         <div class="flex items-center justify-between rounded-2xl bg-secondary-50/50 dark:bg-secondary-900/10 p-3 px-6 border border-secondary-100/50 dark:border-secondary-500/10">
                             <div class="flex items-center gap-8">
@@ -435,7 +435,7 @@ onMounted(() => {
                     
                     <div v-if="!isEditing" class="prose prose-neutral max-w-none dark:prose-invert" >
                         <ul class="list-disc space-y-3 pl-5">
-                            <li v-for="(note, index) in application.notes" :key="index" class="text-neutral-600 dark:text-neutral-400" v-html="renderMarkdown(note)"></li>
+                            <li v-for="(note, index) in application.notes" :key="index" class="text-neutral-600 dark:text-neutral-400" v-html="render(note)"></li>
                         </ul>
                     </div>
                     <div v-else class="space-y-4">

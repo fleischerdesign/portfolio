@@ -4,7 +4,8 @@ import { ref, computed } from 'vue';
 
 definePageMeta({
   middleware: 'authorize',
-  ability: isAdmin
+  ability: isAdmin,
+  layout: 'default'
 });
 
 const { locale, t } = useI18n();
@@ -12,7 +13,6 @@ const { data, refresh } = await useFetch('/api/studio/blog');
 
 const posts = computed(() => data.value?.posts || []);
 
-// Filter & Search
 const searchTerm = ref('');
 const statusFilter = ref('all');
 
@@ -22,7 +22,6 @@ const filteredPosts = computed(() => {
   if (searchTerm.value) {
     const term = searchTerm.value.toLowerCase();
     result = result.filter(post => {
-      // Search in all translations
       return post.translations.some(trans => 
         trans.title.toLowerCase().includes(term) || 
         trans.slug.toLowerCase().includes(term)
@@ -44,11 +43,13 @@ function getTitle(post: any) {
   return trans?.title || 'Untitled';
 }
 
-function getSlug(post: any) {
-    // For navigation, we preferably use the ID in studio, but if we need a slug
-    // we use the translationKey or ID.
-    // The detail page will be /studio/blog/[id] to be stable across slug changes.
-    return post.id;
+function getStatusColor(status: string) {
+    switch(status) {
+        case 'published': return 'bg-emerald-500 text-white shadow-emerald-500/30';
+        case 'draft': return 'bg-amber-500 text-white shadow-amber-500/30';
+        case 'archived': return 'bg-neutral-500 text-white';
+        default: return 'bg-neutral-500';
+    }
 }
 </script>
 
@@ -57,8 +58,8 @@ function getSlug(post: any) {
     <div class="mb-24 space-y-8">
       <UiSectionHeader :level="1" symbol="mage:edit" :title="$t('navigation.blog_editor')" subtitle="Manage and write articles." />
 
-      <UiCard class="mt-8">
-        <UiCardContainer class="flex flex-col gap-4 md:flex-row md:items-end">
+      <UiCard class="mt-8 border-secondary-500/10 shadow-xl shadow-secondary-500/5">
+        <UiCardContainer class="flex flex-col gap-4 md:flex-row md:items-end p-6">
           <UiInput id="search-posts" v-model="searchTerm" placeholder="Search posts..." label="Search" class="w-full md:flex-grow" />
           <div class="flex flex-col gap-4 md:flex-shrink-0 md:flex-row md:items-end">
             <UiSelect id="filter-status" v-model="statusFilter" :options="['all', 'published', 'draft', 'archived']" label="Status" class="w-full md:w-48">
@@ -79,44 +80,48 @@ function getSlug(post: any) {
         </UiCardContainer>
       </UiCard>
 
-      <div class="grid grid-cols-1 gap-4">
-        <UiCard v-for="post in filteredPosts" :key="post.id" hover class="group transition-all">
-            <NuxtLink :to="$localePath(`/studio/blog/${post.id}`)">
-                <UiCardContainer class="flex items-center justify-between p-6">
-                    <div class="flex items-center gap-4">
-                        <!-- Status Indicator -->
-                        <div class="h-3 w-3 rounded-full" :class="{
-                            'bg-emerald-500': post.status === 'published',
-                            'bg-amber-500': post.status === 'draft',
-                            'bg-neutral-400': post.status === 'archived'
-                        }"></div>
-                        
-                        <div>
-                            <h3 class="font-bold text-lg text-neutral-900 dark:text-white group-hover:text-secondary-600 transition-colors">
-                                {{ getTitle(post) }}
-                            </h3>
-                            <div class="flex items-center gap-2 mt-1 text-xs text-neutral-500">
-                                <span>Key: {{ post.translationKey }}</span>
-                                <span>•</span>
-                                <span>{{ formatDate(post.createdAt) }}</span>
-                            </div>
-                        </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <UiCard v-for="post in filteredPosts" :key="post.id" interactive class="group flex flex-col h-full hover:border-secondary-500/30 hover:shadow-lg transition-all duration-300">
+            <NuxtLink :to="$localePath(`/studio/blog/${post.id}`)" class="flex flex-col h-full">
+                <div v-if="post.coverImage" class="relative h-48 w-full overflow-hidden border-b border-neutral-100 dark:border-neutral-800">
+                    <NuxtImg :src="post.coverImage" class="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+                        <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider backdrop-blur-md shadow-sm" :class="getStatusColor(post.status)">
+                            {{ post.status }}
+                        </span>
+                    </div>
+                </div>
+                <div v-else class="h-2 bg-gradient-to-r from-secondary-500 to-emerald-400"></div>
+
+                <UiCardContainer class="flex-1 flex flex-col p-6">
+                    <div v-if="!post.coverImage" class="mb-4">
+                        <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider shadow-sm" :class="getStatusColor(post.status)">
+                            {{ post.status }}
+                        </span>
                     </div>
 
-                    <div class="flex items-center gap-2">
-                        <!-- Language Badges -->
-                        <span v-for="trans in post.translations" :key="trans.locale" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-neutral-200 bg-neutral-50 text-neutral-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400">
-                            {{ trans.locale }}
-                        </span>
-                        <Icon name="heroicons:chevron-right" class="ml-4 text-neutral-400 group-hover:text-secondary-500" />
+                    <h3 class="font-bold text-xl text-neutral-900 dark:text-white group-hover:text-secondary-600 transition-colors line-clamp-2 mb-2">
+                        {{ getTitle(post) }}
+                    </h3>
+                    
+                    <div class="mt-auto pt-4 flex items-center justify-between border-t border-neutral-100 dark:border-neutral-800 text-xs text-neutral-500">
+                        <span>{{ formatDate(post.createdAt) }}</span>
+                        
+                        <div class="flex gap-1">
+                            <span v-for="trans in post.translations" :key="trans.locale" class="px-1.5 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 font-mono text-[10px] uppercase">
+                                {{ trans.locale }}
+                            </span>
+                        </div>
                     </div>
                 </UiCardContainer>
             </NuxtLink>
         </UiCard>
       </div>
       
-      <div v-if="filteredPosts.length === 0" class="text-center text-neutral-500 py-12">
-          No posts found.
+      <div v-if="filteredPosts.length === 0" class="text-center text-neutral-500 py-12 flex flex-col items-center">
+          <Icon name="heroicons:document-text" class="h-12 w-12 opacity-20 mb-4" />
+          <p>No posts found matching your criteria.</p>
       </div>
 
     </div>

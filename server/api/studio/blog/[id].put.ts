@@ -1,4 +1,3 @@
-
 import { blogPosts, blogPostTranslations, categories, tags, blogPostsToTags } from '~~/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { blogPostUpdateSchema, type BlogPostUpdate } from '~~/shared/schemas/blog.schema';
@@ -22,7 +21,6 @@ export default defineEventHandler(async (event) => {
   const data: BlogPostUpdate = validation.data;
 
   const result = await db.transaction(async (tx) => {
-    // 1. Category
     let categoryId = data.categoryId;
     if (!categoryId && data.categoryName) {
       const slug = data.categoryName.toLowerCase().replace(/\s+/g, '-');
@@ -36,21 +34,18 @@ export default defineEventHandler(async (event) => {
     }
 
     const { 
-      categoryName, tags: tagNames, // Relations
-      locale, slug, title, excerpt, body: contentBody, readingTime, // Translation
-      translationKey, // ID
-      ...entityData // status, publishedAt, coverImage...
+      categoryName, tags: tagNames,
+      locale, slug, title, excerpt, body: contentBody, readingTime,
+      translationKey,
+      ...entityData
     } = data;
 
-    // 2. Update Entity
     await tx.update(blogPosts).set({
       ...entityData,
-      // Only update publishedAt if explicitly provided (or set to null)
       publishedAt: entityData.publishedAt ? new Date(entityData.publishedAt) : undefined,
       categoryId: categoryId,
     }).where(eq(blogPosts.id, id));
 
-    // 3. Update/Create Translation
     if (locale && slug && title && contentBody) {
         await tx.insert(blogPostTranslations).values({
         blogPostId: id,
@@ -73,7 +68,6 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    // 4. Sync Tags
     if (tagNames) {
       await tx.delete(blogPostsToTags).where(eq(blogPostsToTags.blogPostId, id));
       

@@ -1,16 +1,12 @@
+import type { BlogPostUpdate } from '~~/shared/schemas/blog.schema';
 
-import type { BlogPostDetailResponse, BlogPostUpdate } from '~~/shared/schemas/blog.schema';
-
-export const useBlogEditor = (postId: number, initialData: Ref<any>) => {
+export function useBlogEditor(postId: number, initialData: Ref<any>, refreshPost: () => Promise<void>) {
   const { showToast } = useToast();
-  const router = useRouter();
-  const localePath = useLocalePath();
-  
   const isLoading = ref(false);
+  const isEditing = ref(false);
   const currentLocale = ref<'de' | 'en'>('de');
 
-  // Internal state to hold data for ALL languages
-  const state = ref<{
+  const editablePost = ref<{
     common: {
       status: 'draft' | 'published' | 'archived';
       publishedAt: string | null;
@@ -20,68 +16,79 @@ export const useBlogEditor = (postId: number, initialData: Ref<any>) => {
       tags: string[];
       translationKey: string;
     };
-    de: { title: string; subtitle: string; body: string; slug: string; excerpt: string };
-    en: { title: string; subtitle: string; body: string; slug: string; excerpt: string };
-  }>({
-    common: {
-      status: 'draft',
-      publishedAt: null,
-      coverImage: null,
-      coverImageAlt: null,
-      categoryName: null,
-      tags: [],
-      translationKey: ''
-    },
-    de: { title: '', subtitle: '', body: '', slug: '', excerpt: '' },
-    en: { title: '', subtitle: '', body: '', slug: '', excerpt: '' }
-  });
+    de: { title: string; body: string; slug: string; excerpt: string };
+    en: { title: string; body: string; slug: string; excerpt: string };
+  } | null>(null);
 
-  // Initialize state from API data
-  watch(initialData, (data) => {
-    if (!data?.post) return;
+  function parseData(data: any) {
+    if (!data?.post) return null;
     const p = data.post;
 
-    state.value.common = {
-      status: p.status,
-      publishedAt: p.publishedAt ? new Date(p.publishedAt).toISOString().slice(0, 16) : null,
-      coverImage: p.coverImage,
-      coverImageAlt: p.coverImageAlt,
-      categoryName: p.category?.name || null,
-      tags: p.tags.map((t: any) => t.name),
-      translationKey: p.translationKey
+    const newState = {
+      common: {
+        status: p.status,
+        publishedAt: p.publishedAt ? new Date(p.publishedAt).toISOString().slice(0, 16) : null,
+        coverImage: p.coverImage,
+        coverImageAlt: p.coverImageAlt,
+        categoryName: p.category?.name || null,
+        tags: p.tags.map((t: any) => t.name || t.tag?.name || '').filter((t: string) => t !== ''),
+        translationKey: p.translationKey
+      },
+      de: { title: '', body: '', slug: '', excerpt: '' },
+      en: { title: '', body: '', slug: '', excerpt: '' }
     };
 
-    // Map translations
     p.translations.forEach((t: any) => {
       if (t.locale === 'de' || t.locale === 'en') {
-        state.value[t.locale as 'de' | 'en'] = {
+        newState[t.locale as 'de' | 'en'] = {
           title: t.title,
-          subtitle: '', // Blog has no subtitle in schema, but maybe we want it? using excerpt instead
           excerpt: t.excerpt || '',
           body: t.body,
           slug: t.slug
         };
       }
     });
-  }, { immediate: true });
+    
+    return newState;
+  }
 
-  const activeTranslation = computed(() => state.value[currentLocale.value]);
+  function startEditing() {
+    if (!initialData.value) return;
+    editablePost.value = parseData(toRaw(initialData.value));
+    isEditing.value = true;
+  }
+
+  function cancelEditing() {
+    isEditing.value = false;
+    editablePost.value = null;
+  }
 
   async function save() {
+    if (!editablePost.value) return;
     isLoading.value = true;
     try {
-      // Construct payload for the CURRENT language tab (or we could save all?)
-      // Our API expects one locale at a time for the translation part.
-      // Strategy: Save the currently active locale translation AND the common data.
+      const activeTranslation = editablePost.value[currentLocale.value];
       
+      let pubDate = undefined;
+      if (editablePost.value.common.publishedAt) {
+          const dateVal = new Date(editablePost.value.common.publishedAt);
+          if (!isNaN(dateVal.getTime())) {
+              pubDate = dateVal.toISOString();
+          }
+      }
+
       const payload: BlogPostUpdate = {
-        ...state.value.common,
-        // Translation data for current locale
+        ...editablePost.value.common,
+        coverImage: editablePost.value.common.coverImage || null,
+        coverImageAlt: editablePost.value.common.coverImageAlt || null,
+        categoryName: editablePost.value.common.categoryName || null,
+        publishedAt: pubDate,
+
         locale: currentLocale.value,
-        title: activeTranslation.value.title,
-        excerpt: activeTranslation.value.excerpt,
-        body: activeTranslation.value.body,
-        slug: activeTranslation.value.slug,
+        title: activeTranslation.title,
+        excerpt: activeTranslation.excerpt || null,
+        body: activeTranslation.body,
+        slug: activeTranslation.slug,
       };
 
       await $fetch(`/api/studio/blog/${postId}`, {
@@ -89,6 +96,8 @@ export const useBlogEditor = (postId: number, initialData: Ref<any>) => {
         body: payload
       });
 
+      await refreshPost();
+      isEditing.value = false;
       showToast('Post saved successfully', { type: 'success' });
     } catch (error) {
       console.error(error);
@@ -99,10 +108,12 @@ export const useBlogEditor = (postId: number, initialData: Ref<any>) => {
   }
 
   return {
-    state,
+    isEditing,
+    isLoading,
     currentLocale,
-    activeTranslation,
-    save,
-    isLoading
+    editablePost,
+    startEditing,
+    cancelEditing,
+    save
   };
-};
+}

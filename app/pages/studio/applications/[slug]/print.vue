@@ -35,7 +35,7 @@ const courses = coursesData;
 const softSkills = softSkillsData(t);
 const techStack = techStackData;
 
-const { renderMarkdown } = useMarkdown();
+const { render } = useMarkdown();
 const { getDisplayDate } = useApplicationUtils();
 
 const printDate = computed(() => {
@@ -197,7 +197,7 @@ const projects = computed(() => projectsData.value?.projects || []);
                </p>
                
                <!-- eslint-disable-next-line vue/no-v-html -->
-               <div v-if="application" class="prose prose-neutral max-w-none prose-p:leading-relaxed prose-li:marker:text-secondary-500" v-html="renderMarkdown(application.body || '')" />
+               <div v-if="application" class="prose prose-neutral max-w-none prose-p:leading-relaxed prose-li:marker:text-secondary-500" v-html="render(application.body || '')" />
                
                <div class="mt-16">
                   <p class="mb-6 font-medium">Mit freundlichen Grüßen,</p>

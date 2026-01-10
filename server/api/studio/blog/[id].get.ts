@@ -20,5 +20,10 @@ export default defineEventHandler(async (event) => {
 
   if (!post) throw createError({ statusCode: 404, statusMessage: 'Post not found' });
 
-  return { post };
+  const mappedPost = {
+    ...post,
+    tags: post.tags.map(t => t.tag)
+  };
+
+  return { post: mappedPost };
 });
