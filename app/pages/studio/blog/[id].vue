@@ -50,29 +50,6 @@ function getStatusColor(status: string) {
     <div class="mb-12 flex flex-col gap-8">
         <div class="flex items-center justify-between">
             <UiBackButton :to="$localePath('/studio/blog')" />
-            
-            <div class="flex items-center gap-4">
-                <div class="flex bg-neutral-100 dark:bg-neutral-900 rounded-lg p-1">
-                    <button 
-                        v-for="lang in ['de', 'en']" 
-                        :key="lang"
-                        @click="currentLocale = lang"
-                        class="px-3 py-1 text-xs font-bold uppercase rounded-md transition-all"
-                        :class="currentLocale === lang ? 'bg-white dark:bg-neutral-800 shadow-sm text-secondary-600' : 'text-neutral-500 hover:text-neutral-900'"
-                    >
-                        {{ lang }}
-                    </button>
-                </div>
-
-                <UiButton v-if="!isEditing" variant="secondary" @click="startEditing">
-                    <Icon name="heroicons:pencil-square" class="mr-2" /> Edit
-                </UiButton>
-                
-                <template v-else>
-                    <UiButton variant="ghost" @click="cancelEditing">Cancel</UiButton>
-                    <UiButton :is-loading="isLoading" @click="save">Save Changes</UiButton>
-                </template>
-            </div>
         </div>
 
         <UiSectionHeader 
@@ -133,14 +110,6 @@ function getStatusColor(status: string) {
                         {{ viewTranslation?.readingTime || 0 }} min read
                     </p>
                 </div>
-            </div>
-
-            <div v-if="post.status === 'published' && viewTranslation" class="w-full lg:w-auto lg:ml-auto border-t border-neutral-100 pt-6 lg:border-t-0 lg:pt-0 dark:border-neutral-800">
-                <a :href="`/${currentLocale}/blog/${viewTranslation.slug}`" target="_blank" rel="noopener noreferrer" class="block w-full">
-                    <UiButton variant="glass" class="w-full">
-                        <Icon name="heroicons:arrow-top-right-on-square" class="mr-2" /> View Live
-                    </UiButton>
-                </a>
             </div>
         </UiCardContainer>
     </UiCard>
