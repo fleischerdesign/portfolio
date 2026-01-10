@@ -186,7 +186,12 @@
     "projects": "Projects",
     "store": "Store",
     "resume": "Resume",
-    "legal": "Legal"
+    "legal": "Legal",
+    "studio": "Studio",
+    "dashboard": "Dashboard",
+    "applications": "Applications",
+    "blog_editor": "Blog Editor",
+    "project_editor": "Project Editor"
   },
   "error": {
     "404": {

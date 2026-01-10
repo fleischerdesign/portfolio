@@ -186,7 +186,12 @@
     "projects": "Projekte",
     "store": "Store",
     "resume": "Lebenslauf",
-    "legal": "Impressum"
+    "legal": "Impressum",
+    "studio": "Studio",
+    "dashboard": "Dashboard",
+    "applications": "Bewerbungen",
+    "blog_editor": "Blog Editor",
+    "project_editor": "Projekt Editor"
   },
   "error": {
     "404": {

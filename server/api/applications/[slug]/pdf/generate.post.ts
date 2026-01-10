@@ -25,8 +25,7 @@ export default defineEventHandler(async (event) => {
   const host = getRequestHost(event);
   const protocol = getRequestProtocol(event);
   const apiBaseUrl = `${protocol}://${host}`;
-  const pageUrl = `${apiBaseUrl}/de/application/${slug}/print`;
-
+      const pageUrl = `${apiBaseUrl}/de/studio/applications/${slug}/print`;
   const cookies = getRequestHeader(event, 'cookie');
   if (cookies) {
     await page.setExtraHTTPHeaders({ cookie: cookies });

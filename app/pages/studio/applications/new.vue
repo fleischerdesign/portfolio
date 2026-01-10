@@ -100,10 +100,10 @@ async function createApplication() {
     
     const newSlug = result?.result?.slug;
     if (newSlug) {
-      router.push(localePath(`/application/${newSlug}`));
+      router.push(localePath(`/studio/applications/${newSlug}`));
     } else {
       showToast('Bewerbung erstellt, aber Weiterleitung fehlgeschlagen.', { type: 'warning' });
-      router.push(localePath('/application'));
+      router.push(localePath('/studio/applications'));
     }
   } catch (error) {
     console.error('Failed to create application', error);
@@ -232,7 +232,7 @@ function handleCancelContactForm() {
             <UiButton class="w-full" :is-loading="isLoading" @click="createApplication">
               {{ $t('applications.new.save_create') }}
             </UiButton>
-            <NuxtLink :to="$localePath('/application')">
+            <NuxtLink :to="$localePath('/studio/applications')">
               <UiButton class="w-full" variant="secondary">
                 {{ $t('applications.detail.actions.cancel') }}
               </UiButton>

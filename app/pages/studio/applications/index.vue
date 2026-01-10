@@ -85,7 +85,7 @@ useSeoMeta({
                 <span v-else>{{ $t(`applications.status.${option}`) }}</span>
               </template>
             </UiSelect>
-            <NuxtLink :to="$localePath('/application/new')" class="w-full md:w-auto">
+            <NuxtLink :to="$localePath('/studio/applications/new')" class="w-full md:w-auto">
               <UiButton variant="secondary" class="w-full justify-center">
                 <Icon name="heroicons:plus" class="mr-2 h-5 w-5" />
                 {{ $t('applications.index.new_application') }}

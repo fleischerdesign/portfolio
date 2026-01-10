@@ -28,8 +28,7 @@ const handleClickOutside = (event: MouseEvent) => {
 
 async function shareApplication() {
   const url = new URL(window.location.origin);
-  url.pathname = localePath({ path: `/application/${props.application.slug}` });
-  const shareData = {
+          url.pathname = localePath({ path: `/studio/applications/${props.application.slug}` });  const shareData = {
     title: t('applications.card.share_title', { title: props.application.title }),
     text: t('applications.card.share_text', { title: props.application.title, company: props.application.company.name }),
     url: url.toString(),
@@ -86,8 +85,7 @@ onUnmounted(() => {
 
 <template>
   <div>
-    <NuxtLink :to="$localePath(`/application/${application.slug}`)" class="group relative">
-      <UiCard interactive class="h-full">
+            <NuxtLink :to="$localePath(`/studio/applications/${application.slug}`)" class="group relative">      <UiCard interactive class="h-full">
         <UiCardContainer class="h-full flex-col">
           <uiButton
             class="absolute right-4 z-20 h-9 w-9 rounded-md !p-1 text-neutral-500 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700"
@@ -112,8 +110,7 @@ onUnmounted(() => {
             >
               <ul class="flex flex-col gap-1">
                 <li>
-                  <NuxtLink :to="$localePath({ path: `/application/${application.slug}`, query: { edit: 'true' } })" class="flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm font-medium hover:bg-secondary-50 hover:text-secondary-700 dark:hover:bg-secondary-900/20 dark:hover:text-secondary-400 transition-colors">
-                    <Icon name="mdi:pencil" class="h-4 w-4" />
+                                                  <NuxtLink :to="$localePath({ path: `/studio/applications/${application.slug}`, query: { edit: 'true' } })" class="flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm font-medium hover:bg-secondary-50 hover:text-secondary-700 dark:hover:bg-secondary-900/20 dark:hover:text-secondary-400 transition-colors">                    <Icon name="mdi:pencil" class="h-4 w-4" />
                     <span>{{ $t('applications.card.edit') }}</span>
                   </NuxtLink>
                 </li>

@@ -26,6 +26,16 @@
                     </ClientOnly>
                 </button>
 
+                <!-- Studio Toggle Button (Mobile) -->
+                <NuxtLink
+                    v-if="user?.role === 'admin'"
+                    :to="inStudio ? '/' : '/studio'"
+                    class="group relative flex h-11 w-11 items-center justify-center rounded-xl border border-neutral-200/50 bg-white/70 shadow-lg backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-neutral-800/50 dark:bg-neutral-900/70 dark:hover:bg-secondary-900/20"
+                    :aria-label="inStudio ? 'Exit Studio' : 'Enter Studio'"
+                >
+                    <Icon :name="inStudio ? 'mage:multiply' : 'mage:dashboard'" size="24" class="text-neutral-500 transition-colors group-hover:text-secondary-600 dark:text-neutral-400 dark:group-hover:text-secondary-400" />
+                </NuxtLink>
+
                 <!-- Navigation Bar -->
                 <nav class="flex items-center gap-1 rounded-2xl border border-neutral-200/50 bg-white/70 p-1.5 shadow-xl backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-900/70">
                     <NuxtLink 
@@ -96,6 +106,16 @@
                     </NuxtLink>
                 </nav>
 
+                <!-- Studio Toggle Button (Desktop) -->
+                <NuxtLink
+                    v-if="user?.role === 'admin'"
+                    :to="inStudio ? '/' : '/studio'"
+                    class="group relative flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-200/50 bg-white/70 shadow-xl backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-neutral-800/50 dark:bg-neutral-900/70 dark:hover:bg-secondary-900/20"
+                    :aria-label="inStudio ? 'Exit Studio' : 'Enter Studio'"
+                >
+                    <Icon :name="inStudio ? 'mage:multiply' : 'mage:dashboard'" size="24" class="text-neutral-500 transition-colors group-hover:text-secondary-600 dark:text-neutral-400 dark:group-hover:text-secondary-400" />
+                </NuxtLink>
+
                 <!-- Theme Toggle Button (Mirrors Mobile Style) -->
                 <button
                     class="group relative flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-200/50 bg-white/70 shadow-xl backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-neutral-800/50 dark:bg-neutral-900/70 dark:hover:bg-secondary-900/20"
@@ -125,15 +145,31 @@
 
 <script setup lang="ts">
 const colorMode = useColorMode()
+const { user } = useUserSession()
+const route = useRoute()
+
+const inStudio = computed(() => route.path.startsWith('/studio') || route.path.startsWith('/en/studio') || route.path.startsWith('/de/studio'))
+
 const $toggleDarkMode = () => {
     colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
 
-const navLinks = [
-    { path: '/', icon: 'mage:home', activeIcon: 'mage:home-fill', label: 'home' },
-    { path: '/about', icon: 'mage:user-square', activeIcon: 'mage:user-square-fill', label: 'about' },
-    { path: '/blog', icon: 'mage:note', activeIcon: 'mage:note-fill', label: 'blog' },
-    { path: '/projects', icon: 'mage:briefcase', activeIcon: 'mage:briefcase-fill', label: 'projects' },
-    { path: '/store', icon: 'mage:shop', activeIcon: 'mage:shop-fill', label: 'store' },
-]
+const navLinks = computed(() => {
+    if (inStudio.value) {
+        return [
+            { path: '/studio', icon: 'mage:dashboard', activeIcon: 'mage:dashboard-fill', label: 'studio' },
+            { path: '/studio/applications', icon: 'mage:users', activeIcon: 'mage:users-fill', label: 'applications' },
+            { path: '/studio/blog', icon: 'mage:edit', activeIcon: 'mage:edit-fill', label: 'blog' },
+            { path: '/studio/projects', icon: 'mage:folder', activeIcon: 'mage:folder-fill', label: 'projects' },
+        ]
+    }
+    
+    return [
+        { path: '/', icon: 'mage:home', activeIcon: 'mage:home-fill', label: 'home' },
+        { path: '/about', icon: 'mage:user-square', activeIcon: 'mage:user-square-fill', label: 'about' },
+        { path: '/blog', icon: 'mage:note', activeIcon: 'mage:note-fill', label: 'blog' },
+        { path: '/projects', icon: 'mage:briefcase', activeIcon: 'mage:briefcase-fill', label: 'projects' },
+        { path: '/store', icon: 'mage:shop', activeIcon: 'mage:shop-fill', label: 'store' },
+    ]
+})
 </script>

@@ -117,7 +117,7 @@ const notesAsText = computed({
   },
 });
 
-const printUrl = computed(() => `/application/${route.params.slug}/print`);
+const printUrl = computed(() => `/studio/applications/${route.params.slug}/print`);
 
 const showCompanyAddressModal = ref(false);
 

@@ -56,12 +56,10 @@ const formattedContactNames = computed(() => {
   return application.value.contacts.map(c => formatName(c, 'full')).join(', ');
 });
 
-const { data: projects } = await useAsyncData(`projects-resume-${locale.value}`, () =>
-  queryCollection('projects')
-    .where('locale', '=', locale.value)
-    .select('title', 'subtitle', 'slug', 'image', 'icon')
-    .all()
-);
+const { data: projectsData } = await useFetch('/api/projects', {
+  query: { locale: locale.value }
+});
+const projects = computed(() => projectsData.value?.projects || []);
 </script>
 
 <template>
