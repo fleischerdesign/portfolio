@@ -1,6 +1,6 @@
-import { blogPosts, blogPostTranslations } from '~~/server/db/schema';
+import { blogPosts, blogPostTranslations, categories, tags, blogPostsToTags } from '~~/server/db/schema';
 import { desc, eq, and } from 'drizzle-orm';
-import { BlogPostResponse, BlogPostDetailResponse } from '~~/shared/schemas/blog.schema';
+import { BlogPostResponse, BlogPostDetailResponse, BlogPostUpdate, BlogPostCreate } from '~~/shared/schemas/blog.schema';
 
 export const blogService = {
   // Public Methods
@@ -107,5 +107,148 @@ export const blogService = {
       ...post,
       tags: post.tags.map(t => t.tag)
     };
+  },
+
+  async create(data: BlogPostCreate, authorId?: number) {
+    return await db.transaction(async (tx) => {
+      let categoryId = data.categoryId;
+      if (!categoryId && data.categoryName) {
+        const slug = data.categoryName.toLowerCase().replace(/\s+/g, '-');
+        const existing = await tx.query.categories.findFirst({ where: eq(categories.slug, slug) });
+        if (existing) {
+          categoryId = existing.id;
+        } else {
+          const [inserted] = await tx.insert(categories).values({ name: data.categoryName, slug }).returning();
+          categoryId = inserted.id;
+        }
+      }
+  
+      const { 
+        categoryName, tags: tagNames,
+        locale, slug, title, excerpt, body: contentBody, readingTime,
+        translationKey,
+        ...entityData
+      } = data;
+  
+      let post = await tx.query.blogPosts.findFirst({ 
+        where: eq(blogPosts.translationKey, translationKey) 
+      });
+  
+      if (!post) {
+        [post] = await tx.insert(blogPosts).values({
+          translationKey,
+          ...entityData,
+          publishedAt: entityData.publishedAt ? new Date(entityData.publishedAt) : null,
+          categoryId,
+          authorId
+        }).returning();
+      } else {
+        await tx.update(blogPosts).set({
+          ...entityData,
+          publishedAt: entityData.publishedAt ? new Date(entityData.publishedAt) : post.publishedAt,
+          categoryId: categoryId || post.categoryId,
+        }).where(eq(blogPosts.id, post.id));
+      }
+  
+      await tx.insert(blogPostTranslations).values({
+        blogPostId: post.id,
+        locale,
+        slug,
+        title,
+        excerpt,
+        body: contentBody,
+        readingTime
+      }).onConflictDoUpdate({
+        target: [blogPostTranslations.blogPostId, blogPostTranslations.locale],
+        set: {
+          slug,
+          title,
+          excerpt,
+          body: contentBody,
+          readingTime,
+          updatedAt: new Date()
+        }
+      });
+  
+      if (tagNames) {
+        await tx.delete(blogPostsToTags).where(eq(blogPostsToTags.blogPostId, post.id));
+        for (const tagName of tagNames) {
+          const tagSlug = tagName.toLowerCase().replace(/\s+/g, '-');
+          let tag = await tx.query.tags.findFirst({ where: eq(tags.slug, tagSlug) });
+          if (!tag) {
+            [tag] = await tx.insert(tags).values({ name: tagName, slug: tagSlug }).returning();
+          }
+          await tx.insert(blogPostsToTags).values({ blogPostId: post.id, tagId: tag.id }).onConflictDoNothing();
+        }
+      }
+  
+      return post;
+    });
+  },
+
+  async update(id: number, data: BlogPostUpdate) {
+    return await db.transaction(async (tx) => {
+      let categoryId = data.categoryId;
+      if (!categoryId && data.categoryName) {
+        const slug = data.categoryName.toLowerCase().replace(/\s+/g, '-');
+        const existing = await tx.query.categories.findFirst({ where: eq(categories.slug, slug) });
+        if (existing) {
+          categoryId = existing.id;
+        } else {
+          const [inserted] = await tx.insert(categories).values({ name: data.categoryName, slug }).returning();
+          categoryId = inserted.id;
+        }
+      }
+  
+      const { 
+        categoryName, tags: tagNames,
+        locale, slug, title, excerpt, body: contentBody, readingTime,
+        translationKey,
+        ...entityData
+      } = data;
+  
+      await tx.update(blogPosts).set({
+        ...entityData,
+        publishedAt: entityData.publishedAt ? new Date(entityData.publishedAt) : undefined,
+        categoryId: categoryId,
+      }).where(eq(blogPosts.id, id));
+  
+      if (locale && slug && title && contentBody) {
+          await tx.insert(blogPostTranslations).values({
+          blogPostId: id,
+          locale: locale!,
+          slug: slug!,
+          title: title!,
+          excerpt,
+          body: contentBody!,
+          readingTime
+          }).onConflictDoUpdate({
+          target: [blogPostTranslations.blogPostId, blogPostTranslations.locale],
+          set: {
+              slug,
+              title,
+              excerpt,
+              body: contentBody,
+              readingTime,
+              updatedAt: new Date()
+          }
+          });
+      }
+  
+      if (tagNames) {
+        await tx.delete(blogPostsToTags).where(eq(blogPostsToTags.blogPostId, id));
+        
+        for (const tagName of tagNames) {
+          const tagSlug = tagName.toLowerCase().replace(/\s+/g, '-');
+          let tag = await tx.query.tags.findFirst({ where: eq(tags.slug, tagSlug) });
+          if (!tag) {
+            [tag] = await tx.insert(tags).values({ name: tagName, slug: tagSlug }).returning();
+          }
+          await tx.insert(blogPostsToTags).values({ blogPostId: id, tagId: tag.id }).onConflictDoNothing();
+        }
+      }
+  
+      return await tx.query.blogPosts.findFirst({ where: eq(blogPosts.id, id) });
+    });
   }
 };

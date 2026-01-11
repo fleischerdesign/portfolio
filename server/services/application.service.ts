@@ -1,7 +1,9 @@
 import { applications, companies, addresses, applicationHistories, contacts, applications_to_contacts } from '~~/server/db/schema';
-import { ApplicationResponsePayload, ApplicationCreatePayload } from '~~/shared/schemas/application.schema';
+import { ApplicationResponsePayload, ApplicationCreatePayload, Status } from '~~/shared/schemas/application.schema';
 import { CompanyResponse } from '~~/shared/schemas/company.schema';
 import { eq, desc, and, inArray } from 'drizzle-orm';
+import fs from 'fs';
+import path from 'path';
 
 export const applicationService = {
   async getAll(limit?: number): Promise<ApplicationResponsePayload[]> {
@@ -77,6 +79,58 @@ export const applicationService = {
       contacts: associatedContacts,
       histories: application.histories,
     } as unknown as ApplicationResponsePayload;
+  },
+
+  async addHistory(slug: string, data: { status: Status; notes?: string; scheduled_at?: string }) {
+    const application = await db.query.applications.findFirst({ where: eq(applications.slug, slug) });
+    if (!application) throw createError({ statusCode: 404, statusMessage: 'Application not found' });
+
+    return await db.insert(applicationHistories).values({
+      applicationId: application.id,
+      status: data.status,
+      notes: data.notes,
+      scheduled_at: data.scheduled_at ? new Date(data.scheduled_at) : null,
+    }).returning();
+  },
+
+  async updateHistory(historyId: number, data: { status?: Status; notes?: string; scheduled_at?: string | null }) {
+    // ...
+  },
+
+  async deleteHistory(historyId: number) {
+    return await db.delete(applicationHistories).where(eq(applicationHistories.id, historyId));
+  },
+
+  async deleteBySlug(slug: string) {
+    const application = await db.query.applications.findFirst({ where: eq(applications.slug, slug) });
+    
+    if (!application) {
+      throw createError({ statusCode: 404, statusMessage: 'Application not found' });
+    }
+
+    const result = await db.transaction(async (tx) => {
+      // Delete related records first
+      await tx.delete(applications_to_contacts).where(eq(applications_to_contacts.applicationId, application.id));
+      await tx.delete(applicationHistories).where(eq(applicationHistories.applicationId, application.id));
+      
+      // Delete the application
+      const [deleted] = await tx.delete(applications).where(eq(applications.id, application.id)).returning();
+      return deleted;
+    });
+
+    // Delete the associated PDF file, if it exists
+    // Ideally, the path should be configurable or retrieved from a config/constant
+    const pdfPath = path.join(process.cwd(), 'data', 'applications', `${slug}.pdf`);
+    if (fs.existsSync(pdfPath)) {
+      try {
+        fs.unlinkSync(pdfPath);
+      } catch (err) {
+        console.error(`Failed to delete PDF for ${slug}:`, err);
+        // We don't throw here to ensure the API response is still successful if the DB delete worked
+      }
+    }
+
+    return result;
   },
 
   async createOrUpdate(data: ApplicationCreatePayload) {

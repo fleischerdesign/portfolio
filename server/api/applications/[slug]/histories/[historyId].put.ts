@@ -1,34 +1,19 @@
-import { eq } from 'drizzle-orm';
-import { applicationHistories } from '~~/server/db/schema';
+import { applicationService } from '~~/server/services/application.service';
 import { applicationHistoryUpdateSchema } from '#shared/schemas/application.schema';
+import { z } from 'zod';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
 
-  const slug = getRouterParam(event, 'slug');
-  const historyId = Number(getRouterParam(event, 'historyId'));
+  const { historyId } = await getValidatedRouterParams(event, z.object({
+    slug: z.string(),
+    historyId: z.coerce.number().int().positive()
+  }).parse);
 
-  if (!slug || !historyId) {
-    throw createError({ statusCode: 400, statusMessage: 'Slug and History ID are required' });
-  }
-
-  const body = await readValidatedBody(event, (body) => applicationHistoryUpdateSchema.safeParse(body));
-  if (!body.success) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Invalid request body',
-      data: body.error.flatten(),
-    });
-  }
-
-  const updateData = body.data;
+  const data = await readValidatedBody(event, applicationHistoryUpdateSchema.parse);
 
   try {
-    // We could also check if the historyId belongs to the application with the given slug, but for now we'll trust the input
-    const [updatedHistory] = await db.update(applicationHistories)
-      .set(updateData)
-      .where(eq(applicationHistories.id, historyId))
-      .returning();
+    const [updatedHistory] = await applicationService.updateHistory(historyId, data);
 
     if (!updatedHistory) {
       throw createError({ statusCode: 404, statusMessage: 'History entry not found' });

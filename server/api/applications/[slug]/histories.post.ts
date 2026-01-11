@@ -1,48 +1,18 @@
-import { db } from '~~/server/utils/db';
-import { applicationHistories, applications } from '~~/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { applicationService } from '~~/server/services/application.service';
 import { applicationHistoryCreateSchema } from '~~/shared/schemas/application.schema';
+import { z } from 'zod';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
 
-  const slug = getRouterParam(event, 'slug');
-  if (!slug) {
-    throw createError({ statusCode: 400, statusMessage: 'Slug is required' });
-  }
+  const { slug } = await getValidatedRouterParams(event, z.object({
+    slug: z.string()
+  }).parse);
 
-  const body = await readValidatedBody(event, (body) => applicationHistoryCreateSchema.safeParse(body));
-  if (!body.success) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Invalid request body',
-      data: body.error.flatten(),
-    });
-  }
-
-  const application = await db.query.applications.findFirst({
-    where: eq(applications.slug, slug),
-    columns: {
-      id: true,
-    },
-  });
-
-  if (!application) {
-    throw createError({ statusCode: 404, statusMessage: 'Application not found' });
-  }
-
-  const { status, notes, createdAt, scheduled_at } = body.data;
+  const data = await readValidatedBody(event, applicationHistoryCreateSchema.parse);
 
   try {
-    const [newHistory] = await db.insert(applicationHistories).values({
-      applicationId: application.id,
-      status,
-      notes,
-      ...(scheduled_at && { scheduled_at: new Date(scheduled_at) }),
-      ...(createdAt && { createdAt: new Date(createdAt) }),
-    }).returning();
-
-    return newHistory;
+    return await applicationService.addHistory(slug, data);
   } catch (error) {
     console.error('Error adding application history:', error);
     throw createError({ statusCode: 500, statusMessage: 'Could not add application history' });

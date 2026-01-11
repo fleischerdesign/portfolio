@@ -1,13 +1,11 @@
 import nodemailer from 'nodemailer'
-import { z } from 'zod'
 import { ContactFormSchema } from '~~/shared/schemas/contactForm.schema'
 
 export default defineEventHandler(async (event) => {
     try {
-        const body = await readBody(event)
+        const { name, email, subject, message } = await readValidatedBody(event, ContactFormSchema.parse)
+        
         const { smtp, contact } = useRuntimeConfig()
-
-        const { name, email, subject, message } = ContactFormSchema.parse(body)
 
         const transporter = nodemailer.createTransport({
             host: smtp.host,
@@ -52,14 +50,6 @@ ${message}
         }
     }
     catch (error) {
-        if (error instanceof z.ZodError) {
-            throw createError({
-                statusCode: 400,
-                statusMessage: 'Validierungsfehler',
-                data: error.errors,
-            })
-        }
-
         console.error('Email sending error:', error)
 
         throw createError({

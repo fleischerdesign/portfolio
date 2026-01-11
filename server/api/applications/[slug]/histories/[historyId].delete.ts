@@ -1,20 +1,16 @@
-import { eq } from 'drizzle-orm';
-import { db } from '~~/server/utils/db';
-import { applicationHistories } from '~~/server/db/schema';
+import { applicationService } from '~~/server/services/application.service';
+import { z } from 'zod';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
 
-  const historyId = Number(getRouterParam(event, 'historyId'));
-
-  if (!historyId) {
-    throw createError({ statusCode: 400, statusMessage: 'History ID is required' });
-  }
+  const { historyId } = await getValidatedRouterParams(event, z.object({
+    slug: z.string(),
+    historyId: z.coerce.number().int().positive()
+  }).parse);
 
   try {
-    const [deletedHistory] = await db.delete(applicationHistories)
-      .where(eq(applicationHistories.id, historyId))
-      .returning();
+    const [deletedHistory] = await applicationService.deleteHistory(historyId);
 
     if (!deletedHistory) {
       throw createError({ statusCode: 404, statusMessage: 'History entry not found' });

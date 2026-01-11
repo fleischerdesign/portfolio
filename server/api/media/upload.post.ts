@@ -1,7 +1,6 @@
 
-import { writeFile, mkdir } from 'node:fs/promises';
-import { join, resolve, extname } from 'node:path';
 import { defineEventHandler, readMultipartFormData, createError } from 'h3';
+import { mediaService } from '~~/server/services/media.service';
 
 export default defineEventHandler(async (event) => {
   // Only admins can upload
@@ -26,24 +25,6 @@ export default defineEventHandler(async (event) => {
 
   // Determine subfolder (default to images)
   const type = getQuery(event).type as string || 'images';
-  const baseDir = resolve(process.cwd(), '.data/uploads', type);
   
-  // Ensure directory exists
-  await mkdir(baseDir, { recursive: true });
-
-  // Generate unique filename
-  const timestamp = Date.now();
-  const originalName = file.filename || 'upload.bin';
-  const cleanName = originalName.replace(/[^a-zA-Z0-9.]/g, '_');
-  const filename = `${timestamp}-${cleanName}`;
-  const filePath = join(baseDir, filename);
-
-  // Save the file
-  await writeFile(filePath, file.data);
-
-  // Return the public URL path
-  return {
-    url: `/media/${type}/${filename}`,
-    filename: filename
-  };
+  return await mediaService.saveFile(file, type);
 });
