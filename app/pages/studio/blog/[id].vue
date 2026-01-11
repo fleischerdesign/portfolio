@@ -251,10 +251,13 @@ function getStatusColor(status: string) {
                 <UiCard>
                     <UiCardContainer class="p-6 space-y-6">
                         <h3 class="text-xs font-bold uppercase tracking-widest text-secondary-500">Media</h3>
-                        <UiInput id="post-image" label="Cover Image URL" v-model="editablePost.common.coverImage" />
-                        <div v-if="editablePost.common.coverImage" class="rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800">
-                            <img :src="editablePost.common.coverImage" class="w-full h-32 object-cover" />
-                        </div>
+                        
+                        <UiImageUploader 
+                            label="Cover Image" 
+                            v-model="editablePost.common.coverImage" 
+                            helper-text="Upload a representative cover image for the post."
+                        />
+                        
                         <UiInput id="post-image-alt" label="Alt Text" v-model="editablePost.common.coverImageAlt" />
                     </UiCardContainer>
                 </UiCard>

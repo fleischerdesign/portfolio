@@ -263,10 +263,13 @@ function getStatusColor(status: string) {
                 <UiCard>
                     <UiCardContainer class="p-6 space-y-6">
                         <h3 class="text-xs font-bold uppercase tracking-widest text-secondary-500">Media & Links</h3>
-                        <UiInput id="project-image" label="Cover Image URL" v-model="editableProject.common.coverImage" />
-                        <div v-if="editableProject.common.coverImage" class="rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800">
-                            <img :src="editableProject.common.coverImage" class="w-full h-32 object-cover" />
-                        </div>
+                        
+                        <UiImageUploader 
+                            label="Cover Image" 
+                            v-model="editableProject.common.coverImage" 
+                            helper-text="Upload a representative cover image."
+                        />
+                        
                         <UiInput id="project-image-alt" label="Alt Text" v-model="editableProject.common.coverImageAlt" />
                         
                         <UiInput id="project-icon" label="Icon (e.g. mage:folder)" v-model="editableProject.common.icon" />

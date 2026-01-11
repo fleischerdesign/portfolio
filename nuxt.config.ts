@@ -129,6 +129,12 @@ export default defineNuxtConfig({
     proxy: true,
   },
   image: {
+    domains: ['localhost', '127.0.0.1', 'fleischer.design'],
+    alias: {
+      media: process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000/media'
+        : 'https://fleischer.design/media'
+    },
     ipx: {
       modifiers: {
         format: "webp",
