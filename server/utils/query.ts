@@ -1,16 +1,15 @@
-import { H3Event, getQuery } from 'h3';
+import { H3Event, getValidatedQuery } from 'h3';
+import { z } from 'zod';
 
-export const getValidatedLocale = (event: H3Event): 'de' | 'en' => {
-  const query = getQuery(event);
-  const locale = query.locale as string;
-  return (locale === 'en' || locale === 'de') ? locale : 'de';
-};
+const publicQuerySchema = z.object({
+  locale: z.enum(['de', 'en']).catch('de'),
+  limit: z.coerce.number().int().positive().optional()
+});
 
-export const getValidatedLimit = (event: H3Event): number | undefined => {
-  const query = getQuery(event);
-  const limit = query.limit as string;
-  if (!limit) return undefined;
-  
-  const parsed = parseInt(limit, 10);
-  return isNaN(parsed) ? undefined : parsed;
-};
+export const getPublicQuery = (event: H3Event) => getValidatedQuery(event, publicQuerySchema.parse);
+
+const studioQuerySchema = z.object({
+  limit: z.coerce.number().int().positive().optional()
+});
+
+export const getStudioQuery = (event: H3Event) => getValidatedQuery(event, studioQuerySchema.parse);

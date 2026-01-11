@@ -3,7 +3,7 @@ import { projectService } from '~~/server/services/project.service';
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
 
-  const limit = getValidatedLimit(event);
+  const { limit } = await getStudioQuery(event);
 
   const projects = await projectService.getStudioAll(limit);
 

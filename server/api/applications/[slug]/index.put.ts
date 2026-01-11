@@ -1,26 +1,16 @@
 import { eq, and, inArray } from 'drizzle-orm';
 import { applications, companies, addresses, applications_to_contacts, applicationHistories } from '~~/server/db/schema';
-import { applicationUpdateSchema, type ApplicationUpdatePayload } from '#shared/schemas/application.schema';
+import { applicationUpdateSchema } from '#shared/schemas/application.schema';
+import { z } from 'zod';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
 
-  const slug = getRouterParam(event, 'slug');
-  if (!slug) {
-    throw createError({ statusCode: 400, statusMessage: 'Slug is required' });
-  }
+  const { slug } = await getValidatedRouterParams(event, z.object({
+    slug: z.string()
+  }).parse);
 
-  const body = await readValidatedBody(event, (body) => applicationUpdateSchema.safeParse(body));
-  if (!body.success) {
-    console.error('Validation failed:', body.error.flatten());
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Invalid request body',
-      data: body.error.flatten(),
-    });
-  }
-
-  const updateData: ApplicationUpdatePayload = body.data;
+  const updateData = await readValidatedBody(event, applicationUpdateSchema.parse);
 
   if (Object.keys(updateData).length === 0) {
     throw createError({ statusCode: 400, statusMessage: 'No fields provided for update' });

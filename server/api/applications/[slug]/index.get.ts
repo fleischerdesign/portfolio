@@ -1,16 +1,12 @@
 import { applicationService } from '~~/server/services/application.service';
+import { z } from 'zod';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
 
-  const slug = getRouterParam(event, 'slug');
-
-  if (!slug) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Slug is required',
-    });
-  }
+  const { slug } = await getValidatedRouterParams(event, z.object({
+    slug: z.string()
+  }).parse);
 
   const application = await applicationService.getBySlug(slug);
 

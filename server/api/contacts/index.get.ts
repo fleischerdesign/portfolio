@@ -5,7 +5,9 @@ export default defineEventHandler(async (event) => {
   
   const query = getQuery(event);
   const companyId = query.companyId ? Number(query.companyId) : undefined;
-  const limit = getValidatedLimit(event);
+  
+  // Reuse studio query schema for limit validation
+  const { limit } = await getStudioQuery(event);
 
   const contacts = await contactService.getAll({ companyId, limit });
 
