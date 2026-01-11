@@ -32,8 +32,17 @@ const showContactFormModal = ref(false);
 const companyIdForNewContact = ref<number | undefined>(undefined);
 
 onMounted(async () => {
-  allCompanies.value = await $fetch<CompanyResponse[]>('/api/companies');
-  allContacts.value = await $fetch<Contact[]>('/api/contacts');
+  try {
+    const [companiesRes, contactsRes] = await Promise.all([
+      $fetch<{ companies: CompanyResponse[] }>('/api/companies'),
+      $fetch<{ contacts: Contact[] }>('/api/contacts')
+    ]);
+    allCompanies.value = companiesRes.companies;
+    allContacts.value = contactsRes.contacts;
+  } catch (err) {
+    console.error("Failed to load initial data", err);
+    showToast('Fehler beim Laden der Daten.', { type: 'error' });
+  }
 });
 
 const form = ref<Omit<ApplicationCreatePayload, 'companyName' | 'companyAddress' | 'contactIds' | 'companyId'> & { companyId?: number, contactIds?: number[] }>({

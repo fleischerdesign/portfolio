@@ -3,8 +3,8 @@ import { companyService } from '~~/server/services/company.service';
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
 
-  const query = getQuery(event);
-  const limit = query.limit ? parseInt(query.limit as string) : undefined;
+  const limit = getValidatedLimit(event);
+  const companies = await companyService.getAll(limit);
 
-  return await companyService.getAll(limit);
+  return { companies };
 });

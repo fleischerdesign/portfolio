@@ -5,7 +5,9 @@ export default defineEventHandler(async (event) => {
   
   const query = getQuery(event);
   const companyId = query.companyId ? Number(query.companyId) : undefined;
-  const limit = query.limit ? parseInt(query.limit as string) : undefined;
+  const limit = getValidatedLimit(event);
 
-  return await contactService.getAll({ companyId, limit });
+  const contacts = await contactService.getAll({ companyId, limit });
+
+  return { contacts };
 });

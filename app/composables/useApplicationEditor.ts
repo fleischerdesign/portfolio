@@ -29,11 +29,11 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
     isLoading.value = true;
     try {
       // Fetch all companies and contacts for selection
-      const companiesData = await useRequestFetch()<CompanyResponse[]>('/api/companies');
-      allCompanies.value = companiesData || [];
+      const companiesData = await useRequestFetch()<{ companies: CompanyResponse[] }>('/api/companies');
+      allCompanies.value = companiesData.companies || [];
 
-      const contactsData = await useRequestFetch()<Contact[]>('/api/contacts');
-      allContacts.value = contactsData || [];
+      const contactsData = await useRequestFetch()<{ contacts: Contact[] }>('/api/contacts');
+      allContacts.value = contactsData.contacts || [];
 
       editableApplication.value = {
         ...JSON.parse(JSON.stringify(toRaw(initialApplication.value))), // Deep copy to detach reactivity

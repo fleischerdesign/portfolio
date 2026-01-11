@@ -14,7 +14,8 @@ const emit = defineEmits<{
   (e: 'cancel'): void;
 }>();
 
-const { data: companies } = await useFetch<CompanyResponse[]>('/api/companies');
+const { data: companiesData } = await useFetch<{ companies: CompanyResponse[] }>('/api/companies');
+const companies = computed(() => companiesData.value?.companies || []);
 
 const form = ref<ContactCreate>({
   name: props.name || '',
