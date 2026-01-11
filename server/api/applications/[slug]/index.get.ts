@@ -1,6 +1,4 @@
-import { applicationHistories, applications } from '~~/server/db/schema';
-import { eq, desc } from 'drizzle-orm';
-import { ApplicationResponsePayload } from '~~/shared/schemas/application.schema';
+import { applicationService } from '~~/server/services/application.service';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
@@ -14,24 +12,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const application = await db.query.applications.findFirst({
-    where: eq(applications.slug, slug),
-    with: {
-      company: {
-        with: {
-          address: true,
-        },
-      },
-      contacts: {
-        with: {
-          contact: true,
-        },
-      },
-      histories: {
-        orderBy: [desc(applicationHistories.createdAt), desc(applicationHistories.id)],
-      },
-    },
-  });
+  const application = await applicationService.getBySlug(slug);
 
   if (!application) {
     throw createError({
@@ -40,19 +21,5 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const currentStatus = application.histories.length > 0 ? application.histories[0]!.status : 'draft';
-  const associatedContacts = application.contacts.map(appToContact => appToContact.contact);
-
-  const response: ApplicationResponsePayload = {
-    ...application,
-    currentStatus,
-    company: {
-        ...application.company,
-        address: application.company.address || null,
-    },
-    contacts: associatedContacts,
-    histories: application.histories,
-  };
-
-  return response;
+  return application;
 });
