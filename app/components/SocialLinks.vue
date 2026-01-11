@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-full gap-3">
+    <div class="flex w-fit gap-3">
         <UiButton to="https://www.linkedin.com/in/fleischerdesign" target="_blank" variant="glass" size="icon">
             <Icon name="mdi:linkedin" size="24" />
         </UiButton>

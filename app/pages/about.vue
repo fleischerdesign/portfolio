@@ -23,7 +23,7 @@
         </div>
 
         <p class="text-xl leading-relaxed text-neutral-600 dark:text-neutral-300">
-           {{ personal.subtitle }}
+           {{ $t('about.intro_text') }}
         </p>
 
         <div class="flex justify-center pt-4 lg:justify-start">
