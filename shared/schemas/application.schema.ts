@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { companyResponseSchema, type CompanyResponse } from './company.schema';
-import { contactBaseSchema, type Contact } from './contact.schema';
+import { companyResponseSchema } from './company.schema';
+import { contactBaseSchema } from './contact.schema';
 
 export const applicationHistoryBaseSchema = z.object({
   id: z.number().optional(),

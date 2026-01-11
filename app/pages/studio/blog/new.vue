@@ -46,9 +46,9 @@ async function create() {
     const res = await $fetch('/api/blog', {
       method: 'POST',
       body: payload
-    });
+    }) as { id?: number; result?: { id: number } };
 
-    const postId = (res as any).result?.id || (res as any).id; // Check response structure
+    const postId = res.result?.id || res.id; // Check response structure
     
     if (postId) {
         showToast('Post created!', { type: 'success' });
@@ -71,20 +71,20 @@ async function create() {
     <UiBackButton :to="$localePath('/studio/blog')" class="mb-8" />
     
     <UiCard>
-        <UiCardContainer class="p-8 space-y-6">
+        <UiCardContainer class="space-y-6 p-8">
             <div class="mb-6">
                 <h1 class="text-2xl font-bold">Create New Post</h1>
                 <p class="text-neutral-500">Start with the basics. You can edit everything else later.</p>
             </div>
 
-            <UiInput label="Title (German)" v-model="form.title" placeholder="My Awesome Article" required />
+            <UiInput v-model="form.title" label="Title (German)" placeholder="My Awesome Article" required />
             
             <div class="grid grid-cols-2 gap-4">
-                <UiInput label="URL Slug" v-model="form.slug" placeholder="my-awesome-article" />
-                <UiInput label="Translation Key (ID)" v-model="form.translationKey" placeholder="my-awesome-article" />
+                <UiInput v-model="form.slug" label="URL Slug" placeholder="my-awesome-article" />
+                <UiInput v-model="form.translationKey" label="Translation Key (ID)" placeholder="my-awesome-article" />
             </div>
 
-            <UiButton class="w-full mt-4" :is-loading="isLoading" @click="create">
+            <UiButton class="mt-4 w-full" :is-loading="isLoading" @click="create">
                 Create & Edit
             </UiButton>
         </UiCardContainer>

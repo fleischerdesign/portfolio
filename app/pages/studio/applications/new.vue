@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ApplicationCreatePayload } from '#shared/schemas/application.schema';
-import type { CompanyResponse, Address } from '#shared/schemas/company.schema';
+import type { CompanyResponse } from '#shared/schemas/company.schema';
 import type { Contact } from '#shared/schemas/contact.schema';
 
 definePageMeta({

@@ -23,17 +23,17 @@
             <!-- 2. Content Section -->
             <UiCardContainer class="relative flex flex-1 flex-col p-6 lg:p-8">
                 <!-- Subtle Decorative Background Glow (Bottom Left) -->
-                <div class="pointer-events-none absolute -bottom-10 -left-10 -z-0 h-32 w-32 rounded-full bg-secondary-500/5 blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0"></div>
+                <div class="pointer-events-none absolute -bottom-10 -left-10 -z-0 h-32 w-32 rounded-full bg-secondary-500/5 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"></div>
 
                 <div class="relative z-10 flex h-full flex-col">
                     <!-- Technical Meta Info -->
                     <div class="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-neutral-500 dark:text-neutral-400">
-                        <div class="flex items-center gap-1.5" v-if="post.publishedAt">
+                        <div v-if="post.publishedAt" class="flex items-center gap-1.5">
                             <Icon name="mage:calendar-2" size="14" class="text-secondary-500" />
                             <span>{{ formattedDate }}</span>
                         </div>
                         <span v-if="post.publishedAt && post.readingTime" class="h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-700"></span>
-                        <div class="flex items-center gap-1.5" v-if="post.readingTime">
+                        <div v-if="post.readingTime" class="flex items-center gap-1.5">
                         <Icon name="mage:clock" size="16" class="text-secondary-400" />
                         {{ post.readingTime }} {{ $t("blogPost.readingTimeSuffix") }}
                     </div>
@@ -50,7 +50,7 @@
                     <!-- Interactive Footer -->
                     <div class="mt-6 flex items-center gap-3">
                         <div class="h-0.5 w-12 rounded-full bg-secondary-500/30 transition-all duration-500 group-hover:w-20 group-hover:bg-secondary-500"></div>
-                        <span class="text-xs font-bold uppercase tracking-widest text-secondary-500 opacity-0 transition-all duration-500 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0">
+                        <span class="-translate-x-2 text-xs font-bold uppercase tracking-widest text-secondary-500 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
                             {{ $t("blog.read_article") }}
                         </span>
                     </div>

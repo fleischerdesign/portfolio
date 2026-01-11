@@ -1,6 +1,6 @@
-import type { BlogPostUpdate } from '~~/shared/schemas/blog.schema';
+import type { BlogPostUpdate, BlogPostStudioResponse } from '~~/shared/schemas/blog.schema';
 
-export function useBlogEditor(postId: number, initialData: Ref<any>, refreshPost: () => Promise<void>) {
+export function useBlogEditor(postId: number, initialData: Ref<{ post: BlogPostStudioResponse } | null>, refreshPost: () => Promise<void>) {
   const { showToast } = useToast();
   const isLoading = ref(false);
   const isEditing = ref(false);
@@ -20,7 +20,7 @@ export function useBlogEditor(postId: number, initialData: Ref<any>, refreshPost
     en: { title: string; body: string; slug: string; excerpt: string };
   } | null>(null);
 
-  function parseData(data: any) {
+  function parseData(data: { post: BlogPostStudioResponse }) {
     if (!data?.post) return null;
     const p = data.post;
 
@@ -31,16 +31,16 @@ export function useBlogEditor(postId: number, initialData: Ref<any>, refreshPost
         coverImage: p.coverImage,
         coverImageAlt: p.coverImageAlt,
         categoryName: p.category?.name || null,
-        tags: p.tags.map((t: any) => t.name || t.tag?.name || '').filter((t: string) => t !== ''),
+        tags: p.tags.map((t) => t.name).filter((t): t is string => !!t),
         translationKey: p.translationKey
       },
       de: { title: '', body: '', slug: '', excerpt: '' },
       en: { title: '', body: '', slug: '', excerpt: '' }
     };
 
-    p.translations.forEach((t: any) => {
+    p.translations.forEach((t) => {
       if (t.locale === 'de' || t.locale === 'en') {
-        newState[t.locale as 'de' | 'en'] = {
+        newState[t.locale] = {
           title: t.title,
           excerpt: t.excerpt || '',
           body: t.body,

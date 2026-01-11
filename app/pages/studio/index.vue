@@ -12,7 +12,7 @@ definePageMeta({
         <UiSectionHeader :level="1" :title="$t('navigation.dashboard')" subtitle="Welcome to your creative control center." symbol="mage:dashboard" />
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <!-- Applications -->
         <NuxtLink :to="$localePath('/studio/applications')">
             <UiCard interactive class="h-full">
@@ -21,7 +21,7 @@ definePageMeta({
                         <Icon name="mage:users" size="28" />
                     </div>
                     <div>
-                        <h3 class="font-bold text-lg text-neutral-900 dark:text-white">{{ $t('navigation.applications') }}</h3>
+                        <h3 class="text-lg font-bold text-neutral-900 dark:text-white">{{ $t('navigation.applications') }}</h3>
                         <p class="text-sm text-neutral-500 dark:text-neutral-400">Manage job applications</p>
                     </div>
                 </UiCardContainer>
@@ -36,7 +36,7 @@ definePageMeta({
                         <Icon name="mage:edit" size="28" />
                     </div>
                     <div>
-                        <h3 class="font-bold text-lg text-neutral-900 dark:text-white">{{ $t('navigation.blog_editor') }}</h3>
+                        <h3 class="text-lg font-bold text-neutral-900 dark:text-white">{{ $t('navigation.blog_editor') }}</h3>
                         <p class="text-sm text-neutral-500 dark:text-neutral-400">Write and edit articles</p>
                     </div>
                 </UiCardContainer>
@@ -51,7 +51,7 @@ definePageMeta({
                         <Icon name="mage:folder" size="28" />
                     </div>
                     <div>
-                        <h3 class="font-bold text-lg text-neutral-900 dark:text-white">{{ $t('navigation.project_editor') }}</h3>
+                        <h3 class="text-lg font-bold text-neutral-900 dark:text-white">{{ $t('navigation.project_editor') }}</h3>
                         <p class="text-sm text-neutral-500 dark:text-neutral-400">Showcase your work</p>
                     </div>
                 </UiCardContainer>

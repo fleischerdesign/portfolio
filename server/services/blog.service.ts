@@ -1,6 +1,6 @@
 import { blogPosts, blogPostTranslations, categories, tags, blogPostsToTags } from '~~/server/db/schema';
-import { desc, eq, and } from 'drizzle-orm';
-import { BlogPostResponse, BlogPostDetailResponse, BlogPostUpdate, BlogPostCreate } from '~~/shared/schemas/blog.schema';
+import { desc, eq } from 'drizzle-orm';
+import type { BlogPostResponse, BlogPostDetailResponse, BlogPostUpdate, BlogPostCreate } from '~~/shared/schemas/blog.schema';
 
 export const blogService = {
   // Public Methods

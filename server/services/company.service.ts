@@ -1,5 +1,5 @@
 import { companies, addresses } from '~~/server/db/schema';
-import { CompanyCreatePayload, Address } from '~~/shared/schemas/company.schema';
+import type { CompanyCreatePayload, Address } from '~~/shared/schemas/company.schema';
 import { eq } from 'drizzle-orm';
 
 export const companyService = {

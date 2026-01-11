@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
-import { contactCreateSchema, type ContactCreate } from '#shared/schemas/contact.schema';
-import type { Contact } from '#shared/schemas/contact.schema';
+import { contactCreateSchema } from '#shared/schemas/contact.schema';
+import type { Contact, ContactCreate } from '#shared/schemas/contact.schema';
 import type { CompanyResponse } from '#shared/schemas/company.schema';
 
 const props = defineProps<{
@@ -65,8 +65,9 @@ async function createContact() {
       body: validation.data,
     });
     emit('success', newContact);
-  } catch (e: any) {
-    error.value = e.data?.message || 'Ein Fehler ist aufgetreten.';
+  } catch (e: unknown) {
+    const message = (e as { data?: { message?: string } })?.data?.message || 'Ein Fehler ist aufgetreten.';
+    error.value = message;
     console.error(e);
   } finally {
     isLoading.value = false;

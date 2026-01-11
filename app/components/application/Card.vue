@@ -110,18 +110,18 @@ onUnmounted(() => {
             >
               <ul class="flex flex-col gap-1">
                 <li>
-                                                  <NuxtLink :to="$localePath({ path: `/studio/applications/${application.slug}`, query: { edit: 'true' } })" class="flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm font-medium hover:bg-secondary-50 hover:text-secondary-700 dark:hover:bg-secondary-900/20 dark:hover:text-secondary-400 transition-colors">                    <Icon name="mdi:pencil" class="h-4 w-4" />
+                                                  <NuxtLink :to="$localePath({ path: `/studio/applications/${application.slug}`, query: { edit: 'true' } })" class="flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm font-medium transition-colors hover:bg-secondary-50 hover:text-secondary-700 dark:hover:bg-secondary-900/20 dark:hover:text-secondary-400">                    <Icon name="mdi:pencil" class="h-4 w-4" />
                     <span>{{ $t('applications.card.edit') }}</span>
                   </NuxtLink>
                 </li>
                 <li>
-                  <button class="flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm font-medium hover:bg-secondary-50 hover:text-secondary-700 dark:hover:bg-secondary-900/20 dark:hover:text-secondary-400 transition-colors" @click="shareApplication">
+                  <button class="flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm font-medium transition-colors hover:bg-secondary-50 hover:text-secondary-700 dark:hover:bg-secondary-900/20 dark:hover:text-secondary-400" @click="shareApplication">
                     <Icon name="mdi:share-variant" class="h-4 w-4" />
                     <span>{{ $t('applications.card.share') }}</span>
                   </button>
                 </li>
                 <li>
-                  <button class="flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400 transition-colors" @click="showDeleteModal = true">
+                  <button class="flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm font-medium text-red-500 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400" @click="showDeleteModal = true">
                     <Icon name="mdi:delete" class="h-4 w-4" />
                     <span>{{ $t('applications.card.delete') }}</span>
                   </button>

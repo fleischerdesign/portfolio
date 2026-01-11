@@ -23,7 +23,7 @@
       />
       
       <!-- Subtle internal glow/border on focus (Optional decorative element) -->
-      <div class="pointer-events-none absolute inset-0 rounded-xl border border-secondary-500/0 transition-all duration-300 peer-focus:border-secondary-500/20 shadow-none peer-focus:shadow-[0_0_15px_rgba(16,185,129,0.05)]"></div>
+      <div class="pointer-events-none absolute inset-0 rounded-xl border border-secondary-500/0 shadow-none transition-all duration-300 peer-focus:border-secondary-500/20 peer-focus:shadow-[0_0_15px_rgba(16,185,129,0.05)]"></div>
     </div>
 
     <p v-if="error" class="mt-1 text-xs font-medium text-red-500">{{ error }}</p>

@@ -1,5 +1,5 @@
 import { ref, computed, type Ref } from 'vue';
-import { applicationHistoryBaseSchema, type ApplicationHistoryPayload, type ApplicationHistoryCreatePayload, type ApplicationHistoryUpdatePayload } from '#shared/schemas/application.schema';
+import { applicationHistoryBaseSchema, type ApplicationHistoryPayload, type ApplicationHistoryCreatePayload } from '#shared/schemas/application.schema';
 import { useApplicationUtils } from './useApplicationUtils';
 
 interface TimelineItem {
@@ -12,10 +12,6 @@ interface TimelineItem {
   _deleted?: boolean;
 }
 
-interface EditableHistory extends ApplicationHistoryPayload {
-  _deleted?: boolean;
-}
-
 const statusIconMap: Record<string, string> = {
   draft: 'heroicons:pencil-square',
   applied: 'heroicons:paper-airplane',
@@ -25,7 +21,12 @@ const statusIconMap: Record<string, string> = {
   withdrawn: 'heroicons:arrow-uturn-left',
 };
 
-export function useHistoryManager(source: Ref<any | null>, isEditing: Ref<boolean>) {
+// Define a type for the source object to avoid 'any'
+interface HistorySource {
+  histories: (ApplicationHistoryPayload & { _deleted?: boolean })[];
+}
+
+export function useHistoryManager(source: Ref<HistorySource | null>, isEditing: Ref<boolean>) {
   const { formatForDateTimeLocal, formatDate, getStatusTextClasses } = useApplicationUtils();
   const availableStatuses = applicationHistoryBaseSchema.shape.status.options;
 
@@ -42,8 +43,6 @@ export function useHistoryManager(source: Ref<any | null>, isEditing: Ref<boolea
   const showDeleteHistoryModal = ref(false);
   const deletableHistoryEntry = ref<TimelineItem | null>(null);
   
-  const histories = computed(() => source.value?.histories || []);
-
   function addHistory() {
     if (!newHistoryStatus.value || !source.value?.histories) return;
     const newEntry: ApplicationHistoryPayload & { _deleted?: boolean } = {
@@ -55,7 +54,7 @@ export function useHistoryManager(source: Ref<any | null>, isEditing: Ref<boolea
       _deleted: false,
     };
     source.value.histories.push(newEntry);
-    source.value.histories.sort((a: any, b: any) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime() || (b.id || 0) - (a.id || 0));
+    source.value.histories.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime() || (b.id || 0) - (a.id || 0));
     
     newHistoryNotes.value = null;
     newHistoryScheduledAt.value = null;
@@ -65,7 +64,7 @@ export function useHistoryManager(source: Ref<any | null>, isEditing: Ref<boolea
   }
 
   function startEditHistory(item: TimelineItem) {
-    const entry = source.value?.histories.find((h: any) => h.id === item.id);
+    const entry = source.value?.histories.find(h => h.id === item.id);
     if (entry) {
       editableHistoryEntry.value = {
         ...entry,
@@ -78,25 +77,27 @@ export function useHistoryManager(source: Ref<any | null>, isEditing: Ref<boolea
 
   function updateHistory() {
     if (!editableHistoryEntry.value?.id || !source.value?.histories) return;
-    const index = source.value.histories.findIndex((h: any) => h.id === editableHistoryEntry.value!.id);
+    const index = source.value.histories.findIndex(h => h.id === editableHistoryEntry.value!.id);
     if (index !== -1) {
       const isInterview = editableHistoryEntry.value.status === 'interview';
+      const existing = source.value.histories[index];
       source.value.histories[index] = {
-        ...source.value.histories[index],
+        ...existing,
         ...editableHistoryEntry.value,
+        status: editableHistoryEntry.value.status!, // Ensure status is present or handle undefined
         createdAt: new Date(editableHistoryEntry.value.createdAt).toISOString(),
         scheduled_at: isInterview && editableHistoryEntry.value.scheduled_at
           ? new Date(editableHistoryEntry.value.scheduled_at).toISOString()
           : undefined,
       };
-      source.value.histories.sort((a: any, b: any) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime() || (b.id || 0) - (a.id || 0));
+      source.value.histories.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime() || (b.id || 0) - (a.id || 0));
     }
     showEditHistoryModal.value = false;
     editableHistoryEntry.value = null;
   }
 
   function startDeleteHistory(item: TimelineItem) {
-    const entry = source.value?.histories.find((h: any) => h.id === item.id);
+    const entry = source.value?.histories.find(h => h.id === item.id);
     if (entry) {
       deletableHistoryEntry.value = item;
       showDeleteHistoryModal.value = true;
@@ -106,7 +107,7 @@ export function useHistoryManager(source: Ref<any | null>, isEditing: Ref<boolea
   function deleteHistory() {
     if (!deletableHistoryEntry.value?.id || !source.value?.histories) return;
     const idToDelete = deletableHistoryEntry.value.id;
-    const index = source.value.histories.findIndex((h: any) => h.id === idToDelete);
+    const index = source.value.histories.findIndex(h => h.id === idToDelete);
     if (index !== -1) {
       if (idToDelete > 0) {
         source.value.histories[index]._deleted = true;
@@ -120,7 +121,7 @@ export function useHistoryManager(source: Ref<any | null>, isEditing: Ref<boolea
 
   function undoDeleteHistory(item: TimelineItem) {
     if (!source.value?.histories) return;
-    const index = source.value.histories.findIndex((h: any) => h.id === item.id);
+    const index = source.value.histories.findIndex(h => h.id === item.id);
     if (index !== -1) {
       source.value.histories[index]._deleted = false;
     }
@@ -135,9 +136,9 @@ export function useHistoryManager(source: Ref<any | null>, isEditing: Ref<boolea
     // filter out deleted items in view mode
     const currentHistories = isEditing.value 
       ? historiesSource 
-      : historiesSource.filter((h: any) => !h._deleted);
+      : historiesSource.filter(h => !h._deleted);
 
-    currentHistories.forEach((history: any) => {
+    currentHistories.forEach(history => {
       if (!history.id) return;
 
       if (history.status === 'interview') {

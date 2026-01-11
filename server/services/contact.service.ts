@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { contacts } from '~~/server/db/schema';
-import { ContactCreatePayload } from '~~/shared/schemas/contact.schema';
+import type { ContactCreatePayload } from '~~/shared/schemas/contact.schema';
 
 export const contactService = {
   async getAll(options: { companyId?: number; limit?: number } = {}) {

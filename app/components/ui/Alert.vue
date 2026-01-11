@@ -74,7 +74,7 @@ const closeAlert = () => {
             </div>
         </div>
         
-        <button v-if="closable" class="-mx-1.5 -my-1.5 ml-auto inline-flex h-8 w-8 items-center justify-center rounded-lg p-1.5 transition-colors hover:bg-black/5 dark:hover:bg-white/10 focus:ring-2 focus:ring-current" @click="closeAlert">
+        <button v-if="closable" class="-mx-1.5 -my-1.5 ml-auto inline-flex h-8 w-8 items-center justify-center rounded-lg p-1.5 transition-colors hover:bg-black/5 focus:ring-2 focus:ring-current dark:hover:bg-white/10" @click="closeAlert">
             <span class="sr-only">Close</span>
             <Icon name="mdi:close" class="h-5 w-5 opacity-70" />
         </button>

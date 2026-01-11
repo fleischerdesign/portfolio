@@ -1,6 +1,6 @@
 import { projects, projectTranslations, categories, tags, technologies, projectsToTags, projectsToTechnologies } from '~~/server/db/schema';
-import { desc, eq, and } from 'drizzle-orm';
-import { ProjectResponse, ProjectDetailResponse, ProjectUpdate, ProjectCreate } from '~~/shared/schemas/project.schema';
+import { desc, eq } from 'drizzle-orm';
+import type { ProjectResponse, ProjectDetailResponse, ProjectUpdate, ProjectCreate } from '~~/shared/schemas/project.schema';
 
 export const projectService = {
   // Public Methods

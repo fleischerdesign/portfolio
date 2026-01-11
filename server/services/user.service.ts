@@ -1,7 +1,5 @@
 import { eq } from 'drizzle-orm';
 import { users, apiKeys } from '~~/server/db/schema';
-import { updateUserSchema } from '#shared/schemas/user.schema';
-import { z } from 'zod';
 
 export const userService = {
   async update(userId: number, data: Partial<typeof users.$inferInsert>) {

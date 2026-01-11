@@ -1,4 +1,4 @@
-import type { ApplicationHistoryPayload, ApplicationResponsePayload } from "#shared/schemas/application.schema";
+import type { ApplicationResponsePayload } from "#shared/schemas/application.schema";
 
 export const useApplicationUtils = () => {
   const statusStyles = {

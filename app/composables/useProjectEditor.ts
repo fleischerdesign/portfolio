@@ -1,6 +1,34 @@
 import type { ProjectUpdate } from '~~/shared/schemas/project.schema';
 
-export function useProjectEditor(projectId: number, initialData: Ref<any>, refreshProject: () => Promise<void>) {
+interface ProjectTranslation {
+  locale: string;
+  title: string;
+  subtitle?: string | null;
+  body: string;
+  slug: string;
+  features?: string[] | null;
+  learned?: string[] | null;
+  challenges?: string[] | null;
+}
+
+interface RawProjectData {
+  project: {
+    status: 'draft' | 'published' | 'archived';
+    publishedAt: string | Date | null;
+    coverImage: string | null;
+    coverImageAlt: string | null;
+    icon: string | null;
+    repoUrl: string | null;
+    projectUrl: string | null;
+    translationKey: string;
+    category?: { name: string } | null;
+    tags: Array<{ name?: string; tag?: { name: string } }>;
+    techstack: Array<{ name?: string; technology?: { name: string } }>;
+    translations: ProjectTranslation[];
+  };
+}
+
+export function useProjectEditor(projectId: number, initialData: Ref<RawProjectData | null>, refreshProject: () => Promise<void>) {
   const { showToast } = useToast();
   const isLoading = ref(false);
   const isEditing = ref(false);
@@ -24,7 +52,7 @@ export function useProjectEditor(projectId: number, initialData: Ref<any>, refre
     en: { title: string; subtitle: string; body: string; slug: string; features: string[]; learned: string[]; challenges: string[] };
   } | null>(null);
 
-  function parseData(data: any) {
+  function parseData(data: RawProjectData | null) {
     if (!data?.project) return null;
     const p = data.project;
 
@@ -38,15 +66,15 @@ export function useProjectEditor(projectId: number, initialData: Ref<any>, refre
         repoUrl: p.repoUrl,
         projectUrl: p.projectUrl,
         categoryName: p.category?.name || null,
-        tags: p.tags.map((t: any) => t.name || t.tag?.name || '').filter((t: string) => t !== ''),
-        techstack: p.techstack.map((t: any) => t.name || t.technology?.name || '').filter((t: string) => t !== ''),
+        tags: p.tags.map((t) => t.name || t.tag?.name || '').filter((t: string) => t !== ''),
+        techstack: p.techstack.map((t) => t.name || t.technology?.name || '').filter((t: string) => t !== ''),
         translationKey: p.translationKey
       },
       de: { title: '', subtitle: '', body: '', slug: '', features: [], learned: [], challenges: [] },
       en: { title: '', subtitle: '', body: '', slug: '', features: [], learned: [], challenges: [] }
     };
 
-    p.translations.forEach((t: any) => {
+    p.translations.forEach((t) => {
       if (t.locale === 'de' || t.locale === 'en') {
         newState[t.locale as 'de' | 'en'] = {
           title: t.title,

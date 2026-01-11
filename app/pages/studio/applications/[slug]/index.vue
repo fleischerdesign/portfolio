@@ -3,7 +3,7 @@ import type { ApplicationResponsePayload } from '#shared/schemas/application.sch
 import type { CompanyResponse } from '#shared/schemas/company.schema';
 
 
-const { getStatusChipClasses, getStatusTextClasses, getApplicationDate, getResponseDate, getLastActivityDate, getFormattedApplicationDate, getFormattedResponseDate, getFormattedLastActivityDate, getDisplayDate } = useApplicationUtils();
+const { getStatusChipClasses, getStatusTextClasses, getFormattedLastActivityDate, getDisplayDate } = useApplicationUtils();
 const { render } = useMarkdown(); 
 const { getSalutation } = useSalutation();
 
@@ -62,7 +62,7 @@ const bodyStats = computed(() => {
   };
 });
 
-const textareaRef = ref<any>(null);
+const textareaRef = ref<{ $el: HTMLElement } | null>(null);
 const adjustTextareaHeight = () => {
   if (!textareaRef.value) return;
   const el = textareaRef.value?.$el?.querySelector('textarea');
@@ -102,7 +102,6 @@ const {
   undoDeleteHistory,
   timelineItems,
   availableStatuses,
-  getStatusTextClasses: getHistoryStatusTextClasses,
 } = useHistoryManager(
   computed(() => isEditing.value ? editableApplication.value : application.value),
   isEditing
@@ -151,50 +150,50 @@ onMounted(() => {
     </div>
 
     <UiCard v-if="application && !isEditing" class="mb-12 border-secondary-500/10 shadow-xl shadow-secondary-500/5">
-        <UiCardContainer class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-8 px-8 py-6">
-            <div class="flex items-center gap-5 w-full lg:w-auto">
+        <UiCardContainer class="flex flex-col justify-between gap-6 px-8 py-6 lg:flex-row lg:items-center lg:gap-8">
+            <div class="flex w-full items-center gap-5 lg:w-auto">
                 <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
                     <Icon name="heroicons:signal" size="28" />
                 </div>
                 <div>
                     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">{{ $t('applications.detail.document.current_status') }}</p>
                     <div class="mt-1">
-                        <UiChip unstyled size="sm" :class="[getStatusChipClasses(application.currentStatus), getStatusTextClasses(application.currentStatus), 'px-3 py-0.5 text-xs font-bold rounded-lg border shadow-sm']">
+                        <UiChip unstyled size="sm" :class="[getStatusChipClasses(application.currentStatus), getStatusTextClasses(application.currentStatus), 'rounded-lg border px-3 py-0.5 text-xs font-bold shadow-sm']">
                             {{ $t(`applications.status.${application.currentStatus}`) }}
                         </UiChip>
                     </div>
                 </div>
             </div>
 
-            <div class="flex items-center gap-5 w-full lg:flex-1 lg:min-w-0 border-t border-neutral-100 pt-6 lg:border-t-0 lg:pt-0 lg:border-l dark:border-neutral-800 lg:pl-8">
+            <div class="flex w-full items-center gap-5 border-t border-neutral-100 pt-6 lg:min-w-0 lg:flex-1 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-neutral-800">
                 <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
                     <Icon name="heroicons:building-office" size="28" />
                 </div>
                 <div class="min-w-0 flex-1">
                     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">{{ $t('applications.detail.config.company') }}</p>
-                    <p class="mt-0.5 text-xl font-bold text-neutral-900 dark:text-white truncate" :title="application.company.name">{{ application.company.name }}</p>
-                    <p v-if="application.company.address" class="text-xs font-medium text-neutral-500 dark:text-neutral-400 truncate">{{ application.company.address.city }}</p>
+                    <p class="mt-0.5 truncate text-xl font-bold text-neutral-900 dark:text-white" :title="application.company.name">{{ application.company.name }}</p>
+                    <p v-if="application.company.address" class="truncate text-xs font-medium text-neutral-500 dark:text-neutral-400">{{ application.company.address.city }}</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-5 w-full lg:w-auto border-t border-neutral-100 pt-6 lg:border-t-0 lg:pt-0 lg:border-l dark:border-neutral-800 lg:pl-8">
+            <div class="flex w-full items-center gap-5 border-t border-neutral-100 pt-6 lg:w-auto lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-neutral-800">
                 <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
                     <Icon name="heroicons:clock" size="28" />
                 </div>
                 <div>
                     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">{{ $t('applications.detail.document.activity') }}</p>
                     <p class="mt-0.5 text-xl font-bold text-neutral-900 dark:text-white">{{ getFormattedLastActivityDate(application) }}</p>
-                    <p class="text-xs font-medium text-neutral-500 dark:text-neutral-400 whitespace-nowrap">
+                    <p class="whitespace-nowrap text-xs font-medium text-neutral-500 dark:text-neutral-400">
                         {{ application.currentStatus === 'draft' ? $t('applications.detail.document.created_at') : $t('applications.detail.document.applied_at') }} {{ getDisplayDate(application) }}
                     </p>
                 </div>
             </div>
 
-            <div v-if="application.url" class="w-full lg:w-auto lg:ml-auto border-t border-neutral-100 pt-6 lg:border-t-0 lg:pt-0 dark:border-neutral-800">
+            <div v-if="application.url" class="w-full border-t border-neutral-100 pt-6 lg:ml-auto lg:w-auto lg:border-t-0 lg:pt-0 dark:border-neutral-800">
                 <a :href="application.url" target="_blank" rel="noopener noreferrer">
-                    <UiButton variant="glass" size="lg" class="group w-full lg:w-auto !rounded-2xl border-secondary-200/50 transition-all duration-500 hover:bg-secondary-500 hover:text-white">
+                    <UiButton variant="glass" size="lg" class="group w-full !rounded-2xl border-secondary-200/50 transition-all duration-500 hover:bg-secondary-500 hover:text-white lg:w-auto">
                         <span class="inline lg:hidden xl:inline">{{ $t('applications.detail.document.listing') }}</span>
-                        <Icon name="heroicons:arrow-top-right-on-square" class="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 ml-3 lg:ml-0 xl:ml-3" />
+                        <Icon name="heroicons:arrow-top-right-on-square" class="ml-3 h-5 w-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 lg:ml-0 xl:ml-3" />
                     </UiButton>
                 </a>
             </div>
@@ -207,7 +206,7 @@ onMounted(() => {
         
         <UiCard v-if="isEditing" class="border-secondary-500/10 shadow-xl shadow-secondary-500/5">
             <UiCardContainer class="p-8 md:p-10">
-                <div class="flex items-center gap-4 mb-10">
+                <div class="mb-10 flex items-center gap-4">
                     <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary-100 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400">
                         <Icon name="heroicons:adjustments-horizontal" size="24" />
                     </div>
@@ -217,7 +216,7 @@ onMounted(() => {
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
                     <div class="space-y-8">
                          <div class="flex items-center gap-2">
                              <div class="h-1 w-4 rounded-full bg-secondary-500"></div>
@@ -230,7 +229,7 @@ onMounted(() => {
                          </div>
                     </div>
                     
-                    <div class="space-y-8 border-neutral-100 dark:border-neutral-800 md:border-l md:pl-10">
+                    <div class="space-y-8 border-neutral-100 md:border-l md:pl-10 dark:border-neutral-800">
                          <div class="flex items-center gap-2">
                              <div class="h-1 w-4 rounded-full bg-secondary-500"></div>
                              <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">{{ $t('applications.detail.config.company') }}</p>
@@ -247,14 +246,14 @@ onMounted(() => {
                                 <template #option="{ option }">{{ option.name }}</template>
                              </UiSelect>
                              
-                             <div v-if="editableApplication.selectedCompany?.address" class="group/addr relative rounded-2xl border border-neutral-100 p-5 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/50 transition-colors hover:bg-white dark:hover:bg-neutral-900">
-                                 <div class="flex justify-between items-start">
+                             <div v-if="editableApplication.selectedCompany?.address" class="group/addr relative rounded-2xl border border-neutral-100 bg-neutral-50/50 p-5 transition-colors hover:bg-white dark:border-neutral-800 dark:bg-neutral-900/50 dark:hover:bg-neutral-900">
+                                 <div class="flex items-start justify-between">
                                      <div class="text-sm">
                                          <p class="font-bold text-neutral-900 dark:text-white">{{ editableApplication.selectedCompany.name }}</p>
                                          <p class="mt-1 text-neutral-500">{{ editableApplication.selectedCompany.address.street }} {{ editableApplication.selectedCompany.address.houseNumber }}</p>
                                          <p class="text-neutral-500">{{ editableApplication.selectedCompany.address.zipcode }} {{ editableApplication.selectedCompany.address.city }}</p>
                                      </div>
-                                     <UiButton size="sm" variant="ghost" class="!p-1 h-8 w-8 rounded-xl opacity-0 group-hover/addr:opacity-100 transition-opacity" @click="showCompanyAddressModal = true">
+                                     <UiButton size="sm" variant="ghost" class="h-8 w-8 rounded-xl !p-1 opacity-0 transition-opacity group-hover/addr:opacity-100" @click="showCompanyAddressModal = true">
                                          <Icon name="mdi:pencil" class="h-4 w-4" />
                                      </UiButton>
                                  </div>
@@ -266,7 +265,7 @@ onMounted(() => {
                          </div>
                     </div>
                     
-                    <div class="space-y-8 border-neutral-100 dark:border-neutral-800 lg:border-l lg:pl-10">
+                    <div class="space-y-8 border-neutral-100 lg:border-l lg:pl-10 dark:border-neutral-800">
                          <div class="flex items-center gap-2">
                              <div class="h-1 w-4 rounded-full bg-secondary-500"></div>
                              <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">{{ $t('applications.detail.config.contacts') }}</p>
@@ -283,11 +282,11 @@ onMounted(() => {
                          >
                             <template #display="{ option }">
                                 {{ option.name }}
-                                <span v-if="option.company" class="opacity-50 ml-1">({{ option.company.name }})</span>
+                                <span v-if="option.company" class="ml-1 opacity-50">({{ option.company.name }})</span>
                             </template>
                             <template #option="{ option }">
                                 {{ option.name }}
-                                <span v-if="option.company" class="text-xs opacity-50 ml-1">({{ option.company.name }})</span>
+                                <span v-if="option.company" class="ml-1 text-xs opacity-50">({{ option.company.name }})</span>
                             </template>
                          </UiSelect>
                     </div>
@@ -295,10 +294,10 @@ onMounted(() => {
             </UiCardContainer>
         </UiCard>
 
-        <div v-if="!isEditing && application.contacts && application.contacts.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div v-if="!isEditing && application.contacts && application.contacts.length > 0" class="grid grid-cols-1 gap-6 md:grid-cols-2">
             <UiCard v-for="contact in application.contacts" :key="contact.id" class="border-secondary-500/5">
                 <UiCardContainer class="!flex-row items-center gap-4">
-                    <div class="h-12 w-12 flex-shrink-0 rounded-full bg-secondary-100 flex items-center justify-center text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400">
+                    <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-secondary-100 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400">
                         <Icon name="heroicons:user" size="24" />
                     </div>
                     <div>
@@ -314,9 +313,9 @@ onMounted(() => {
         </div>
 
         <div v-if="(!isEditing && application.body) || isEditing" class="group relative">
-            <div class="pointer-events-none absolute -left-20 -top-20 -z-10 h-80 w-80 rounded-full bg-secondary-500/10 blur-[100px] opacity-40 dark:bg-secondary-500/5"></div>
+            <div class="pointer-events-none absolute -left-20 -top-20 -z-10 h-80 w-80 rounded-full bg-secondary-500/10 opacity-40 blur-[100px] dark:bg-secondary-500/5"></div>
             
-            <UiCard class="relative bg-white/90 shadow-2xl dark:bg-neutral-900/80 overflow-hidden">
+            <UiCard class="relative overflow-hidden bg-white/90 shadow-2xl dark:bg-neutral-900/80">
                 <UiCardContainer class="p-8 md:p-16 lg:p-24">
                     <div class="mb-16 flex items-start gap-5 border-b border-neutral-100 pb-10 dark:border-neutral-800">
                         <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-secondary-100 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400">
@@ -325,7 +324,7 @@ onMounted(() => {
                         <div class="flex-1">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-3xl font-black text-neutral-900 dark:text-white">{{ $t('applications.detail.document.title') }}</h3>
-                                <div class="text-right hidden sm:block">
+                                <div class="hidden text-right sm:block">
                                      <p class="text-sm font-black uppercase tracking-widest text-neutral-900 dark:text-white">{{ displayDate }}</p>
                                      <p class="text-[10px] uppercase tracking-widest text-neutral-400">{{ $t('applications.detail.document.date_label') }}</p>
                                 </div>
@@ -335,11 +334,11 @@ onMounted(() => {
                     </div>
 
                     <div class="mb-12">
-                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500 mb-2">{{ $t('applications.detail.document.recipient_label') }}</p>
+                        <p class="mb-2 text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">{{ $t('applications.detail.document.recipient_label') }}</p>
                         <p class="text-xl font-bold text-neutral-900 dark:text-white">
                             {{ isEditing ? editableApplication?.selectedCompany?.name : application.company.name }}
                         </p>
-                        <div v-if="(isEditing ? editableApplication?.selectedCompany?.address : application.company.address)" class="mt-1 text-neutral-600 dark:text-neutral-400 text-sm">
+                        <div v-if="(isEditing ? editableApplication?.selectedCompany?.address : application.company.address)" class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
                             <template v-if="isEditing && editableApplication?.selectedCompany?.address">
                                 <p>{{ editableApplication.selectedCompany.address.street }} {{ editableApplication.selectedCompany.address.houseNumber }}</p>
                                 <p>{{ editableApplication.selectedCompany.address.zipcode }} {{ editableApplication.selectedCompany.address.city }}</p>
@@ -364,9 +363,10 @@ onMounted(() => {
                         {{ salutation }},
                     </p>
 
+                    <!-- eslint-disable-next-line vue/no-v-html -->
                     <div v-if="!isEditing" class="prose prose-lg prose-neutral max-w-none dark:prose-invert" v-html="render(application.body || '')"></div>
                     <div v-else-if="editableApplication" class="space-y-8">
-                        <div class="flex items-center justify-between rounded-2xl bg-secondary-50/50 dark:bg-secondary-900/10 p-3 px-6 border border-secondary-100/50 dark:border-secondary-500/10">
+                        <div class="flex items-center justify-between rounded-2xl border border-secondary-100/50 bg-secondary-50/50 p-3 px-6 dark:border-secondary-500/10 dark:bg-secondary-900/10">
                             <div class="flex items-center gap-8">
                                 <div class="flex flex-col">
                                     <span class="text-[9px] font-black uppercase tracking-widest text-secondary-500/60">{{ $t('applications.detail.editor.words') }}</span>
@@ -376,26 +376,26 @@ onMounted(() => {
                                     <span class="text-[9px] font-black uppercase tracking-widest text-neutral-400">{{ $t('applications.detail.editor.chars') }}</span>
                                     <span class="text-lg font-bold text-neutral-600 dark:text-neutral-300" :class="{ 'text-amber-500': bodyStats.isLong }">{{ bodyStats.chars }}</span>
                                 </div>
-                                <div class="hidden sm:flex h-8 w-px bg-neutral-200 dark:bg-neutral-700 mx-2"></div>
-                                <div class="hidden sm:flex flex-col">
+                                <div class="mx-2 hidden h-8 w-px bg-neutral-200 sm:flex dark:bg-neutral-700"></div>
+                                <div class="hidden flex-col sm:flex">
                                     <span class="text-[9px] font-black uppercase tracking-widest text-neutral-400">{{ $t('applications.detail.editor.reading_time') }}</span>
                                     <span class="text-sm font-bold text-neutral-600 dark:text-neutral-300">~ {{ bodyStats.readingTime }} Min.</span>
                                 </div>
                             </div>
                             
                             <div class="flex gap-2">
-                                <div v-if="bodyStats.isLong" class="hidden lg:flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 rounded-lg border border-amber-100 dark:border-amber-800">
+                                <div v-if="bodyStats.isLong" class="hidden items-center gap-2 rounded-lg border border-amber-100 bg-amber-50 px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-amber-500 lg:flex dark:border-amber-800 dark:bg-amber-900/20">
                                     <Icon name="heroicons:exclamation-triangle" size="14" />
                                     {{ $t('applications.detail.editor.over_page_limit') }}
                                 </div>
-                                <div class="hidden lg:flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-400 px-3 py-1">
+                                <div class="hidden items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-400 lg:flex">
                                     <Icon name="mdi:markdown" size="18" />
                                     Markdown
                                 </div>
                             </div>
                         </div>
 
-                        <div class="relative group/editor">
+                        <div class="group/editor relative">
                             <UiInput
                                 id="body"
                                 ref="textareaRef"
@@ -403,17 +403,17 @@ onMounted(() => {
                                 as="textarea"
                                 label=""
                                 :placeholder="$t('applications.detail.editor.placeholder')"
-                                class="min-h-[600px] border-none !bg-transparent !p-0 focus:ring-0 text-lg leading-relaxed selection:bg-secondary-100 dark:selection:bg-secondary-900/50 resize-none overflow-hidden"
+                                class="min-h-[600px] resize-none overflow-hidden border-none !bg-transparent !p-0 text-lg leading-relaxed selection:bg-secondary-100 focus:ring-0 dark:selection:bg-secondary-900/50"
                                 @input="adjustTextareaHeight"
                             />
                         </div>
                     </div>
 
-                    <div class="mt-20 pt-10 border-t border-neutral-50 dark:border-neutral-800/50">
+                    <div class="mt-20 border-t border-neutral-50 pt-10 dark:border-neutral-800/50">
                         <p class="text-lg font-medium text-neutral-900 dark:text-white">{{ $t('applications.detail.document.closing') }}</p>
                         <div class="mt-8">
                             <p class="text-xl font-black text-neutral-900 dark:text-white">Philipp Fleischer</p>
-                            <NuxtImg src="/img/signature.png" alt="Unterschrift" height="70" class="mt-4 dark:invert opacity-90 transition-opacity hover:opacity-100" />
+                            <NuxtImg src="/img/signature.png" alt="Unterschrift" height="70" class="mt-4 opacity-90 transition-opacity hover:opacity-100 dark:invert" />
                         </div>
                     </div>
                 </UiCardContainer>
@@ -435,6 +435,7 @@ onMounted(() => {
                     
                     <div v-if="!isEditing" class="prose prose-neutral max-w-none dark:prose-invert" >
                         <ul class="list-disc space-y-3 pl-5">
+                            <!-- eslint-disable-next-line vue/no-v-html -->
                             <li v-for="(note, index) in application.notes" :key="index" class="text-neutral-600 dark:text-neutral-400" v-html="render(note)"></li>
                         </ul>
                     </div>
@@ -445,7 +446,7 @@ onMounted(() => {
                             v-model="notesAsText"
                             as="textarea"
                             label=""
-                            class="bg-transparent border-none !p-0 focus:ring-0"
+                            class="border-none bg-transparent !p-0 focus:ring-0"
                         />
                     </div>
                 </UiCardContainer>
@@ -454,7 +455,7 @@ onMounted(() => {
 
         <UiCard class="border-secondary-500/5 shadow-xl shadow-secondary-500/5">
             <UiCardContainer class="p-8 md:p-10">
-                <div class="flex items-center justify-between mb-10">
+                <div class="mb-10 flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary-100 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400">
                             <Icon name="heroicons:clock" size="24" />
@@ -500,9 +501,9 @@ onMounted(() => {
                     </template>
                 </BaseTimeline>
                 
-                <div v-else class="flex flex-col items-center justify-center py-12 text-center text-neutral-500 border-2 border-dashed border-neutral-100 dark:border-neutral-800 rounded-3xl">
+                <div v-else class="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-neutral-100 py-12 text-center text-neutral-500 dark:border-neutral-800">
                     <Icon name="heroicons:clock" class="mb-4 h-12 w-12 opacity-20" />
-                    <p class="font-medium text-sm">{{ $t('applications.detail.history.empty_state') }}</p>
+                    <p class="text-sm font-medium">{{ $t('applications.detail.history.empty_state') }}</p>
                     <UiButton v-if="isEditing" variant="link" class="mt-2" @click="showAddHistoryModal = true">
                         {{ $t('applications.detail.history.create_first') }}
                     </UiButton>

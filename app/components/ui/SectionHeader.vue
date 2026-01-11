@@ -2,7 +2,8 @@
   <div :class="rootClasses">
     
     <template v-if="variant === 'glow'">
-      <div class="pointer-events-none absolute inset-0 -z-10 opacity-[0.15] mix-blend-overlay invert dark:invert-0 [mask-image:radial-gradient(closest-side,black,transparent)]"
+      <div
+class="pointer-events-none absolute inset-0 -z-10 opacity-[0.15] mix-blend-overlay invert [mask-image:radial-gradient(closest-side,black,transparent)] dark:invert-0"
            style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E&quot;)">
       </div>
 
@@ -22,7 +23,7 @@
 
              <slot name="prefix">
                  
-                 <div v-if="variant === 'glow' && symbol" class="relative group">
+                 <div v-if="variant === 'glow' && symbol" class="group relative">
                      <div class="absolute -inset-2 rounded-3xl bg-secondary-500/20 blur-xl transition duration-500 group-hover:bg-secondary-500/30"></div>
                      
                      <div class="relative inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-white/50 bg-gradient-to-br from-white/80 to-white/40 shadow-xl backdrop-blur-xl transition-transform duration-500 group-hover:scale-105 dark:border-white/10 dark:from-white/10 dark:to-white/5">
@@ -85,6 +86,8 @@ const props = withDefaults(defineProps<{
   level: 2,
   symbol: undefined,
   variant: 'glow',
+  subtitle: undefined,
+  align: 'left'
 })
 
 const tag = computed(() => `h${props.level}`)

@@ -12,7 +12,7 @@
                     class="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" 
                 />
                 <!-- Gradient Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-transparent transition-opacity duration-500 group-hover:opacity-100 opacity-90"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100"></div>
             </div>
 
             <!-- 2. Ambient Accent Glow -->
@@ -36,13 +36,14 @@
                         <Icon 
                             :name="project.icon" 
                             mode="svg"
-                            class="relative z-10 h-10 w-10 fill-white text-white drop-shadow-md transition-all duration-500 [&>g]:fill-white group-hover:fill-secondary-400 group-hover:text-secondary-400 group-hover:[&>g]:fill-secondary-400 group-hover:scale-110" 
+                            class="relative z-10 h-10 w-10 fill-white text-white drop-shadow-md transition-all duration-500 group-hover:scale-110 group-hover:fill-secondary-400 group-hover:text-secondary-400 [&>g]:fill-white group-hover:[&>g]:fill-secondary-400" 
                         />
                     </div>
 
                     <!-- TEXT CONTENT -->
                     <div class="flex flex-col gap-2">
-                        <h3 :class="[
+                        <h3
+:class="[
                             'font-bold leading-tight tracking-tight text-white transition-colors duration-500 group-hover:text-secondary-400',
                             compact ? 'text-2xl' : 'text-3xl sm:text-4xl'
                         ]">
@@ -57,8 +58,8 @@
 
                 <!-- Interactive Bottom Bar -->
                 <div class="mt-8 flex items-center gap-4">
-                    <div class="h-1 w-12 rounded-full bg-secondary-500/30 transition-all duration-700 group-hover:w-24 group-hover:bg-secondary-500 shadow-[0_0_10px_rgba(16,185,129,0.2)] group-hover:shadow-secondary-500/40"></div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-white opacity-0 transition-all duration-500 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0">
+                    <div class="h-1 w-12 rounded-full bg-secondary-500/30 shadow-[0_0_10px_rgba(16,185,129,0.2)] transition-all duration-700 group-hover:w-24 group-hover:bg-secondary-500 group-hover:shadow-secondary-500/40"></div>
+                    <span class="-translate-x-4 text-xs font-bold uppercase tracking-widest text-white opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
                         {{ $t("project.details") }}
                     </span>
                 </div>

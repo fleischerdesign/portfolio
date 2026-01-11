@@ -1,4 +1,5 @@
-import { H3Event, getValidatedQuery } from 'h3';
+import type { H3Event} from 'h3';
+import { getValidatedQuery } from 'h3';
 import { z } from 'zod';
 
 const publicQuerySchema = z.object({

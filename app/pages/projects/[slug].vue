@@ -1,12 +1,13 @@
 
 <template>
-  <div class="relative overflow-hidden flex-1 w-full">
+  <div class="relative w-full flex-1 overflow-hidden">
     
     <!-- BACKGROUND ATMOSPHERE -->
-    <div class="absolute inset-0 pointer-events-none -z-10">
+    <div class="pointer-events-none absolute inset-0 -z-10">
         <div class="absolute -right-[10%] top-0 h-[700px] w-[700px] rounded-full bg-secondary-500/10 blur-[150px] dark:bg-secondary-500/10"></div>
         <div class="absolute left-[10%] top-[20%] h-[500px] w-[500px] rounded-full bg-secondary-400/5 blur-[120px]"></div>
-        <div class="absolute inset-0 opacity-[0.05] mix-blend-overlay" 
+        <div
+class="absolute inset-0 opacity-[0.05] mix-blend-overlay" 
              style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.99%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E'); background-size: 150px 150px;">
         </div>
     </div>
@@ -28,7 +29,7 @@
                     class="!mb-0 flex-1"
                 >
                     <template #prefix>
-                        <div v-if="project.icon" class="relative group">
+                        <div v-if="project.icon" class="group relative">
                             <div class="absolute -inset-2 rounded-3xl bg-secondary-500/20 blur-xl transition duration-500 group-hover:bg-secondary-500/30"></div>
                             
                             <div class="relative inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-white/50 bg-gradient-to-br from-white/80 to-white/40 shadow-xl backdrop-blur-xl transition-all duration-500 group-hover:scale-105 dark:border-white/10 dark:from-white/10 dark:to-white/5">
@@ -88,13 +89,13 @@
             
             <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent"></div>
 
-            <div class="absolute bottom-8 left-8 z-20 flex items-center gap-6 md:bottom-12 md:left-12 transition-transform duration-500 group-hover:-translate-y-2">
+            <div class="absolute bottom-8 left-8 z-20 flex items-center gap-6 transition-transform duration-500 group-hover:-translate-y-2 md:bottom-12 md:left-12">
                 <div class="flex flex-col gap-1">
                     <div class="flex items-center gap-2">
-                        <span v-if="project.publishedAt" class="flex h-6 px-2 items-center justify-center rounded-md border border-white/20 bg-black/30 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md">
+                        <span v-if="project.publishedAt" class="flex h-6 items-center justify-center rounded-md border border-white/20 bg-black/30 px-2 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md">
                             {{ new Date(project.publishedAt).getFullYear() }}
                         </span>
-                        <span v-if="project.status === 'published'" class="flex h-6 px-2 items-center justify-center rounded-md border border-emerald-500/30 bg-emerald-500/20 text-xs font-bold uppercase tracking-wider text-emerald-400 backdrop-blur-md">
+                        <span v-if="project.status === 'published'" class="flex h-6 items-center justify-center rounded-md border border-emerald-500/30 bg-emerald-500/20 px-2 text-xs font-bold uppercase tracking-wider text-emerald-400 backdrop-blur-md">
                             Live
                         </span>
                     </div>
@@ -111,9 +112,8 @@
             <div class="flex flex-col gap-16">
                 <section>
                     <UiSectionHeader :title="$t('project.case_study')" class="!mb-8" />
-                    <div 
-                      class="prose prose-lg prose-neutral max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-secondary-500 prose-a:no-underline hover:prose-a:underline prose-img:rounded-3xl prose-img:shadow-2xl"
-                      v-html="renderedBody"
+                    <!-- eslint-disable-next-line vue/no-v-html -->
+                    <div class="prose prose-lg prose-neutral max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-secondary-500 prose-a:no-underline hover:prose-a:underline prose-img:rounded-3xl prose-img:shadow-2xl" v-html="renderedBody"
                     >
                     </div>
                 </section>

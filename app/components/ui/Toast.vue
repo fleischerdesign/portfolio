@@ -9,7 +9,7 @@
       {{ message }}
     </div>
 
-    <button v-if="dismissible" @click="$emit('dismiss')" :class="buttonClasses">
+    <button v-if="dismissible" :class="buttonClasses" @click="$emit('dismiss')">
       <span class="sr-only">Close</span>
       <Icon name="heroicons:x-mark-20-solid" class="h-5 w-5" />
     </button>

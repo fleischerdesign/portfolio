@@ -48,7 +48,8 @@
         <div class="ml-0 lg:ml-auto">
           <h3 class="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-secondary-500">{{ $t("footer.sitemap") }}</h3>
           <ul class="grid grid-cols-2 gap-4 text-neutral-600 dark:text-neutral-400">
-            <li v-for="link in [
+            <li
+v-for="link in [
                 { path: '/', label: 'navigation.home' },
                 { path: '/store', label: 'navigation.store' },
                 { path: '/projects', label: 'navigation.projects' },
@@ -68,7 +69,7 @@
       </div>
 
       <!-- Copyright Bar -->
-      <div class="mt-20 flex flex-col items-center justify-between border-t border-neutral-200/30 pt-8 dark:border-neutral-800/30 md:flex-row">
+      <div class="mt-20 flex flex-col items-center justify-between border-t border-neutral-200/30 pt-8 md:flex-row dark:border-neutral-800/30">
         <p class="text-sm font-medium text-neutral-500 dark:text-neutral-500">
             {{ $t("footer.copyright", { year: new Date().getFullYear() }) }}
         </p>

@@ -15,7 +15,7 @@ function calculateReadingTime(text: string): number {
 
 async function migrate() {
   console.log(`🚀 Starting content migration to ${API_BASE}...`);
-  
+
   const headers: HeadersInit = { 'Content-Type': 'application/json' };
   if (API_KEY) headers['X-Api-Key'] = API_KEY;
 
@@ -25,11 +25,11 @@ async function migrate() {
   for (const locale of locales) {
     for (const collection of collections) {
       const dirPath = path.join(CONTENT_DIR, locale, collection);
-      
+
       let files: string[] = [];
       try {
         files = fs.readdirSync(dirPath);
-      } catch (e) {
+      } catch {
         console.warn(`⚠️  Skipping ${locale}/${collection} (not found)`);
         continue;
       }
@@ -47,11 +47,11 @@ async function migrate() {
         console.log(`📄 Processing ${locale}/${collection}/${slug}...`);
 
         let endpoint = '';
-        let payload: any = {};
+        let payload: Record<string, unknown> = {};
 
         if (collection === 'blog') {
           endpoint = `${API_BASE}/blog`;
-          
+
           payload = {
             translationKey,
             locale,

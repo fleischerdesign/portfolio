@@ -5,7 +5,7 @@
     <section class="mb-32 flex flex-col items-center gap-12 lg:flex-row lg:items-start">
       <div class="flex-1 space-y-8 text-center lg:text-left">
         <div>
-          <h1 class="text-5xl font-bold tracking-tight text-neutral-900 dark:text-white sm:text-7xl">
+          <h1 class="text-5xl font-bold tracking-tight text-neutral-900 sm:text-7xl dark:text-white">
             {{ personal.name }}
           </h1>
           <p class="mt-4 text-2xl font-medium text-secondary-500 dark:text-secondary-400">
@@ -47,7 +47,7 @@
     </section>
 
     <!-- Early Life -->
-    <section class="mb-32 scroll-mt-24" id="early-life">
+    <section id="early-life" class="mb-32 scroll-mt-24">
       <UiSectionHeader :title="$t('about.earlyLife.title')" :subtitle="$t('about.earlyLife.subtitle')" class="mb-16"/>
       
       <div class="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
@@ -115,7 +115,7 @@
     </section>
 
     <!-- Career Path & Timeline -->
-     <section class="mb-32 scroll-mt-24" id="career">
+     <section id="career" class="mb-32 scroll-mt-24">
       <UiSectionHeader :title="$t('about.careerPath.title')" :subtitle="$t('about.careerPath.subtitle')" class="mb-16"/>
       
       <!-- Intro Grid for Career -->
@@ -150,13 +150,13 @@
          </div>
       </div>
 
-      <div class="rounded-3xl bg-neutral-50/50 p-8 dark:bg-neutral-900/50 md:p-12">
+      <div class="rounded-3xl bg-neutral-50/50 p-8 md:p-12 dark:bg-neutral-900/50">
           <BaseTimeline :items="timeline" />
       </div>
     </section>
 
     <!-- Interests -->
-     <section class="mb-32 scroll-mt-24" id="interests">
+     <section id="interests" class="mb-32 scroll-mt-24">
         <UiSectionHeader :title="$t('interests.title')" :subtitle="$t('about.personalLife.subtitle')" class="mb-16"/>
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
              <UiCard v-for="(items, category) in interests" :key="category" class="flex flex-col p-8 transition-all hover:-translate-y-2 hover:shadow-xl">
@@ -179,7 +179,7 @@
      </section>
 
      <!-- Personal Life -->
-     <section class="mb-32 scroll-mt-24" id="personal-life">
+     <section id="personal-life" class="mb-32 scroll-mt-24">
         <UiSectionHeader :title="$t('about.personalLife.title')" :subtitle="$t('about.personalLife.subtitle')" class="mb-16"/>
         
         <div class="mb-16 grid gap-12 lg:grid-cols-2">

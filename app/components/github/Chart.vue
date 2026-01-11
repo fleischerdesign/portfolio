@@ -65,7 +65,7 @@
 <script setup lang="ts">
 import { ref, computed, shallowRef, onMounted, onUnmounted, nextTick, watch } from 'vue';
 
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 
 interface Contribution {
   date: string
@@ -78,7 +78,6 @@ const props = defineProps<{
   gap?: number
   minSquareSize?: number
   maxSquareSize?: number
-  initialWeeks?: number
 }>()
 
 const emit = defineEmits<{
@@ -89,7 +88,6 @@ const roundedCorner = props.roundedCorner ?? 4
 const gap = props.gap ?? 4
 const minSquareSize = props.minSquareSize ?? 12
 const maxSquareSize = props.maxSquareSize ?? 16
-const initialWeeks = props.initialWeeks ?? 26
 
 const container = ref<HTMLElement | null>(null)
 const svg = ref<SVGSVGElement | null>(null)

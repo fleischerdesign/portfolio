@@ -2,7 +2,7 @@
   <div id="overview" class="mb-32 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
     
     <!-- 1. GITHUB ACTIVITY -->
-    <UiCard class="col-span-1 border-neutral-200/50 bg-white/50 p-0 dark:border-neutral-800/50 dark:bg-neutral-900/50 md:col-span-2">
+    <UiCard class="col-span-1 border-neutral-200/50 bg-white/50 p-0 md:col-span-2 dark:border-neutral-800/50 dark:bg-neutral-900/50">
       <UiCardContainer class="h-full flex-col justify-between p-8">
         <div class="flex items-start justify-between">
             <div class="flex flex-col gap-1">
@@ -33,7 +33,7 @@
     <UiCard class="group relative col-span-1 min-h-[340px] overflow-hidden border-0 bg-neutral-900 p-0 md:row-span-2">
       <NuxtImg
         src="/img/profile.jpg"
-        class="absolute inset-0 h-full w-full object-cover transition duration-1000 group-hover:scale-110 group-hover:rotate-1"
+        class="absolute inset-0 h-full w-full object-cover transition duration-1000 group-hover:rotate-1 group-hover:scale-110"
         sizes="600px"
         placeholder
         alt="Profile Picture"
@@ -83,7 +83,7 @@
     <!-- 5. JOB SEARCH -->
     <UiCard 
         interactive 
-        class="group relative col-span-1 overflow-hidden border-secondary-500/20 bg-secondary-50/50 dark:border-secondary-500/20 dark:bg-secondary-900/20 md:col-span-2 lg:col-span-2"
+        class="group relative col-span-1 overflow-hidden border-secondary-500/20 bg-secondary-50/50 md:col-span-2 lg:col-span-2 dark:border-secondary-500/20 dark:bg-secondary-900/20"
     >
       <div class="absolute inset-0 -z-10 bg-[radial-gradient(#10b98115_1px,transparent_1px)] bg-[size:20px_20px] opacity-50 transition-opacity group-hover:opacity-100"></div>
       <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-secondary-500/10 blur-[80px] transition-all duration-500 group-hover:bg-secondary-500/20"></div>
@@ -122,9 +122,6 @@ onMounted(async () => {
     await fetchContributions();
   }
 });
-
-const $img = useImage()
-const profilePicUrl = $img('/img/profile.jpg', { width: 800, quality: 100 })
 
 const displayedWeeks = ref(0);
 

@@ -13,7 +13,8 @@
         </div>
 
         <!-- Noise Texture -->
-        <div class="absolute inset-0 z-0 opacity-[0.05] mix-blend-overlay [mask-image:radial-gradient(closest-side,black,transparent)]" 
+        <div
+class="absolute inset-0 z-0 opacity-[0.05] mix-blend-overlay [mask-image:radial-gradient(closest-side,black,transparent)]" 
              style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.99%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E'); background-size: 150px 150px;">
         </div>
     </div>
@@ -28,18 +29,18 @@
 
       <!-- Headline -->
       <div class="flex flex-col gap-4">
-          <h1 class="max-w-4xl animate-fade-in-up text-5xl font-black tracking-tight text-neutral-950 dark:text-white sm:text-6xl lg:text-7xl" style="animation-delay: 200ms;">
+          <h1 class="animate-fade-in-up max-w-4xl text-5xl font-black tracking-tight text-neutral-950 sm:text-6xl lg:text-7xl dark:text-white" style="animation-delay: 200ms;">
             {{ $t("home.hero.greeting") }}
           </h1>
-          <div class="h-2 w-24 animate-fade-in-up rounded-full bg-gradient-to-r from-secondary-500 to-transparent" style="animation-delay: 250ms;"></div>
+          <div class="animate-fade-in-up h-2 w-24 rounded-full bg-gradient-to-r from-secondary-500 to-transparent" style="animation-delay: 250ms;"></div>
       </div>
 
-      <p class="max-w-3xl animate-fade-in-up text-xl leading-relaxed text-neutral-600 dark:text-neutral-400 sm:text-2xl" style="animation-delay: 350ms;">
+      <p class="animate-fade-in-up max-w-3xl text-xl leading-relaxed text-neutral-600 sm:text-2xl dark:text-neutral-400" style="animation-delay: 350ms;">
         {{ $t("home.hero.summary") }}
       </p>
 
       <!-- Actions / Socials -->
-      <div class="flex animate-fade-in-up flex-wrap items-center gap-6 pt-4" style="animation-delay: 450ms;">
+      <div class="animate-fade-in-up flex flex-wrap items-center gap-6 pt-4" style="animation-delay: 450ms;">
         <SocialLinks />
         
         <!-- Scroll Down Indicator -->

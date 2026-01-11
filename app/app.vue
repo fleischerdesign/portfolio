@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-const toastContainer = ref<{ addToast: (message: string, options?: any) => void } | null>(null);
+const toastContainer = ref<{ addToast: (message: string, options?: { type?: 'success' | 'error' | 'info' | 'warning', duration?: number }) => void } | null>(null);
 
 onMounted(() => {
   if (toastContainer.value) {

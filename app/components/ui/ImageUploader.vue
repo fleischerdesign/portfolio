@@ -1,12 +1,15 @@
 
 <script setup lang="ts">
-const props = defineProps<{
-    label?: string;
-    modelValue?: string | null;
-    helperText?: string;
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void;
+  (e: 'upload', file: File): void;
 }>();
 
-const emit = defineEmits(['update:modelValue']);
+defineProps<{
+  modelValue?: string | null;
+  label?: string;
+  uploading?: boolean;
+}>();
 
 const { showToast } = useToast();
 const isLoading = ref(false);
@@ -65,11 +68,11 @@ async function onFileChange(event: Event) {
     <div class="flex items-center gap-4">
         <div 
             v-if="modelValue" 
-            class="relative h-20 w-32 shrink-0 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 group"
+            class="group relative h-20 w-32 shrink-0 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900"
         >
             <NuxtImg :src="modelValue" class="h-full w-full object-cover" />
-            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <button @click="emit('update:modelValue', null)" class="text-white hover:text-red-400 p-1">
+            <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+                <button class="p-1 text-white hover:text-red-400" @click="emit('update:modelValue', null)">
                     <Icon name="heroicons:trash" size="20" />
                 </button>
             </div>
@@ -77,7 +80,7 @@ async function onFileChange(event: Event) {
         
         <div 
             v-else 
-            class="h-20 w-32 shrink-0 rounded-xl border-2 border-dashed border-neutral-200 dark:border-neutral-800 flex items-center justify-center text-neutral-400 bg-neutral-50/50 dark:bg-neutral-900/30"
+            class="flex h-20 w-32 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-neutral-200 bg-neutral-50/50 text-neutral-400 dark:border-neutral-800 dark:bg-neutral-900/30"
         >
             <Icon name="heroicons:photo" size="24" />
         </div>
@@ -92,7 +95,7 @@ async function onFileChange(event: Event) {
                     Remove
                 </UiButton>
             </div>
-            <p v-if="helperText" class="text-[10px] text-neutral-500 uppercase tracking-widest font-bold">
+            <p v-if="helperText" class="text-[10px] font-bold uppercase tracking-widest text-neutral-500">
                 {{ helperText }}
             </p>
         </div>

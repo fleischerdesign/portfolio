@@ -3,11 +3,12 @@
   <div class="relative overflow-hidden">
     
     <!-- BACKGROUND ATMOSPHERE -->
-    <div class="absolute inset-0 pointer-events-none -z-10">
+    <div class="pointer-events-none absolute inset-0 -z-10">
         <div class="absolute -right-[10%] top-0 h-[600px] w-[600px] rounded-full bg-secondary-500/10 blur-[120px] dark:bg-secondary-500/10"></div>
         <div class="absolute left-[10%] top-40 h-[400px] w-[400px] rounded-full bg-secondary-400/5 blur-[100px]"></div>
         
-        <div class="absolute inset-0 opacity-[0.05] mix-blend-overlay" 
+        <div
+class="absolute inset-0 opacity-[0.05] mix-blend-overlay" 
              style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.99%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E'); background-size: 150px 150px;">
         </div>
     </div>
@@ -38,7 +39,7 @@
              </div>
           </div>
 
-          <h1 class="text-5xl font-black tracking-tight text-neutral-950 dark:text-white sm:text-6xl lg:text-7xl leading-[1.1]">
+          <h1 class="text-5xl font-black leading-[1.1] tracking-tight text-neutral-950 sm:text-6xl lg:text-7xl dark:text-white">
             {{ post.title }}
           </h1>
 
@@ -48,7 +49,7 @@
             {{ post.excerpt }}
           </p>
 
-          <div class="flex items-center gap-4 pt-4" v-if="post.author">
+          <div v-if="post.author" class="flex items-center gap-4 pt-4">
               <NuxtImg v-if="post.author.avatar" :src="post.author.avatar" width="48" height="48" class="h-12 w-12 rounded-2xl border border-neutral-200 dark:border-neutral-700" alt="Author" />
               <div class="flex flex-col">
                   <span class="text-base font-bold text-neutral-900 dark:text-white">{{ post.author.name }}</span>
@@ -57,7 +58,7 @@
           </div>
         </header>
 
-        <div v-if="post.coverImage" class="group relative mb-20 w-full aspect-[21/9] overflow-hidden rounded-[2.5rem] border border-neutral-200/50 bg-neutral-100 shadow-2xl dark:border-neutral-800/50 dark:bg-neutral-900">
+        <div v-if="post.coverImage" class="group relative mb-20 aspect-[21/9] w-full overflow-hidden rounded-[2.5rem] border border-neutral-200/50 bg-neutral-100 shadow-2xl dark:border-neutral-800/50 dark:bg-neutral-900">
             <div class="pointer-events-none absolute -right-20 -top-20 z-10 h-96 w-96 rounded-full bg-secondary-500/10 blur-[100px]"></div>
             
             <NuxtImg
@@ -73,9 +74,8 @@
         </div>
 
         <div class="w-full max-w-4xl">
-            <div 
-              class="prose prose-lg prose-neutral max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-secondary-500 prose-a:no-underline hover:prose-a:underline prose-img:rounded-3xl prose-img:shadow-2xl prose-blockquote:border-secondary-500 prose-blockquote:bg-secondary-500/5 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl"
-              v-html="renderedBody"
+          <!-- eslint-disable-next-line vue/no-v-html -->
+            <div class="prose prose-lg prose-neutral max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-secondary-500 prose-a:no-underline hover:prose-a:underline prose-blockquote:rounded-r-2xl prose-blockquote:border-secondary-500 prose-blockquote:bg-secondary-500/5 prose-blockquote:px-6 prose-blockquote:py-2 prose-img:rounded-3xl prose-img:shadow-2xl" v-html="renderedBody"
             >
             </div>
 
@@ -97,7 +97,7 @@
 </template>
 
 <script lang="ts" setup>
-const { locale, t } = useI18n()
+const { locale } = useI18n()
 const route = useRoute()
 const { render } = useMarkdown()
 

@@ -1,8 +1,14 @@
 import { writeFile, mkdir } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
+interface UploadedFile {
+  filename?: string;
+  data: Buffer;
+  type?: string;
+}
+
 export const mediaService = {
-  async saveFile(file: any, type: string = 'images') {
+  async saveFile(file: UploadedFile, type: string = 'images') {
     const baseDir = resolve(process.cwd(), '.data/uploads', type);
     
     // Ensure directory exists

@@ -1,6 +1,6 @@
-import { applications, companies, addresses, applicationHistories, contacts, applications_to_contacts } from '~~/server/db/schema';
-import { ApplicationResponsePayload, ApplicationCreatePayload, Status } from '~~/shared/schemas/application.schema';
-import { CompanyResponse } from '~~/shared/schemas/company.schema';
+import { applications, companies, addresses, applicationHistories, applications_to_contacts } from '~~/server/db/schema';
+import type { ApplicationResponsePayload, ApplicationCreatePayload, Status } from '~~/shared/schemas/application.schema';
+import type { CompanyResponse } from '~~/shared/schemas/company.schema';
 import { eq, desc, and, inArray } from 'drizzle-orm';
 import fs from 'fs';
 import path from 'path';
@@ -94,7 +94,13 @@ export const applicationService = {
   },
 
   async updateHistory(historyId: number, data: { status?: Status; notes?: string; scheduled_at?: string | null }) {
-    // ...
+    return await db.update(applicationHistories)
+      .set({
+        ...data,
+        scheduled_at: data.scheduled_at ? new Date(data.scheduled_at) : (data.scheduled_at === null ? null : undefined),
+      })
+      .where(eq(applicationHistories.id, historyId))
+      .returning();
   },
 
   async deleteHistory(historyId: number) {
@@ -109,24 +115,19 @@ export const applicationService = {
     }
 
     const result = await db.transaction(async (tx) => {
-      // Delete related records first
       await tx.delete(applications_to_contacts).where(eq(applications_to_contacts.applicationId, application.id));
       await tx.delete(applicationHistories).where(eq(applicationHistories.applicationId, application.id));
       
-      // Delete the application
       const [deleted] = await tx.delete(applications).where(eq(applications.id, application.id)).returning();
       return deleted;
     });
 
-    // Delete the associated PDF file, if it exists
-    // Ideally, the path should be configurable or retrieved from a config/constant
     const pdfPath = path.join(process.cwd(), 'data', 'applications', `${slug}.pdf`);
     if (fs.existsSync(pdfPath)) {
       try {
         fs.unlinkSync(pdfPath);
       } catch (err) {
         console.error(`Failed to delete PDF for ${slug}:`, err);
-        // We don't throw here to ensure the API response is still successful if the DB delete worked
       }
     }
 

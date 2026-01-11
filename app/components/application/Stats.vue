@@ -68,7 +68,7 @@ const stats = computed(() => [
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
     <UiCard v-for="stat in stats" :key="stat.key" class="border-secondary-500/10 shadow-lg shadow-secondary-500/5">
       <UiCardContainer class="!flex-row items-center justify-center gap-4">
-        <div class="flex-shrink-0 rounded-xl bg-secondary-50 p-3 dark:bg-secondary-900/20 border border-secondary-200/50 dark:border-secondary-500/10">
+        <div class="flex-shrink-0 rounded-xl border border-secondary-200/50 bg-secondary-50 p-3 dark:border-secondary-500/10 dark:bg-secondary-900/20">
           <Icon :name="stat.icon" class="h-6 w-6 text-secondary-600 dark:text-secondary-400" />
         </div>
         <div class="flex flex-col">
