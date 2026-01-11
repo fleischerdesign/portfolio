@@ -1,31 +1,7 @@
-import type { ProjectUpdate } from '~~/shared/schemas/project.schema';
-
-interface ProjectTranslation {
-  locale: string;
-  title: string;
-  subtitle?: string | null;
-  body: string;
-  slug: string;
-  features?: string[] | null;
-  learned?: string[] | null;
-  challenges?: string[] | null;
-}
+import type { ProjectUpdate, ProjectStudioResponse } from '~~/shared/schemas/project.schema';
 
 interface RawProjectData {
-  project: {
-    status: 'draft' | 'published' | 'archived';
-    publishedAt: string | Date | null;
-    coverImage: string | null;
-    coverImageAlt: string | null;
-    icon: string | null;
-    repoUrl: string | null;
-    projectUrl: string | null;
-    translationKey: string;
-    category?: { name: string } | null;
-    tags: Array<{ name?: string; tag?: { name: string } }>;
-    techstack: Array<{ name?: string; technology?: { name: string } }>;
-    translations: ProjectTranslation[];
-  };
+  project: ProjectStudioResponse;
 }
 
 export function useProjectEditor(projectId: number, initialData: Ref<RawProjectData | null>, refreshProject: () => Promise<void>) {
@@ -61,13 +37,13 @@ export function useProjectEditor(projectId: number, initialData: Ref<RawProjectD
         status: p.status,
         publishedAt: p.publishedAt ? new Date(p.publishedAt).toISOString().slice(0, 16) : null,
         coverImage: p.coverImage,
-        coverImageAlt: p.coverImageAlt,
-        icon: p.icon,
-        repoUrl: p.repoUrl,
-        projectUrl: p.projectUrl,
+        coverImageAlt: p.coverImageAlt || null,
+        icon: p.icon || null,
+        repoUrl: p.repoUrl || null,
+        projectUrl: p.projectUrl || null,
         categoryName: p.category?.name || null,
-        tags: p.tags.map((t) => t.name || t.tag?.name || '').filter((t: string) => t !== ''),
-        techstack: p.techstack.map((t) => t.name || t.technology?.name || '').filter((t: string) => t !== ''),
+        tags: p.tags.map((t) => t.name).filter((t: string) => t !== ''),
+        techstack: p.techstack.map((t) => t.name).filter((t: string) => t !== ''),
         translationKey: p.translationKey
       },
       de: { title: '', subtitle: '', body: '', slug: '', features: [], learned: [], challenges: [] },

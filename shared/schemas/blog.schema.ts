@@ -65,9 +65,14 @@ export const blogPostTranslationSchema = z.object({
 export const blogPostStudioResponseSchema = z.object({
   id: z.number(),
   status: z.enum(['draft', 'published', 'archived']),
+  translationKey: z.string(),
   coverImage: z.string().nullable(),
+  coverImageAlt: z.string().nullable(),
+  publishedAt: z.union([z.string(), z.date()]).transform(val => new Date(val)).nullable(),
   createdAt: z.union([z.string(), z.date()]).transform(val => new Date(val)).nullable(),
-  translations: z.array(blogPostTranslationSchema),
+  translations: z.array(blogPostTranslationSchema.extend({
+      body: z.string(),
+  })),
   tags: z.array(blogTagSchema),
   category: blogCategorySchema.nullable(),
   author: authorSchema.nullable(),
