@@ -6,6 +6,7 @@ import type { CompanyResponse } from '#shared/schemas/company.schema';
 const { getStatusChipClasses, getStatusTextClasses, getFormattedLastActivityDate, getDisplayDate } = useApplicationUtils();
 const { render } = useMarkdown(); 
 const { getSalutation } = useSalutation();
+const { t } = useI18n();
 
 definePageMeta({
   middleware: 'authorize',
@@ -282,11 +283,11 @@ onMounted(() => {
                          >
                             <template #display="{ option }">
                                 {{ option.name }}
-                                <span v-if="option.company" class="ml-1 opacity-50">({{ option.company.name }})</span>
+                                <span v-if="option.companyId" class="ml-1 opacity-50">({{ allCompanies.find(c => c.id === option.companyId)?.name }})</span>
                             </template>
                             <template #option="{ option }">
                                 {{ option.name }}
-                                <span v-if="option.company" class="ml-1 text-xs opacity-50">({{ option.company.name }})</span>
+                                <span v-if="option.companyId" class="ml-1 text-xs opacity-50">({{ allCompanies.find(c => c.id === option.companyId)?.name }})</span>
                             </template>
                          </UiSelect>
                     </div>

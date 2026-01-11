@@ -37,7 +37,7 @@ defineOptions({
   inheritAttrs: false
 });
 
-const model = defineModel<string | number>();
+const model = defineModel<string | number | null>();
 
 interface Props {
   id: string;

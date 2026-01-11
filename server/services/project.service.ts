@@ -1,6 +1,6 @@
 import { projects, projectTranslations, categories, tags, technologies, projectsToTags, projectsToTechnologies } from '~~/server/db/schema';
 import { desc, eq } from 'drizzle-orm';
-import type { ProjectResponse, ProjectDetailResponse, ProjectUpdate, ProjectCreate } from '~~/shared/schemas/project.schema';
+import type { ProjectResponse, ProjectUpdate, ProjectCreate } from '~~/shared/schemas/project.schema';
 
 export const projectService = {
   // Public Methods
@@ -36,11 +36,11 @@ export const projectService = {
         techstack: project.techstack.map(t => t.technology),
         author: project.author || null,
         category: project.category || null,
-      };
+      } as ProjectResponse;
     }).filter((p): p is ProjectResponse => p !== null);
   },
 
-  async getPublicBySlug(slug: string, locale: 'de' | 'en'): Promise<ProjectDetailResponse | null> {
+  async getPublicBySlug(slug: string, locale: 'de' | 'en'): Promise<ProjectResponse | null> {
     const translation = await db.query.projectTranslations.findFirst({
       where: (t, { eq, and }) => and(eq(t.slug, slug), eq(t.locale, locale)),
       with: {
@@ -73,7 +73,7 @@ export const projectService = {
       techstack: project.techstack.map(t => t.technology),
       author: project.author || null,
       category: project.category || null,
-    };
+    } as ProjectResponse;
   },
 
   // Studio Methods

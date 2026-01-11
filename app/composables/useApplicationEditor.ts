@@ -1,13 +1,13 @@
 import type { ApplicationUpdatePayload, ApplicationResponsePayload, ApplicationHistoryPayload } from '#shared/schemas/application.schema';
 import type { CompanyResponse } from '#shared/schemas/company.schema';
-import type { Contact } from '#shared/schemas/contact.schema';
+import type { ContactResponse } from '#shared/schemas/contact.schema';
 
 interface EditableApplication extends Partial<ApplicationUpdatePayload> {
   id: number;
   histories: (ApplicationHistoryPayload & { _deleted?: boolean })[];
   companyId: number;
   selectedCompany?: CompanyResponse;
-  selectedContacts?: Contact[];
+  selectedContacts?: ContactResponse[];
 }
 
 export function useApplicationEditor(initialApplication: Ref<ApplicationResponsePayload | null>, refreshApplication: () => Promise<void>, slug: Ref<string>) {
@@ -16,7 +16,7 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
   const editableApplication = ref<EditableApplication | null>(null);
 
   const allCompanies = ref<CompanyResponse[]>([]);
-  const allContacts = ref<Contact[]>([]);
+  const allContacts = ref<ContactResponse[]>([]);
 
   // Contact modal state (might be moved to useContactSelector later)
   const showContactFormModal = ref(false);
@@ -32,14 +32,17 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
       const companiesData = await useRequestFetch()<{ companies: CompanyResponse[] }>('/api/companies');
       allCompanies.value = companiesData.companies || [];
 
-      const contactsData = await useRequestFetch()<{ contacts: Contact[] }>('/api/contacts');
+      const contactsData = await useRequestFetch()<{ contacts: ContactResponse[] }>('/api/contacts');
       allContacts.value = contactsData.contacts || [];
 
+      const initialApp = initialApplication.value;
+      if (!initialApp) throw new Error('Initial application data is missing.');
+
       editableApplication.value = {
-        ...JSON.parse(JSON.stringify(toRaw(initialApplication.value))), // Deep copy to detach reactivity
-        companyId: initialApplication.value.company.id,
-        selectedCompany: allCompanies.value.find(c => c.id === initialApplication.value.company.id),
-        selectedContacts: initialApplication.value.contacts,
+        ...JSON.parse(JSON.stringify(toRaw(initialApp))), // Deep copy to detach reactivity
+        companyId: initialApp.company.id,
+        selectedCompany: allCompanies.value.find(c => c.id === initialApp.company.id),
+        selectedContacts: initialApp.contacts,
       };
       isEditing.value = true;
     } catch (error) {
@@ -111,15 +114,10 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
     showContactFormModal.value = true;
   }
 
-  function handleContactCreated(newContact: Contact) {
-    const company = allCompanies.value.find(c => c.id === newContact.companyId);
-    const enrichedContact = {
-      ...newContact,
-      company: company || null,
-    };
-    allContacts.value.push(enrichedContact);
+  function handleContactCreated(newContact: ContactResponse) {
+    allContacts.value.push(newContact);
     if (editableApplication.value) {
-      editableApplication.value.selectedContacts?.push(enrichedContact);
+      editableApplication.value.selectedContacts?.push(newContact);
     }
     showContactFormModal.value = false;
   }

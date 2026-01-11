@@ -46,8 +46,8 @@ export function useProjectEditor(projectId: number, initialData: Ref<RawProjectD
         techstack: p.techstack.map((t) => t.name).filter((t: string) => t !== ''),
         translationKey: p.translationKey
       },
-      de: { title: '', subtitle: '', body: '', slug: '', features: [], learned: [], challenges: [] },
-      en: { title: '', subtitle: '', body: '', slug: '', features: [], learned: [], challenges: [] }
+      de: { title: '', subtitle: '', body: '', slug: '', features: [] as string[], learned: [] as string[], challenges: [] as string[] },
+      en: { title: '', subtitle: '', body: '', slug: '', features: [] as string[], learned: [] as string[], challenges: [] as string[] }
     };
 
     p.translations.forEach((t) => {

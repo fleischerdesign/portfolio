@@ -40,7 +40,8 @@ async function create() {
       coverImage: null,
       coverImageAlt: null,
       categoryName: null,
-      tags: []
+      tags: [],
+      readingTime: 0
     };
 
     const res = await $fetch('/api/blog', {
@@ -77,11 +78,11 @@ async function create() {
                 <p class="text-neutral-500">Start with the basics. You can edit everything else later.</p>
             </div>
 
-            <UiInput v-model="form.title" label="Title (German)" placeholder="My Awesome Article" required />
+            <UiInput id="title" v-model="form.title" label="Title (German)" placeholder="My Awesome Article" required />
             
             <div class="grid grid-cols-2 gap-4">
-                <UiInput v-model="form.slug" label="URL Slug" placeholder="my-awesome-article" />
-                <UiInput v-model="form.translationKey" label="Translation Key (ID)" placeholder="my-awesome-article" />
+                <UiInput id="slug" v-model="form.slug" label="URL Slug" placeholder="my-awesome-article" />
+                <UiInput id="translationKey" v-model="form.translationKey" label="Translation Key (ID)" placeholder="my-awesome-article" />
             </div>
 
             <UiButton class="mt-4 w-full" :is-loading="isLoading" @click="create">

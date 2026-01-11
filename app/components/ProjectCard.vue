@@ -73,7 +73,7 @@
 import type { ProjectResponse } from '~~/shared/schemas/project.schema';
 
 defineProps<{
-    project: ProjectResponse,
+    project: Omit<ProjectResponse, 'publishedAt'> & { publishedAt: string | Date | null },
     compact?: boolean
 }>()
 </script>

@@ -30,7 +30,7 @@ export const useSalutation = () => {
     }
 
     if (contacts.length === 1) {
-      const contact = contacts[0];
+      const contact = contacts[0]!;
       const formattedName = formatName(contact, format);
 
       switch (contact.salutation) {

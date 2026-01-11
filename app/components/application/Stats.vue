@@ -23,7 +23,7 @@ const responseRate = computed(() => {
 const interviewRate = computed(() => {
   if (totalApplications.value === 0) return 0;
   const interviewCount = props.applications.filter(
-    app => app.interviews && app.interviews.length > 0 || ['interview', 'offer', 'rejected'].includes(app.currentStatus)
+    app => app.histories.some(h => h.status === 'interview') || ['interview', 'offer', 'rejected'].includes(app.currentStatus)
   ).length;
   return Math.round((interviewCount / totalApplications.value) * 100);
 });

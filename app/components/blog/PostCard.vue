@@ -65,7 +65,7 @@ import { computed } from 'vue';
 import type { BlogPostResponse } from '~~/shared/schemas/blog.schema';
 
 const props = defineProps<{
-    post: BlogPostResponse
+    post: Omit<BlogPostResponse, 'publishedAt'> & { publishedAt: string | Date | null }
 }>()
 
 const formattedDate = computed(() => props.post.publishedAt ? formatDate(props.post.publishedAt) : '')

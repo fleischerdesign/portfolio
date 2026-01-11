@@ -1,6 +1,6 @@
 import { blogPosts, blogPostTranslations, categories, tags, blogPostsToTags } from '~~/server/db/schema';
 import { desc, eq } from 'drizzle-orm';
-import type { BlogPostResponse, BlogPostDetailResponse, BlogPostUpdate, BlogPostCreate } from '~~/shared/schemas/blog.schema';
+import type { BlogPostResponse, BlogPostUpdate, BlogPostCreate } from '~~/shared/schemas/blog.schema';
 
 export const blogService = {
   // Public Methods
@@ -32,6 +32,10 @@ export const blogService = {
         slug: translation.slug,
         title: translation.title,
         excerpt: translation.excerpt,
+        body: translation.body,
+        status: post.status,
+        translationKey: post.translationKey,
+        locale: translation.locale,
         publishedAt: post.publishedAt,
         coverImage: post.coverImage,
         coverImageAlt: post.coverImageAlt,
@@ -43,7 +47,7 @@ export const blogService = {
     }).filter((p): p is BlogPostResponse => p !== null);
   },
 
-  async getPublicBySlug(slug: string, locale: 'de' | 'en'): Promise<BlogPostDetailResponse | null> {
+  async getPublicBySlug(slug: string, locale: 'de' | 'en'): Promise<BlogPostResponse | null> {
     const translation = await db.query.blogPostTranslations.findFirst({
       where: (t, { eq, and }) => and(eq(t.slug, slug), eq(t.locale, locale)),
       with: {
@@ -72,7 +76,7 @@ export const blogService = {
       tags: post.tags.map(t => t.tag),
       author: post.author || null,
       category: post.category || null,
-    };
+    } as BlogPostResponse;
   },
 
   // Studio Methods

@@ -31,8 +31,10 @@ export const applicationCreateSchema = applicationBaseSchema.omit({
   createdAt: true,
   updatedAt: true,
   pdfGeneratedAt: true,
+  companyId: true,
 }).extend({
-  companyName: z.string(), // For creating a new company on the fly
+  companyId: z.number().optional(),
+  companyName: z.string().optional(), // Made optional too
   companyAddress: z.object({
     street: z.string(),
     houseNumber: z.string(),

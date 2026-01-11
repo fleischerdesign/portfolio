@@ -1,13 +1,14 @@
 
 <script setup lang="ts">
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void;
+  (e: 'update:modelValue', value: string | null): void;
   (e: 'upload', file: File): void;
 }>();
 
 defineProps<{
   modelValue?: string | null;
   label?: string;
+  helperText?: string;
   uploading?: boolean;
 }>();
 

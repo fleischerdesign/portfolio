@@ -13,6 +13,13 @@ export const contactBaseSchema = z.object({
 export const contactCreateSchema = contactBaseSchema.omit({ id: true });
 export const contactUpdateSchema = contactCreateSchema.partial();
 
+export const contactResponseSchema = contactBaseSchema.extend({
+  company: z.object({
+    name: z.string(),
+  }).nullable().optional(),
+});
+
 export type Contact = z.infer<typeof contactBaseSchema>;
 export type ContactCreate = z.infer<typeof contactCreateSchema>;
 export type ContactUpdate = z.infer<typeof contactUpdateSchema>;
+export type ContactResponse = z.infer<typeof contactResponseSchema>;

@@ -23,7 +23,7 @@ const form = ref<ContactCreate>({
   position: '',
   email: '',
   phone: '',
-  companyId: props.companyId,
+  companyId: props.companyId ?? null,
 });
 
 const selectedCompany = computed({
@@ -32,12 +32,12 @@ const selectedCompany = computed({
     return companies.value.find(c => c.id === form.value.companyId);
   },
   set(company) {
-    form.value.companyId = company?.id;
+    form.value.companyId = company?.id ?? null;
   }
 });
 
 watch(() => props.companyId, (newId) => {
-  form.value.companyId = newId;
+  form.value.companyId = newId ?? null;
 });
 
 watch(() => props.name, (newName) => {

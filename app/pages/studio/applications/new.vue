@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ApplicationCreatePayload } from '#shared/schemas/application.schema';
 import type { CompanyResponse } from '#shared/schemas/company.schema';
-import type { Contact } from '#shared/schemas/contact.schema';
+import type { ContactResponse } from '#shared/schemas/contact.schema';
 
 definePageMeta({
   middleware: 'authorize',
@@ -15,10 +15,10 @@ const isLoading = ref(false);
 
 // Refs for Companies and Contacts
 const allCompanies = ref<CompanyResponse[]>([]);
-const allContacts = ref<Contact[]>([]);
+const allContacts = ref<ContactResponse[]>([]);
 
 const selectedCompany = ref<CompanyResponse | undefined>(undefined);
-const selectedContacts = ref<Contact[]>([]);
+const selectedContacts = ref<ContactResponse[]>([]);
 
 // Refs for new company/address fields
 const newCompanyName = ref('');
@@ -35,7 +35,7 @@ onMounted(async () => {
   try {
     const [companiesRes, contactsRes] = await Promise.all([
       $fetch<{ companies: CompanyResponse[] }>('/api/companies'),
-      $fetch<{ contacts: Contact[] }>('/api/contacts')
+      $fetch<{ contacts: ContactResponse[] }>('/api/contacts')
     ]);
     allCompanies.value = companiesRes.companies;
     allContacts.value = contactsRes.contacts;
@@ -45,14 +45,14 @@ onMounted(async () => {
   }
 });
 
-const form = ref<Omit<ApplicationCreatePayload, 'companyName' | 'companyAddress' | 'contactIds' | 'companyId'> & { companyId?: number, contactIds?: number[] }>({
+const form = ref<Omit<ApplicationCreatePayload, 'companyName' | 'companyAddress' | 'contactIds' | 'companyId'> & { companyId?: number, contactIds?: number[] }>(
+{
   title: '',
   subtitle: '',
   slug: '',
   url: '',
   body: '',
   notes: [],
-  interviews: [],
   companyId: undefined, // Will be set by selection or new company creation
   contactIds: [],
 });
@@ -177,7 +177,7 @@ function handleCancelContactForm() {
                   {{ option.name }}
                 </template>
               </UiSelect>
-              <UiButton variant="outline" @click="showNewCompanyForm = !showNewCompanyForm">
+              <UiButton variant="secondary" @click="showNewCompanyForm = !showNewCompanyForm">
                 {{ showNewCompanyForm ? $t('applications.new.existing_company') : $t('applications.new.new_company') }}
               </UiButton>
             </div>

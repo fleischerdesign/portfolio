@@ -28,7 +28,7 @@ const themeHex = computed(() => {
   if (HexRegex.test(props.theme))
     return props.theme
 
-  if (HexHexRegex.test(`#${props.theme}`))
+  if (HexRegex.test(`#${props.theme}`))
     return `#${props.theme}`
 
   if (props.theme.startsWith('rgb')) {
@@ -78,7 +78,7 @@ const siteLogo = computed(() => {
     />
     <div class="relative h-full w-full justify-between">
       <div class="flex flex-row items-start justify-start gap-x-12">
-        <div v-if="Boolean(icon)" class="flex justify-start" style="width: 400px; height: 400px;">
+        <div v-if="typeof icon === 'string'" class="flex justify-start" style="width: 400px; height: 400px;">
           <Icon :name="icon" style="width: 100%; height: 100%; opacity: 0.7;" />
         </div>
         <div class="flex w-full flex-col">
