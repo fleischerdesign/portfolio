@@ -108,6 +108,16 @@ function getStatusColor(status: string) {
                         <UiInput id="project-title" label="Title" v-model="editableProject[currentLocale].title" class="text-xl font-bold" />
                         <UiInput id="project-slug" label="Slug" v-model="editableProject[currentLocale].slug" class="font-mono text-sm" />
                         <UiInput id="project-subtitle" label="Subtitle" v-model="editableProject[currentLocale].subtitle" as="textarea" rows="2" />
+                        
+                        <div class="pt-4 border-t border-neutral-100 dark:border-neutral-800">
+                            <UiImageUploader 
+                                label="Cover Image" 
+                                v-model="editableProject.common.coverImage" 
+                                helper-text="Upload a representative cover image."
+                            />
+                            
+                            <UiInput id="project-image-alt" label="Alt Text" v-model="editableProject.common.coverImageAlt" class="mt-4" />
+                        </div>
                     </UiCardContainer>
                 </UiCard>
 
@@ -262,15 +272,7 @@ function getStatusColor(status: string) {
 
                 <UiCard>
                     <UiCardContainer class="p-6 space-y-6">
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-secondary-500">Media & Links</h3>
-                        
-                        <UiImageUploader 
-                            label="Cover Image" 
-                            v-model="editableProject.common.coverImage" 
-                            helper-text="Upload a representative cover image."
-                        />
-                        
-                        <UiInput id="project-image-alt" label="Alt Text" v-model="editableProject.common.coverImageAlt" />
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-secondary-500">Links & Icon</h3>
                         
                         <UiInput id="project-icon" label="Icon (e.g. mage:folder)" v-model="editableProject.common.icon" />
                          <div v-if="editableProject.common.icon" class="flex items-center gap-2 p-2 bg-neutral-100 dark:bg-neutral-800 rounded">

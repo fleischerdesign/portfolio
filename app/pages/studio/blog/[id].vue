@@ -140,6 +140,16 @@ function getStatusColor(status: string) {
                         <UiInput id="post-title" label="Title" v-model="editablePost[currentLocale].title" class="text-xl font-bold" />
                         <UiInput id="post-slug" label="Slug" v-model="editablePost[currentLocale].slug" class="font-mono text-sm" />
                         <UiInput id="post-excerpt" label="Excerpt" v-model="editablePost[currentLocale].excerpt" as="textarea" rows="3" />
+                        
+                        <div class="pt-4 border-t border-neutral-100 dark:border-neutral-800">
+                            <UiImageUploader 
+                                label="Cover Image" 
+                                v-model="editablePost.common.coverImage" 
+                                helper-text="Upload a representative cover image for the post."
+                            />
+                            
+                            <UiInput id="post-image-alt" label="Alt Text" v-model="editablePost.common.coverImageAlt" class="mt-4" />
+                        </div>
                     </UiCardContainer>
                 </UiCard>
 
@@ -245,20 +255,6 @@ function getStatusColor(status: string) {
                                 <UiChip v-for="tag in editablePost.common.tags" :key="tag" size="xs">{{ tag }}</UiChip>
                             </div>
                         </div>
-                    </UiCardContainer>
-                </UiCard>
-
-                <UiCard>
-                    <UiCardContainer class="p-6 space-y-6">
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-secondary-500">Media</h3>
-                        
-                        <UiImageUploader 
-                            label="Cover Image" 
-                            v-model="editablePost.common.coverImage" 
-                            helper-text="Upload a representative cover image for the post."
-                        />
-                        
-                        <UiInput id="post-image-alt" label="Alt Text" v-model="editablePost.common.coverImageAlt" />
                     </UiCardContainer>
                 </UiCard>
             </template>
