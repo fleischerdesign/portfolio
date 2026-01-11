@@ -6,6 +6,9 @@ import { CompanyResponse } from '../../../shared/schemas/company.schema';
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
 
+  const query = getQuery(event);
+  const limit = query.limit ? parseInt(query.limit as string) : undefined;
+
   // Temporary dummy data creation logic - keep as is for now
   const existingApplication = await db.query.applications.findFirst();
 
@@ -84,6 +87,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const allApplications = await db.query.applications.findMany({
+    limit,
     with: {
       company: {
         with: {

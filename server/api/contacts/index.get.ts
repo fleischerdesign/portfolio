@@ -6,8 +6,10 @@ export default defineEventHandler(async (event) => {
   
   const query = getQuery(event);
   const companyId = query.companyId ? Number(query.companyId) : undefined;
+  const limit = query.limit ? parseInt(query.limit as string) : undefined;
 
   const contacts = await db.query.contacts.findMany({
+    limit,
     where: companyId ? eq(db.contacts.companyId, companyId) : undefined,
     with: {
       company: {
