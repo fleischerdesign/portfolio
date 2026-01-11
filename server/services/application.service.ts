@@ -147,8 +147,9 @@ export const applicationService = {
           addressId = newAddress.id;
         }
     
+        const companyName = data.companyName || '';
         const existingCompany = await tx.query.companies.findFirst({
-          where: eq(companies.name, data.companyName),
+          where: eq(companies.name, companyName),
         });
     
         if (existingCompany) {
@@ -158,17 +159,20 @@ export const applicationService = {
           }
         } else {
           const [newCompany] = await tx.insert(companies).values({
-            name: data.companyName,
+            name: companyName,
             addressId: addressId,
           }).returning();
           if (!newCompany) { throw createError({ statusCode: 500, statusMessage: 'Failed to insert company' }); }
           companyId = newCompany.id;
         }
         
-        const { companyName, companyAddress, ...applicationData } = data;
+        const { companyName: _, companyAddress, ...applicationData } = data;
         const applicationInsertData = {
           ...applicationData,
           companyId,
+          createdAt: applicationData.createdAt ? new Date(applicationData.createdAt) : undefined,
+          updatedAt: applicationData.updatedAt ? new Date(applicationData.updatedAt) : undefined,
+          pdfGeneratedAt: applicationData.pdfGeneratedAt ? new Date(applicationData.pdfGeneratedAt) : undefined,
         };
     
         const existingApplication = await tx.query.applications.findFirst({

@@ -1,5 +1,5 @@
 import { companies, addresses } from '~~/server/db/schema';
-import type { CompanyCreatePayload, Address } from '~~/shared/schemas/company.schema';
+import type { CompanyCreate, Address } from '~~/shared/schemas/company.schema';
 import { eq } from 'drizzle-orm';
 
 export const companyService = {
@@ -14,7 +14,7 @@ export const companyService = {
     });
   },
 
-  async create(data: CompanyCreatePayload) {
+  async create(data: CompanyCreate) {
     const { address, ...companyData } = data;
   
     return await db.transaction(async (tx) => {

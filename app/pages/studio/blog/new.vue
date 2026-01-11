@@ -44,7 +44,7 @@ async function create() {
       readingTime: 0
     };
 
-    const res = await $fetch('/api/blog', {
+    const res = await ($fetch as any)('/api/blog', {
       method: 'POST',
       body: payload
     }) as { id?: number; result?: { id: number } };

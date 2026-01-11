@@ -28,9 +28,6 @@ export const applicationBaseSchema = z.object({
 
 export const applicationCreateSchema = applicationBaseSchema.omit({
   id: true,
-  createdAt: true,
-  updatedAt: true,
-  pdfGeneratedAt: true,
   companyId: true,
 }).extend({
   companyId: z.number().optional(),

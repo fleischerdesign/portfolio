@@ -355,8 +355,7 @@ const projects = computed(() => projectsData.value?.projects || []);
              <div class="grid grid-cols-1 gap-3">
                <div v-for="project in projects.slice(0,3)" :key="project.slug" class="group flex items-center gap-4 rounded-2xl border border-neutral-100 bg-white p-3 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md">
                   <div class="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50">
-                     <img v-if="project.image" :src="typeof project.image === 'string' ? project.image : project.image.src" class="h-full w-full object-cover opacity-30 grayscale transition-all group-hover:opacity-100 group-hover:grayscale-0" />
-                     <div class="absolute inset-0 flex items-center justify-center">
+                                           <img v-if="project.coverImage" :src="project.coverImage" class="h-full w-full object-cover opacity-30 grayscale transition-all group-hover:opacity-100 group-hover:grayscale-0" />                     <div class="absolute inset-0 flex items-center justify-center">
                         <Icon :name="project.icon || 'heroicons:folder'" mode="svg" class="text-secondary-600 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] [&_*]:!fill-current" size="24" />
                      </div>
                   </div>

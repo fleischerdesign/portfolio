@@ -1,6 +1,6 @@
 import type { BlogPostUpdate, BlogPostStudioResponse } from '~~/shared/schemas/blog.schema';
 
-export function useBlogEditor(postId: number, initialData: Ref<{ post: BlogPostStudioResponse } | null>, refreshPost: () => Promise<void>) {
+export function useBlogEditor(postId: number, initialData: Ref<{ post: BlogPostStudioResponse } | null | undefined>, refreshPost: () => Promise<void>) {
   const { showToast } = useToast();
   const isLoading = ref(false);
   const isEditing = ref(false);

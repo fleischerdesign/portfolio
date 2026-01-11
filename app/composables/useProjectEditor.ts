@@ -4,7 +4,7 @@ interface RawProjectData {
   project: ProjectStudioResponse;
 }
 
-export function useProjectEditor(projectId: number, initialData: Ref<RawProjectData | null>, refreshProject: () => Promise<void>) {
+export function useProjectEditor(projectId: number, initialData: Ref<RawProjectData | null | undefined>, refreshProject: () => Promise<void>) {
   const { showToast } = useToast();
   const isLoading = ref(false);
   const isEditing = ref(false);

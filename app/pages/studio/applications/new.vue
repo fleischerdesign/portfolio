@@ -127,7 +127,7 @@ function handleCreateContactRequest() {
   showContactFormModal.value = true;
 }
 
-function handleContactCreated(newContact: Contact) {
+function handleContactCreated(newContact: ContactResponse) {
   allContacts.value.push(newContact);
   selectedContacts.value.push(newContact);
   showContactFormModal.value = false;

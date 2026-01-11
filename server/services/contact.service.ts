@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { contacts } from '~~/server/db/schema';
-import type { ContactCreatePayload } from '~~/shared/schemas/contact.schema';
+import type { ContactCreate } from '~~/shared/schemas/contact.schema';
 
 export const contactService = {
   async getAll(options: { companyId?: number; limit?: number } = {}) {
@@ -18,7 +18,7 @@ export const contactService = {
     });
   },
 
-  async create(data: ContactCreatePayload) {
+  async create(data: ContactCreate) {
     const [newContact] = await db.insert(contacts).values(data).returning();
     return newContact;
   }

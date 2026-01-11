@@ -15,7 +15,9 @@ export const companyBaseSchema = z.object({
   addressId: z.number().optional().nullable(),
 });
 
-export const companyCreateSchema = companyBaseSchema.omit({ id: true });
+export const companyCreateSchema = companyBaseSchema.omit({ id: true }).extend({
+  address: addressBaseSchema.optional(),
+});
 export const companyUpdateSchema = companyCreateSchema.partial();
 
 // Response schema for when company is fetched with its address

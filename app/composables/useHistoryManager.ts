@@ -110,7 +110,7 @@ export function useHistoryManager(source: Ref<HistorySource | null>, isEditing: 
     const index = source.value.histories.findIndex(h => h.id === idToDelete);
     if (index !== -1) {
       if (idToDelete > 0) {
-        source.value!.histories[index]._deleted = true;
+        source.value!.histories[index]!._deleted = true;
       } else {
         source.value!.histories.splice(index, 1);
       }
@@ -123,7 +123,7 @@ export function useHistoryManager(source: Ref<HistorySource | null>, isEditing: 
     if (!source.value?.histories) return;
     const index = source.value.histories.findIndex(h => h.id === item.id);
     if (index !== -1) {
-      source.value!.histories[index]._deleted = false;
+      source.value!.histories[index]!._deleted = false;
     }
   }
 

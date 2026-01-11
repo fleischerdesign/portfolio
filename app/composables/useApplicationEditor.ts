@@ -10,7 +10,7 @@ interface EditableApplication extends Partial<ApplicationUpdatePayload> {
   selectedContacts?: ContactResponse[];
 }
 
-export function useApplicationEditor(initialApplication: Ref<ApplicationResponsePayload | null>, refreshApplication: () => Promise<void>, slug: Ref<string>) {
+export function useApplicationEditor(initialApplication: Ref<ApplicationResponsePayload | null | undefined>, refreshApplication: () => Promise<void>, slug: Ref<string>) {
   const isLoading = ref(false);
   const isEditing = ref(false);
   const editableApplication = ref<EditableApplication | null>(null);

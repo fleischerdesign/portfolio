@@ -43,7 +43,7 @@ export const blogService = {
         category: post.category,
         tags: post.tags.map(t => t.tag),
         author: post.author
-      };
+      } as BlogPostResponse;
     }).filter((p): p is BlogPostResponse => p !== null);
   },
 
