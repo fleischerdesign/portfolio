@@ -55,6 +55,24 @@ export const blogPostResponseSchema = blogPostBaseSchema.extend({
   author: authorSchema.nullable(),
 });
 
+export const blogPostTranslationSchema = z.object({
+  locale: z.enum(['de', 'en']),
+  slug: z.string(),
+  title: z.string(),
+  excerpt: z.string().nullable(),
+});
+
+export const blogPostStudioResponseSchema = z.object({
+  id: z.number(),
+  status: z.enum(['draft', 'published', 'archived']),
+  coverImage: z.string().nullable(),
+  createdAt: z.union([z.string(), z.date()]).transform(val => new Date(val)).nullable(),
+  translations: z.array(blogPostTranslationSchema),
+  tags: z.array(blogTagSchema),
+  category: blogCategorySchema.nullable(),
+  author: authorSchema.nullable(),
+});
+
 export type Author = z.infer<typeof authorSchema>;
 export type BlogCategory = z.infer<typeof blogCategorySchema>;
 export type BlogTag = z.infer<typeof blogTagSchema>;
@@ -62,3 +80,4 @@ export type BlogPost = z.infer<typeof blogPostBaseSchema>;
 export type BlogPostCreate = z.infer<typeof blogPostCreateSchema>;
 export type BlogPostUpdate = z.infer<typeof blogPostUpdateSchema>;
 export type BlogPostResponse = z.infer<typeof blogPostResponseSchema>;
+export type BlogPostStudioResponse = z.infer<typeof blogPostStudioResponseSchema>;

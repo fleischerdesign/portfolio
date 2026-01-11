@@ -47,8 +47,28 @@ export const projectResponseSchema = projectBaseSchema.extend({
   author: authorSchema.nullable(),
 });
 
+export const projectTranslationSchema = z.object({
+  locale: z.enum(['de', 'en']),
+  slug: z.string(),
+  title: z.string(),
+  subtitle: z.string().nullable(),
+});
+
+export const projectStudioResponseSchema = z.object({
+  id: z.number(),
+  status: z.enum(['draft', 'published', 'archived']),
+  coverImage: z.string().nullable(),
+  createdAt: z.union([z.string(), z.date()]).transform(val => new Date(val)).nullable(),
+  translations: z.array(projectTranslationSchema),
+  tags: z.array(tagSchema),
+  techstack: z.array(technologySchema),
+  category: categorySchema.nullable(),
+  author: authorSchema.nullable(),
+});
+
 export type Technology = z.infer<typeof technologySchema>;
 export type Project = z.infer<typeof projectBaseSchema>;
 export type ProjectCreate = z.infer<typeof projectCreateSchema>;
 export type ProjectUpdate = z.infer<typeof projectUpdateSchema>;
 export type ProjectResponse = z.infer<typeof projectResponseSchema>;
+export type ProjectStudioResponse = z.infer<typeof projectStudioResponseSchema>;

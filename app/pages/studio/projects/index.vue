@@ -1,6 +1,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import type { ProjectStudioResponse } from '#shared/schemas/project.schema';
 
 definePageMeta({
   middleware: 'authorize',
@@ -17,12 +18,12 @@ const searchTerm = ref('');
 const statusFilter = ref('all');
 
 const filteredProjects = computed(() => {
-  let result = [...projects.value];
+  let result = (projects.value as unknown as ProjectStudioResponse[]);
 
   if (searchTerm.value) {
     const term = searchTerm.value.toLowerCase();
     result = result.filter(project => {
-      return project.translations.some((trans: any) => 
+      return project.translations.some(trans => 
         trans.title.toLowerCase().includes(term) || 
         trans.slug.toLowerCase().includes(term)
       );
@@ -36,9 +37,9 @@ const filteredProjects = computed(() => {
   return result;
 });
 
-function getTitle(project: any) {
-  const trans = project.translations.find((t: any) => t.locale === locale.value) 
-             || project.translations.find((t: any) => t.locale === 'en')
+function getTitle(project: ProjectStudioResponse) {
+  const trans = project.translations.find(t => t.locale === locale.value) 
+             || project.translations.find(t => t.locale === 'en')
              || project.translations[0];
   return trans?.title || 'Untitled';
 }

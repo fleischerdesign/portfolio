@@ -1,6 +1,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import type { BlogPostStudioResponse } from '#shared/schemas/blog.schema';
 
 definePageMeta({
   middleware: 'authorize',
@@ -17,7 +18,7 @@ const searchTerm = ref('');
 const statusFilter = ref('all');
 
 const filteredPosts = computed(() => {
-  let result = [...posts.value];
+  let result = (posts.value as unknown as BlogPostStudioResponse[]);
 
   if (searchTerm.value) {
     const term = searchTerm.value.toLowerCase();
@@ -36,9 +37,9 @@ const filteredPosts = computed(() => {
   return result;
 });
 
-function getTitle(post: any) {
-  const trans = post.translations.find((t: any) => t.locale === locale.value) 
-             || post.translations.find((t: any) => t.locale === 'en')
+function getTitle(post: BlogPostStudioResponse) {
+  const trans = post.translations.find(t => t.locale === locale.value) 
+             || post.translations.find(t => t.locale === 'en')
              || post.translations[0];
   return trans?.title || 'Untitled';
 }

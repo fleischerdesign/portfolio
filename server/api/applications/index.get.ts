@@ -5,7 +5,6 @@ export default defineEventHandler(async (event) => {
 
   const limit = getValidatedLimit(event);
 
-  await applicationService.ensureDummyData();
   const applications = await applicationService.getAll(limit);
 
   return {
