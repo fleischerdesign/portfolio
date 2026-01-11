@@ -1,6 +1,4 @@
-
-import { projects } from '~~/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { projectService } from '~~/server/services/project.service';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
@@ -8,24 +6,9 @@ export default defineEventHandler(async (event) => {
 
   if (!id) throw createError({ statusCode: 400, statusMessage: 'ID required' });
 
-  const project = await db.query.projects.findFirst({
-    where: eq(projects.id, id),
-    with: {
-      translations: true,
-      category: true,
-      tags: { with: { tag: true } },
-      techstack: { with: { technology: true } },
-      author: true
-    }
-  });
+  const project = await projectService.getStudioById(id);
 
   if (!project) throw createError({ statusCode: 404, statusMessage: 'Project not found' });
 
-  const mappedProject = {
-    ...project,
-    tags: project.tags.map(t => t.tag),
-    techstack: project.techstack.map(t => t.technology)
-  };
-
-  return { project: mappedProject };
+  return { project };
 });

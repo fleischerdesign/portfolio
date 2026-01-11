@@ -1,6 +1,4 @@
-
-import { blogPosts } from '~~/server/db/schema';
-import { desc } from 'drizzle-orm';
+import { blogService } from '~~/server/services/blog.service';
 
 export default defineEventHandler(async (event) => {
   await authorize(event, isAdmin);
@@ -8,16 +6,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const limit = query.limit ? parseInt(query.limit as string) : undefined;
 
-  const posts = await db.query.blogPosts.findMany({
-    limit,
-    with: {
-      translations: true,
-      category: true,
-      author: true
-    },
-    orderBy: [desc(blogPosts.createdAt)]
-  });
+  const posts = await blogService.getStudioAll(limit);
 
-  // Wir geben die rohen Daten zurück, das Frontend kümmert sich um die Darstellung (welche Sprache primär ist etc.)
   return { posts };
 });
