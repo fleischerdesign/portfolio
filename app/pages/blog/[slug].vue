@@ -50,7 +50,7 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
           </p>
 
           <div v-if="post.author" class="flex items-center gap-4 pt-4">
-              <NuxtImg v-if="post.author.avatar" :src="post.author.avatar" width="48" height="48" class="h-12 w-12 rounded-2xl border border-neutral-200 dark:border-neutral-700" alt="Author" />
+              <!-- Avatar removed as not available in schema -->
               <div class="flex flex-col">
                   <span class="text-base font-bold text-neutral-900 dark:text-white">{{ post.author.name }}</span>
                   <span class="text-xs font-medium uppercase tracking-wider text-secondary-500">{{ $t("blog.author") }}</span>

@@ -123,7 +123,7 @@ export const blogService = {
           categoryId = existing.id;
         } else {
           const [inserted] = await tx.insert(categories).values({ name: data.categoryName, slug }).returning();
-          categoryId = inserted.id;
+          categoryId = inserted!.id;
         }
       }
   
@@ -155,7 +155,7 @@ export const blogService = {
       }
   
       await tx.insert(blogPostTranslations).values({
-        blogPostId: post.id,
+        blogPostId: post!.id,
         locale,
         slug,
         title,
@@ -175,14 +175,14 @@ export const blogService = {
       });
   
       if (tagNames) {
-        await tx.delete(blogPostsToTags).where(eq(blogPostsToTags.blogPostId, post.id));
+        await tx.delete(blogPostsToTags).where(eq(blogPostsToTags.blogPostId, post!.id));
         for (const tagName of tagNames) {
           const tagSlug = tagName.toLowerCase().replace(/\s+/g, '-');
           let tag = await tx.query.tags.findFirst({ where: eq(tags.slug, tagSlug) });
           if (!tag) {
             [tag] = await tx.insert(tags).values({ name: tagName, slug: tagSlug }).returning();
           }
-          await tx.insert(blogPostsToTags).values({ blogPostId: post.id, tagId: tag.id }).onConflictDoNothing();
+          await tx.insert(blogPostsToTags).values({ blogPostId: post!.id, tagId: tag!.id }).onConflictDoNothing();
         }
       }
   
@@ -200,7 +200,7 @@ export const blogService = {
           categoryId = existing.id;
         } else {
           const [inserted] = await tx.insert(categories).values({ name: data.categoryName, slug }).returning();
-          categoryId = inserted.id;
+          categoryId = inserted!.id;
         }
       }
   
@@ -248,7 +248,7 @@ export const blogService = {
           if (!tag) {
             [tag] = await tx.insert(tags).values({ name: tagName, slug: tagSlug }).returning();
           }
-          await tx.insert(blogPostsToTags).values({ blogPostId: id, tagId: tag.id }).onConflictDoNothing();
+          await tx.insert(blogPostsToTags).values({ blogPostId: id, tagId: tag!.id }).onConflictDoNothing();
         }
       }
   

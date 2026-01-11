@@ -205,7 +205,7 @@ onMounted(() => {
       
       <div class="space-y-12 lg:col-span-3">
         
-        <UiCard v-if="isEditing" class="border-secondary-500/10 shadow-xl shadow-secondary-500/5">
+        <UiCard v-if="isEditing && editableApplication" class="border-secondary-500/10 shadow-xl shadow-secondary-500/5">
             <UiCardContainer class="p-8 md:p-10">
                 <div class="mb-10 flex items-center gap-4">
                     <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary-100 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400">
@@ -313,7 +313,7 @@ onMounted(() => {
             </UiCard>
         </div>
 
-        <div v-if="(!isEditing && application.body) || isEditing" class="group relative">
+        <div v-if="(!isEditing && application.body) || (isEditing && editableApplication)" class="group relative">
             <div class="pointer-events-none absolute -left-20 -top-20 -z-10 h-80 w-80 rounded-full bg-secondary-500/10 opacity-40 blur-[100px] dark:bg-secondary-500/5"></div>
             
             <UiCard class="relative overflow-hidden bg-white/90 shadow-2xl dark:bg-neutral-900/80">
@@ -421,7 +421,7 @@ onMounted(() => {
             </UiCard>
         </div>
 
-        <div v-if="(!isEditing && application.notes && application.notes.length > 0) || isEditing" class="pt-8">
+        <div v-if="(!isEditing && application.notes && application.notes.length > 0) || (isEditing && editableApplication)" class="pt-8">
             <UiCard class="border-dashed border-neutral-200 bg-neutral-50/20 shadow-none dark:border-neutral-800 dark:bg-neutral-900/20">
                 <UiCardContainer class="flex h-full flex-col gap-6 p-8">
                     <div class="flex items-center gap-4">

@@ -23,6 +23,6 @@ export const nowService = {
       icon: data.icon
     }).returning();
 
-    return { success: true, updatedAt: result[0].createdAt };
+    return { success: true, updatedAt: result[0]?.createdAt };
   }
 };

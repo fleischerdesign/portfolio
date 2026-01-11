@@ -24,7 +24,7 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
                 <UiSectionHeader 
                     :level="1" 
                     :title="project.title" 
-                    :subtitle="project.subtitle" 
+                    :subtitle="project.subtitle || undefined" 
                     variant="glow"
                     class="!mb-0 flex-1"
                 >

@@ -1,6 +1,6 @@
 
 import { blogPosts, projects } from '~~/server/db/schema';
-import { defineSitemapEventHandler } from '#imports';
+// import { defineSitemapEventHandler } from '#imports';
 import { eq } from 'drizzle-orm';
 
 export default defineSitemapEventHandler(async () => {
@@ -45,7 +45,7 @@ export default defineSitemapEventHandler(async () => {
       sitemapEntries.push({
         loc: `/${trans.locale}/blog/${trans.slug}`,
         lastmod: (trans.updatedAt ? new Date(trans.updatedAt) : post.publishedAt) || undefined,
-        _sitemap: sitemapMap[trans.locale],
+        _sitemap: sitemapMap[trans.locale] || 'en-US',
         alternatives
       });
     }
@@ -67,7 +67,7 @@ export default defineSitemapEventHandler(async () => {
       sitemapEntries.push({
         loc: `/${trans.locale}/projects/${trans.slug}`,
         lastmod: (trans.updatedAt ? new Date(trans.updatedAt) : project.publishedAt) || undefined,
-        _sitemap: sitemapMap[trans.locale],
+        _sitemap: sitemapMap[trans.locale] || 'en-US',
         alternatives
       });
     }

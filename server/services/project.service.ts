@@ -126,7 +126,7 @@ export const projectService = {
           categoryId = existing.id;
         } else {
           const [inserted] = await tx.insert(categories).values({ name: data.categoryName, slug }).returning();
-          categoryId = inserted.id;
+          categoryId = inserted!.id;
         }
       }
   
@@ -158,7 +158,7 @@ export const projectService = {
       }
   
       await tx.insert(projectTranslations).values({
-        projectId: project.id,
+        projectId: project!.id,
         locale,
         slug,
         title,
@@ -182,26 +182,26 @@ export const projectService = {
       });
   
       if (tagNames) {
-        await tx.delete(projectsToTags).where(eq(projectsToTags.projectId, project.id));
+        await tx.delete(projectsToTags).where(eq(projectsToTags.projectId, project!.id));
         for (const tagName of tagNames) {
           const tagSlug = tagName.toLowerCase().replace(/\s+/g, '-');
           let tag = await tx.query.tags.findFirst({ where: eq(tags.slug, tagSlug) });
           if (!tag) {
             [tag] = await tx.insert(tags).values({ name: tagName, slug: tagSlug }).returning();
           }
-          await tx.insert(projectsToTags).values({ projectId: project.id, tagId: tag.id }).onConflictDoNothing();
+          await tx.insert(projectsToTags).values({ projectId: project!.id, tagId: tag!.id }).onConflictDoNothing();
         }
       }
   
       if (techNames) {
-        await tx.delete(projectsToTechnologies).where(eq(projectsToTechnologies.projectId, project.id));
+        await tx.delete(projectsToTechnologies).where(eq(projectsToTechnologies.projectId, project!.id));
         for (const techName of techNames) {
           const techSlug = techName.toLowerCase().replace(/\s+/g, '-');
           let tech = await tx.query.technologies.findFirst({ where: eq(technologies.slug, techSlug) });
           if (!tech) {
             [tech] = await tx.insert(technologies).values({ name: techName, slug: techSlug }).returning();
           }
-          await tx.insert(projectsToTechnologies).values({ projectId: project.id, technologyId: tech.id }).onConflictDoNothing();
+          await tx.insert(projectsToTechnologies).values({ projectId: project!.id, technologyId: tech!.id }).onConflictDoNothing();
         }
       }
   
@@ -219,7 +219,7 @@ export const projectService = {
           categoryId = existing.id;
         } else {
           const [inserted] = await tx.insert(categories).values({ name: data.categoryName, slug }).returning();
-          categoryId = inserted.id;
+          categoryId = inserted!.id;
         }
       }
   
@@ -270,7 +270,7 @@ export const projectService = {
           if (!tag) {
             [tag] = await tx.insert(tags).values({ name: tagName, slug: tagSlug }).returning();
           }
-          await tx.insert(projectsToTags).values({ projectId: id, tagId: tag.id }).onConflictDoNothing();
+          await tx.insert(projectsToTags).values({ projectId: id, tagId: tag!.id }).onConflictDoNothing();
         }
       }
   
@@ -282,7 +282,7 @@ export const projectService = {
           if (!tech) {
             [tech] = await tx.insert(technologies).values({ name: techName, slug: techSlug }).returning();
           }
-          await tx.insert(projectsToTechnologies).values({ projectId: id, technologyId: tech.id }).onConflictDoNothing();
+          await tx.insert(projectsToTechnologies).values({ projectId: id, technologyId: tech!.id }).onConflictDoNothing();
         }
       }
   

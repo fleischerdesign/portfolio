@@ -27,7 +27,7 @@ export const applicationService = {
     return Promise.all(allApplications.map(async (app) => {
       const latestStatusHistory = app.histories
         .filter(h => h.status !== 'interview')
-        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
+        .sort((a, b) => (b.createdAt?.getTime() || 0) - (a.createdAt?.getTime() || 0))[0];
       
       const associatedContacts = app.contacts.map(appToContact => appToContact.contact);
 
