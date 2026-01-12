@@ -16,11 +16,13 @@ definePageMeta({
 const route = useRoute();
 const { slug } = route.params as { slug: string };
 
-const { data: application, error, refresh } = await useFetch<ApplicationResponsePayload>(`/api/applications/${slug}`);
+const { data: fetchedApplication, error, refresh } = await useFetch<ApplicationResponsePayload>(`/api/applications/${slug}`);
 
-if (error.value || !application.value) {
+if (error.value || !fetchedApplication.value) {
   throw createError({ statusCode: 404, statusMessage: 'Application not found', fatal: true });
 }
+
+const application = computed(() => fetchedApplication.value!);
 
 const {
   isEditing,
@@ -353,10 +355,10 @@ onMounted(() => {
 
                     <div class="mb-12">
                         <h3 class="text-3xl font-black text-neutral-900 dark:text-white">
-                            {{ isEditing ? editableApplication.title : application.title }}
+                            {{ isEditing ? editableApplication?.title : application.title }}
                         </h3>
-                        <p v-if="(isEditing ? editableApplication.subtitle : application.subtitle)" class="mt-2 text-xl font-medium text-neutral-500 dark:text-neutral-400">
-                            {{ isEditing ? editableApplication.subtitle : application.subtitle }}
+                        <p v-if="(isEditing ? editableApplication?.subtitle : application.subtitle)" class="mt-2 text-xl font-medium text-neutral-500 dark:text-neutral-400">
+                            {{ isEditing ? editableApplication?.subtitle : application.subtitle }}
                         </p>
                     </div>
                     

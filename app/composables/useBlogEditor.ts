@@ -1,6 +1,12 @@
 import type { BlogPostUpdate, BlogPostStudioResponse } from '~~/shared/schemas/blog.schema';
 
-export function useBlogEditor(postId: number, initialData: Ref<{ post: BlogPostStudioResponse } | null | undefined>, refreshPost: () => Promise<void>) {
+// Helper type for serialized response (dates as strings)
+type SerializedBlogPostStudioResponse = Omit<BlogPostStudioResponse, 'publishedAt' | 'createdAt'> & {
+  publishedAt: string | null;
+  createdAt: string | null;
+};
+
+export function useBlogEditor(postId: number, initialData: Ref<{ post: SerializedBlogPostStudioResponse | BlogPostStudioResponse } | null | undefined>, refreshPost: () => Promise<void>) {
   const { showToast } = useToast();
   const isLoading = ref(false);
   const isEditing = ref(false);
@@ -20,7 +26,7 @@ export function useBlogEditor(postId: number, initialData: Ref<{ post: BlogPostS
     en: { title: string; body: string; slug: string; excerpt: string };
   } | null>(null);
 
-  function parseData(data: { post: BlogPostStudioResponse }) {
+  function parseData(data: { post: SerializedBlogPostStudioResponse | BlogPostStudioResponse }) {
     if (!data?.post) return null;
     const p = data.post;
 

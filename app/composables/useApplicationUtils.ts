@@ -1,4 +1,8 @@
-import type { ApplicationResponsePayload } from "#shared/schemas/application.schema";
+export interface ApplicationDateSource {
+  histories?: { status: string; createdAt?: string | null | undefined }[] | null | undefined;
+  createdAt?: string | null | undefined;
+  updatedAt?: string | null | undefined;
+}
 
 export const useApplicationUtils = () => {
   const statusStyles = {
@@ -46,44 +50,46 @@ export const useApplicationUtils = () => {
     });
   }
 
-  const getApplicationDate = (application: ApplicationResponsePayload | null | undefined): string | null => {
+  const getApplicationDate = (application: ApplicationDateSource | null | undefined): string | null => {
     if (!application) return null;
     const sortedHistories = [...(application.histories || [])]
+      .filter(h => h.createdAt)
       .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime());
     const appliedHistory = sortedHistories.find(h => h.status === 'applied');
     return appliedHistory?.createdAt || null;
   }
 
-  const getResponseDate = (application: ApplicationResponsePayload | null | undefined): string | null => {
+  const getResponseDate = (application: ApplicationDateSource | null | undefined): string | null => {
     if (!application) return null;
     const sortedHistories = [...(application.histories || [])]
+      .filter(h => h.createdAt)
       .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime());
     const responseHistory = sortedHistories.find(h => h.status !== 'draft' && h.status !== 'applied');
     return responseHistory?.createdAt || null;
   }
 
-  const getLastActivityDate = (application: ApplicationResponsePayload | null | undefined): string | null => {
+  const getLastActivityDate = (application: ApplicationDateSource | null | undefined): string | null => {
     if (!application) return null;
     // Rely on backend's updatedAt for last activity
     return application.updatedAt || null;
   }
 
-  const getFormattedApplicationDate = (application: ApplicationResponsePayload | null | undefined) => {
+  const getFormattedApplicationDate = (application: ApplicationDateSource | null | undefined) => {
     const date = getApplicationDate(application);
     return date ? formatDate(date) : 'N/A';
   }
 
-  const getFormattedResponseDate = (application: ApplicationResponsePayload | null | undefined) => {
+  const getFormattedResponseDate = (application: ApplicationDateSource | null | undefined) => {
     const date = getResponseDate(application);
     return date ? formatDate(date) : 'N/A';
   }
 
-  const getFormattedLastActivityDate = (application: ApplicationResponsePayload | null | undefined) => {
+  const getFormattedLastActivityDate = (application: ApplicationDateSource | null | undefined) => {
     const date = getLastActivityDate(application);
     return date ? formatDate(date) : 'N/A';
   }
 
-  const getDisplayDate = (application: ApplicationResponsePayload | null | undefined) => {
+  const getDisplayDate = (application: ApplicationDateSource | null | undefined) => {
     if (!application) return 'N/A';
     const appDate = getApplicationDate(application);
     return appDate ? formatDate(appDate) : formatDate(application.createdAt);

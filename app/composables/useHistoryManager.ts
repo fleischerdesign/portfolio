@@ -2,14 +2,15 @@ import { ref, computed, type Ref } from 'vue';
 import { applicationHistoryBaseSchema, type ApplicationHistoryPayload, type ApplicationHistoryCreatePayload } from '#shared/schemas/application.schema';
 import { useApplicationUtils } from './useApplicationUtils';
 
-interface TimelineItem {
-  id: number;
-  type: 'history' | 'interview';
+export interface ApplicationTimelineItem {
+  id?: number | string;
+  type?: string;
   date: string;
   title: string;
   description: string;
   icon: string;
   _deleted?: boolean;
+  [key: string]: unknown;
 }
 
 const statusIconMap: Record<string, string> = {
@@ -41,7 +42,7 @@ export function useHistoryManager(source: Ref<HistorySource | null>, isEditing: 
   const editableHistoryEntry = ref<EditableHistoryEntry | null>(null);
 
   const showDeleteHistoryModal = ref(false);
-  const deletableHistoryEntry = ref<TimelineItem | null>(null);
+  const deletableHistoryEntry = ref<ApplicationTimelineItem | null>(null);
   
   function addHistory() {
     if (!newHistoryStatus.value || !source.value?.histories) return;
@@ -63,7 +64,8 @@ export function useHistoryManager(source: Ref<HistorySource | null>, isEditing: 
     showAddHistoryModal.value = false;
   }
 
-  function startEditHistory(item: TimelineItem) {
+  function startEditHistory(item: ApplicationTimelineItem) {
+    if (typeof item.id !== 'number') return;
     const entry = source.value?.histories.find(h => h.id === item.id);
     if (entry) {
       editableHistoryEntry.value = {
@@ -96,7 +98,8 @@ export function useHistoryManager(source: Ref<HistorySource | null>, isEditing: 
     editableHistoryEntry.value = null;
   }
 
-  function startDeleteHistory(item: TimelineItem) {
+  function startDeleteHistory(item: ApplicationTimelineItem) {
+    if (typeof item.id !== 'number') return;
     const entry = source.value?.histories.find(h => h.id === item.id);
     if (entry) {
       deletableHistoryEntry.value = item;
@@ -105,7 +108,7 @@ export function useHistoryManager(source: Ref<HistorySource | null>, isEditing: 
   }
 
   function deleteHistory() {
-    if (!deletableHistoryEntry.value?.id || !source.value?.histories) return;
+    if (typeof deletableHistoryEntry.value?.id !== 'number' || !source.value?.histories) return;
     const idToDelete = deletableHistoryEntry.value.id;
     const index = source.value.histories.findIndex(h => h.id === idToDelete);
     if (index !== -1) {
@@ -119,18 +122,18 @@ export function useHistoryManager(source: Ref<HistorySource | null>, isEditing: 
     deletableHistoryEntry.value = null;
   }
 
-  function undoDeleteHistory(item: TimelineItem) {
-    if (!source.value?.histories) return;
+  function undoDeleteHistory(item: ApplicationTimelineItem) {
+    if (typeof item.id !== 'number' || !source.value?.histories) return;
     const index = source.value.histories.findIndex(h => h.id === item.id);
     if (index !== -1) {
       source.value!.histories[index]!._deleted = false;
     }
   }
 
-  const timelineItems = computed((): TimelineItem[] => {
+  const timelineItems = computed((): ApplicationTimelineItem[] => {
     if (!source.value) return [];
     
-    const items: TimelineItem[] = [];
+    const items: ApplicationTimelineItem[] = [];
     const historiesSource = source.value.histories || [];
     
     // filter out deleted items in view mode

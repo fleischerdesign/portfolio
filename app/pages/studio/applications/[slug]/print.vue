@@ -182,7 +182,7 @@ const projects = computed(() => projectsData.value?.projects || []);
                   v-if="application" 
                   :level="2" 
                   :title="application.title" 
-                  :subtitle="application.subtitle" 
+                  :subtitle="application.subtitle || undefined" 
                   variant="none"
                   class="!mb-0"
                />

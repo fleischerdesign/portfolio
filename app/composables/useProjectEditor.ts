@@ -1,7 +1,13 @@
 import type { ProjectUpdate, ProjectStudioResponse } from '~~/shared/schemas/project.schema';
 
+// Helper type for serialized response (dates as strings)
+type SerializedProjectStudioResponse = Omit<ProjectStudioResponse, 'publishedAt' | 'createdAt'> & {
+  publishedAt: string | null;
+  createdAt: string | null;
+};
+
 interface RawProjectData {
-  project: ProjectStudioResponse;
+  project: SerializedProjectStudioResponse | ProjectStudioResponse;
 }
 
 export function useProjectEditor(projectId: number, initialData: Ref<RawProjectData | null | undefined>, refreshProject: () => Promise<void>) {

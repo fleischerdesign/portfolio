@@ -20,7 +20,7 @@ class="absolute inset-0 z-0 opacity-[0.05] mix-blend-overlay [mask-image:radial-
     </div>
 
 
-    <div class="container relative z-10 flex w-full flex-col items-start gap-10 px-4 md:px-8 max-w-screen-xl mx-auto">
+    <div class="container relative z-10 mx-auto flex w-full max-w-screen-xl flex-col items-start gap-10 px-4 md:px-8">
       
       <!-- Status Badge -->
       <div class="animate-fade-in-up" style="animation-delay: 100ms;">

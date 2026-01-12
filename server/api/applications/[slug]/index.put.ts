@@ -97,10 +97,11 @@ export default defineEventHandler(async (event) => {
       // 2. Update existing histories
       const historiesToUpdate = incomingHistories.filter(h => h.id && existingIds.includes(h.id));
       for (const history of historiesToUpdate) {
-          const { id, applicationId, createdAt, ...updatePayload } = history;
+          const { id, createdAt, ...updatePayload } = history;
           await tx.update(applicationHistories)
               .set({
                 ...updatePayload,
+                createdAt: createdAt ? new Date(createdAt) : undefined,
                 scheduled_at: history.scheduled_at ? new Date(history.scheduled_at) : null,
               })
               .where(eq(applicationHistories.id, id!));
@@ -120,9 +121,17 @@ export default defineEventHandler(async (event) => {
     }
 
     const { companyName, companyAddress, contactIds, histories, ...applicationData } = updateData;
+    
+    const applicationUpdatePayload = {
+        ...applicationData,
+        companyId: finalCompanyId,
+        createdAt: applicationData.createdAt ? new Date(applicationData.createdAt) : undefined,
+        updatedAt: applicationData.updatedAt ? new Date(applicationData.updatedAt) : undefined,
+        pdfGeneratedAt: applicationData.pdfGeneratedAt ? new Date(applicationData.pdfGeneratedAt) : undefined,
+    };
 
     const [updatedApplication] = await tx.update(applications)
-      .set({ ...applicationData, companyId: finalCompanyId })
+      .set(applicationUpdatePayload)
       .where(eq(applications.id, existingApplication.id))
       .returning();
 

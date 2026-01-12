@@ -84,6 +84,10 @@ interface TimelineItem {
   description: string
   icon: string
   skills?: string[]
+  id?: number | string
+  type?: string
+  _deleted?: boolean
+  [key: string]: unknown
 }
 
 defineProps({

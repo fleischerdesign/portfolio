@@ -81,7 +81,7 @@ export const applicationService = {
     } as unknown as ApplicationResponsePayload;
   },
 
-  async addHistory(slug: string, data: { status: Status; notes?: string; scheduled_at?: string }) {
+  async addHistory(slug: string, data: { status: Status; notes?: string | null; scheduled_at?: string | null }) {
     const application = await db.query.applications.findFirst({ where: eq(applications.slug, slug) });
     if (!application) throw createError({ statusCode: 404, statusMessage: 'Application not found' });
 
@@ -93,7 +93,7 @@ export const applicationService = {
     }).returning();
   },
 
-  async updateHistory(historyId: number, data: { status?: Status; notes?: string; scheduled_at?: string | null }) {
+  async updateHistory(historyId: number, data: { status?: Status; notes?: string | null; scheduled_at?: string | null }) {
     return await db.update(applicationHistories)
       .set({
         ...data,
@@ -104,7 +104,7 @@ export const applicationService = {
   },
 
   async deleteHistory(historyId: number) {
-    return await db.delete(applicationHistories).where(eq(applicationHistories.id, historyId));
+    return await db.delete(applicationHistories).where(eq(applicationHistories.id, historyId)).returning();
   },
 
   async deleteBySlug(slug: string) {
