@@ -1,5 +1,10 @@
 import { z } from 'zod';
 
+const i18nSchema = z.object({
+  de: z.string(),
+  en: z.string(),
+});
+
 export const dbUserSchema = z.object({
   id: z.number().int().positive().optional(),
   authProviderId: z.string(),
@@ -11,6 +16,24 @@ export const dbUserSchema = z.object({
   github: z.string().optional().nullable(),
   linkedin: z.string().optional().nullable(),
   instagram: z.string().optional().nullable(),
+  
+  // Personal Info
+  birthday: z.coerce.date().optional().nullable(),
+  birthLocation: z.string().optional().nullable(),
+
+  // Address
+  street: z.string().optional().nullable(),
+  houseNumber: z.string().optional().nullable(),
+  zipcode: z.string().optional().nullable(),
+  city: z.string().optional().nullable(),
+  country: i18nSchema.optional().nullable(),
+
+  // Translatable Meta
+  maritalStatus: i18nSchema.optional().nullable(),
+  driversLicense: i18nSchema.optional().nullable(),
+  availabilityStatus: i18nSchema.optional().nullable(),
+  summary: i18nSchema.optional().nullable(),
+
   createdAt: z.date().nullable().optional(),
 });
 
@@ -36,6 +59,17 @@ export const publicUserSchema = dbUserSchema.pick({
   github: true,
   linkedin: true,
   instagram: true,
+  birthday: true,
+  birthLocation: true,
+  street: true,
+  houseNumber: true,
+  zipcode: true,
+  city: true,
+  country: true,
+  maritalStatus: true,
+  driversLicense: true,
+  availabilityStatus: true,
+  summary: true,
 });
 
 export type PublicUser = z.infer<typeof publicUserSchema>;

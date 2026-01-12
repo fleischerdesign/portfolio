@@ -6,19 +6,19 @@
       <div class="flex-1 space-y-8 text-center lg:text-left">
         <div>
           <h1 class="text-5xl font-bold tracking-tight text-neutral-900 sm:text-7xl dark:text-white">
-            {{ personal.name }}
+            {{ name }}
           </h1>
           <p class="mt-4 text-2xl font-medium text-secondary-500 dark:text-secondary-400">
-             {{ $t('about.subtitle') }}
+             {{ subtitle }}
           </p>
         </div>
         
         <div class="flex flex-wrap justify-center gap-3 lg:justify-start">
-           <UiTag class="border-secondary-200 bg-secondary-50 px-3 py-1 text-secondary-700 dark:border-secondary-800 dark:bg-secondary-900/30 dark:text-secondary-300">
-              <Icon name="mage:map-marker" class="mr-1" /> {{ personal.location }}
+           <UiTag v-if="location" class="border-secondary-200 bg-secondary-50 px-3 py-1 text-secondary-700 dark:border-secondary-800 dark:bg-secondary-900/30 dark:text-secondary-300">
+              <Icon name="mage:map-marker" class="mr-1" /> {{ location }}
            </UiTag>
-           <UiTag class="border-secondary-200 bg-secondary-50 px-3 py-1 text-secondary-700 dark:border-secondary-800 dark:bg-secondary-900/30 dark:text-secondary-300">
-              <Icon name="mage:briefcase" class="mr-1" /> {{ personal.internshipStatus }}
+           <UiTag v-if="availabilityStatus" class="border-secondary-200 bg-secondary-50 px-3 py-1 text-secondary-700 dark:border-secondary-800 dark:bg-secondary-900/30 dark:text-secondary-300">
+              <Icon name="mage:briefcase" class="mr-1" /> {{ availabilityStatus }}
            </UiTag>
         </div>
 
@@ -48,7 +48,7 @@
 
     <!-- Early Life -->
     <section id="early-life" class="mb-32 scroll-mt-24">
-      <UiSectionHeader :title="$t('about.earlyLife.title')" :subtitle="$t('about.earlyLife.subtitle')" class="mb-16"/>
+      <UiSectionHeader :title="$t('about.earlyLife.title')" :subtitle="$t('about.earlyLife.subtitle', { location: birthLocation })" class="mb-16"/>
       
       <div class="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
           <div class="order-2 space-y-12 lg:order-1">
@@ -247,11 +247,36 @@
 
 <script lang="ts" setup>
 import { timelineData } from '~/data/timeline.data';
-import { personalData } from '~/data/personal.data';
 import { interestsData } from '~/data/interests.data';
-
 const { t, locale } = useI18n();
 const route = useRoute();
+
+const { profile, fetchProfile } = useProfile();
+
+await callOnce(fetchProfile);
+
+// Helpers for dynamic data - No fallbacks to static data
+const name = computed(() => profile.value?.name || '');
+const subtitle = computed(() => localize(profile.value?.summary, locale.value));
+const location = computed(() => {
+    const city = profile.value?.city;
+    const country = localize(profile.value?.country, locale.value);
+    if (city && country) {
+        return `${city}, ${country}`;
+    }
+    return '';
+});
+const availabilityStatus = computed(() => localize(profile.value?.availabilityStatus, locale.value));
+
+const birthday = computed(() => {
+    if (profile.value?.birthday) {
+        const date = new Date(profile.value.birthday);
+        return date.toLocaleDateString(locale.value === 'de' ? 'de-DE' : 'en-US');
+    }
+    return '';
+});
+
+const birthLocation = computed(() => profile.value?.birthLocation || '');
 
 useSeoMeta({
     title: t("navigation.about"),
@@ -268,6 +293,5 @@ useSeoMeta({
 })
 
 const timeline = timelineData(t)
-const personal = personalData(t)
 const interests = interestsData(t)
 </script>

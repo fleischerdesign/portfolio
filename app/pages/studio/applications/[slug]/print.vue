@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { personalData } from '~/data/personal.data';
 import { languagesData } from '~/data/languages.data';
 import { interestsData } from '~/data/interests.data';
 import { timelineData } from '~/data/timeline.data';
@@ -20,7 +19,7 @@ const route = useRoute();
 const { slug } = route.params as { slug: string };
 
 const { profile, fetchProfile } = useProfile();
-await fetchProfile();
+await callOnce(fetchProfile);
 
 const { data: application, error } = await useFetch<ApplicationResponsePayload>(`/api/applications/${slug}`);
 
@@ -28,7 +27,30 @@ if (error.value || !application.value) {
   throw createError({ statusCode: 404, statusMessage: 'Application not found', fatal: true });
 }
 
-const personal = personalData(t);
+const personalDetails = computed(() => ({
+  name: profile.value?.name || '',
+  subtitle: localize(profile.value?.summary, locale.value),
+  birth: {
+    date: profile.value?.birthday ? new Date(profile.value.birthday).toLocaleDateString(locale.value === 'de' ? 'de-DE' : 'en-US') : '',
+    location: profile.value?.birthLocation || ''
+  },
+  maritalStatus: localize(profile.value?.maritalStatus, locale.value),
+  driversLicense: localize(profile.value?.driversLicense, locale.value),
+  address: {
+    street: profile.value?.street || '',
+    houseNumber: profile.value?.houseNumber || '',
+    zipcode: profile.value?.zipcode || '',
+    city: profile.value?.city || '',
+    country: localize(profile.value?.country, locale.value)
+  }
+}));
+
+const senderLine = computed(() => {
+    const p = personalDetails.value;
+    if (!p.name || !p.address.street) return '';
+    return `${p.name} • ${p.address.street} ${p.address.houseNumber} • ${p.address.zipcode} ${p.address.city}`;
+});
+
 const languages = languagesData(t);
 const interests = interestsData(t);
 const timeline = timelineData(t);
@@ -84,8 +106,8 @@ const projects = computed(() => projectsData.value?.projects || []);
         <div class="space-y-6 text-center">
            <UiSectionHeader 
              :level="1" 
-             :title="personal.name" 
-             :subtitle="personal.subtitle" 
+             :title="personalDetails.name" 
+             :subtitle="personalDetails.subtitle" 
              variant="nebula"
              class="!mb-0"
            >
@@ -106,29 +128,29 @@ const projects = computed(() => projectsData.value?.projects || []);
         <!-- Contact Grid -->
         <UiCard class="w-full max-w-2xl border-neutral-200/50 bg-white/60 shadow-lg backdrop-blur-md print:shadow-none">
           <UiCardContainer class="grid grid-cols-2 gap-x-8 gap-y-6 p-8">
-             <div class="flex items-center gap-4">
+             <div v-if="profile?.email" class="flex items-center gap-4">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600">
                   <Icon name="heroicons:envelope" size="20" />
                 </div>
-                <span class="text-sm font-medium">{{ profile?.email }}</span>
+                <span class="text-sm font-medium">{{ profile.email }}</span>
              </div>
-             <div class="flex items-center gap-4">
+             <div v-if="profile?.phone" class="flex items-center gap-4">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600">
                   <Icon name="heroicons:phone" size="20" />
                 </div>
-                <span class="text-sm font-medium">{{ profile?.phone }}</span>
+                <span class="text-sm font-medium">{{ profile.phone }}</span>
              </div>
-             <div class="flex items-center gap-4">
+             <div v-if="profile?.website" class="flex items-center gap-4">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600">
                   <Icon name="heroicons:globe-alt" size="20" />
                 </div>
-                <span class="text-sm font-medium">{{ profile?.website?.replace('https://', '') }}</span>
+                <span class="text-sm font-medium">{{ profile.website.replace('https://', '') }}</span>
              </div>
-             <div class="flex items-center gap-4">
+             <div v-if="personalDetails.address.city" class="flex items-center gap-4">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600">
                   <Icon name="heroicons:map-pin" size="20" />
                 </div>
-                <span class="text-sm font-medium">{{ personal.address.city }}, {{ personal.address.country }}</span>
+                <span class="text-sm font-medium">{{ personalDetails.address.city }}, {{ personalDetails.address.country }}</span>
              </div>
           </UiCardContainer>
         </UiCard>
@@ -149,8 +171,8 @@ const projects = computed(() => projectsData.value?.projects || []);
         <!-- Address Block -->
         <div class="space-y-1">
           <!-- Sender Line (Small above address) -->
-          <div class="mb-2 inline-block text-[9px] font-black uppercase tracking-[0.2em] text-secondary-600">
-             Philipp Fleischer <span class="mx-0.5">•</span> Hufelandstr. 55 <span class="mx-0.5">•</span> 17036 Neubrandenburg
+          <div v-if="senderLine" class="mb-2 inline-block text-[9px] font-black uppercase tracking-[0.2em] text-secondary-600">
+             {{ senderLine }}
           </div>
           
           <!-- Recipient -->
@@ -166,7 +188,7 @@ const projects = computed(() => projectsData.value?.projects || []);
 
         <!-- Date Block -->
         <div class="pt-8 text-right">
-          <p class="font-medium text-neutral-500">Neubrandenburg, {{ printDate }}</p>
+          <p class="font-medium text-neutral-500">{{ personalDetails.address.city }}, {{ printDate }}</p>
         </div>
       </div>
 
@@ -202,7 +224,7 @@ const projects = computed(() => projectsData.value?.projects || []);
                
                <div class="mt-16">
                   <p class="mb-6 font-medium">Mit freundlichen Grüßen,</p>
-                  <p class="mb-2 text-lg font-bold">Philipp Fleischer</p>
+                  <p class="mb-2 text-lg font-bold">{{ personalDetails.name }}</p>
                   <!-- Colorized Signature using Mask -->
                   <div 
                     class="h-20 w-64 bg-secondary-700 print:bg-secondary-700" 
@@ -248,30 +270,30 @@ const projects = computed(() => projectsData.value?.projects || []);
              </div>
              
              <UiCardContainer class="relative z-10 -mt-8 px-5 pb-5">
-                <h3 class="mb-4 text-xl font-black tracking-tight text-neutral-900">{{ personal.name }}</h3>
+                <h3 class="mb-4 text-xl font-black tracking-tight text-neutral-900">{{ personalDetails.name }}</h3>
                 
                 <div class="space-y-3 text-sm text-neutral-600">
-                   <div class="flex flex-col">
+                   <div v-if="personalDetails.birth.date" class="flex flex-col">
                       <span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{ $t('resume.details.birthday') }}</span>
-                      <span class="font-medium text-neutral-800">{{ personal.birth.date }} <span class="mx-1 text-secondary-400">•</span> {{ personal.birth.location }}</span>
+                      <span class="font-medium text-neutral-800">{{ personalDetails.birth.date }} <span v-if="personalDetails.birth.location" class="mx-1 text-secondary-400">•</span> {{ personalDetails.birth.location }}</span>
                    </div>
-                   <div class="flex flex-col">
+                   <div v-if="personalDetails.maritalStatus" class="flex flex-col">
                       <span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{ $t('resume.details.marital_status_label') }}</span>
-                      <span class="font-medium text-neutral-800">{{ personal.maritalStatus }}</span>
+                      <span class="font-medium text-neutral-800">{{ personalDetails.maritalStatus }}</span>
                    </div>
-                   <div class="flex flex-col">
+                   <div v-if="personalDetails.driversLicense" class="flex flex-col">
                       <span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{ $t('resume.details.drivers_license_label') }}</span>
-                      <span class="font-medium text-neutral-800">{{ personal.driversLicense }}</span>
+                      <span class="font-medium text-neutral-800">{{ personalDetails.driversLicense }}</span>
                    </div>
                    <div class="flex flex-col">
                       <span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{ $t('home.contact.title') }}</span>
-                      <div class="flex items-center gap-2">
+                      <div v-if="profile?.email" class="flex items-center gap-2">
                          <Icon name="heroicons:envelope" size="14" class="text-secondary-500" />
-                         <span class="font-medium text-neutral-800">{{ profile?.email }}</span>
+                         <span class="font-medium text-neutral-800">{{ profile.email }}</span>
                       </div>
-                      <div class="mt-1 flex items-center gap-2">
+                      <div v-if="profile?.phone" class="mt-1 flex items-center gap-2">
                          <Icon name="heroicons:phone" size="14" class="text-secondary-500" />
-                         <span class="font-medium text-neutral-800">{{ profile?.phone }}</span>
+                         <span class="font-medium text-neutral-800">{{ profile.phone }}</span>
                       </div>
                    </div>
                 </div>

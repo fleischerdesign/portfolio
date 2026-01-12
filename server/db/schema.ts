@@ -114,6 +114,24 @@ export const users = sqliteTable('users', {
   github: text('github'),
   linkedin: text('linkedin'),
   instagram: text('instagram'),
+
+  // Personal Info
+  birthday: integer('birthday', { mode: 'timestamp' }),
+  birthLocation: text('birth_location'),
+  
+  // Address
+  street: text('street'),
+  houseNumber: text('house_number'),
+  zipcode: text('zipcode'),
+  city: text('city'),
+  country: text('country', { mode: 'json' }).$type<{ de: string; en: string }>(),
+
+  // Meta / i18n fields
+  maritalStatus: text('marital_status', { mode: 'json' }).$type<{ de: string; en: string }>(),
+  driversLicense: text('drivers_license', { mode: 'json' }).$type<{ de: string; en: string }>(),
+  availabilityStatus: text('availability_status', { mode: 'json' }).$type<{ de: string; en: string }>(),
+  summary: text('summary', { mode: 'json' }).$type<{ de: string; en: string }>(), // Hero summary
+
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
 });
 

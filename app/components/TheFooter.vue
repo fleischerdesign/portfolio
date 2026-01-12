@@ -35,11 +35,11 @@
                 </div>
                 <span class="text-lg font-medium">{{ profile.email }}</span>
             </a>
-            <div class="group flex items-center gap-3 text-neutral-600 dark:text-neutral-400">
+            <div v-if="profile?.city" class="group flex items-center gap-3 text-neutral-600 dark:text-neutral-400">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 dark:bg-neutral-900">
                     <Icon name="mage:map-marker" size="20" />
                 </div>
-                <span class="text-lg font-medium">{{ personal.address.postalCode }} {{ personal.address.city }}</span>
+                <span class="text-lg font-medium">{{ profile.zipcode }} {{ profile.city }}</span>
             </div>
           </div>
         </div>
@@ -83,11 +83,7 @@ v-for="link in [
 </template>
 
 <script setup lang="ts">
-import { personalData } from '~/data/personal.data';
-
 const { profile, fetchProfile } = useProfile();
-const { t } = useI18n();
-const personal = personalData(t);
 
 onMounted(() => {
   fetchProfile();

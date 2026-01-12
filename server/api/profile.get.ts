@@ -15,7 +15,18 @@ export default defineEventHandler(async () => {
       website: '',
       github: '',
       linkedin: '',
-      instagram: ''
+      instagram: '',
+      birthday: null,
+      birthLocation: '',
+      street: '',
+      houseNumber: '',
+      zipcode: '',
+      city: '',
+      country: { de: '', en: '' },
+      maritalStatus: { de: '', en: '' },
+      driversLicense: { de: '', en: '' },
+      availabilityStatus: { de: '', en: '' },
+      summary: { de: '', en: '' }
     };
   }
 
@@ -29,6 +40,17 @@ export default defineEventHandler(async () => {
       github: profile.github,
       linkedin: profile.linkedin,
       instagram: profile.instagram,
+      birthday: profile.birthday,
+      birthLocation: profile.birthLocation,
+      street: profile.street,
+      houseNumber: profile.houseNumber,
+      zipcode: profile.zipcode,
+      city: profile.city,
+      country: profile.country,
+      maritalStatus: profile.maritalStatus,
+      driversLicense: profile.driversLicense,
+      availabilityStatus: profile.availabilityStatus,
+      summary: profile.summary,
     }
   };
 });
