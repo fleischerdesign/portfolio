@@ -127,7 +127,7 @@ function getStatusColor(status: string) {
                 </div>
 
                 <div v-if="post.coverImage" class="group relative mb-16 aspect-[21/9] w-full overflow-hidden rounded-[2.5rem] border border-neutral-200/50 bg-neutral-100 shadow-2xl dark:border-neutral-800/50 dark:bg-neutral-900">
-                    <NuxtImg :src="post.coverImage" class="h-full w-full object-cover" />
+                    <NuxtImg :src="post.coverImage" sizes="100vw lg:1000px" class="h-full w-full object-cover" />
                 </div>
 
                 <!-- eslint-disable-next-line vue/no-v-html -->

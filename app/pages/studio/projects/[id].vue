@@ -71,7 +71,7 @@ function getStatusColor(status: string) {
             <!-- View Mode Content -->
             <div v-if="!isEditing && project && viewTranslation" class="space-y-12">
                 <div v-if="project.coverImage" class="group relative aspect-[21/9] w-full overflow-hidden rounded-[2.5rem] border border-neutral-200/50 bg-neutral-100 shadow-2xl dark:border-neutral-800/50 dark:bg-neutral-900">
-                    <NuxtImg :src="project.coverImage" class="h-full w-full object-cover" />
+                    <NuxtImg :src="project.coverImage" sizes="100vw lg:1000px" class="h-full w-full object-cover" />
                 </div>
                 
                 <!-- eslint-disable-next-line vue/no-v-html -->

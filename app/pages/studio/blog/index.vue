@@ -85,7 +85,7 @@ function getStatusColor(status: string) {
         <UiCard v-for="post in filteredPosts" :key="post.id" interactive class="group flex h-full flex-col transition-all duration-300 hover:border-secondary-500/30 hover:shadow-lg">
             <NuxtLink :to="$localePath(`/studio/blog/${post.id}`)" class="flex h-full flex-col">
                 <div v-if="post.coverImage" class="relative h-48 w-full overflow-hidden border-b border-neutral-100 dark:border-neutral-800">
-                    <NuxtImg :src="post.coverImage" class="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                    <NuxtImg :src="post.coverImage" sizes="500px" class="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
                     <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/60 to-transparent"></div>
                     <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
                         <span class="rounded-md px-2 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-md" :class="getStatusColor(post.status)">
