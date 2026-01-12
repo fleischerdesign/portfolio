@@ -68,7 +68,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/color-mode',
     '@nuxtjs/plausible',
-    './modules/autoTranslate',
     '@nuxtjs/robots',
     '@nuxtjs/google-fonts',
     '@nuxt/eslint',
@@ -82,27 +81,6 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/png', href: '/favicon.png' }
       ]
     }
-  },
-
-  autoTranslate: {
-
-    apiProvider: 'openai', // or 'anthropic', 'google'
-    apiBaseUrl: 'https://openrouter.ai/api/v1',
-    model: 'deepseek/deepseek-v3.2',
-    paths: [
-      {
-        sourcePath: 'blog',
-        targetPath: 'blog',
-        fieldsToTranslate: ['tags', 'category', 'image:alt', 'description', 'title', 'locale'],
-      },
-      {
-        sourcePath: 'projects',
-        targetPath: 'projects',
-        fieldsToTranslate: ['category', 'tags', 'image:alt', 'subtitle', 'title', 'locale', 'features', 'learned', 'challenges'],
-      },
-    ],
-    sourceLocale: 'de',
-    targetLocale: 'en',
   },
   i18n: {
     bundle: {
