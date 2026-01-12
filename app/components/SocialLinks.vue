@@ -1,9 +1,7 @@
 <script setup lang="ts">
 const { profile, fetchProfile } = useProfile();
 
-onMounted(() => {
-  fetchProfile();
-});
+await callOnce(fetchProfile);
 
 const githubUrl = computed(() => {
     if (!profile.value?.github) return '';
