@@ -1,21 +1,21 @@
 <template>
   <footer class="flex items-center justify-between border-t pt-2 text-xs text-gray-600">
     <div>
-      <span class="font-bold">Philipp Fleischer</span> | {{ contactData.website }}
+      <span class="font-bold">{{ profile?.name }}</span> | {{ profile?.website }}
     </div>
 
     <div class="flex items-center gap-3">
-      <div class="flex items-center gap-1">
+      <div v-if="profile?.email" class="flex items-center gap-1">
         <Icon name="heroicons:envelope" />
-        <span>{{ contactData.email }}</span>
+        <span>{{ profile.email }}</span>
       </div>
-      <div class="flex items-center gap-1">
+      <div v-if="profile?.phone" class="flex items-center gap-1">
         <Icon name="heroicons:phone" />
-        <span>{{ contactData.phone }}</span>
+        <span>{{ profile.phone }}</span>
       </div>
-      <div class="flex items-center gap-1">
+      <div v-if="profile?.github" class="flex items-center gap-1">
         <Icon name="mdi:github" />
-        <span>{{ contactData.github }}</span>
+        <span>{{ profile.github }}</span>
       </div>
     </div>
 
@@ -26,7 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import { contactData } from "~/data/contact.data"
+const { profile, fetchProfile } = useProfile();
+
+onMounted(() => {
+  fetchProfile();
+});
 
 defineProps({
   currentPage: {

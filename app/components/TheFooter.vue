@@ -8,7 +8,7 @@
         <!-- Brand & Summary -->
         <div class="flex flex-col gap-6">
           <div class="flex flex-col gap-2">
-            <h3 class="text-3xl font-black tracking-tight text-neutral-900 dark:text-white">Philipp Fleischer</h3>
+            <h3 class="text-3xl font-black tracking-tight text-neutral-900 dark:text-white">{{ profile?.name }}</h3>
             <div class="h-1 w-12 rounded-full bg-secondary-500"></div>
           </div>
           <p class="text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
@@ -23,17 +23,17 @@
         <div class="md:ml-auto lg:mx-auto">
           <h3 class="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-secondary-500">{{ $t("footer.contact") }}</h3>
           <div class="space-y-4">
-            <a :href="`tel:${contactData.phone.replace(/\s/g, '')}`" class="group flex items-center gap-3 text-neutral-600 transition-colors hover:text-secondary-600 dark:text-neutral-400 dark:hover:text-secondary-400">
+            <a v-if="profile?.phone" :href="`tel:${profile.phone.replace(/\s/g, '')}`" class="group flex items-center gap-3 text-neutral-600 transition-colors hover:text-secondary-600 dark:text-neutral-400 dark:hover:text-secondary-400">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-900 dark:group-hover:bg-secondary-900/30">
                     <Icon name="mage:phone" size="20" />
                 </div>
-                <span class="text-lg font-medium">{{ contactData.phone }}</span>
+                <span class="text-lg font-medium">{{ profile.phone }}</span>
             </a>
-            <a :href="`mailto:${contactData.email}`" class="group flex items-center gap-3 text-neutral-600 transition-colors hover:text-secondary-600 dark:text-neutral-400 dark:hover:text-secondary-400">
+            <a v-if="profile?.email" :href="`mailto:${profile.email}`" class="group flex items-center gap-3 text-neutral-600 transition-colors hover:text-secondary-600 dark:text-neutral-400 dark:hover:text-secondary-400">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-900 dark:group-hover:bg-secondary-900/30">
                     <Icon name="mage:email" size="20" />
                 </div>
-                <span class="text-lg font-medium">{{ contactData.email }}</span>
+                <span class="text-lg font-medium">{{ profile.email }}</span>
             </a>
             <div class="group flex items-center gap-3 text-neutral-600 dark:text-neutral-400">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 dark:bg-neutral-900">
@@ -83,10 +83,14 @@ v-for="link in [
 </template>
 
 <script setup lang="ts">
-import { contactData } from '~/data/contact.data';
 import { personalData } from '~/data/personal.data';
 
+const { profile, fetchProfile } = useProfile();
 const { t } = useI18n();
 const personal = personalData(t);
+
+onMounted(() => {
+  fetchProfile();
+});
 </script>
 

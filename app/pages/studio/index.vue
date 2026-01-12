@@ -57,6 +57,21 @@ definePageMeta({
                 </UiCardContainer>
             </UiCard>
         </NuxtLink>
+
+        <!-- Profile -->
+        <NuxtLink :to="$localePath('/studio/profile')">
+            <UiCard interactive class="h-full">
+                <UiCardContainer class="flex items-center gap-4 p-6">
+                    <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-secondary-100 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400">
+                        <Icon name="mage:user-circle" size="28" />
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-neutral-900 dark:text-white">{{ $t('navigation.profile') }}</h3>
+                        <p class="text-sm text-neutral-500 dark:text-neutral-400">Manage personal info</p>
+                    </div>
+                </UiCardContainer>
+            </UiCard>
+        </NuxtLink>
     </div>
   </div>
 </template>

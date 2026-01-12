@@ -2,7 +2,6 @@
 import { personalData } from '~/data/personal.data';
 import { languagesData } from '~/data/languages.data';
 import { interestsData } from '~/data/interests.data';
-import { contactData } from '~/data/contact.data';
 import { timelineData } from '~/data/timeline.data';
 import { coursesData } from '~/data/courses.data';
 import { softSkillsData } from '~/data/softSkills.data';
@@ -20,6 +19,9 @@ const { t, locale } = useI18n();
 const route = useRoute();
 const { slug } = route.params as { slug: string };
 
+const { profile, fetchProfile } = useProfile();
+await fetchProfile();
+
 const { data: application, error } = await useFetch<ApplicationResponsePayload>(`/api/applications/${slug}`);
 
 if (error.value || !application.value) {
@@ -29,7 +31,6 @@ if (error.value || !application.value) {
 const personal = personalData(t);
 const languages = languagesData(t);
 const interests = interestsData(t);
-const contact = contactData;
 const timeline = timelineData(t);
 const courses = coursesData;
 const softSkills = softSkillsData(t);
@@ -109,19 +110,19 @@ const projects = computed(() => projectsData.value?.projects || []);
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600">
                   <Icon name="heroicons:envelope" size="20" />
                 </div>
-                <span class="text-sm font-medium">{{ contact.email }}</span>
+                <span class="text-sm font-medium">{{ profile?.email }}</span>
              </div>
              <div class="flex items-center gap-4">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600">
                   <Icon name="heroicons:phone" size="20" />
                 </div>
-                <span class="text-sm font-medium">{{ contact.phone }}</span>
+                <span class="text-sm font-medium">{{ profile?.phone }}</span>
              </div>
              <div class="flex items-center gap-4">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600">
                   <Icon name="heroicons:globe-alt" size="20" />
                 </div>
-                <span class="text-sm font-medium">{{ contact.website.replace('https://', '') }}</span>
+                <span class="text-sm font-medium">{{ profile?.website?.replace('https://', '') }}</span>
              </div>
              <div class="flex items-center gap-4">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600">
@@ -266,11 +267,11 @@ const projects = computed(() => projectsData.value?.projects || []);
                       <span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{ $t('home.contact.title') }}</span>
                       <div class="flex items-center gap-2">
                          <Icon name="heroicons:envelope" size="14" class="text-secondary-500" />
-                         <span class="font-medium text-neutral-800">{{ contact.email }}</span>
+                         <span class="font-medium text-neutral-800">{{ profile?.email }}</span>
                       </div>
                       <div class="mt-1 flex items-center gap-2">
                          <Icon name="heroicons:phone" size="14" class="text-secondary-500" />
-                         <span class="font-medium text-neutral-800">{{ contact.phone }}</span>
+                         <span class="font-medium text-neutral-800">{{ profile?.phone }}</span>
                       </div>
                    </div>
                 </div>

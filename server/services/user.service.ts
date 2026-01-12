@@ -1,7 +1,32 @@
-import { eq } from 'drizzle-orm';
+import { eq, asc } from 'drizzle-orm';
 import { users, apiKeys } from '~~/server/db/schema';
 
 export const userService = {
+  async getById(userId: number) {
+    return await db.query.users.findFirst({
+      where: eq(users.id, userId),
+    });
+  },
+
+  async getOwner(ownerEmail?: string) {
+    let user;
+
+    if (ownerEmail) {
+      user = await db.query.users.findFirst({
+        where: eq(users.email, ownerEmail),
+      });
+    }
+
+    if (!user) {
+      user = await db.query.users.findFirst({
+        where: eq(users.role, 'admin'),
+        orderBy: [asc(users.createdAt)],
+      });
+    }
+
+    return user;
+  },
+
   async update(userId: number, data: Partial<typeof users.$inferInsert>) {
     const [updatedUser] = await db.update(users)
       .set(data)

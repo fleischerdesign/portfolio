@@ -161,6 +161,7 @@ const navLinks = computed(() => {
             { path: '/studio/applications', icon: 'mage:users', activeIcon: 'mage:users-fill', label: 'applications' },
             { path: '/studio/blog', icon: 'mage:edit', activeIcon: 'mage:edit-fill', label: 'blog' },
             { path: '/studio/projects', icon: 'mage:folder', activeIcon: 'mage:folder-fill', label: 'projects' },
+            { path: '/studio/profile', icon: 'mage:user-circle', activeIcon: 'mage:user-circle-fill', label: 'profile' },
         ]
     }
     

@@ -191,7 +191,8 @@
     "dashboard": "Dashboard",
     "applications": "Bewerbungen",
     "blog_editor": "Blog Editor",
-    "project_editor": "Projekt Editor"
+    "project_editor": "Projekt Editor",
+    "profile": "Profil"
   },
   "error": {
     "404": {

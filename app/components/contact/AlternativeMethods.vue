@@ -1,3 +1,34 @@
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
+
+const { profile, fetchProfile } = useProfile();
+
+onMounted(() => {
+  fetchProfile();
+});
+
+const copyIcon = ref('mage:copy');
+const phoneCopyIcon = ref('mage:copy');
+
+const copyEmail = () => {
+    if (!profile.value?.email) return;
+    navigator.clipboard.writeText(profile.value.email);
+    copyIcon.value = 'mage:check-circle';
+    setTimeout(() => {
+        copyIcon.value = 'mage:copy';
+    }, 2000);
+};
+
+const copyPhone = () => {
+    if (!profile.value?.phone) return;
+    navigator.clipboard.writeText(profile.value.phone.replace(/\s/g, ''));
+    phoneCopyIcon.value = 'mage:check-circle';
+    setTimeout(() => {
+        phoneCopyIcon.value = 'mage:copy';
+    }, 2000);
+};
+</script>
+
 <template>
     <div class="space-y-10">
         <!-- Social Media Section -->
@@ -14,13 +45,13 @@
         <!-- Contact Cards -->
         <div class="grid grid-cols-1 gap-6">
             <!-- Email Card -->
-            <div class="flex flex-col gap-3">
+            <div v-if="profile?.email" class="flex flex-col gap-3">
                 <h4 class="text-xs font-bold uppercase tracking-widest text-secondary-500">{{ $t('contact.email.title') }}</h4>
                 <div class="group relative flex items-center gap-4 rounded-2xl border border-neutral-200/60 bg-white/50 p-4 backdrop-blur-md transition-all duration-500 hover:border-secondary-500/30 hover:shadow-[0_0_25px_rgba(16,185,129,0.1)] dark:border-neutral-800/60 dark:bg-neutral-900/50 dark:hover:border-secondary-400/30">
                     <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-100 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-800 dark:group-hover:bg-secondary-900/30">
                         <Icon name="mage:email" size="24" class="text-neutral-600 dark:text-neutral-400 dark:group-hover:text-secondary-400" />
                     </div>
-                    <span class="text-lg font-medium text-neutral-800 dark:text-white">hello@fleischer.design</span>
+                    <span class="text-lg font-medium text-neutral-800 dark:text-white">{{ profile.email }}</span>
                     <UiButton 
                         variant="glass" 
                         size="icon" 
@@ -34,13 +65,13 @@
             </div>
 
             <!-- Phone Card -->
-            <div class="flex flex-col gap-3">
+            <div v-if="profile?.phone" class="flex flex-col gap-3">
                 <h4 class="text-xs font-bold uppercase tracking-widest text-secondary-500">{{ $t('contact.phone.title') }}</h4>
                 <div class="group relative flex items-center gap-4 rounded-2xl border border-neutral-200/60 bg-white/50 p-4 backdrop-blur-md transition-all duration-500 hover:border-secondary-500/30 hover:shadow-[0_0_25px_rgba(16,185,129,0.1)] dark:border-neutral-800/60 dark:bg-neutral-900/50 dark:hover:border-secondary-400/30">
                     <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-100 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-800 dark:group-hover:bg-secondary-900/30">
                         <Icon name="mage:phone" size="24" class="text-neutral-600 dark:text-neutral-400 dark:group-hover:text-secondary-400" />
                     </div>
-                    <span class="text-lg font-medium text-neutral-800 dark:text-white">+49 176 31099324</span>
+                    <span class="text-lg font-medium text-neutral-800 dark:text-white">{{ profile.phone }}</span>
                     <UiButton 
                         variant="glass" 
                         size="icon" 
@@ -55,26 +86,3 @@
         </div>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { ref } from 'vue';
-
-const copyIcon = ref('mage:copy');
-const phoneCopyIcon = ref('mage:copy');
-
-const copyEmail = () => {
-    navigator.clipboard.writeText('hello@fleischer.design');
-    copyIcon.value = 'mage:check-circle';
-    setTimeout(() => {
-        copyIcon.value = 'mage:copy';
-    }, 2000);
-};
-
-const copyPhone = () => {
-    navigator.clipboard.writeText('+4917631099324');
-    phoneCopyIcon.value = 'mage:check-circle';
-    setTimeout(() => {
-        phoneCopyIcon.value = 'mage:copy';
-    }, 2000);
-};
-</script>

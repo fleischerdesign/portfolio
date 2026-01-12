@@ -109,6 +109,11 @@ export const users = sqliteTable('users', {
   email: text('email').notNull().unique(),
   name: text('name'),
   role: text('role', { enum: ['admin', 'user'] }).default('user').notNull(),
+  phone: text('phone'),
+  website: text('website'),
+  github: text('github'),
+  linkedin: text('linkedin'),
+  instagram: text('instagram'),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
 });
 
