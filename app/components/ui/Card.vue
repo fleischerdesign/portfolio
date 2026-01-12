@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Base classes
-const baseClasses = 'relative flex rounded-2xl border border-neutral-200/60 bg-white/80 backdrop-blur-md transition-all duration-500 dark:border-neutral-800/60 dark:bg-neutral-900/60';
+const baseClasses = 'relative flex overflow-hidden rounded-2xl border border-neutral-200/60 bg-white/80 backdrop-blur-md transition-all duration-500 dark:border-neutral-800/60 dark:bg-neutral-900/60';
 
 // Hover effects
 const hoverStyles = `
