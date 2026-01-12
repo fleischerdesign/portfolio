@@ -133,14 +133,17 @@ export const blogService = {
         translationKey,
         ...entityData
       } = data;
+
+      // Ensure translationKey is present (generate if missing)
+      const finalTranslationKey = translationKey || crypto.randomUUID();
   
       let post = await tx.query.blogPosts.findFirst({ 
-        where: eq(blogPosts.translationKey, translationKey) 
+        where: eq(blogPosts.translationKey, finalTranslationKey) 
       });
   
       if (!post) {
         [post] = await tx.insert(blogPosts).values({
-          translationKey,
+          translationKey: finalTranslationKey,
           ...entityData,
           publishedAt: entityData.publishedAt ? new Date(entityData.publishedAt) : null,
           categoryId,
@@ -217,7 +220,7 @@ export const blogService = {
         categoryId: categoryId,
       }).where(eq(blogPosts.id, id));
   
-      if (locale && slug && title && contentBody) {
+      if (locale && slug !== undefined && title !== undefined && contentBody !== undefined) {
           await tx.insert(blogPostTranslations).values({
           blogPostId: id,
           locale: locale!,

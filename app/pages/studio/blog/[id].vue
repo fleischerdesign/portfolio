@@ -138,7 +138,19 @@ function getStatusColor(status: string) {
                 <UiCard>
                     <UiCardContainer class="space-y-6 p-8">
                         <UiInput id="post-title" v-model="editablePost[currentLocale].title" label="Title" class="text-xl font-bold" />
-                        <UiInput id="post-slug" v-model="editablePost[currentLocale].slug" label="Slug" class="font-mono text-sm" />
+                        
+                        <div class="flex items-end gap-2">
+                            <UiInput id="post-slug" v-model="editablePost[currentLocale].slug" label="Slug" class="flex-1 font-mono text-sm" readonly />
+                            <UiButton 
+                                variant="secondary" 
+                                title="Regenerate Slug from Title" 
+                                class="mb-[2px]"
+                                @click="editablePost![currentLocale].slug = slugify(editablePost![currentLocale].title)"
+                            >
+                                <Icon name="heroicons:arrow-path" />
+                            </UiButton>
+                        </div>
+
                         <UiInput id="post-excerpt" v-model="editablePost[currentLocale].excerpt" label="Excerpt" as="textarea" rows="3" />
                         
                         <div class="border-t border-neutral-100 pt-4 dark:border-neutral-800">

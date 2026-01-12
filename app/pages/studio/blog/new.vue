@@ -18,18 +18,20 @@ const form = ref({
 
 const isLoading = ref(false);
 
-// Auto-generate slug and key from title
-watch(() => form.value.title, (val) => {
-  const s = val.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  if (!form.value.slug) form.value.slug = s;
-  if (!form.value.translationKey) form.value.translationKey = s;
+// Auto-generate slug from title
+watch(() => form.value.title, (newVal, oldVal) => {
+  const newSlug = slugify(newVal);
+  const oldSlug = slugify(oldVal || '');
+
+  if (!form.value.slug || form.value.slug === oldSlug) {
+    form.value.slug = newSlug;
+  }
 });
 
 async function create() {
   isLoading.value = true;
   try {
     const payload: BlogPostCreate = {
-      translationKey: form.value.translationKey,
       locale: 'de', // Start with DE as default
       title: form.value.title,
       slug: form.value.slug,
@@ -80,10 +82,7 @@ async function create() {
 
             <UiInput id="title" v-model="form.title" label="Title (German)" placeholder="My Awesome Article" required />
             
-            <div class="grid grid-cols-2 gap-4">
-                <UiInput id="slug" v-model="form.slug" label="URL Slug" placeholder="my-awesome-article" />
-                <UiInput id="translationKey" v-model="form.translationKey" label="Translation Key (ID)" placeholder="my-awesome-article" />
-            </div>
+            <UiInput id="slug" v-model="form.slug" label="URL Slug" placeholder="my-awesome-article" />
 
             <UiButton class="mt-4 w-full" :is-loading="isLoading" @click="create">
                 Create & Edit

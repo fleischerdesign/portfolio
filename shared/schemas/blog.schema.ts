@@ -42,6 +42,7 @@ export const blogPostBaseSchema = z.object({
 export const blogPostCreateSchema = blogPostBaseSchema.omit({ 
   id: true 
 }).extend({
+  translationKey: z.string().optional(),
   categoryName: z.string().optional().nullable(),
   tags: z.array(z.string()).optional().default([]),
   publishedAt: z.string().datetime().optional().nullable(),
