@@ -71,7 +71,7 @@ async function onFileChange(event: Event) {
             v-if="modelValue" 
             class="group relative h-20 w-32 shrink-0 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900"
         >
-            <NuxtImg :src="modelValue" class="h-full w-full object-cover" />
+            <NuxtImg :src="modelValue" sizes="200px" class="h-full w-full object-cover" />
             <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
                 <button class="p-1 text-white hover:text-red-400" @click="emit('update:modelValue', null)">
                     <Icon name="heroicons:trash" size="20" />
