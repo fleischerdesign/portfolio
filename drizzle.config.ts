@@ -5,7 +5,7 @@ export default defineConfig({
   out: './server/db/migrations',
   dialect: 'sqlite',
   dbCredentials: {
-    url: 'file:./.data/db.sqlite',
+    url: process.env.NUXT_DB_URL || process.env.DB_URL || 'file:./.data/db.sqlite',
   },
   verbose: true,
   strict: true,

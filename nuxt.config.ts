@@ -72,7 +72,8 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@nuxt/eslint',
     'nuxt-auth-utils',
-    'nuxt-authorization'
+    'nuxt-authorization',
+    '@nuxt/test-utils/module'
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },

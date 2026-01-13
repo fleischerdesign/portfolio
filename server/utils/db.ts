@@ -4,7 +4,8 @@ import * as schema from '../db/schema';
 
 const config = useRuntimeConfig();
 
-const url = config.dbUrl || 'file:./.data/db.sqlite';
+// Prioritize process.env.NUXT_DB_URL (set by Vitest) over runtime config
+const url = process.env.NUXT_DB_URL || config.dbUrl || 'file:./.data/db.sqlite';
 
 const client = createClient({ url });
 
