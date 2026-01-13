@@ -5,10 +5,10 @@ import type { CreateCourse, UpdateCourse } from '~~/shared/schemas/course.schema
 
 export const courseService = {
   async getAll(userId: number) {
-    return await db.select()
-      .from(courses)
-      .where(eq(courses.userId, userId))
-      .orderBy(desc(courses.startedAt));
+    return await db.query.courses.findMany({
+      where: eq(courses.userId, userId),
+      orderBy: [desc(courses.startedAt)],
+    });
   },
 
   async create(userId: number, data: CreateCourse) {

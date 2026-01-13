@@ -3,7 +3,9 @@ import { desc } from 'drizzle-orm';
 
 export const nowService = {
   async getLatest(locale: 'de' | 'en' = 'de') {
-    const [latestEntry] = await db.select().from(nowEntries).orderBy(desc(nowEntries.createdAt)).limit(1);
+    const latestEntry = await db.query.nowEntries.findFirst({
+      orderBy: [desc(nowEntries.createdAt)]
+    });
 
     if (!latestEntry) {
       return { status: 'No status set!', updatedAt: null, icon: 'mage:zap' };

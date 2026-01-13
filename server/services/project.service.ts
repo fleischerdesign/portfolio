@@ -1,6 +1,55 @@
 import { projects, projectTranslations, categories, tags, technologies, projectsToTags, projectsToTechnologies } from '~~/server/db/schema';
-import { desc, eq } from 'drizzle-orm';
+import { desc, eq, and } from 'drizzle-orm';
 import type { ProjectResponse, ProjectUpdate, ProjectCreate } from '~~/shared/schemas/project.schema';
+import { slugify } from '~~/shared/utils/slugify';
+
+// --- Internal Helpers ---
+
+const mapProject = (project: any, translation?: any): ProjectResponse => ({
+  ...project,
+  ...(translation || {}),
+  id: project.id,
+  tags: project.tags?.map((t: any) => t.tag) || [],
+  techstack: project.techstack?.map((t: any) => t.technology) || [],
+  author: project.author || null,
+  category: project.category || null,
+});
+
+async function ensureCategory(tx: any, categoryId?: number | null, categoryName?: string | null) {
+  if (categoryId) return categoryId;
+  if (!categoryName) return null;
+
+  const slug = slugify(categoryName);
+  const existing = await tx.query.categories.findFirst({ where: eq(categories.slug, slug) });
+  if (existing) return existing.id;
+
+  const [inserted] = await tx.insert(categories).values({ name: categoryName, slug }).returning();
+  return inserted.id;
+}
+
+async function syncTags(tx: any, projectId: number, tagNames: string[]) {
+  await tx.delete(projectsToTags).where(eq(projectsToTags.projectId, projectId));
+  for (const name of tagNames) {
+    const slug = slugify(name);
+    let tag = await tx.query.tags.findFirst({ where: eq(tags.slug, slug) });
+    if (!tag) {
+      [tag] = await tx.insert(tags).values({ name, slug }).returning();
+    }
+    await tx.insert(projectsToTags).values({ projectId, tagId: tag.id }).onConflictDoNothing();
+  }
+}
+
+async function syncTechstack(tx: any, projectId: number, techNames: string[]) {
+  await tx.delete(projectsToTechnologies).where(eq(projectsToTechnologies.projectId, projectId));
+  for (const name of techNames) {
+    const slug = slugify(name);
+    let tech = await tx.query.technologies.findFirst({ where: eq(technologies.slug, slug) });
+    if (!tech) {
+      [tech] = await tx.insert(technologies).values({ name, slug }).returning();
+    }
+    await tx.insert(projectsToTechnologies).values({ projectId, technologyId: tech.id }).onConflictDoNothing();
+  }
+}
 
 export const projectService = {
   // Public Methods
@@ -9,35 +58,18 @@ export const projectService = {
       where: (p, { eq }) => eq(p.status, 'published'),
       limit,
       with: {
-        translations: {
-          where: (trans, { eq }) => eq(trans.locale, locale),
-        },
+        translations: { where: (trans, { eq }) => eq(trans.locale, locale) },
         category: true,
-        tags: {
-          with: { tag: true }
-        },
-        techstack: {
-          with: { technology: true }
-        },
+        tags: { with: { tag: true } },
+        techstack: { with: { technology: true } },
         author: true
       },
       orderBy: [desc(projects.publishedAt)]
     });
 
-    return allProjects.map(project => {
-      const translation = project.translations[0];
-      if (!translation) return null;
-
-      return {
-        ...project,
-        ...translation,
-        id: project.id,
-        tags: project.tags.map(t => t.tag),
-        techstack: project.techstack.map(t => t.technology),
-        author: project.author || null,
-        category: project.category || null,
-      } as ProjectResponse;
-    }).filter((p): p is ProjectResponse => p !== null);
+    return allProjects
+      .map(p => p.translations[0] ? mapProject(p, p.translations[0]) : null)
+      .filter((p): p is ProjectResponse => p !== null);
   },
 
   async getPublicBySlug(slug: string, locale: 'de' | 'en'): Promise<ProjectResponse | null> {
@@ -47,33 +79,17 @@ export const projectService = {
         project: {
           with: {
             category: true,
-            tags: {
-              with: { tag: true }
-            },
-            techstack: {
-              with: { technology: true }
-            },
+            tags: { with: { tag: true } },
+            techstack: { with: { technology: true } },
             author: true
           }
         }
       }
     });
   
-    if (!translation || !translation.project) return null;
+    if (!translation?.project || translation.project.status !== 'published') return null;
   
-    const { project } = translation;
-  
-    if (project.status !== 'published') return null;
-  
-    return {
-      ...project,
-      ...translation,
-      id: project.id,
-      tags: project.tags.map(t => t.tag),
-      techstack: project.techstack.map(t => t.technology),
-      author: project.author || null,
-      category: project.category || null,
-    } as ProjectResponse;
+    return mapProject(translation.project, translation);
   },
 
   // Studio Methods
@@ -118,21 +134,11 @@ export const projectService = {
 
   async create(data: ProjectCreate, authorId?: number) {
     return await db.transaction(async (tx) => {
-      let categoryId = data.categoryId;
-      if (!categoryId && data.categoryName) {
-        const slug = data.categoryName.toLowerCase().replace(/\s+/g, '-');
-        const existing = await tx.query.categories.findFirst({ where: eq(categories.slug, slug) });
-        if (existing) {
-          categoryId = existing.id;
-        } else {
-          const [inserted] = await tx.insert(categories).values({ name: data.categoryName, slug }).returning();
-          categoryId = inserted!.id;
-        }
-      }
+      const categoryId = await ensureCategory(tx, data.categoryId, data.categoryName);
   
       const { 
-        categoryName, tags: tagNames, techstack: techNames,
-        locale, slug, title, subtitle, body: contentBody, features, learned, challenges,
+        categoryName, tags, techstack,
+        locale, slug, title, subtitle, body, features, learned, challenges,
         translationKey,
         ...entityData
       } = data;
@@ -159,51 +165,14 @@ export const projectService = {
   
       await tx.insert(projectTranslations).values({
         projectId: project!.id,
-        locale,
-        slug,
-        title,
-        subtitle,
-        body: contentBody,
-        features,
-        learned,
-        challenges
+        locale, slug, title, subtitle, body, features, learned, challenges
       }).onConflictDoUpdate({
         target: [projectTranslations.projectId, projectTranslations.locale],
-        set: {
-          slug,
-          title,
-          subtitle,
-          body: contentBody,
-          features,
-          learned,
-          challenges,
-          updatedAt: new Date()
-        }
+        set: { slug, title, subtitle, body, features, learned, challenges, updatedAt: new Date() }
       });
   
-      if (tagNames) {
-        await tx.delete(projectsToTags).where(eq(projectsToTags.projectId, project!.id));
-        for (const tagName of tagNames) {
-          const tagSlug = tagName.toLowerCase().replace(/\s+/g, '-');
-          let tag = await tx.query.tags.findFirst({ where: eq(tags.slug, tagSlug) });
-          if (!tag) {
-            [tag] = await tx.insert(tags).values({ name: tagName, slug: tagSlug }).returning();
-          }
-          await tx.insert(projectsToTags).values({ projectId: project!.id, tagId: tag!.id }).onConflictDoNothing();
-        }
-      }
-  
-      if (techNames) {
-        await tx.delete(projectsToTechnologies).where(eq(projectsToTechnologies.projectId, project!.id));
-        for (const techName of techNames) {
-          const techSlug = techName.toLowerCase().replace(/\s+/g, '-');
-          let tech = await tx.query.technologies.findFirst({ where: eq(technologies.slug, techSlug) });
-          if (!tech) {
-            [tech] = await tx.insert(technologies).values({ name: techName, slug: techSlug }).returning();
-          }
-          await tx.insert(projectsToTechnologies).values({ projectId: project!.id, technologyId: tech!.id }).onConflictDoNothing();
-        }
-      }
+      if (tags) await syncTags(tx, project!.id, tags);
+      if (techstack) await syncTechstack(tx, project!.id, techstack);
   
       return project;
     });
@@ -211,21 +180,11 @@ export const projectService = {
 
   async update(id: number, data: ProjectUpdate) {
     return await db.transaction(async (tx) => {
-      let categoryId = data.categoryId;
-      if (!categoryId && data.categoryName) {
-        const slug = data.categoryName.toLowerCase().replace(/\s+/g, '-');
-        const existing = await tx.query.categories.findFirst({ where: eq(categories.slug, slug) });
-        if (existing) {
-          categoryId = existing.id;
-        } else {
-          const [inserted] = await tx.insert(categories).values({ name: data.categoryName, slug }).returning();
-          categoryId = inserted!.id;
-        }
-      }
+      const categoryId = await ensureCategory(tx, data.categoryId, data.categoryName);
   
       const { 
-        categoryName, tags: tagNames, techstack: techNames,
-        locale, slug, title, subtitle, body: contentBody, features, learned, challenges,
+        categoryName, tags, techstack,
+        locale, slug, title, subtitle, body, features, learned, challenges,
         translationKey,
         ...entityData
       } = data;
@@ -233,58 +192,20 @@ export const projectService = {
       await tx.update(projects).set({
         ...entityData,
         publishedAt: entityData.publishedAt ? new Date(entityData.publishedAt) : undefined,
-        categoryId: categoryId,
+        categoryId,
       }).where(eq(projects.id, id));
   
-      if (locale && slug && title && contentBody) {
+      if (locale && slug && title && body) {
           await tx.insert(projectTranslations).values({
-              projectId: id,
-              locale: locale!,
-              slug: slug!,
-              title: title!,
-              subtitle,
-              body: contentBody!,
-              features,
-              learned,
-              challenges
+              projectId: id, locale, slug, title, subtitle, body, features, learned, challenges
           }).onConflictDoUpdate({
               target: [projectTranslations.projectId, projectTranslations.locale],
-              set: {
-                  slug,
-                  title,
-                  subtitle,
-                  body: contentBody,
-                  features,
-                  learned,
-                  challenges,
-                  updatedAt: new Date()
-              }
+              set: { slug, title, subtitle, body, features, learned, challenges, updatedAt: new Date() }
           });
       }
   
-      if (tagNames) {
-        await tx.delete(projectsToTags).where(eq(projectsToTags.projectId, id));
-        for (const tagName of tagNames) {
-          const tagSlug = tagName.toLowerCase().replace(/\s+/g, '-');
-          let tag = await tx.query.tags.findFirst({ where: eq(tags.slug, tagSlug) });
-          if (!tag) {
-            [tag] = await tx.insert(tags).values({ name: tagName, slug: tagSlug }).returning();
-          }
-          await tx.insert(projectsToTags).values({ projectId: id, tagId: tag!.id }).onConflictDoNothing();
-        }
-      }
-  
-      if (techNames) {
-        await tx.delete(projectsToTechnologies).where(eq(projectsToTechnologies.projectId, id));
-        for (const techName of techNames) {
-          const techSlug = techName.toLowerCase().replace(/\s+/g, '-');
-          let tech = await tx.query.technologies.findFirst({ where: eq(technologies.slug, techSlug) });
-          if (!tech) {
-            [tech] = await tx.insert(technologies).values({ name: techName, slug: techSlug }).returning();
-          }
-          await tx.insert(projectsToTechnologies).values({ projectId: id, technologyId: tech!.id }).onConflictDoNothing();
-        }
-      }
+      if (tags) await syncTags(tx, id, tags);
+      if (techstack) await syncTechstack(tx, id, techstack);
   
       return await tx.query.projects.findFirst({ where: eq(projects.id, id) });
     });

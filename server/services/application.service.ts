@@ -5,59 +5,106 @@ import { eq, desc, and, inArray } from 'drizzle-orm';
 import fs from 'fs';
 import path from 'path';
 
+// --- Internal Helpers ---
+
+const mapApplication = (app: any): ApplicationResponsePayload => {
+  const latestStatusHistory = app.histories && app.histories.length > 0
+    ? app.histories.reduce((prev: any, current: any) => 
+        (prev.createdAt?.getTime() || 0) > (current.createdAt?.getTime() || 0) ? prev : current
+      )
+    : null;
+
+  const currentStatus = latestStatusHistory?.status || 'draft';
+  const associatedContacts = app.contacts?.map((c: any) => c.contact) || [];
+
+  return {
+    ...app,
+    currentStatus,
+    histories: app.histories || [],
+    company: {
+      ...app.company,
+      address: app.company?.address || null,
+    } as CompanyResponse,
+    contacts: associatedContacts,
+  };
+};
+
+async function ensureCompanyAndAddress(tx: any, companyName: string, companyAddress?: any) {
+  let addressId: number | null = null;
+  
+  if (companyAddress) {
+    const [newAddress] = await tx.insert(addresses).values(companyAddress).returning();
+    if (!newAddress) throw createError({ statusCode: 500, statusMessage: 'Failed to insert address' });
+    addressId = newAddress.id;
+  }
+
+  const existingCompany = await tx.query.companies.findFirst({
+    where: eq(companies.name, companyName),
+  });
+
+  if (existingCompany) {
+    if (addressId && existingCompany.addressId !== addressId) {
+      await tx.update(companies).set({ addressId }).where(eq(companies.id, existingCompany.id));
+    }
+    return existingCompany.id;
+  } else {
+    const [newCompany] = await tx.insert(companies).values({
+      name: companyName,
+      addressId,
+    }).returning();
+    if (!newCompany) throw createError({ statusCode: 500, statusMessage: 'Failed to insert company' });
+    return newCompany.id;
+  }
+}
+
+async function syncContacts(tx: any, applicationId: number, newContactIds: number[] | undefined) {
+  if (!newContactIds) return;
+
+  const currentContactLinks = await tx.query.applications_to_contacts.findMany({
+    where: eq(applications_to_contacts.applicationId, applicationId),
+  });
+  const currentContactIds = currentContactLinks.map((c: any) => c.contactId);
+
+  const idsToAdd = newContactIds.filter(id => !currentContactIds.includes(id));
+  const idsToRemove = currentContactIds.filter(id => !newContactIds.includes(id));
+
+  if (idsToAdd.length > 0) {
+    await tx.insert(applications_to_contacts).values(
+      idsToAdd.map(contactId => ({ applicationId, contactId }))
+    );
+  }
+
+  if (idsToRemove.length > 0) {
+    await tx.delete(applications_to_contacts).where(
+      and(
+        eq(applications_to_contacts.applicationId, applicationId),
+        inArray(applications_to_contacts.contactId, idsToRemove)
+      )
+    );
+  }
+}
+
 export const applicationService = {
   async getAll(limit?: number): Promise<ApplicationResponsePayload[]> {
     const allApplications = await db.query.applications.findMany({
       limit,
       with: {
-        company: {
-          with: {
-            address: true,
-          },
-        },
-        contacts: {
-          with: {
-            contact: true,
-          },
-        },
+        company: { with: { address: true } },
+        contacts: { with: { contact: true } },
         histories: true,
       },
+      orderBy: [desc(applications.createdAt)],
     });
 
-    return Promise.all(allApplications.map(async (app) => {
-      const latestStatusHistory = app.histories
-        .filter(h => h.status !== 'interview')
-        .sort((a, b) => (b.createdAt?.getTime() || 0) - (a.createdAt?.getTime() || 0))[0];
-      
-      const associatedContacts = app.contacts.map(appToContact => appToContact.contact);
-
-      return {
-        ...app,
-        currentStatus: latestStatusHistory?.status || 'draft',
-        histories: app.histories,
-        company: {
-          ...app.company,
-          address: app.company.address || null,
-        } as CompanyResponse,
-        contacts: associatedContacts,
-      } as unknown as ApplicationResponsePayload;
-    }));
+    return allApplications.map(mapApplication);
   },
 
   async getBySlug(slug: string): Promise<ApplicationResponsePayload | null> {
     const application = await db.query.applications.findFirst({
       where: eq(applications.slug, slug),
       with: {
-        company: {
-          with: {
-            address: true,
-          },
-        },
-        contacts: {
-          with: {
-            contact: true,
-          },
-        },
+        company: { with: { address: true } },
+        contacts: { with: { contact: true } },
         histories: {
           orderBy: [desc(applicationHistories.createdAt), desc(applicationHistories.id)],
         },
@@ -65,20 +112,7 @@ export const applicationService = {
     });
   
     if (!application) return null;
-  
-    const currentStatus = application.histories.length > 0 ? application.histories[0]!.status : 'draft';
-    const associatedContacts = application.contacts.map(appToContact => appToContact.contact);
-  
-    return {
-      ...application,
-      currentStatus,
-      company: {
-          ...application.company,
-          address: application.company.address || null,
-      },
-      contacts: associatedContacts,
-      histories: application.histories,
-    } as unknown as ApplicationResponsePayload;
+    return mapApplication(application);
   },
 
   async addHistory(slug: string, data: { status: Status; notes?: string | null; scheduled_at?: string | null }) {
@@ -136,60 +170,38 @@ export const applicationService = {
 
   async createOrUpdate(data: ApplicationCreatePayload) {
     return await db.transaction(async (tx) => {
-        let addressId: number | null | undefined = undefined;
-        let companyId: number;
-    
-        if (data.companyAddress) {
-          const [newAddress] = await tx.insert(addresses).values({
-            ...data.companyAddress
-          }).returning();
-          if (!newAddress) { throw createError({ statusCode: 500, statusMessage: 'Failed to insert address' }); }
-          addressId = newAddress.id;
-        }
-    
-        const companyName = data.companyName || '';
-        const existingCompany = await tx.query.companies.findFirst({
-          where: eq(companies.name, companyName),
-        });
-    
-        if (existingCompany) {
-          companyId = existingCompany.id;
-          if (addressId && existingCompany.addressId !== addressId) {
-            await tx.update(companies).set({ addressId }).where(eq(companies.id, companyId));
-          }
-        } else {
-          const [newCompany] = await tx.insert(companies).values({
-            name: companyName,
-            addressId: addressId,
-          }).returning();
-          if (!newCompany) { throw createError({ statusCode: 500, statusMessage: 'Failed to insert company' }); }
-          companyId = newCompany.id;
-        }
+        const companyId = await ensureCompanyAndAddress(tx, data.companyName || '', data.companyAddress);
         
-        const { companyName: _, companyAddress, ...applicationData } = data;
-        const applicationInsertData = {
-          ...applicationData,
+        const { companyName: _, companyAddress: __, contactIds, ...appFields } = data;
+        
+        const applicationValues = {
+          ...appFields,
           companyId,
-          createdAt: applicationData.createdAt ? new Date(applicationData.createdAt) : undefined,
-          updatedAt: applicationData.updatedAt ? new Date(applicationData.updatedAt) : undefined,
-          pdfGeneratedAt: applicationData.pdfGeneratedAt ? new Date(applicationData.pdfGeneratedAt) : undefined,
+          createdAt: appFields.createdAt ? new Date(appFields.createdAt) : undefined,
+          updatedAt: appFields.updatedAt ? new Date(appFields.updatedAt) : undefined,
+          pdfGeneratedAt: appFields.pdfGeneratedAt ? new Date(appFields.pdfGeneratedAt) : undefined,
         };
     
         const existingApplication = await tx.query.applications.findFirst({
           where: eq(applications.slug, data.slug),
         });
     
-        let currentApplicationId;
+        let currentApplicationId: number;
         let finalAction: 'updated' | 'inserted';
     
         if (existingApplication) {
-          const [updated] = await tx.update(applications).set(applicationInsertData).where(eq(applications.id, existingApplication.id)).returning();
-          if (!updated) { throw createError({ statusCode: 500, statusMessage: 'Failed to update application' }); }
+          const [updated] = await tx.update(applications)
+            .set(applicationValues)
+            .where(eq(applications.id, existingApplication.id))
+            .returning();
+          
+          if (!updated) throw createError({ statusCode: 500, statusMessage: 'Failed to update application' });
           currentApplicationId = updated.id;
           finalAction = 'updated';
         } else {
-          const [inserted] = await tx.insert(applications).values(applicationInsertData).returning();
-          if (!inserted) { throw createError({ statusCode: 500, statusMessage: 'Failed to insert application' }); }
+          const [inserted] = await tx.insert(applications).values(applicationValues).returning();
+          
+          if (!inserted) throw createError({ statusCode: 500, statusMessage: 'Failed to insert application' });
           currentApplicationId = inserted.id;
           finalAction = 'inserted';
         }
@@ -202,33 +214,7 @@ export const applicationService = {
           });
         }
         
-        if (data.contactIds) {
-          const currentContactLinks = await tx.query.applications_to_contacts.findMany({
-            where: eq(applications_to_contacts.applicationId, currentApplicationId),
-          });
-          const currentContactIds = currentContactLinks.map(c => c.contactId);
-          const newContactIds = data.contactIds;
-    
-          const idsToAdd = newContactIds.filter(id => !currentContactIds.includes(id));
-          const idsToRemove = currentContactIds.filter(id => !newContactIds.includes(id));
-    
-          if (idsToAdd.length > 0) {
-            const newLinks = idsToAdd.map(contactId => ({
-              applicationId: currentApplicationId,
-              contactId,
-            }));
-            await tx.insert(applications_to_contacts).values(newLinks);
-          }
-    
-          if (idsToRemove.length > 0) {
-            await tx.delete(applications_to_contacts).where(
-              and(
-                eq(applications_to_contacts.applicationId, currentApplicationId),
-                inArray(applications_to_contacts.contactId, idsToRemove)
-              )
-            );
-          }
-        }
+        await syncContacts(tx, currentApplicationId, contactIds);
     
         const finalApplication = await tx.query.applications.findFirst({
           where: eq(applications.id, currentApplicationId),
