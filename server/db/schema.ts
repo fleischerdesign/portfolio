@@ -137,6 +137,7 @@ export const users = sqliteTable('users', {
 
 export const usersRelations = relations(users, ({ many }) => ({
   apiKeys: many(apiKeys),
+  courses: many(courses),
 }));
 
 export const apiKeys = sqliteTable('api_keys', {
@@ -162,6 +163,29 @@ export const nowEntries = sqliteTable('now_entries', {
   icon: text('icon'),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
 });
+
+export const courses = sqliteTable('courses', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  userId: integer('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  
+  title: text('title', { mode: 'json' }).$type<{ de: string, en: string }>().notNull(),
+  organization: text('organization'),
+  teachers: text('teachers', { mode: 'json' }).$type<string[]>(),
+  
+  startedAt: integer('started_at', { mode: 'timestamp' }),
+  endedAt: integer('ended_at', { mode: 'timestamp' }),
+  
+  certificateUrl: text('certificate_url'),
+  
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
+});
+
+export const coursesRelations = relations(courses, ({ one }) => ({
+  user: one(users, {
+    fields: [courses.userId],
+    references: [users.id],
+  }),
+}));
 
 // --- Taxonomies ---
 

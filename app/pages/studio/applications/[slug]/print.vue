@@ -2,10 +2,10 @@
 import { languagesData } from '~/data/languages.data';
 import { interestsData } from '~/data/interests.data';
 import { timelineData } from '~/data/timeline.data';
-import { coursesData } from '~/data/courses.data';
 import { softSkillsData } from '~/data/softSkills.data';
 import { techStackData } from '~/data/techStack.data';
 import type { ApplicationResponsePayload } from '#shared/schemas/application.schema';
+import type { DbCourse } from '#shared/schemas/course.schema';
 
 definePageMeta({
   layout: 'print',
@@ -54,9 +54,17 @@ const senderLine = computed(() => {
 const languages = languagesData(t);
 const interests = interestsData(t);
 const timeline = timelineData(t);
-const courses = coursesData;
 const softSkills = softSkillsData(t);
 const techStack = techStackData;
+
+const { data: coursesDataResponse } = await useFetch<{ courses: DbCourse[] }>('/api/studio/courses');
+const courses = computed(() => coursesDataResponse.value?.courses || []);
+
+const formatDateRange = (start: Date | string | null, end: Date | string | null) => {
+    const s = start ? new Date(start).toLocaleDateString(locale.value === 'de' ? 'de-DE' : 'en-US', { month: '2-digit', year: 'numeric' }) : '';
+    const e = end ? new Date(end).toLocaleDateString(locale.value === 'de' ? 'de-DE' : 'en-US', { month: '2-digit', year: 'numeric' }) : '';
+    return s && e ? `${s} - ${e}` : s || e;
+};
 
 const { render } = useMarkdown();
 const { getDisplayDate } = useApplicationUtils();
@@ -444,16 +452,16 @@ const projects = computed(() => projectsData.value?.projects || []);
                     <h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Kurse</h3>
                  </div>
                  <div class="space-y-3">
-                    <div v-for="(skill) in courses.slice(0, 5)" :key="skill.title" class="flex flex-col rounded-xl border border-neutral-100 bg-neutral-50/50 p-3">
-                       <h4 class="text-sm font-bold leading-tight text-neutral-900">{{ skill.title }}</h4>
+                    <div v-for="(skill) in courses.slice(0, 5)" :key="skill.id" class="flex flex-col rounded-xl border border-neutral-100 bg-neutral-50/50 p-3">
+                       <h4 class="text-sm font-bold leading-tight text-neutral-900">{{ localize(skill.title, locale) }}</h4>
                        <div class="mt-2.5 flex flex-col gap-2">
                           <div class="flex">
                              <span class="whitespace-nowrap rounded-md border border-secondary-100 bg-secondary-50 px-2 py-0.5 text-[10px] font-bold text-secondary-600">
-                                {{ skill.date }}
+                                {{ formatDateRange(skill.startedAt, skill.endedAt) }}
                              </span>
                           </div>
                           <span class="text-[11px] font-medium leading-tight text-neutral-400">
-                             {{ skill.teacher.join(', ') }}
+                             {{ skill.organization }}<span v-if="skill.teachers?.length"> • {{ skill.teachers.join(', ') }}</span>
                           </span>
                        </div>
                     </div>

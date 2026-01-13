@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import type { DbUser } from '#shared/schemas/user.schema';
 
 definePageMeta({
@@ -9,6 +9,13 @@ definePageMeta({
 });
 
 const { showToast } = useToast();
+const route = useRoute();
+const router = useRouter();
+
+const activeTab = computed({
+  get: () => route.query.tab as string || 'basics',
+  set: (val) => router.replace({ query: { ...route.query, tab: val } })
+});
 
 const user = ref<Partial<DbUser>>({});
 const isLoading = ref(true);
@@ -90,16 +97,37 @@ onMounted(() => {
 
 <template>
   <div class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44">
-    <div class="mb-12 flex flex-col gap-8">
+    <div class="mb-8 flex flex-col gap-8">
         <UiSectionHeader 
             :level="1" 
-            title="Profil & Stammdaten" 
-            subtitle="Verwalte deine persönlichen Informationen und Kontaktmöglichkeiten." 
+            title="Profil & Lebenslauf" 
+            subtitle="Verwalte deine Stammdaten, Kurse und weitere Infos." 
             symbol="heroicons:user-circle" 
         />
     </div>
 
-    <div v-if="!isLoading" class="space-y-8">
+    <!-- Tabs -->
+    <div class="mb-8 flex gap-4 border-b border-neutral-200 dark:border-neutral-800">
+      <button 
+        @click="activeTab = 'basics'"
+        class="border-b-2 px-4 py-2 font-bold transition-colors"
+        :class="activeTab === 'basics' ? 'border-secondary-500 text-secondary-500' : 'border-transparent text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200'"
+      >
+        Stammdaten
+      </button>
+      <button 
+        @click="activeTab = 'courses'"
+        class="border-b-2 px-4 py-2 font-bold transition-colors"
+        :class="activeTab === 'courses' ? 'border-secondary-500 text-secondary-500' : 'border-transparent text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200'"
+      >
+        Kurse & Zertifikate
+      </button>
+    </div>
+
+    <div v-if="!isLoading">
+      
+      <!-- TAB: BASICS -->
+      <div v-show="activeTab === 'basics'" class="space-y-8">
         <!-- Contact & Links -->
         <UiCard class="border-secondary-500/10 shadow-xl shadow-secondary-500/5">
             <UiCardContainer class="space-y-8 p-8 md:p-10">
@@ -189,6 +217,13 @@ onMounted(() => {
                 {{ isSaving ? 'Speichern...' : 'Änderungen speichern' }}
             </UiButton>
         </div>
+      </div>
+
+      <!-- TAB: COURSES -->
+      <div v-show="activeTab === 'courses'">
+         <StudioProfileCourseList />
+      </div>
+
     </div>
 
     <div v-else class="flex justify-center py-20">

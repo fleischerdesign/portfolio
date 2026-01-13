@@ -1,9 +1,5 @@
 import { z } from 'zod';
-
-const i18nSchema = z.object({
-  de: z.string(),
-  en: z.string(),
-});
+import { i18nSchema } from './common.schema';
 
 export const dbUserSchema = z.object({
   id: z.number().int().positive().optional(),
