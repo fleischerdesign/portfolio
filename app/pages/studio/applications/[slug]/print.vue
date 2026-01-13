@@ -60,7 +60,7 @@ const techStack = techStackData;
 const { data: coursesDataResponse } = await useFetch<{ courses: DbCourse[] }>('/api/studio/courses');
 const courses = computed(() => coursesDataResponse.value?.courses || []);
 
-const formatDateRange = (start: Date | string | null, end: Date | string | null) => {
+const formatDateRange = (start: Date | string | null | undefined, end: Date | string | null | undefined) => {
     const s = start ? new Date(start).toLocaleDateString(locale.value === 'de' ? 'de-DE' : 'en-US', { month: '2-digit', year: 'numeric' }) : '';
     const e = end ? new Date(end).toLocaleDateString(locale.value === 'de' ? 'de-DE' : 'en-US', { month: '2-digit', year: 'numeric' }) : '';
     return s && e ? `${s} - ${e}` : s || e;

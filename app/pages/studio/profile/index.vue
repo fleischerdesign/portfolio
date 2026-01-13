@@ -156,7 +156,7 @@ onMounted(() => {
                 <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
                     <div class="space-y-6">
                         <h3 class="text-sm font-black uppercase tracking-[0.2em] text-secondary-500">Persönlich</h3>
-                        <UiInput id="profile-birthday" :model-value="formatDateForInput(user.birthday)" type="date" label="Geburtsdatum" @update:model-value="val => user.birthday = val" />
+                        <UiInput id="profile-birthday" :model-value="formatDateForInput(user.birthday)" type="date" label="Geburtsdatum" @update:model-value="val => user.birthday = val ? new Date(val) : null" />
                         <UiInput id="profile-birthlocation" v-model="user.birthLocation" label="Geburtsort" />
                         
                         <div class="grid grid-cols-2 gap-4">

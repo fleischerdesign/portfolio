@@ -9,22 +9,22 @@ export const technologySchema = z.object({
 
 export const projectBaseSchema = z.object({
   id: z.number().optional(),
-  translationKey: z.string(),
-  slug: z.string(),
+  translationKey: z.string().trim().min(1, 'Translation key is required'),
+  slug: z.string().trim().min(1, 'Slug is required'),
   locale: z.enum(['de', 'en']),
-  title: z.string(),
-  subtitle: z.string().nullable(),
+  title: z.string().trim().min(1, 'Title is required'),
+  subtitle: z.string().trim().nullable(),
   body: z.string(),
   status: z.enum(['draft', 'published', 'archived']).default('published'),
-  publishedAt: z.union([z.string(), z.date()]).transform(val => new Date(val)).nullable(),
-  icon: z.string().nullable().optional(),
-  coverImage: z.string().nullable(),
-  coverImageAlt: z.string().nullable(),
-  repoUrl: z.string().nullable(),
-  projectUrl: z.string().nullable(),
-  features: z.array(z.string()).nullable(),
-  learned: z.array(z.string()).nullable(),
-  challenges: z.array(z.string()).nullable(),
+  publishedAt: z.coerce.date().nullable(),
+  icon: z.string().trim().nullable().optional(),
+  coverImage: z.string().trim().nullable(),
+  coverImageAlt: z.string().trim().nullable(),
+  repoUrl: z.string().trim().nullable(),
+  projectUrl: z.string().trim().nullable(),
+  features: z.array(z.string().trim()).nullable(),
+  learned: z.array(z.string().trim()).nullable(),
+  challenges: z.array(z.string().trim()).nullable(),
   categoryId: z.number().optional().nullable(),
   authorId: z.number().optional().nullable(),
 });
@@ -32,10 +32,10 @@ export const projectBaseSchema = z.object({
 export const projectCreateSchema = projectBaseSchema.omit({ 
   id: true 
 }).extend({
-  categoryName: z.string().optional().nullable(),
-  tags: z.array(z.string()).optional().default([]),
-  techstack: z.array(z.string()).optional().default([]),
-  publishedAt: z.string().datetime().optional().nullable(),
+  categoryName: z.string().trim().optional().nullable(),
+  tags: z.array(z.string().trim()).optional().default([]),
+  techstack: z.array(z.string().trim()).optional().default([]),
+  publishedAt: z.coerce.date().optional().nullable(),
 });
 
 export const projectUpdateSchema = projectCreateSchema.partial();
@@ -49,9 +49,9 @@ export const projectResponseSchema = projectBaseSchema.extend({
 
 export const projectTranslationSchema = z.object({
   locale: z.enum(['de', 'en']),
-  slug: z.string(),
-  title: z.string(),
-  subtitle: z.string().nullable(),
+  slug: z.string().trim(),
+  title: z.string().trim(),
+  subtitle: z.string().trim().nullable(),
 });
 
 export const projectStudioResponseSchema = z.object({
@@ -63,8 +63,8 @@ export const projectStudioResponseSchema = z.object({
   icon: z.string().nullable(),
   repoUrl: z.string().nullable(),
   projectUrl: z.string().nullable(),
-  publishedAt: z.union([z.string(), z.date()]).transform(val => new Date(val)).nullable(),
-  createdAt: z.union([z.string(), z.date()]).transform(val => new Date(val)).nullable(),
+  publishedAt: z.coerce.date().nullable(),
+  createdAt: z.coerce.date().nullable(),
   translations: z.array(projectTranslationSchema.extend({
       body: z.string(),
       features: z.array(z.string()).nullable(),

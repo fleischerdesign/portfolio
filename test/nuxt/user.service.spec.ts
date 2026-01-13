@@ -25,7 +25,7 @@ describe('UserService', () => {
     }).returning()
 
     // 2. Create API Key
-    const result = await userService.createApiKey(user.id, 'Test Key')
+    const result = await userService.createApiKey(user!.id, 'Test Key')
 
     expect(result.apiKey).toBeDefined()
     expect(result.apiKey).toMatch(/^sk_/) // Check prefix
@@ -33,13 +33,13 @@ describe('UserService', () => {
 
     // 3. Verify DB Storage (Hashed)
     const storedKeys = await db.query.apiKeys.findMany({
-      where: (k, { eq }) => eq(k.userId, user.id)
+      where: (k, { eq }) => eq(k.userId, user!.id)
     })
 
     expect(storedKeys.length).toBe(1)
-    expect(storedKeys[0].name).toBe('Test Key')
-    expect(storedKeys[0].keyHash).not.toBe(result.apiKey) // Should be hashed!
-    expect(storedKeys[0].keyHash.length).toBeGreaterThan(0)
+    expect(storedKeys[0]!.name).toBe('Test Key')
+    expect(storedKeys[0]!.keyHash).not.toBe(result.apiKey) // Should be hashed!
+    expect(storedKeys[0]!.keyHash.length).toBeGreaterThan(0)
   })
 
   it('should get the owner or admin user', async () => {

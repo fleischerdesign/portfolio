@@ -1,28 +1,28 @@
 import { z } from 'zod';
-import { i18nSchema } from './common.schema';
+import { i18nSchema, addressSchema } from './common.schema';
 
 export const dbUserSchema = z.object({
   id: z.number().int().positive().optional(),
-  authProviderId: z.string(),
-  email: z.string().email(),
-  name: z.string().optional().nullable(),
+  authProviderId: z.string().trim(),
+  email: z.string().trim().email(),
+  name: z.string().trim().optional().nullable(),
   role: z.enum(['admin', 'user']).default('user'),
-  phone: z.string().optional().nullable(),
-  website: z.string().optional().nullable(),
-  github: z.string().optional().nullable(),
-  linkedin: z.string().optional().nullable(),
-  instagram: z.string().optional().nullable(),
+  phone: z.string().trim().optional().nullable(),
+  website: z.string().trim().optional().nullable(),
+  github: z.string().trim().optional().nullable(),
+  linkedin: z.string().trim().optional().nullable(),
+  instagram: z.string().trim().optional().nullable(),
   
   // Personal Info
   birthday: z.coerce.date().optional().nullable(),
-  birthLocation: z.string().optional().nullable(),
+  birthLocation: z.string().trim().optional().nullable(),
 
-  // Address
-  street: z.string().optional().nullable(),
-  houseNumber: z.string().optional().nullable(),
-  zipcode: z.string().optional().nullable(),
-  city: z.string().optional().nullable(),
-  country: i18nSchema.optional().nullable(),
+  // Address - flattened in DB but logical group
+  street: addressSchema.shape.street,
+  houseNumber: addressSchema.shape.houseNumber,
+  zipcode: addressSchema.shape.zipcode,
+  city: addressSchema.shape.city,
+  country: addressSchema.shape.country,
 
   // Translatable Meta
   maritalStatus: i18nSchema.optional().nullable(),

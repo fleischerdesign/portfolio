@@ -1,17 +1,15 @@
 import { z } from 'zod';
+import { addressSchema } from './common.schema';
 
-export const addressBaseSchema = z.object({
+// Extend the common address schema for the DB entity which has ID and Name
+export const addressBaseSchema = addressSchema.extend({
   id: z.number().optional(),
-  name: z.string().optional().nullable(),
-  street: z.string().optional().nullable(),
-  houseNumber: z.string().optional().nullable(),
-  zipcode: z.number().int().positive().optional().nullable(),
-  city: z.string().optional().nullable(),
+  name: z.string().trim().optional().nullable(),
 });
 
 export const companyBaseSchema = z.object({
   id: z.number().optional(),
-  name: z.string(),
+  name: z.string().trim().min(1, 'Name is required'),
   addressId: z.number().optional().nullable(),
 });
 
@@ -30,3 +28,4 @@ export type Company = z.infer<typeof companyBaseSchema>;
 export type CompanyCreate = z.infer<typeof companyCreateSchema>;
 export type CompanyUpdate = z.infer<typeof companyUpdateSchema>;
 export type CompanyResponse = z.infer<typeof companyResponseSchema>;
+

@@ -24,7 +24,7 @@ const selectedContacts = ref<ContactResponse[]>([]);
 const newCompanyName = ref('');
 const newCompanyStreet = ref('');
 const newCompanyHouseNumber = ref('');
-const newCompanyZipcode = ref<number | undefined>(undefined);
+const newCompanyZipcode = ref<string | undefined>(undefined);
 const constNewCompanyCity = ref(''); // Renamed to avoid conflict
 const showNewCompanyForm = ref(false);
 
@@ -187,7 +187,7 @@ function handleCancelContactForm() {
               <div />
               <UiInput id="new-company-street" v-model="newCompanyStreet" :label="$t('applications.new.street')" />
               <UiInput id="new-company-housenumber" v-model="newCompanyHouseNumber" :label="$t('applications.new.house_number')" />
-              <UiInput id="new-company-zipcode" v-model="newCompanyZipcode" type="number" :label="$t('applications.new.zipcode')" />
+              <UiInput id="new-company-zipcode" v-model="newCompanyZipcode" :label="$t('applications.new.zipcode')" />
               <UiInput id="new-company-city" v-model="constNewCompanyCity" :label="$t('applications.new.city')" />
             </div>
             <p v-else-if="selectedCompany" class="text-neutral-500">

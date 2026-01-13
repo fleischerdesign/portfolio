@@ -1,10 +1,10 @@
 import { z } from 'zod'
 
 export const ContactFormSchema = z.object({
-  name: z.string().min(1, 'Name ist erforderlich'),
-  email: z.string().email('Ungültige Email-Adresse'),
-  subject: z.string().optional(),
-  message: z.string().min(1, 'Nachricht ist erforderlich'),
+  name: z.string().trim().min(1, 'Name is required'),
+  email: z.string().trim().email('Invalid email address'),
+  subject: z.string().trim().optional(),
+  message: z.string().trim().min(1, 'Message is required'),
 })
 
 export type ContactForm = z.infer<typeof ContactFormSchema>

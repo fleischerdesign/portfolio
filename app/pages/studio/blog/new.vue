@@ -38,7 +38,7 @@ async function create() {
       body: '# New Post\n\nStart writing...', // Corrected newline escaping
       status: 'draft',
       excerpt: '',
-      publishedAt: new Date().toISOString(),
+      publishedAt: new Date(),
       coverImage: null,
       coverImageAlt: null,
       categoryName: null,

@@ -2,7 +2,7 @@
   <form class="flex flex-col gap-4" @submit.prevent="saveAddress">
     <UiInput id="street" v-model="editableAddress.street" label="Straße" />
     <UiInput id="houseNumber" v-model="editableAddress.houseNumber" label="Hausnummer" />
-    <UiInput id="zipcode" v-model="editableAddress.zipcode" type="number" label="PLZ" />
+    <UiInput id="zipcode" v-model="editableAddress.zipcode" label="PLZ" />
     <UiInput id="city" v-model="editableAddress.city" label="Stadt" />
     <div class="mt-4 flex justify-end gap-2">
       <UiButton type="button" variant="secondary" @click="$emit('cancel')">Abbrechen</UiButton>
@@ -29,7 +29,7 @@ const isLoading = ref(false);
 const editableAddress = ref<Partial<Address>>({
   street: '',
   houseNumber: '',
-  zipcode: null,
+  zipcode: '',
   city: '',
   ...props.company.address
 });
@@ -40,11 +40,7 @@ async function saveAddress() {
   try {
     const payload: Partial<Address> = { ...editableAddress.value };
 
-    // Explicitly convert zipcode to number if it's not null/undefined, and handle NaN
-    if (typeof payload.zipcode === 'string') {
-      const numVal = Number(payload.zipcode);
-      payload.zipcode = isNaN(numVal) ? undefined : numVal;
-    } else if (payload.zipcode === null) {
+    if (payload.zipcode === null) {
       payload.zipcode = undefined;
     }
     

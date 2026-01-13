@@ -1,7 +1,7 @@
 import { db } from '../utils/db';
 import { courses } from '../db/schema';
 import { eq, desc, and } from 'drizzle-orm';
-import type { CreateCourse, UpdateCourse } from '~~/shared/schemas/course.schema';
+import type { CourseCreate, CourseUpdate } from '~~/shared/schemas/course.schema';
 
 export const courseService = {
   async getAll(userId: number) {
@@ -11,7 +11,7 @@ export const courseService = {
     });
   },
 
-  async create(userId: number, data: CreateCourse) {
+  async create(userId: number, data: CourseCreate) {
     const [created] = await db.insert(courses).values({
       ...data,
       userId,
@@ -19,7 +19,7 @@ export const courseService = {
     return created;
   },
 
-  async update(userId: number, id: number, data: UpdateCourse) {
+  async update(userId: number, id: number, data: CourseUpdate) {
     const [updated] = await db.update(courses)
       .set(data)
       .where(and(eq(courses.id, id), eq(courses.userId, userId)))

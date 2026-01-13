@@ -29,10 +29,12 @@ describe('BlogService', () => {
       status: 'published' as const,
       categoryName: 'Tech',
       tags: ['Nuxt', 'Testing'],
-      publishedAt: new Date().toISOString()
+      publishedAt: new Date(),
+      coverImage: null,
+      coverImageAlt: null,
     }
 
-    const result = await blogService.create(postData)
+    const result = await blogService.create(postData as any)
 
     expect(result).toBeDefined()
     expect(result?.translationKey).toBe('test-post')
@@ -41,7 +43,7 @@ describe('BlogService', () => {
     const publicPosts = await blogService.getPublicAll('en')
     expect(publicPosts.length).toBe(1)
     
-    const post = publicPosts[0]
+    const post = publicPosts[0]!
     expect(post.title).toBe('Test Blog Post')
     expect(post.category?.name).toBe('Tech')
     expect(post.tags.map(t => t.name)).toContain('Nuxt')
@@ -57,8 +59,12 @@ describe('BlogService', () => {
       title: 'Original Title',
       body: 'Original Body',
       tags: ['OldTag'],
-      status: 'published'
-    })
+      status: 'published',
+      coverImage: null,
+      coverImageAlt: null,
+      excerpt: null,
+      readingTime: null
+    } as any)
 
     // 2. Update
     await blogService.update(created!.id, {
@@ -76,7 +82,7 @@ describe('BlogService', () => {
     
     // Check Tags Sync
     expect(updated?.tags.length).toBe(1)
-    expect(updated?.tags[0].name).toBe('NewTag')
+    expect(updated?.tags[0]!.name).toBe('NewTag')
   })
 
   it('should return null for invalid slug', async () => {
@@ -91,8 +97,13 @@ describe('BlogService', () => {
       slug: 'draft-post',
       title: 'Draft',
       body: '...',
-      status: 'draft'
-    })
+      status: 'draft',
+      tags: [],
+      coverImage: null,
+      coverImageAlt: null,
+      excerpt: null,
+      readingTime: null
+    } as any)
 
     const all = await blogService.getPublicAll('en')
     expect(all.find(p => p.slug === 'draft-post')).toBeUndefined()

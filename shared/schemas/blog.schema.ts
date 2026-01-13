@@ -24,16 +24,16 @@ export const blogTagSchema = z.object({
 
 export const blogPostBaseSchema = z.object({
   id: z.number().optional(),
-  translationKey: z.string(),
-  slug: z.string(),
+  translationKey: z.string().trim().min(1, 'Translation key is required'),
+  slug: z.string().trim().min(1, 'Slug is required'),
   locale: z.enum(['de', 'en']),
-  title: z.string(),
-  excerpt: z.string().nullable(),
+  title: z.string().trim().min(1, 'Title is required'),
+  excerpt: z.string().trim().nullable(),
   body: z.string(),
   status: z.enum(['draft', 'published', 'archived']).default('published'),
-  publishedAt: z.union([z.string(), z.date()]).transform(val => new Date(val)).nullable(),
-  coverImage: z.string().nullable(),
-  coverImageAlt: z.string().nullable(),
+  publishedAt: z.coerce.date().nullable(),
+  coverImage: z.string().trim().nullable(),
+  coverImageAlt: z.string().trim().nullable(),
   readingTime: z.number().nullable(),
   categoryId: z.number().optional().nullable(),
   authorId: z.number().optional().nullable(),
@@ -42,10 +42,10 @@ export const blogPostBaseSchema = z.object({
 export const blogPostCreateSchema = blogPostBaseSchema.omit({ 
   id: true 
 }).extend({
-  translationKey: z.string().optional(),
-  categoryName: z.string().optional().nullable(),
-  tags: z.array(z.string()).optional().default([]),
-  publishedAt: z.string().datetime().optional().nullable(),
+  translationKey: z.string().trim().optional(),
+  categoryName: z.string().trim().optional().nullable(),
+  tags: z.array(z.string().trim()).optional().default([]),
+  publishedAt: z.coerce.date().optional().nullable(),
 });
 
 export const blogPostUpdateSchema = blogPostCreateSchema.partial();
@@ -58,9 +58,9 @@ export const blogPostResponseSchema = blogPostBaseSchema.extend({
 
 export const blogPostTranslationSchema = z.object({
   locale: z.enum(['de', 'en']),
-  slug: z.string(),
-  title: z.string(),
-  excerpt: z.string().nullable(),
+  slug: z.string().trim(),
+  title: z.string().trim(),
+  excerpt: z.string().trim().nullable(),
 });
 
 export const blogPostStudioResponseSchema = z.object({
@@ -69,8 +69,8 @@ export const blogPostStudioResponseSchema = z.object({
   translationKey: z.string(),
   coverImage: z.string().nullable(),
   coverImageAlt: z.string().nullable(),
-  publishedAt: z.union([z.string(), z.date()]).transform(val => new Date(val)).nullable(),
-  createdAt: z.union([z.string(), z.date()]).transform(val => new Date(val)).nullable(),
+  publishedAt: z.coerce.date().nullable(),
+  createdAt: z.coerce.date().nullable(),
   translations: z.array(blogPostTranslationSchema.extend({
       body: z.string(),
   })),

@@ -2,11 +2,11 @@ import { z } from 'zod';
 
 export const contactBaseSchema = z.object({
   id: z.number(),
-  name: z.string(),
+  name: z.string().trim().min(1, 'Name is required'),
   salutation: z.enum(['male', 'female', 'diverse', 'neutral']).nullable(),
-  position: z.string().nullable(),
-  email: z.string().email().nullable(),
-  phone: z.string().nullable(),
+  position: z.string().trim().nullable(),
+  email: z.string().trim().email('Invalid email address').nullable(),
+  phone: z.string().trim().nullable(),
   companyId: z.number().nullable(),
 });
 

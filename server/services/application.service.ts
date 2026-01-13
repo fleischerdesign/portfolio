@@ -66,7 +66,7 @@ async function syncContacts(tx: any, applicationId: number, newContactIds: numbe
   const currentContactIds = currentContactLinks.map((c: any) => c.contactId);
 
   const idsToAdd = newContactIds.filter(id => !currentContactIds.includes(id));
-  const idsToRemove = currentContactIds.filter(id => !newContactIds.includes(id));
+  const idsToRemove = currentContactIds.filter((id: number) => !newContactIds.includes(id));
 
   if (idsToAdd.length > 0) {
     await tx.insert(applications_to_contacts).values(

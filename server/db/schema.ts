@@ -6,7 +6,7 @@ export const addresses = sqliteTable('addresses', {
   name: text('name'),
   street: text('street'),
   houseNumber: text('house_number'),
-  zipcode: integer('zipcode'),
+  zipcode: text('zipcode'),
   city: text('city'),
 });
 

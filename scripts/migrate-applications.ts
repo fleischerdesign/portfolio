@@ -24,7 +24,7 @@ interface FrontmatterAddress {
   contact?: FrontmatterContact;
   street: string;
   houseNumber: string;
-  zipcode: number;
+  zipcode: string | number;
   city: string;
 }
 
@@ -77,7 +77,7 @@ async function main() {
             name: parsedFrontmatter.company.address.name,
             street: parsedFrontmatter.company.address.street,
             houseNumber: String(parsedFrontmatter.company.address.houseNumber), // Ensure houseNumber is a string
-            zipcode: parsedFrontmatter.company.address.zipcode, city: parsedFrontmatter.company.address.city,
+            zipcode: String(parsedFrontmatter.company.address.zipcode), city: parsedFrontmatter.company.address.city,
             // Flatten contact details
             contactName: parsedFrontmatter.company.address.contact?.name,
             contactPosition: parsedFrontmatter.company.address.contact?.position,

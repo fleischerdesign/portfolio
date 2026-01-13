@@ -32,10 +32,18 @@ describe('ProjectService', () => {
       categoryName: 'Testing',
       tags: ['tag1', 'tag2'],
       techstack: ['Vitest', 'Nuxt'],
-      publishedAt: new Date().toISOString()
+      publishedAt: new Date(),
+      coverImage: null,
+      coverImageAlt: null,
+      repoUrl: null,
+      projectUrl: null,
+      icon: null,
+      features: [],
+      learned: [],
+      challenges: []
     }
 
-    const result = await projectService.create(projectData)
+    const result = await projectService.create(projectData as any)
 
     expect(result).toBeDefined()
     expect(result?.translationKey).toBe('test-project')
@@ -43,10 +51,10 @@ describe('ProjectService', () => {
     // Verify relations
     const publicProjects = await projectService.getPublicAll('en')
     expect(publicProjects.length).toBe(1)
-    expect(publicProjects[0].title).toBe('Test Project')
-    expect(publicProjects[0].category?.name).toBe('Testing')
-    expect(publicProjects[0].tags.map(t => t.name)).toContain('tag1')
-    expect(publicProjects[0].techstack.map(t => t.name)).toContain('Vitest')
+    expect(publicProjects[0]!.title).toBe('Test Project')
+    expect(publicProjects[0]!.category?.name).toBe('Testing')
+    expect(publicProjects[0]!.tags.map(t => t.name)).toContain('tag1')
+    expect(publicProjects[0]!.techstack.map(t => t.name)).toContain('Vitest')
   })
 
   it('should update an existing project translation', async () => {
@@ -57,8 +65,19 @@ describe('ProjectService', () => {
         slug: 'initial-slug',
         title: 'Initial Title',
         body: 'Initial body',
-        status: 'published'
-     })
+        status: 'published',
+        subtitle: null,
+        tags: [],
+        techstack: [],
+        coverImage: null,
+        coverImageAlt: null,
+        repoUrl: null,
+        projectUrl: null,
+        icon: null,
+        features: [],
+        learned: [],
+        challenges: []
+     } as any)
 
      // 2. Update same translation
      await projectService.update(initial!.id, {
@@ -86,8 +105,19 @@ describe('ProjectService', () => {
       slug: 'draft-slug',
       title: 'Draft Title',
       body: 'Content',
-      status: 'draft' // !
-    })
+      status: 'draft',
+      subtitle: null,
+      tags: [],
+      techstack: [],
+      coverImage: null,
+      coverImageAlt: null,
+      repoUrl: null,
+      projectUrl: null,
+      icon: null,
+      features: [],
+      learned: [],
+      challenges: []
+    } as any)
 
     const result = await projectService.getPublicBySlug('draft-slug', 'en')
     expect(result).toBeNull()

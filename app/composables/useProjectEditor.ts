@@ -94,7 +94,7 @@ export function useProjectEditor(projectId: number, initialData: Ref<RawProjectD
       if (editableProject.value.common.publishedAt) {
           const dateVal = new Date(editableProject.value.common.publishedAt);
           if (!isNaN(dateVal.getTime())) {
-              pubDate = dateVal.toISOString();
+              pubDate = dateVal;
           }
       }
 

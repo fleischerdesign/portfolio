@@ -26,7 +26,7 @@ describe('ApplicationService', () => {
       companyAddress: {
         street: 'Tech Lane',
         city: 'Berlin',
-        zipcode: 10115
+        zipcode: '10115'
       },
       status: 'applied',
       url: 'https://test-corp.com/jobs/1'
@@ -47,13 +47,13 @@ describe('ApplicationService', () => {
     
     // Check initial history
     expect(createdApp?.histories.length).toBeGreaterThan(0)
-    expect(createdApp?.histories[0].status).toBe('draft') // Default on insert
+    expect(createdApp?.histories[0]!.status).toBe('draft') // Default on insert
   })
 
   it('should reuse existing company and update address if needed', async () => {
     // 1. Create Company manually
     const [address] = await db.insert(addresses).values({ city: 'Munich' }).returning()
-    await db.insert(companies).values({ name: 'Existing Corp', addressId: address.id })
+    await db.insert(companies).values({ name: 'Existing Corp', addressId: address!.id })
 
     // 2. Create Application for SAME company
     const result = await applicationService.createOrUpdate({
@@ -63,7 +63,7 @@ describe('ApplicationService', () => {
       // No address update this time
     } as any)
 
-    expect(result.company.addressId).toBe(address.id) // Should link to existing address
+    expect(result.company?.addressId).toBe(address!.id) // Should link to existing address
   })
 
   it('should throw error when adding history to non-existent application', async () => {

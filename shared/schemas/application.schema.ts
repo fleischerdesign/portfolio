@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { companyResponseSchema } from './company.schema';
 import { contactBaseSchema } from './contact.schema';
+import { addressSchema } from './common.schema';
 
 export const applicationHistoryBaseSchema = z.object({
   id: z.number().optional(),
@@ -12,10 +13,10 @@ export const applicationHistoryBaseSchema = z.object({
 
 export const applicationBaseSchema = z.object({
   id: z.number().optional(),
-  slug: z.string(),
-  title: z.string(),
-  subtitle: z.string().optional().nullable(),
-  url: z.string().url().optional().nullable(),
+  slug: z.string().trim(),
+  title: z.string().trim(),
+  subtitle: z.string().trim().optional().nullable(),
+  url: z.string().trim().url().optional().nullable(),
   companyId: z.number(), // Reference to company
   contactIds: z.array(z.number()).optional().default([]), // References to contacts
   // Removed interviews
@@ -31,23 +32,13 @@ export const applicationCreateSchema = applicationBaseSchema.omit({
   companyId: true,
 }).extend({
   companyId: z.number().optional(),
-  companyName: z.string().optional(), // Made optional too
-  companyAddress: z.object({
-    street: z.string(),
-    houseNumber: z.string(),
-    zipcode: z.number().int().positive(),
-    city: z.string(),
-  }).optional(),
+  companyName: z.string().trim().optional(), // Made optional too
+  companyAddress: addressSchema.optional(),
 });
 
 export const applicationUpdateSchema = applicationBaseSchema.partial().extend({
-  companyName: z.string().optional(),
-  companyAddress: z.object({
-    street: z.string(),
-    houseNumber: z.string(),
-    zipcode: z.number().int().positive(),
-    city: z.string(),
-  }).partial().optional(),
+  companyName: z.string().trim().optional(),
+  companyAddress: addressSchema.partial().optional(),
   histories: z.array(applicationHistoryBaseSchema).optional(),
 });
 

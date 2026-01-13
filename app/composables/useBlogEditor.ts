@@ -79,7 +79,7 @@ export function useBlogEditor(postId: number, initialData: Ref<{ post: Serialize
       if (editablePost.value.common.publishedAt) {
           const dateVal = new Date(editablePost.value.common.publishedAt);
           if (!isNaN(dateVal.getTime())) {
-              pubDate = dateVal.toISOString();
+              pubDate = dateVal;
           }
       }
 
