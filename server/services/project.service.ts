@@ -1,7 +1,8 @@
 import { projects, projectTranslations, categories, tags, technologies, projectsToTags, projectsToTechnologies } from '~~/server/db/schema';
-import { desc, eq, and } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import type { ProjectResponse, ProjectUpdate, ProjectCreate } from '~~/shared/schemas/project.schema';
 import { slugify } from '~~/shared/utils/slugify';
+import { resolveEntityReference, syncManyToMany } from '../utils/relation';
 
 // --- Internal Helpers ---
 
@@ -14,42 +15,6 @@ const mapProject = (project: any, translation?: any): ProjectResponse => ({
   author: project.author || null,
   category: project.category || null,
 });
-
-async function ensureCategory(tx: any, categoryId?: number | null, categoryName?: string | null) {
-  if (categoryId) return categoryId;
-  if (!categoryName) return null;
-
-  const slug = slugify(categoryName);
-  const existing = await tx.query.categories.findFirst({ where: eq(categories.slug, slug) });
-  if (existing) return existing.id;
-
-  const [inserted] = await tx.insert(categories).values({ name: categoryName, slug }).returning();
-  return inserted.id;
-}
-
-async function syncTags(tx: any, projectId: number, tagNames: string[]) {
-  await tx.delete(projectsToTags).where(eq(projectsToTags.projectId, projectId));
-  for (const name of tagNames) {
-    const slug = slugify(name);
-    let tag = await tx.query.tags.findFirst({ where: eq(tags.slug, slug) });
-    if (!tag) {
-      [tag] = await tx.insert(tags).values({ name, slug }).returning();
-    }
-    await tx.insert(projectsToTags).values({ projectId, tagId: tag.id }).onConflictDoNothing();
-  }
-}
-
-async function syncTechstack(tx: any, projectId: number, techNames: string[]) {
-  await tx.delete(projectsToTechnologies).where(eq(projectsToTechnologies.projectId, projectId));
-  for (const name of techNames) {
-    const slug = slugify(name);
-    let tech = await tx.query.technologies.findFirst({ where: eq(technologies.slug, slug) });
-    if (!tech) {
-      [tech] = await tx.insert(technologies).values({ name, slug }).returning();
-    }
-    await tx.insert(projectsToTechnologies).values({ projectId, technologyId: tech.id }).onConflictDoNothing();
-  }
-}
 
 export const projectService = {
   // Public Methods
@@ -134,10 +99,14 @@ export const projectService = {
 
   async create(data: ProjectCreate, authorId?: number) {
     return await db.transaction(async (tx) => {
-      const categoryId = await ensureCategory(tx, data.categoryId, data.categoryName);
+      // Resolve Category
+      let categoryId = data.categoryId;
+      if (data.categoryName) {
+         categoryId = await resolveEntityReference(tx, categories, categories.slug, slugify(data.categoryName), { name: data.categoryName }) || undefined;
+      }
   
       const { 
-        categoryName, tags, techstack,
+        categoryName, tags: tagNames, techstack: techNames,
         locale, slug, title, subtitle, body, features, learned, challenges,
         translationKey,
         ...entityData
@@ -171,8 +140,25 @@ export const projectService = {
         set: { slug, title, subtitle, body, features, learned, challenges, updatedAt: new Date() }
       });
   
-      if (tags) await syncTags(tx, project!.id, tags);
-      if (techstack) await syncTechstack(tx, project!.id, techstack);
+      // Sync Tags
+      if (tagNames) {
+        const tagIds: number[] = [];
+        for (const name of tagNames) {
+           const id = await resolveEntityReference(tx, tags, tags.slug, slugify(name), { name });
+           if (id) tagIds.push(id);
+        }
+        await syncManyToMany(tx, projectsToTags, projectsToTags.projectId, project!.id, projectsToTags.tagId, tagIds);
+      }
+
+      // Sync Techstack
+      if (techNames) {
+        const techIds: number[] = [];
+        for (const name of techNames) {
+           const id = await resolveEntityReference(tx, technologies, technologies.slug, slugify(name), { name });
+           if (id) techIds.push(id);
+        }
+        await syncManyToMany(tx, projectsToTechnologies, projectsToTechnologies.projectId, project!.id, projectsToTechnologies.technologyId, techIds);
+      }
   
       return project;
     });
@@ -180,10 +166,14 @@ export const projectService = {
 
   async update(id: number, data: ProjectUpdate) {
     return await db.transaction(async (tx) => {
-      const categoryId = await ensureCategory(tx, data.categoryId, data.categoryName);
+      // Resolve Category
+      let categoryId = data.categoryId;
+      if (data.categoryName) {
+         categoryId = await resolveEntityReference(tx, categories, categories.slug, slugify(data.categoryName), { name: data.categoryName }) || undefined;
+      }
   
       const { 
-        categoryName, tags, techstack,
+        categoryName, tags: tagNames, techstack: techNames,
         locale, slug, title, subtitle, body, features, learned, challenges,
         translationKey,
         ...entityData
@@ -204,8 +194,25 @@ export const projectService = {
           });
       }
   
-      if (tags) await syncTags(tx, id, tags);
-      if (techstack) await syncTechstack(tx, id, techstack);
+      // Sync Tags
+      if (tagNames) {
+        const tagIds: number[] = [];
+        for (const name of tagNames) {
+           const id = await resolveEntityReference(tx, tags, tags.slug, slugify(name), { name });
+           if (id) tagIds.push(id);
+        }
+        await syncManyToMany(tx, projectsToTags, projectsToTags.projectId, id, projectsToTags.tagId, tagIds);
+      }
+
+      // Sync Techstack
+      if (techNames) {
+        const techIds: number[] = [];
+        for (const name of techNames) {
+           const id = await resolveEntityReference(tx, technologies, technologies.slug, slugify(name), { name });
+           if (id) techIds.push(id);
+        }
+        await syncManyToMany(tx, projectsToTechnologies, projectsToTechnologies.projectId, id, projectsToTechnologies.technologyId, techIds);
+      }
   
       return await tx.query.projects.findFirst({ where: eq(projects.id, id) });
     });

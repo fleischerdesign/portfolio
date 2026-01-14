@@ -88,8 +88,6 @@ export function useProjectEditor(projectId: number, initialData: Ref<RawProjectD
     if (!editableProject.value) return;
     isLoading.value = true;
     try {
-      const activeTranslation = editableProject.value[currentLocale.value];
-      
       let pubDate = undefined;
       if (editableProject.value.common.publishedAt) {
           const dateVal = new Date(editableProject.value.common.publishedAt);
@@ -98,7 +96,9 @@ export function useProjectEditor(projectId: number, initialData: Ref<RawProjectD
           }
       }
 
-      const payload: ProjectUpdate = {
+      const locales: ('de' | 'en')[] = ['de', 'en'];
+      
+      const commonPayload = {
         ...editableProject.value.common,
         coverImage: editableProject.value.common.coverImage || null,
         coverImageAlt: editableProject.value.common.coverImageAlt || null,
@@ -107,21 +107,29 @@ export function useProjectEditor(projectId: number, initialData: Ref<RawProjectD
         projectUrl: editableProject.value.common.projectUrl || null,
         categoryName: editableProject.value.common.categoryName || null,
         publishedAt: pubDate,
-
-        locale: currentLocale.value,
-        title: activeTranslation.title,
-        subtitle: activeTranslation.subtitle || null,
-        body: activeTranslation.body,
-        slug: activeTranslation.slug,
-        features: activeTranslation.features,
-        learned: activeTranslation.learned,
-        challenges: activeTranslation.challenges
       };
 
-      await $fetch(`/api/studio/projects/${projectId}`, {
-        method: 'PUT',
-        body: payload
+      const promises = locales.map((locale) => {
+        const trans = editableProject.value![locale];
+        const payload: ProjectUpdate = {
+          ...commonPayload,
+          locale,
+          title: trans.title,
+          subtitle: trans.subtitle || null,
+          body: trans.body,
+          slug: trans.slug,
+          features: trans.features,
+          learned: trans.learned,
+          challenges: trans.challenges
+        };
+
+        return $fetch(`/api/studio/projects/${projectId}`, {
+          method: 'PUT',
+          body: payload
+        });
       });
+
+      await Promise.all(promises);
 
       await refreshProject();
       isEditing.value = false;

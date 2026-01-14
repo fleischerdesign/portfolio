@@ -1,7 +1,8 @@
 import { blogPosts, blogPostTranslations, categories, tags, blogPostsToTags } from '~~/server/db/schema';
-import { desc, eq, and } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import type { BlogPostResponse, BlogPostUpdate, BlogPostCreate } from '~~/shared/schemas/blog.schema';
 import { slugify } from '~~/shared/utils/slugify';
+import { resolveEntityReference, syncManyToMany } from '../utils/relation';
 
 // --- Internal Helpers ---
 
@@ -24,30 +25,6 @@ const mapBlogPost = (post: any, translation?: any): BlogPostResponse => ({
   body: translation?.body,
   readingTime: translation?.readingTime,
 });
-
-async function ensureCategory(tx: any, categoryId?: number | null, categoryName?: string | null) {
-  if (categoryId) return categoryId;
-  if (!categoryName) return null;
-
-  const slug = slugify(categoryName);
-  const existing = await tx.query.categories.findFirst({ where: eq(categories.slug, slug) });
-  if (existing) return existing.id;
-
-  const [inserted] = await tx.insert(categories).values({ name: categoryName, slug }).returning();
-  return inserted.id;
-}
-
-async function syncTags(tx: any, postId: number, tagNames: string[]) {
-  await tx.delete(blogPostsToTags).where(eq(blogPostsToTags.blogPostId, postId));
-  for (const name of tagNames) {
-    const slug = slugify(name);
-    let tag = await tx.query.tags.findFirst({ where: eq(tags.slug, slug) });
-    if (!tag) {
-      [tag] = await tx.insert(tags).values({ name, slug }).returning();
-    }
-    await tx.insert(blogPostsToTags).values({ blogPostId: postId, tagId: tag.id }).onConflictDoNothing();
-  }
-}
 
 export const blogService = {
   // Public Methods
@@ -122,10 +99,14 @@ export const blogService = {
 
   async create(data: BlogPostCreate, authorId?: number) {
     return await db.transaction(async (tx) => {
-      const categoryId = await ensureCategory(tx, data.categoryId, data.categoryName);
+      // Resolve Category
+      let categoryId = data.categoryId;
+      if (data.categoryName) {
+         categoryId = await resolveEntityReference(tx, categories, categories.slug, slugify(data.categoryName), { name: data.categoryName }) || undefined;
+      }
   
       const { 
-        categoryName, tags,
+        categoryName, tags: tagNames,
         locale, slug, title, excerpt, body, readingTime,
         translationKey,
         ...entityData
@@ -161,7 +142,15 @@ export const blogService = {
         set: { slug, title, excerpt, body, readingTime, updatedAt: new Date() }
       });
   
-      if (tags) await syncTags(tx, post!.id, tags);
+      // Sync Tags
+      if (tagNames) {
+        const tagIds: number[] = [];
+        for (const name of tagNames) {
+           const id = await resolveEntityReference(tx, tags, tags.slug, slugify(name), { name });
+           if (id) tagIds.push(id);
+        }
+        await syncManyToMany(tx, blogPostsToTags, blogPostsToTags.blogPostId, post!.id, blogPostsToTags.tagId, tagIds);
+      }
   
       return post;
     });
@@ -169,10 +158,14 @@ export const blogService = {
 
   async update(id: number, data: BlogPostUpdate) {
     return await db.transaction(async (tx) => {
-      const categoryId = await ensureCategory(tx, data.categoryId, data.categoryName);
+      // Resolve Category
+      let categoryId = data.categoryId;
+      if (data.categoryName) {
+         categoryId = await resolveEntityReference(tx, categories, categories.slug, slugify(data.categoryName), { name: data.categoryName }) || undefined;
+      }
   
       const { 
-        categoryName, tags,
+        categoryName, tags: tagNames,
         locale, slug, title, excerpt, body, readingTime,
         translationKey,
         ...entityData
@@ -199,7 +192,15 @@ export const blogService = {
           });
       }
   
-      if (tags) await syncTags(tx, id, tags);
+      // Sync Tags
+      if (tagNames) {
+        const tagIds: number[] = [];
+        for (const name of tagNames) {
+           const id = await resolveEntityReference(tx, tags, tags.slug, slugify(name), { name });
+           if (id) tagIds.push(id);
+        }
+        await syncManyToMany(tx, blogPostsToTags, blogPostsToTags.blogPostId, id, blogPostsToTags.tagId, tagIds);
+      }
   
       return await tx.query.blogPosts.findFirst({ where: eq(blogPosts.id, id) });
     });

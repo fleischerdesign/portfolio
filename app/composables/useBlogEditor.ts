@@ -73,8 +73,6 @@ export function useBlogEditor(postId: number, initialData: Ref<{ post: Serialize
     if (!editablePost.value) return;
     isLoading.value = true;
     try {
-      const activeTranslation = editablePost.value[currentLocale.value];
-      
       let pubDate = undefined;
       if (editablePost.value.common.publishedAt) {
           const dateVal = new Date(editablePost.value.common.publishedAt);
@@ -83,24 +81,34 @@ export function useBlogEditor(postId: number, initialData: Ref<{ post: Serialize
           }
       }
 
-      const payload: BlogPostUpdate = {
+      const locales: ('de' | 'en')[] = ['de', 'en'];
+      
+      const commonPayload = {
         ...editablePost.value.common,
         coverImage: editablePost.value.common.coverImage || null,
         coverImageAlt: editablePost.value.common.coverImageAlt || null,
         categoryName: editablePost.value.common.categoryName || null,
         publishedAt: pubDate,
-
-        locale: currentLocale.value,
-        title: activeTranslation.title,
-        excerpt: activeTranslation.excerpt || null,
-        body: activeTranslation.body,
-        slug: activeTranslation.slug,
       };
 
-      await $fetch(`/api/studio/blog/${postId}`, {
-        method: 'PUT',
-        body: payload
+      const promises = locales.map((locale) => {
+        const trans = editablePost.value![locale];
+        const payload: BlogPostUpdate = {
+          ...commonPayload,
+          locale,
+          title: trans.title,
+          excerpt: trans.excerpt || null,
+          body: trans.body,
+          slug: trans.slug,
+        };
+
+        return $fetch(`/api/studio/blog/${postId}`, {
+          method: 'PUT',
+          body: payload
+        });
       });
+
+      await Promise.all(promises);
 
       await refreshPost();
       isEditing.value = false;
