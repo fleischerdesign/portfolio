@@ -11,7 +11,7 @@
 const container = ref<HTMLDivElement | null>(null)
 const slotRef = ref<HTMLElement | null>(null)
 let lastDiagramCode = ''
-const diagramId = `mermaid-diagram-${Math.random().toString(36).substr(2, 9)}`
+const diagramId = useId()
 
 const renderDiagram = async (code: string) => {
   if (!container.value || code === lastDiagramCode) return
