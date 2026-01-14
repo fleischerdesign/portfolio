@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { LOCALES } from '../utils/locales';
 import { authorSchema, blogCategorySchema as categorySchema, blogTagSchema as tagSchema } from './blog.schema';
 
 export const technologySchema = z.object({
@@ -11,7 +12,7 @@ export const projectBaseSchema = z.object({
   id: z.number().optional(),
   translationKey: z.string().trim().min(1, 'Translation key is required'),
   slug: z.string().trim().min(1, 'Slug is required'),
-  locale: z.enum(['de', 'en']),
+  locale: z.enum(LOCALES),
   title: z.string().trim().min(1, 'Title is required'),
   subtitle: z.string().trim().nullable(),
   body: z.string(),
@@ -48,7 +49,7 @@ export const projectResponseSchema = projectBaseSchema.extend({
 });
 
 export const projectTranslationSchema = z.object({
-  locale: z.enum(['de', 'en']),
+  locale: z.enum(LOCALES),
   slug: z.string().trim(),
   title: z.string().trim(),
   subtitle: z.string().trim().nullable(),

@@ -25,7 +25,7 @@ type BlogLocalized = {
 
 export function useBlogEditor(postId: number, initialData: Ref<{ post: SerializedBlogPostStudioResponse | BlogPostStudioResponse } | null | undefined>, refreshPost: () => Promise<void>) {
   
-  const { isEditing, isLoading, currentLocale, editableData: editablePost, startEditing, cancelEditing, save } = useLocalizedEditor(
+  const { isEditing, isLoading, currentLocale, editableData: editablePost, startEditing, cancelEditing, save } = useLocalizedEditor<any, any, BlogCommon, BlogLocalized, BlogPostUpdate>(
     postId,
     initialData,
     (data) => data?.post,
@@ -39,14 +39,14 @@ export function useBlogEditor(postId: number, initialData: Ref<{ post: Serialize
             coverImage: p.coverImage,
             coverImageAlt: p.coverImageAlt,
             categoryName: p.category?.name || null,
-            tags: p.tags.map((t) => t.name).filter((t): t is string => !!t),
+            tags: p.tags.map((t: any) => t.name).filter((t: any): t is string => !!t),
             translationKey: p.translationKey
         };
 
         const de: BlogLocalized = { title: '', body: '', slug: '', excerpt: '' };
         const en: BlogLocalized = { title: '', body: '', slug: '', excerpt: '' };
 
-        p.translations.forEach((t) => {
+        p.translations.forEach((t: any) => {
           if (t.locale === 'de') {
              de.title = t.title; de.body = t.body; de.slug = t.slug; de.excerpt = t.excerpt || '';
           } else if (t.locale === 'en') {

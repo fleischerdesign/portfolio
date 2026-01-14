@@ -2,7 +2,7 @@ import { nowEntries } from '~~/server/db/schema';
 import { desc } from 'drizzle-orm';
 
 export const nowService = {
-  async getLatest(locale: 'de' | 'en' = 'de') {
+  async getLatest(locale: AppLocale = 'de') {
     const latestEntry = await db.query.nowEntries.findFirst({
       orderBy: [desc(nowEntries.createdAt)]
     });

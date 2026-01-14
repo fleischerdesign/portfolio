@@ -1,5 +1,6 @@
 import { sqliteTable, text, integer, uniqueIndex } from 'drizzle-orm/sqlite-core';
 import { sql, relations } from 'drizzle-orm';
+import { LOCALES } from '~~/shared/utils/locales';
 
 export const addresses = sqliteTable('addresses', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -252,7 +253,7 @@ export const projects = sqliteTable('projects', {
 export const blogPostTranslations = sqliteTable('blog_post_translations', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   blogPostId: integer('blog_post_id').notNull().references(() => blogPosts.id, { onDelete: 'cascade' }),
-  locale: text('locale', { enum: ['de', 'en'] }).notNull(),
+  locale: text('locale', { enum: LOCALES }).notNull(),
   
   slug: text('slug').notNull(),
   title: text('title').notNull(),
@@ -269,7 +270,7 @@ export const blogPostTranslations = sqliteTable('blog_post_translations', {
 export const projectTranslations = sqliteTable('project_translations', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   projectId: integer('project_id').notNull().references(() => projects.id, { onDelete: 'cascade' }),
-  locale: text('locale', { enum: ['de', 'en'] }).notNull(),
+  locale: text('locale', { enum: LOCALES }).notNull(),
 
   slug: text('slug').notNull(),
   title: text('title').notNull(),

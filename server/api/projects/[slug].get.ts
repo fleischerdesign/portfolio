@@ -1,9 +1,9 @@
 import { projectService } from '~~/server/services/project.service';
 
 export default defineEventHandler(async (event) => {
-  const slug = getRouterParam(event, 'slug');
+  const { slug } = event.context.params as { slug: string };
   const query = getQuery(event);
-  const locale = (query.locale as 'de' | 'en') || 'de';
+  const locale = (query.locale as AppLocale) || 'de';
 
   if (!slug) {
     throw createError({ statusCode: 400, statusMessage: 'Slug is required' });

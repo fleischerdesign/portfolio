@@ -9,7 +9,7 @@ export const localize = (
   if (!obj) return '';
   
   // Safe cast since we know our schema, but also handle runtime mismatch
-  const key = (locale === 'de' || locale === 'en') ? locale : 'en';
+  const key = (LOCALES as readonly string[]).includes(locale) ? locale as AppLocale : DEFAULT_LOCALE;
   
   return obj[key] || obj['en'] || obj['de'] || '';
 };

@@ -36,7 +36,7 @@ type ProjectLocalized = {
 
 export function useProjectEditor(projectId: number, initialData: Ref<RawProjectData | null | undefined>, refreshProject: () => Promise<void>) {
   
-  const { isEditing, isLoading, currentLocale, editableData: editableProject, startEditing, cancelEditing, save } = useLocalizedEditor(
+  const { isEditing, isLoading, currentLocale, editableData: editableProject, startEditing, cancelEditing, save } = useLocalizedEditor<any, any, ProjectCommon, ProjectLocalized, ProjectUpdate>(
     projectId,
     initialData,
     (data) => data?.project,
@@ -53,15 +53,15 @@ export function useProjectEditor(projectId: number, initialData: Ref<RawProjectD
             repoUrl: p.repoUrl || null,
             projectUrl: p.projectUrl || null,
             categoryName: p.category?.name || null,
-            tags: p.tags.map((t) => t.name).filter((t: string) => t !== ''),
-            techstack: p.techstack.map((t) => t.name).filter((t: string) => t !== ''),
+            tags: p.tags.map((t: any) => t.name).filter((t: string) => t !== ''),
+            techstack: p.techstack.map((t: any) => t.name).filter((t: string) => t !== ''),
             translationKey: p.translationKey
         };
 
         const de: ProjectLocalized = { title: '', subtitle: '', body: '', slug: '', features: [], learned: [], challenges: [] };
         const en: ProjectLocalized = { title: '', subtitle: '', body: '', slug: '', features: [], learned: [], challenges: [] };
 
-        p.translations.forEach((t) => {
+        p.translations.forEach((t: any) => {
           if (t.locale === 'de') {
              de.title = t.title; de.subtitle = t.subtitle || ''; de.body = t.body; de.slug = t.slug; 
              de.features = t.features || []; de.learned = t.learned || []; de.challenges = t.challenges || [];

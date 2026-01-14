@@ -1,5 +1,6 @@
 
 import { z } from 'zod';
+import { LOCALES } from '../utils/locales';
 
 // --- Sub-Schemas ---
 
@@ -26,7 +27,7 @@ export const blogPostBaseSchema = z.object({
   id: z.number().optional(),
   translationKey: z.string().trim().min(1, 'Translation key is required'),
   slug: z.string().trim().min(1, 'Slug is required'),
-  locale: z.enum(['de', 'en']),
+  locale: z.enum(LOCALES),
   title: z.string().trim().min(1, 'Title is required'),
   excerpt: z.string().trim().nullable(),
   body: z.string(),
@@ -57,7 +58,7 @@ export const blogPostResponseSchema = blogPostBaseSchema.extend({
 });
 
 export const blogPostTranslationSchema = z.object({
-  locale: z.enum(['de', 'en']),
+  locale: z.enum(LOCALES),
   slug: z.string().trim(),
   title: z.string().trim(),
   excerpt: z.string().trim().nullable(),

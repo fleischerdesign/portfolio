@@ -18,7 +18,7 @@ const mapProject = (project: any, translation?: any): ProjectResponse => ({
 
 export const projectService = {
   // Public Methods
-  async getPublicAll(locale: 'de' | 'en', limit?: number): Promise<ProjectResponse[]> {
+  async getPublicAll(locale: AppLocale, limit?: number): Promise<ProjectResponse[]> {
     const allProjects = await db.query.projects.findMany({
       where: (p, { eq }) => eq(p.status, 'published'),
       limit,
@@ -37,7 +37,7 @@ export const projectService = {
       .filter((p): p is ProjectResponse => p !== null);
   },
 
-  async getPublicBySlug(slug: string, locale: 'de' | 'en'): Promise<ProjectResponse | null> {
+  async getPublicBySlug(slug: string, locale: AppLocale): Promise<ProjectResponse | null> {
     const translation = await db.query.projectTranslations.findFirst({
       where: (t, { eq, and }) => and(eq(t.slug, slug), eq(t.locale, locale)),
       with: {

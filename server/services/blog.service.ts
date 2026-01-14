@@ -28,7 +28,7 @@ const mapBlogPost = (post: any, translation?: any): BlogPostResponse => ({
 
 export const blogService = {
   // Public Methods
-  async getPublicAll(locale: 'de' | 'en', limit?: number): Promise<BlogPostResponse[]> {
+  async getPublicAll(locale: AppLocale, limit?: number): Promise<BlogPostResponse[]> {
     const posts = await db.query.blogPosts.findMany({
       where: (posts, { eq }) => eq(posts.status, 'published'),
       limit,
@@ -46,7 +46,7 @@ export const blogService = {
       .filter((p): p is BlogPostResponse => p !== null);
   },
 
-  async getPublicBySlug(slug: string, locale: 'de' | 'en'): Promise<BlogPostResponse | null> {
+  async getPublicBySlug(slug: string, locale: AppLocale): Promise<BlogPostResponse | null> {
     const translation = await db.query.blogPostTranslations.findFirst({
       where: (t, { eq, and }) => and(eq(t.slug, slug), eq(t.locale, locale)),
       with: {
