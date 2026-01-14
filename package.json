@@ -16,6 +16,7 @@
     "lint:fix": "eslint . --fix",
     "db:migrate-md": "ts-node scripts/migrate-applications.ts",
     "db:sync-content": "ts-node scripts/migrate-content.ts",
+    "db:seed": "npx jiti scripts/seed.ts",
     "test": "vitest"
   },
   "dependencies": {
