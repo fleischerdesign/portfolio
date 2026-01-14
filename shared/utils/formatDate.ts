@@ -5,6 +5,7 @@ export function formatDate(input?: string | Date | null, locale = 'de-DE') {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'Europe/Berlin',
   }
   return new Intl.DateTimeFormat(locale, options).format(date)
 }
