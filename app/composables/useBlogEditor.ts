@@ -1,125 +1,86 @@
 import type { BlogPostUpdate, BlogPostStudioResponse } from '~~/shared/schemas/blog.schema';
+import { useLocalizedEditor } from './useLocalizedEditor';
 
-// Helper type for serialized response (dates as strings)
 type SerializedBlogPostStudioResponse = Omit<BlogPostStudioResponse, 'publishedAt' | 'createdAt'> & {
   publishedAt: string | null;
   createdAt: string | null;
 };
 
+type BlogCommon = {
+  status: 'draft' | 'published' | 'archived';
+  publishedAt: string | null;
+  coverImage: string | null;
+  coverImageAlt: string | null;
+  categoryName: string | null;
+  tags: string[];
+  translationKey: string;
+};
+
+type BlogLocalized = { 
+  title: string; 
+  body: string; 
+  slug: string; 
+  excerpt: string 
+};
+
 export function useBlogEditor(postId: number, initialData: Ref<{ post: SerializedBlogPostStudioResponse | BlogPostStudioResponse } | null | undefined>, refreshPost: () => Promise<void>) {
-  const { showToast } = useToast();
-  const isLoading = ref(false);
-  const isEditing = ref(false);
-  const currentLocale = ref<'de' | 'en'>('de');
-
-  const editablePost = ref<{
-    common: {
-      status: 'draft' | 'published' | 'archived';
-      publishedAt: string | null;
-      coverImage: string | null;
-      coverImageAlt: string | null;
-      categoryName: string | null;
-      tags: string[];
-      translationKey: string;
-    };
-    de: { title: string; body: string; slug: string; excerpt: string };
-    en: { title: string; body: string; slug: string; excerpt: string };
-  } | null>(null);
-
-  function parseData(data: { post: SerializedBlogPostStudioResponse | BlogPostStudioResponse }) {
-    if (!data?.post) return null;
-    const p = data.post;
-
-    const newState = {
-      common: {
-        status: p.status,
-        publishedAt: p.publishedAt ? new Date(p.publishedAt).toISOString().slice(0, 16) : null,
-        coverImage: p.coverImage,
-        coverImageAlt: p.coverImageAlt,
-        categoryName: p.category?.name || null,
-        tags: p.tags.map((t) => t.name).filter((t): t is string => !!t),
-        translationKey: p.translationKey
-      },
-      de: { title: '', body: '', slug: '', excerpt: '' },
-      en: { title: '', body: '', slug: '', excerpt: '' }
-    };
-
-    p.translations.forEach((t) => {
-      if (t.locale === 'de' || t.locale === 'en') {
-        newState[t.locale] = {
-          title: t.title,
-          excerpt: t.excerpt || '',
-          body: t.body,
-          slug: t.slug
+  
+  const { isEditing, isLoading, currentLocale, editableData: editablePost, startEditing, cancelEditing, save } = useLocalizedEditor(
+    postId,
+    initialData,
+    (data) => data?.post,
+    refreshPost,
+    (id) => `/api/studio/blog/${id}`,
+    {
+      toEditor: (p) => {
+        const common: BlogCommon = {
+            status: p.status,
+            publishedAt: p.publishedAt ? new Date(p.publishedAt).toISOString().slice(0, 16) : null,
+            coverImage: p.coverImage,
+            coverImageAlt: p.coverImageAlt,
+            categoryName: p.category?.name || null,
+            tags: p.tags.map((t) => t.name).filter((t): t is string => !!t),
+            translationKey: p.translationKey
         };
-      }
-    });
-    
-    return newState;
-  }
 
-  function startEditing() {
-    if (!initialData.value) return;
-    editablePost.value = parseData(toRaw(initialData.value));
-    isEditing.value = true;
-  }
+        const de: BlogLocalized = { title: '', body: '', slug: '', excerpt: '' };
+        const en: BlogLocalized = { title: '', body: '', slug: '', excerpt: '' };
 
-  function cancelEditing() {
-    isEditing.value = false;
-    editablePost.value = null;
-  }
-
-  async function save() {
-    if (!editablePost.value) return;
-    isLoading.value = true;
-    try {
-      let pubDate = undefined;
-      if (editablePost.value.common.publishedAt) {
-          const dateVal = new Date(editablePost.value.common.publishedAt);
-          if (!isNaN(dateVal.getTime())) {
-              pubDate = dateVal;
+        p.translations.forEach((t) => {
+          if (t.locale === 'de') {
+             de.title = t.title; de.body = t.body; de.slug = t.slug; de.excerpt = t.excerpt || '';
+          } else if (t.locale === 'en') {
+             en.title = t.title; en.body = t.body; en.slug = t.slug; en.excerpt = t.excerpt || '';
           }
-      }
-
-      const locales: ('de' | 'en')[] = ['de', 'en'];
-      
-      const commonPayload = {
-        ...editablePost.value.common,
-        coverImage: editablePost.value.common.coverImage || null,
-        coverImageAlt: editablePost.value.common.coverImageAlt || null,
-        categoryName: editablePost.value.common.categoryName || null,
-        publishedAt: pubDate,
-      };
-
-      const promises = locales.map((locale) => {
-        const trans = editablePost.value![locale];
-        const payload: BlogPostUpdate = {
-          ...commonPayload,
-          locale,
-          title: trans.title,
-          excerpt: trans.excerpt || null,
-          body: trans.body,
-          slug: trans.slug,
-        };
-
-        return $fetch(`/api/studio/blog/${postId}`, {
-          method: 'PUT',
-          body: payload
         });
-      });
 
-      await Promise.all(promises);
+        return { common, de, en };
+      },
+      toPayload: (common, localized, locale) => {
+        let pubDate = undefined;
+        if (common.publishedAt) {
+            const dateVal = new Date(common.publishedAt);
+            if (!isNaN(dateVal.getTime())) {
+                pubDate = dateVal;
+            }
+        }
 
-      await refreshPost();
-      isEditing.value = false;
-      showToast('Post saved successfully', { type: 'success' });
-    } catch (error) {
-      console.error(error);
-      showToast('Failed to save post', { type: 'error' });
-    } finally {
-      isLoading.value = false;
+        return {
+          ...common,
+          coverImage: common.coverImage || null,
+          coverImageAlt: common.coverImageAlt || null,
+          categoryName: common.categoryName || null,
+          publishedAt: pubDate,
+
+          locale,
+          title: localized.title,
+          excerpt: localized.excerpt || null,
+          body: localized.body,
+          slug: localized.slug,
+        } satisfies BlogPostUpdate;
+      }
     }
-  }
+  );
 
   return {
     isEditing,

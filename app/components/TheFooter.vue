@@ -85,8 +85,6 @@ v-for="link in [
 <script setup lang="ts">
 const { profile, fetchProfile } = useProfile();
 
-onMounted(() => {
-  fetchProfile();
-});
+await callOnce(fetchProfile);
 </script>
 

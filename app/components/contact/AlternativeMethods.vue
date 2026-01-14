@@ -1,11 +1,7 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
-
 const { profile, fetchProfile } = useProfile();
 
-onMounted(() => {
-  fetchProfile();
-});
+await callOnce(fetchProfile);
 
 const copyIcon = ref('mage:copy');
 const phoneCopyIcon = ref('mage:copy');

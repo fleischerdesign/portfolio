@@ -1,6 +1,7 @@
 import type { ApplicationUpdatePayload, ApplicationResponsePayload, ApplicationHistoryPayload } from '#shared/schemas/application.schema';
 import type { CompanyResponse } from '#shared/schemas/company.schema';
 import type { ContactResponse } from '#shared/schemas/contact.schema';
+import { useEditor } from './useEditor';
 
 interface EditableApplication extends Partial<ApplicationUpdatePayload> {
   id: number;
@@ -11,113 +12,91 @@ interface EditableApplication extends Partial<ApplicationUpdatePayload> {
 }
 
 export function useApplicationEditor(initialApplication: Ref<ApplicationResponsePayload | null | undefined>, refreshApplication: () => Promise<void>, slug: Ref<string>) {
-  const isLoading = ref(false);
-  const isEditing = ref(false);
-  const editableApplication = ref<EditableApplication | null>(null);
-
+  const { showToast } = useToast();
+  
   const allCompanies = ref<CompanyResponse[]>([]);
   const allContacts = ref<ContactResponse[]>([]);
 
-  // Contact modal state (might be moved to useContactSelector later)
   const showContactFormModal = ref(false);
   const companyIdForNewContact = ref<number | undefined>(undefined);
   const nameForNewContact = ref<string | undefined>(undefined);
 
-  async function startEditing() {
-    if (!initialApplication.value) return;
-
-    isLoading.value = true;
-    try {
-      // Fetch all companies and contacts for selection
-      const companiesData = await useRequestFetch()<{ companies: CompanyResponse[] }>('/api/companies');
-      allCompanies.value = companiesData.companies || [];
-
-      const contactsData = await useRequestFetch()<{ contacts: ContactResponse[] }>('/api/contacts');
-      allContacts.value = contactsData.contacts || [];
-
-      const initialApp = initialApplication.value;
-      if (!initialApp) throw new Error('Initial application data is missing.');
-
-      editableApplication.value = {
-        ...JSON.parse(JSON.stringify(toRaw(initialApp))), // Deep copy to detach reactivity
-        companyId: initialApp.company.id,
-        selectedCompany: allCompanies.value.find(c => c.id === initialApp.company.id),
-        selectedContacts: initialApp.contacts,
-      };
-      isEditing.value = true;
-    } catch (error) {
-      console.error('Failed to start editing', error);
-      showToast('Fehler beim Laden der Formulardaten.', { type: 'error' });
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  function cancelEditing() {
-    isEditing.value = false;
-    editableApplication.value = null;
-    allCompanies.value = [];
-    allContacts.value = [];
-  }
-
-  const { showToast } = useToast();
-
-  async function saveApplication() {
-    if (!editableApplication.value || !initialApplication.value) return;
-    isLoading.value = true;
-    try {
-      // Clean up the histories array for submission.
-      const cleanHistories = editableApplication.value.histories
-        .filter(h => !h._deleted) // Remove items marked for deletion
+  const editor = useEditor<ApplicationResponsePayload, EditableApplication, ApplicationUpdatePayload>({
+    initialData: initialApplication,
+    refresh: refreshApplication,
+    successMessage: 'Bewerbung erfolgreich gespeichert!',
+    errorMessage: 'Fehler beim Speichern der Bewerbung.',
+    toState: (app) => ({
+      ...JSON.parse(JSON.stringify(app)),
+      companyId: app.company.id,
+      selectedCompany: allCompanies.value.find(c => c.id === app.company.id),
+      selectedContacts: app.contacts,
+    }),
+    toPayload: (editable) => {
+      const cleanHistories = editable.histories
+        .filter(h => !h._deleted)
         .map(h => {
-          const { _deleted, ...rest } = h; // always remove the client-side _deleted flag
-          if (h.id && h.id < 0) { // New item, remove temporary negative ID
+          const { _deleted, ...rest } = h;
+          if (h.id && h.id < 0) {
             const { id, ...newRest } = rest;
             return newRest;
           }
           return rest;
         });
 
-      // --- Main Application Payload ---
-      const payload: ApplicationUpdatePayload = {
-        title: editableApplication.value.title,
-        subtitle: editableApplication.value.subtitle,
-        slug: editableApplication.value.slug,
-        url: editableApplication.value.url,
-        body: editableApplication.value.body,
-        notes: editableApplication.value.notes,
-        companyId: editableApplication.value.selectedCompany?.id,
-        contactIds: editableApplication.value.selectedContacts?.map(c => c.id) || [],
-        histories: cleanHistories, // Send the full, clean array
+      return {
+        title: editable.title,
+        subtitle: editable.subtitle,
+        slug: editable.slug,
+        url: editable.url,
+        body: editable.body,
+        notes: editable.notes,
+        companyId: editable.selectedCompany?.id,
+        contactIds: editable.selectedContacts?.map(c => c.id) || [],
+        histories: cleanHistories,
       };
-
+    },
+    onSave: async (payload) => {
       await useRequestFetch()(`/api/applications/${slug.value}`, { method: 'PUT', body: payload });
+    }
+  });
 
-      await refreshApplication(); // Refresh the main application data
-      isEditing.value = false;
-      editableApplication.value = null;
-      allCompanies.value = [];
-      allContacts.value = [];
-      showToast('Bewerbung erfolgreich gespeichert!', { type: 'success' });
+  async function startEditing() {
+    if (!initialApplication.value) return;
+    editor.isLoading.value = true;
+    try {
+      const companiesData = await useRequestFetch()<{ companies: CompanyResponse[] }>('/api/companies');
+      allCompanies.value = companiesData.companies || [];
+
+      const contactsData = await useRequestFetch()<{ contacts: ContactResponse[] }>('/api/contacts');
+      allContacts.value = contactsData.contacts || [];
+
+      editor.startEditing();
     } catch (error) {
-      console.error('Failed to update application and its history', error);
-      showToast('Fehler beim Speichern der Bewerbung.', { type: 'error' });
+      console.error('Failed to start editing', error);
+      showToast('Fehler beim Laden der Formulardaten.', { type: 'error' });
     } finally {
-      isLoading.value = false;
+      editor.isLoading.value = false;
     }
   }
 
-  // Contact related functions, will be refactored to useContactSelector
+  function cancelEditing() {
+    editor.cancelEditing();
+    allCompanies.value = [];
+    allContacts.value = [];
+  }
+
   function handleCreateContactRequest(name?: string) {
-    companyIdForNewContact.value = editableApplication.value?.selectedCompany?.id;
+    companyIdForNewContact.value = editor.editableData.value?.selectedCompany?.id;
     nameForNewContact.value = name;
     showContactFormModal.value = true;
   }
 
   function handleContactCreated(newContact: ContactResponse) {
     allContacts.value.push(newContact);
-    if (editableApplication.value) {
-      editableApplication.value.selectedContacts?.push(newContact);
+    if (editor.editableData.value) {
+      if (!editor.editableData.value.selectedContacts) editor.editableData.value.selectedContacts = [];
+      editor.editableData.value.selectedContacts.push(newContact);
     }
     showContactFormModal.value = false;
   }
@@ -126,14 +105,13 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
     showContactFormModal.value = false;
   }
 
-  // PDF generation logic
   const isPdfOutdated = computed(() => {
     if (!initialApplication.value?.pdfGeneratedAt || !initialApplication.value?.updatedAt) return true;
     return new Date(initialApplication.value.updatedAt) > new Date(initialApplication.value.pdfGeneratedAt);
   });
 
   async function generatePdf() {
-    isLoading.value = true;
+    editor.isLoading.value = true;
     try {
       await useRequestFetch()(`/api/applications/${slug.value}/pdf/generate`, { method: 'POST' });
       await refreshApplication();
@@ -142,23 +120,21 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
       console.error('Failed to generate PDF', error);
       showToast('Fehler bei der PDF-Generierung.', { type: 'error' });
     } finally {
-      isLoading.value = false;
+      editor.isLoading.value = false;
     }
   }
 
-
   return {
-    isEditing,
-    isLoading,
-    editableApplication,
+    isEditing: editor.isEditing,
+    isLoading: editor.isLoading,
+    editableApplication: editor.editableData,
+    saveApplication: editor.save,
     allCompanies,
     allContacts,
     startEditing,
     cancelEditing,
-    saveApplication,
     isPdfOutdated,
     generatePdf,
-    // Contact related, will be delegated
     showContactFormModal,
     companyIdForNewContact,
     nameForNewContact,
