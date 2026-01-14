@@ -1,3 +1,5 @@
+import { LOCALES, DEFAULT_LOCALE, type AppLocale, isAppLocale } from '~~/shared/utils/locales';
+
 /**
  * Helper to retrieve the correct string from a localized object { de, en }
  * based on the current locale.
@@ -8,8 +10,7 @@ export const localize = (
 ): string => {
   if (!obj) return '';
   
-  // Safe cast since we know our schema, but also handle runtime mismatch
-  const key = (LOCALES as readonly string[]).includes(locale) ? locale as AppLocale : DEFAULT_LOCALE;
+  const key = isAppLocale(locale) ? locale : DEFAULT_LOCALE;
   
   return obj[key] || obj['en'] || obj['de'] || '';
 };
