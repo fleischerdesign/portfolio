@@ -14,6 +14,10 @@ export default cachedEventHandler(async (event) => {
   }
 }, {
   maxAge: 1 * 60,
-  name: 'now-status'
+  name: 'now-status',
+  getKey: (event) => {
+    const query = getQuery(event);
+    return `now-status-${query.locale || 'de'}`;
+  }
 })
 

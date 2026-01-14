@@ -22,5 +22,5 @@
 
 <script lang="ts" setup>
 const { locale } = useI18n();
-const { data: now } = await useFetch('/api/now', { query: { lang: locale.value } })
+const { data: now } = await useFetch('/api/now', { query: { locale: locale.value } })
 </script>
