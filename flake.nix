@@ -27,7 +27,6 @@
 
           src = ./.;
 
-          # This hash needs to be updated after the first build attempt
           npmDepsHash = "sha256-0w/anA63mz8Dxvs3dCWKZntpaLcZo2mXOw1+efjL/qs=";
 
           nodejs = nodejs;
@@ -43,20 +42,14 @@
             glib
           ];
 
-          # Manual Path Injection for Sharp to find glib headers
           NIX_CFLAGS_COMPILE = [
             "-I${pkgs.glib.dev}/include/glib-2.0"
             "-I${pkgs.glib.out}/lib/glib-2.0/include"
           ];
 
-          # Puppeteer build-time fixes
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true";
           PUPPETEER_SKIP_DOWNLOAD = "1";
-
-          # Sharp build-time fixes
           npm_config_build_from_source = "true";
-
-          # Nuxt telemetry fix
           NUXT_TELEMETRY_DISABLED = "1";
 
           # Nuxt build
@@ -68,6 +61,12 @@
           installPhase = ''
             mkdir -p $out/lib/portfolio
             cp -r .output/* $out/lib/portfolio/
+
+            # Include migration files for Drizzle
+            mkdir -p $out/lib/portfolio/server/db/migrations
+            if [ -d "server/db/migrations" ]; then
+              cp -r server/db/migrations/* $out/lib/portfolio/server/db/migrations/
+            fi
 
             # Executable wrapper
             mkdir -p $out/bin
