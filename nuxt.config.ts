@@ -134,7 +134,7 @@ export default defineNuxtConfig({
     }]
   },
   googleFonts: {
-    download: true,
+    download: false,
     preload: true,
     display: 'swap',
     families: {
