@@ -28,24 +28,35 @@
           src = ./.;
 
           # This hash needs to be updated after the first build attempt
-          npmDepsHash = "sha256-p44xxEsA3r4g5zAGdK2tDjTBevOrv3tzQbHlBYQWyWg=";
+          npmDepsHash = "sha256-0w/anA63mz8Dxvs3dCWKZntpaLcZo2mXOw1+efjL/qs=";
 
           nodejs = nodejs;
 
           nativeBuildInputs = with pkgs; [
             pkg-config
             python3
+            nodePackages.node-gyp
           ];
 
           buildInputs = with pkgs; [
-            vips # Required for sharp
+            vips
+            glib
           ];
 
-          # Ensure puppeteer doesn't try to download chromium during build
+          # Manual Path Injection for Sharp to find glib headers
+          NIX_CFLAGS_COMPILE = [
+            "-I${pkgs.glib.dev}/include/glib-2.0"
+            "-I${pkgs.glib.out}/lib/glib-2.0/include"
+          ];
+
+          # Puppeteer build-time fixes
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true";
           PUPPETEER_SKIP_DOWNLOAD = "1";
 
-          # Nuxt telemetry fix for non-TTY environments
+          # Sharp build-time fixes
+          npm_config_build_from_source = "true";
+
+          # Nuxt telemetry fix
           NUXT_TELEMETRY_DISABLED = "1";
 
           # Nuxt build
@@ -63,7 +74,7 @@
             cat <<EOF > $out/bin/portfolio
 #!/bin/sh
 export NODE_ENV=production
-# Puppeteer runtime fix will be set via Systemd Environment
+export PUPPETEER_EXECUTABLE_PATH=\$(cat /etc/portfolio-chromium-path 2>/dev/null || echo "${pkgs.chromium}/bin/chromium")
 exec ${nodejs}/bin/node $out/lib/portfolio/server/index.mjs
 EOF
             chmod +x $out/bin/portfolio
@@ -79,6 +90,7 @@ EOF
             chromium
             pkg-config
             vips
+            glib
           ];
           shellHook = ''
             echo "Entering Portfolio development environment (Node 24)"
