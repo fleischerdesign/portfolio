@@ -41,7 +41,11 @@ export default defineNuxtConfig({
     session: {
       password: ''
     },
-    public: {}
+    public: {
+      plausible: {
+        apiHost: 'https://plausible.mky.ancoris.ovh',
+      }
+    }
   },
   site: {
     url: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://fleischer.design'
@@ -103,7 +107,6 @@ export default defineNuxtConfig({
   },
   plausible: {
     ignoredHostnames: ['localhost'],
-    apiHost: 'https://plausible.igy.ancoris.ovh',
     autoOutboundTracking: true,
     proxy: true,
   },
