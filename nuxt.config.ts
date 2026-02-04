@@ -83,7 +83,8 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       link: [
-        { rel: 'icon', type: 'image/png', href: '/favicon.png' }
+        { rel: 'icon', type: 'image/png', href: '/favicon.png' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto&display=swap' }
       ]
     }
   },
@@ -134,7 +135,7 @@ export default defineNuxtConfig({
     }]
   },
   googleFonts: {
-    download: 'auto',
+    download: false,
     preload: true,
     display: 'swap',
     families: {
