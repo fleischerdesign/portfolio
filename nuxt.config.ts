@@ -136,7 +136,7 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     download: false,
-    preload: true,
+    preload: false,
     display: 'swap',
     families: {
       Roboto: true,
