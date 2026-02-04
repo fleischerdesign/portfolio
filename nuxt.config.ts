@@ -83,8 +83,7 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       link: [
-        { rel: 'icon', type: 'image/png', href: '/favicon.png' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto&display=swap' }
+        { rel: 'icon', type: 'image/png', href: '/favicon.png' }
       ]
     }
   },
@@ -140,6 +139,7 @@ export default defineNuxtConfig({
     display: 'swap',
     families: {
       Roboto: true,
-    }
+    },
+    useStylesheet: true
   }
 })
