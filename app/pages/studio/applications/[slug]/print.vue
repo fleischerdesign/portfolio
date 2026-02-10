@@ -385,17 +385,19 @@ const projects = computed(() => projectsData.value?.projects || []);
              </div>
              <div class="grid grid-cols-1 gap-3">
                <div v-for="project in projects.slice(0,3)" :key="project.slug" class="group flex items-center gap-4 rounded-2xl border border-neutral-100 bg-white p-3 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md">
-                  <div class="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50">
+                  <div class="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50">
                                            <img v-if="project.coverImage" :src="project.coverImage" class="h-full w-full object-cover opacity-30 grayscale transition-all group-hover:opacity-100 group-hover:grayscale-0" />                     <div class="absolute inset-0 flex items-center justify-center">
-                        <Icon :name="project.icon || 'heroicons:folder'" mode="svg" class="text-secondary-600 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] [&_*]:!fill-current" size="24" />
+                        <Icon :name="project.icon || 'heroicons:folder'" mode="svg" class="text-secondary-600 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] [&_*]:!fill-current" size="32" />
                      </div>
                   </div>
                   <div class="flex-grow">
                      <h4 class="text-sm font-black tracking-tight text-neutral-900">{{ project.title }}</h4>
-                     <p class="mt-0.5 line-clamp-1 text-xs text-neutral-500">{{ project.subtitle }}</p>
-                  </div>
-                  <div class="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-secondary-400 opacity-0 transition-opacity group-hover:opacity-100">
-                     Details <Icon name="heroicons:arrow-right" size="10" />
+                     <div v-if="project.techstack?.length" class="my-1 flex flex-wrap gap-1">
+                        <span v-for="tech in project.techstack.slice(0, 3)" :key="tech.id" class="rounded-md border border-secondary-100 bg-secondary-50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-secondary-600">
+                           {{ tech.name }}
+                        </span>
+                     </div>
+                     <p class="line-clamp-2 text-xs leading-relaxed text-neutral-500">{{ project.subtitle }}</p>
                   </div>
                </div>
              </div>
@@ -482,7 +484,22 @@ const projects = computed(() => projectsData.value?.projects || []);
                   </div>
                   <h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Bildungsweg</h3>
                </div>
-               <BaseTimeline :items="timeline.filter(item => item.type === 'education').splice(0, 4)" :is-print-view="true" compact />
+               <BaseTimeline :items="timeline.filter(item => item.type === 'education').splice(0, 4)" :is-print-view="true" compact>
+                  <template #default="{ item }">
+                     <div class="flex flex-col gap-1">
+                        <div class="flex items-baseline justify-between gap-2">
+                           <h3 class="text-sm font-bold text-neutral-900">{{ item.title }}</h3>
+                           <span class="whitespace-nowrap text-xs font-black uppercase tracking-widest text-secondary-500">{{ item.date }}</span>
+                        </div>
+                        <p class="text-xs leading-snug text-neutral-600">{{ item.description }}</p>
+                        <div v-if="item.skills && item.skills.length" class="mt-1 flex flex-wrap gap-1">
+                           <span v-for="skill in item.skills" :key="skill" class="rounded-md border border-secondary-100 bg-secondary-50/50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-secondary-600">
+                              {{ skill }}
+                           </span>
+                        </div>
+                     </div>
+                  </template>
+               </BaseTimeline>
             </div>
 
             <!-- Career -->
@@ -493,7 +510,22 @@ const projects = computed(() => projectsData.value?.projects || []);
                   </div>
                   <h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">{{ $t('about.overview.careerPath.title') }}</h3>
                </div>
-               <BaseTimeline :items="timeline.filter(item => item.type === 'career')" :is-print-view="true" compact />
+               <BaseTimeline :items="timeline.filter(item => item.type === 'career')" :is-print-view="true" compact>
+                  <template #default="{ item }">
+                     <div class="flex flex-col gap-1">
+                        <div class="flex items-baseline justify-between gap-2">
+                           <h3 class="text-sm font-bold text-neutral-900">{{ item.title }}</h3>
+                           <span class="whitespace-nowrap text-xs font-black uppercase tracking-widest text-secondary-500">{{ item.date }}</span>
+                        </div>
+                        <p class="text-xs leading-snug text-neutral-600">{{ item.description }}</p>
+                        <div v-if="item.skills && item.skills.length" class="mt-1 flex flex-wrap gap-1">
+                           <span v-for="skill in item.skills" :key="skill" class="rounded-md border border-secondary-100 bg-secondary-50/50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-secondary-600">
+                              {{ skill }}
+                           </span>
+                        </div>
+                     </div>
+                  </template>
+               </BaseTimeline>
             </div>
 
          </div>
