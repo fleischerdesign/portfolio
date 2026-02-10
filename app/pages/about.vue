@@ -253,7 +253,7 @@ const route = useRoute();
 
 const { profile, fetchProfile } = useProfile();
 
-await callOnce(fetchProfile);
+await callOnce('fetch-profile', fetchProfile);
 
 // Helpers for dynamic data - No fallbacks to static data
 const name = computed(() => profile.value?.name || '');

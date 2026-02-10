@@ -28,7 +28,7 @@
 <script setup lang="ts">
 const { profile, fetchProfile } = useProfile();
 
-await callOnce(fetchProfile);
+await callOnce('fetch-profile', fetchProfile);
 
 defineProps({
   currentPage: {

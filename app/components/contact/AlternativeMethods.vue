@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const { profile, fetchProfile } = useProfile();
 
-await callOnce(fetchProfile);
+await callOnce('fetch-profile', fetchProfile);
 
 const copyIcon = ref('mage:copy');
 const phoneCopyIcon = ref('mage:copy');

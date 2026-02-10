@@ -19,7 +19,7 @@ const route = useRoute();
 const { slug } = route.params as { slug: string };
 
 const { profile, fetchProfile } = useProfile();
-await callOnce(fetchProfile);
+await callOnce('fetch-profile', fetchProfile);
 
 const { data: application, error } = await useFetch<ApplicationResponsePayload>(`/api/applications/${slug}`);
 
@@ -101,7 +101,7 @@ const projects = computed(() => projectsData.value?.projects || []);
       
       <!-- Decorative Background Elements -->
       <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-secondary-400/20 blur-[100px] print:block"></div>
-      <div class="absolute bottom-0 right-0 h-[500px] w-[500px] bg-gradient-to-t from-secondary-100/30 to-transparent blur-3xl print:block"></div>
+      <div class="absolute bottom-0 right-0 h-[500px] w-[500px] bg-gradient-to-t from-secondary-100/30 to-secondary-100/0 blur-3xl print:block"></div>
 
       <div class="relative z-10 flex h-full flex-col items-center justify-center gap-16">
         
@@ -218,7 +218,7 @@ const projects = computed(() => projectsData.value?.projects || []);
                   class="!mb-0"
                />
                <!-- Luminous Accent Line -->
-               <div class="mt-4 h-1 w-24 rounded-full bg-gradient-to-r from-secondary-500 to-transparent shadow-[0_0_10px_rgba(16,185,129,0.4)]"></div>
+               <div class="mt-4 h-1 w-24 rounded-full bg-gradient-to-r from-secondary-500 to-secondary-500/0 shadow-[0_0_10px_rgba(16,185,129,0.4)]"></div>
              </div>
 
              <!-- Body -->
@@ -261,7 +261,7 @@ const projects = computed(() => projectsData.value?.projects || []);
           class="!mb-0"
         />
         <!-- Luminous Accent Line -->
-        <div class="mt-4 h-1 w-24 rounded-full bg-gradient-to-r from-secondary-500 to-transparent shadow-[0_0_10px_rgba(16,185,129,0.4)]"></div>
+        <div class="mt-4 h-1 w-24 rounded-full bg-gradient-to-r from-secondary-500 to-secondary-500/0 shadow-[0_0_10px_rgba(16,185,129,0.4)]"></div>
       </div>
 
       <div class="grid h-full grid-cols-12 gap-6">
@@ -274,7 +274,7 @@ const projects = computed(() => projectsData.value?.projects || []);
              <!-- Profile Image: Modern Rectangular -->
              <div class="relative h-64 w-full">
                 <img src="/img/profile.jpg" alt="Profile" class="h-full w-full object-cover" />
-                <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-white via-white/0 to-white/0"></div>
              </div>
              
              <UiCardContainer class="relative z-10 -mt-8 px-5 pb-5">
@@ -417,7 +417,7 @@ const projects = computed(() => projectsData.value?.projects || []);
       
       <!-- Decorative Background Elements -->
       <div class="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-secondary-400/10 blur-[100px] print:block"></div>
-      <div class="absolute bottom-0 right-0 h-[500px] w-[500px] bg-gradient-to-t from-secondary-100/20 to-transparent blur-3xl print:block"></div>
+      <div class="absolute bottom-0 right-0 h-[500px] w-[500px] bg-gradient-to-t from-secondary-100/20 to-secondary-100/0 blur-3xl print:block"></div>
 
       <div class="grid h-full grid-cols-12 gap-8 pt-4">
          
