@@ -606,7 +606,7 @@ const getShortenedBody = (body: string) => {
             <!-- Techstack (Right Column) -->
             <UiCard class="flex-1 border-neutral-200/60 shadow-none">
                <UiCardContainer class="flex h-full flex-col p-5">
-                  <div class="space-y-4">
+                  <div class="space-y-2">
                      <div class="flex items-center gap-3">
                         <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary-100 text-secondary-600">
                            <Icon name="heroicons:cpu-chip" size="16" />
@@ -631,32 +631,40 @@ const getShortenedBody = (body: string) => {
             <!-- Features -->
             <UiCard v-if="project.features && project.features.length" class="border-neutral-200/60 shadow-none">
                <UiCardContainer class="flex h-full flex-col p-5">
-                  <h4 class="mb-1.5 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-secondary-500">
-                     <Icon name="heroicons:check-circle" size="14" />
-                     Features
-                  </h4>
-                  <ul class="space-y-2">
-                     <li v-for="feature in project.features.slice(0, 3)" :key="feature" class="flex items-start gap-2 text-xs text-neutral-700">
-                        <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-secondary-500"></span>
-                        {{ feature }}
-                     </li>
-                  </ul>
+                  <div class="space-y-2">
+                     <div class="flex items-center gap-3">
+                        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary-100 text-secondary-600">
+                           <Icon name="heroicons:check-circle" size="16" />
+                        </div>
+                        <span class="text-xs font-black uppercase tracking-wider text-neutral-500">Features</span>
+                     </div>
+                     <ul class="space-y-2">
+                        <li v-for="feature in project.features.slice(0, 3)" :key="feature" class="flex items-start gap-2 text-xs text-neutral-700">
+                           <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-secondary-500"></span>
+                           {{ feature }}
+                        </li>
+                     </ul>
+                  </div>
                </UiCardContainer>
             </UiCard>
 
             <!-- Learnings -->
             <UiCard v-if="project.learned && project.learned.length" class="border-neutral-200/60 shadow-none">
                <UiCardContainer class="flex h-full flex-col p-5">
-                  <h4 class="mb-1.5 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-blue-500">
-                     <Icon name="heroicons:light-bulb" size="14" />
-                     Learnings
-                  </h4>
-                  <ul class="space-y-2">
-                     <li v-for="item in project.learned.slice(0, 3)" :key="item" class="flex items-start gap-2 text-xs text-neutral-700">
-                        <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-blue-500"></span>
-                        {{ item }}
-                     </li>
-                  </ul>
+                  <div class="space-y-2">
+                     <div class="flex items-center gap-3">
+                        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                           <Icon name="heroicons:light-bulb" size="16" />
+                        </div>
+                        <span class="text-xs font-black uppercase tracking-wider text-neutral-500">Learnings</span>
+                     </div>
+                     <ul class="space-y-2">
+                        <li v-for="item in project.learned.slice(0, 3)" :key="item" class="flex items-start gap-2 text-xs text-neutral-700">
+                           <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-blue-500"></span>
+                           {{ item }}
+                        </li>
+                     </ul>
+                  </div>
                </UiCardContainer>
             </UiCard>
          </div>
