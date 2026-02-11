@@ -91,6 +91,23 @@ const { data: projectsData } = await useFetch('/api/projects', {
   query: { locale: locale.value }
 });
 const projects = computed(() => projectsData.value?.projects || []);
+
+const getShortenedBody = (body: string) => {
+  if (!body) return '';
+  
+  // Try to cut before the 3rd section header
+  const thirdSectionIndex = body.indexOf('### 3.');
+  if (thirdSectionIndex > 0) {
+      return body.slice(0, thirdSectionIndex).trim();
+  }
+
+  // Fallback: Take first 800 chars approx if no structure found
+  if (body.length <= 800) return body;
+  const truncated = body.slice(0, 800);
+  // Cut at last period to be clean
+  const lastPeriod = truncated.lastIndexOf('.');
+  return lastPeriod > 0 ? truncated.slice(0, lastPeriod + 1) : truncated + '...';
+};
 </script>
 
 <template>
@@ -243,7 +260,7 @@ const projects = computed(() => projectsData.value?.projects || []);
          </div>
       </div>
 
-      <ResumeFooter :current-page="1" :total-pages="3" class="absolute bottom-10 left-20 right-20" />
+      <ResumeFooter :current-page="1" :total-pages="3 + projects.slice(0,3).length" class="absolute bottom-10 left-20 right-20" />
     </div>
     
     <!-- ==================== PAGE 3: RESUME PART 1 ==================== -->
@@ -411,7 +428,7 @@ const projects = computed(() => projectsData.value?.projects || []);
         </div>
       </div>
 
-      <ResumeFooter :current-page="2" :total-pages="3" class="absolute bottom-10 left-20 right-20" />
+      <ResumeFooter :current-page="2" :total-pages="3 + projects.slice(0,3).length" class="absolute bottom-10 left-20 right-20" />
     </div>
 
     <!-- ==================== PAGE 4: RESUME PART 2 ==================== -->
@@ -532,7 +549,131 @@ const projects = computed(() => projectsData.value?.projects || []);
 
       </div>
 
-      <ResumeFooter :current-page="3" :total-pages="3" class="absolute bottom-10 left-20 right-20" />
+      <ResumeFooter :current-page="3" :total-pages="3 + projects.slice(0,3).length" class="absolute bottom-10 left-20 right-20" />
+    </div>
+
+    <!-- ==================== PAGE 5+: PROJECT DETAILS ==================== -->
+    <div v-for="(project, index) in projects.slice(0,3)" :key="project.slug" class="main-content-pages relative flex h-[371mm] break-inside-avoid-page flex-col gap-6 overflow-hidden p-[25mm]">
+      
+      <!-- Decorative Background Elements -->
+      <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-secondary-400/10 blur-[100px] print:block"></div>
+      <div class="absolute -left-32 bottom-1/4 h-80 w-80 rounded-full bg-secondary-500/5 blur-[80px] print:block"></div>
+
+      <!-- Header -->
+      <div class="mb-6 flex flex-col">
+        <UiSectionHeader
+          :title="project.title"
+          :subtitle="project.subtitle || undefined"
+          variant="none"
+          class="!mb-0"
+        >
+             <template #prefix>
+                <span class="mb-2 block text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Projekt</span>
+             </template>
+        </UiSectionHeader>
+        <!-- Luminous Accent Line -->
+        <div class="mt-4 h-1 w-24 rounded-full bg-gradient-to-r from-secondary-500 to-secondary-500/0 shadow-[0_0_10px_rgba(16,185,129,0.4)]"></div>
+      </div>
+
+      <div class="flex h-full flex-col gap-8">
+         
+         <!-- Top Section: Image & Meta -->
+         <div class="flex gap-8">
+            <!-- Cover Image -->
+            <div v-if="project.coverImage" class="relative h-64 w-2/3 overflow-hidden rounded-2xl border border-neutral-100 shadow-sm">
+                <img :src="project.coverImage" :alt="project.coverImageAlt || project.title" class="h-full w-full object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                
+                <!-- Project Logo (Top Left) -->
+                <div v-if="project.icon" class="absolute left-4 top-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-white/10 p-3 shadow-xl backdrop-blur-md">
+                     <Icon 
+                        :name="project.icon" 
+                        size="32" 
+                        mode="svg"
+                        class="text-secondary-400 drop-shadow-sm [&>g]:!fill-current [&_*]:!fill-current" 
+                     />
+                </div>
+
+                <div class="absolute bottom-4 left-4 right-4">
+                   <div class="flex gap-2">
+                      <span v-if="project.category" class="rounded-md border border-secondary-500/30 bg-secondary-500/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-secondary-400 backdrop-blur-md">
+                         {{ project.category.name }}
+                      </span>
+                   </div>
+                </div>
+            </div>
+            
+            <!-- Meta Info -->
+            <div class="flex w-1/3 flex-col gap-4">
+               <UiCard class="h-full border-neutral-200/60 shadow-none">
+                  <UiCardContainer class="flex h-full flex-col p-5">
+                     <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                           <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary-100 text-secondary-600">
+                              <Icon name="heroicons:cpu-chip" size="16" />
+                           </div>
+                           <span class="text-xs font-black uppercase tracking-wider text-neutral-500">Techstack</span>
+                        </div>
+                        <TechstackList :items="project.techstack.slice(0, 10).map(t => t.name)" :scroll="false" size="sm" />
+                     </div>
+                  </UiCardContainer>
+               </UiCard>
+            </div>
+         </div>
+
+         <!-- Description -->
+         <UiCard class="flex-grow border-neutral-200/60 shadow-none">
+            <UiCardContainer class="p-8">
+               <div class="prose prose-sm prose-neutral max-w-none text-justify leading-relaxed prose-p:my-2 prose-ul:my-2 prose-li:my-0.5" v-html="render(getShortenedBody(project.body || ''))"></div>
+               
+               <div class="mt-6 grid grid-cols-3 gap-6 border-t border-neutral-100 pt-6">
+                  <!-- Features -->
+                  <div v-if="project.features && project.features.length">
+                      <h4 class="mb-3 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-secondary-500">
+                        <Icon name="heroicons:check-circle" size="14" /> Features
+                      </h4>
+                      <ul class="space-y-2">
+                         <li v-for="feature in project.features.slice(0, 3)" :key="feature" class="flex items-start gap-2 text-xs text-neutral-700">
+                            <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-secondary-500"></span>
+                            {{ feature }}
+                         </li>
+                      </ul>
+                  </div>
+
+                  <!-- Challenges -->
+                  <div v-if="project.challenges && project.challenges.length">
+                     <h4 class="mb-3 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-amber-600">
+                        <Icon name="mage:exclamation-circle" size="14" />
+                        Herausforderungen
+                     </h4>
+                     <ul class="space-y-2">
+                        <li v-for="challenge in project.challenges.slice(0, 3)" :key="challenge" class="flex items-start gap-2 text-xs text-neutral-700">
+                           <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-500"></span>
+                           {{ challenge }}
+                        </li>
+                     </ul>
+                  </div>
+
+                  <!-- Learnings -->
+                  <div v-if="project.learned && project.learned.length">
+                     <h4 class="mb-3 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-blue-500">
+                        <Icon name="heroicons:light-bulb" size="14" />
+                        Learnings
+                     </h4>
+                     <ul class="space-y-2">
+                        <li v-for="item in project.learned.slice(0, 3)" :key="item" class="flex items-start gap-2 text-xs text-neutral-700">
+                           <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-blue-500"></span>
+                           {{ item }}
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </UiCardContainer>
+         </UiCard>
+
+      </div>
+
+      <ResumeFooter :current-page="4 + index" :total-pages="3 + projects.slice(0,3).length" class="absolute bottom-10 left-20 right-20" />
     </div>
 
   </div>
