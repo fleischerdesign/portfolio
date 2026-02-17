@@ -5,6 +5,7 @@ const props = defineProps<{
   applicationId: number;
   slug: string;
   initialDocuments: ApplicationDocumentPayload[];
+  isEditing: boolean;
 }>();
 
 const { t } = useI18n();
@@ -91,18 +92,18 @@ const isUsingDefaults = computed(() => {
       </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+    <div class="grid grid-cols-1 gap-8" :class="isEditing ? 'lg:grid-cols-2' : 'lg:grid-cols-1'">
       <!-- Active Attachments -->
       <div class="space-y-4">
         <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Aktive Anhänge</p>
         
         <div v-if="activeDocuments.length > 0" class="space-y-2">
-           <div v-for="(ad, index) in activeDocuments" :key="ad.documentId" class="flex items-center gap-4 rounded-2xl border border-neutral-100 bg-white p-4 shadow-sm transition-colors hover:border-secondary-500/30 dark:border-neutral-800 dark:bg-neutral-900/50">
-              <div class="flex flex-col gap-1">
-                 <button :disabled="index === 0" class="text-neutral-300 hover:text-secondary-500 disabled:opacity-0" @click="move(index, 'up')">
+           <div v-for="(ad, index) in activeDocuments" :key="ad.documentId" class="flex items-center gap-4 rounded-2xl border border-neutral-100 bg-white p-4 shadow-sm transition-colors hover:border-secondary-500/30 dark:border-neutral-800 dark:bg-neutral-900/50 group">
+              <div v-if="isEditing" class="flex flex-col items-center justify-center w-5 opacity-0 group-hover:opacity-100 transition-opacity">
+                 <button v-if="index > 0" class="text-neutral-300 hover:text-secondary-500" @click="move(index, 'up')">
                     <Icon name="heroicons:chevron-up" />
                  </button>
-                 <button :disabled="index === activeDocuments.length - 1" class="text-neutral-300 hover:text-secondary-500 disabled:opacity-0" @click="move(index, 'down')">
+                 <button v-if="index < activeDocuments.length - 1" class="text-neutral-300 hover:text-secondary-500" @click="move(index, 'down')">
                     <Icon name="heroicons:chevron-down" />
                  </button>
               </div>
@@ -116,11 +117,11 @@ const isUsingDefaults = computed(() => {
                  <p class="text-[10px] font-medium text-neutral-400">{{ index + 1 }}. Dokument im PDF</p>
               </div>
 
-              <div class="flex items-center gap-1">
+              <div class="flex items-center gap-1" :class="isEditing ? 'opacity-0 group-hover:opacity-100 transition-opacity' : ''">
                 <UiButton size="sm" variant="ghost" :to="`/media/documents/${ad.document.filename}`" target="_blank" class="text-neutral-400 hover:text-secondary-500">
                    <Icon name="heroicons:eye" class="h-4 w-4" />
                 </UiButton>
-                <UiButton size="sm" variant="ghost" class="text-neutral-400 hover:text-danger-500" @click="removeDocument(ad.documentId)">
+                <UiButton v-if="isEditing" size="sm" variant="ghost" class="text-neutral-400 hover:text-danger-500" @click="removeDocument(ad.documentId)">
                    <Icon name="heroicons:x-mark" />
                 </UiButton>
               </div>
@@ -132,8 +133,8 @@ const isUsingDefaults = computed(() => {
         </div>
       </div>
 
-      <!-- Pool / Available -->
-      <div class="space-y-4">
+      <!-- Pool / Available (Only in Edit Mode) -->
+      <div v-if="isEditing" class="space-y-4">
         <p class="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400">Verfügbare Dokumente</p>
         
         <div v-if="availableDocuments.length > 0" class="grid grid-cols-1 gap-2">

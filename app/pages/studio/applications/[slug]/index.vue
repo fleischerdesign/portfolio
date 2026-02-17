@@ -463,6 +463,7 @@ onMounted(() => {
                     :application-id="application.id!" 
                     :slug="slug" 
                     :initial-documents="application.documents" 
+                    :is-editing="isEditing"
                 />
             </UiCardContainer>
         </UiCard>

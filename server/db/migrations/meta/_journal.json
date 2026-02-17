@@ -127,6 +127,13 @@
       "when": 1771317472809,
       "tag": "0017_pink_mathemanic",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "6",
+      "when": 1771324474011,
+      "tag": "0018_friendly_echo",
+      "breakpoints": true
     }
   ]
 }

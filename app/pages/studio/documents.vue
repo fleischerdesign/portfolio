@@ -173,11 +173,11 @@ const formatSize = (bytes?: number | null) => {
             <tbody class="divide-y divide-neutral-100 dark:divide-neutral-800">
               <tr v-for="(doc, index) in documents" :key="doc.id" class="group hover:bg-neutral-50/50 dark:hover:bg-neutral-900/30">
                 <td class="px-4 py-5">
-                  <div class="flex flex-col gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button :disabled="index === 0" class="text-neutral-300 hover:text-secondary-500 disabled:opacity-0" @click="move(index, 'up')">
+                  <div class="flex flex-col opacity-0 group-hover:opacity-100 transition-opacity items-center justify-center">
+                    <button v-if="index > 0" class="text-neutral-300 hover:text-secondary-500" @click="move(index, 'up')">
                       <Icon name="heroicons:chevron-up" size="14" />
                     </button>
-                    <button :disabled="index === documents.length - 1" class="text-neutral-300 hover:text-secondary-500 disabled:opacity-0" @click="move(index, 'down')">
+                    <button v-if="index < documents.length - 1" class="text-neutral-300 hover:text-secondary-500" @click="move(index, 'down')">
                       <Icon name="heroicons:chevron-down" size="14" />
                     </button>
                   </div>
