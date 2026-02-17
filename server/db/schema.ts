@@ -105,15 +105,15 @@ export const applicationHistoriesRelations = relations(applicationHistories, ({ 
 }));
 
 export const documents = sqliteTable('documents', {
-	id: integer('id').primaryKey({ autoIncrement: true }),
-	name: text('name').notNull(),
-	filename: text('filename').notNull(),
-	fileType: text('file_type').notNull(),
-	fileSize: integer('file_size'),
-	isDefault: integer('is_default', { mode: 'boolean' }).default(false).notNull(),
-	createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  name: text('name').notNull(),
+  filename: text('filename').notNull(),
+  fileType: text('file_type').notNull(),
+  fileSize: integer('file_size'),
+  sortOrder: integer('sort_order').default(0).notNull(),
+  isDefault: integer('is_default', { mode: 'boolean' }).default(false).notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(strftime('%s', 'now'))`),
 });
-
 export const applications_to_documents = sqliteTable('applications_to_documents', {
 	applicationId: integer('application_id').notNull().references(() => applications.id, { onDelete: 'cascade' }),
 	documentId: integer('document_id').notNull().references(() => documents.id, { onDelete: 'cascade' }),

@@ -7,7 +7,7 @@ import path from 'path';
 export const documentService = {
   async getAll(): Promise<DocumentPayload[]> {
     return await db.query.documents.findMany({
-      orderBy: [desc(documents.createdAt)],
+      orderBy: [documents.sortOrder, desc(documents.createdAt)],
     });
   },
 
@@ -16,6 +16,16 @@ export const documentService = {
       where: eq(documents.id, id),
     });
     return document || null;
+  },
+
+  async reorder(documentIds: number[]) {
+    return await db.transaction(async (tx) => {
+      for (let i = 0; i < documentIds.length; i++) {
+        await tx.update(documents)
+          .set({ sortOrder: i })
+          .where(eq(documents.id, documentIds[i]));
+      }
+    });
   },
 
   async create(data: DocumentCreatePayload) {
@@ -85,7 +95,7 @@ export const documentService = {
   async getDefaultDocuments() {
     return await db.query.documents.findMany({
       where: eq(documents.isDefault, true),
-      orderBy: [documents.id], // Just a fallback order
+      orderBy: [documents.sortOrder, desc(documents.createdAt)],
     });
   },
 

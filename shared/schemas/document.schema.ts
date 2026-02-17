@@ -6,6 +6,7 @@ export const documentBaseSchema = z.object({
   filename: z.string(),
   fileType: z.string(),
   fileSize: z.number().optional().nullable(),
+  sortOrder: z.number().default(0),
   isDefault: z.boolean().default(false),
   createdAt: z.string().datetime().optional(),
 });

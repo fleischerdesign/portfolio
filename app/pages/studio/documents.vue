@@ -107,6 +107,28 @@ async function deleteDocument(id: number) {
   }
 }
 
+async function move(index: number, direction: 'up' | 'down') {
+  if (!documents.value) return;
+  
+  const newIndex = direction === 'up' ? index - 1 : index + 1;
+  if (newIndex < 0 || newIndex >= documents.value.length) return;
+  
+  const docs = [...documents.value];
+  const temp = docs[index];
+  docs[index] = docs[newIndex];
+  docs[newIndex] = temp;
+  
+  try {
+    await $fetch('/api/documents/reorder', {
+      method: 'PATCH',
+      body: { documentIds: docs.map(d => d.id) }
+    });
+    await refresh();
+  } catch (error) {
+    console.error('Reorder failed', error);
+  }
+}
+
 const formatSize = (bytes?: number | null) => {
   if (!bytes) return '0 B';
   const k = 1024;
@@ -141,6 +163,7 @@ const formatSize = (bytes?: number | null) => {
           <table class="w-full text-left">
             <thead>
               <tr class="border-b border-neutral-100 bg-neutral-50/50 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:border-neutral-800 dark:bg-neutral-900/50">
+                <th class="px-4 py-4 w-10"></th>
                 <th class="px-8 py-4">Name</th>
                 <th class="px-8 py-4">Typ / Größe</th>
                 <th class="px-8 py-4 text-center">Standard</th>
@@ -148,7 +171,17 @@ const formatSize = (bytes?: number | null) => {
               </tr>
             </thead>
             <tbody class="divide-y divide-neutral-100 dark:divide-neutral-800">
-              <tr v-for="doc in documents" :key="doc.id" class="group hover:bg-neutral-50/50 dark:hover:bg-neutral-900/30">
+              <tr v-for="(doc, index) in documents" :key="doc.id" class="group hover:bg-neutral-50/50 dark:hover:bg-neutral-900/30">
+                <td class="px-4 py-5">
+                  <div class="flex flex-col gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button :disabled="index === 0" class="text-neutral-300 hover:text-secondary-500 disabled:opacity-0" @click="move(index, 'up')">
+                      <Icon name="heroicons:chevron-up" size="14" />
+                    </button>
+                    <button :disabled="index === documents.length - 1" class="text-neutral-300 hover:text-secondary-500 disabled:opacity-0" @click="move(index, 'down')">
+                      <Icon name="heroicons:chevron-down" size="14" />
+                    </button>
+                  </div>
+                </td>
                 <td class="px-8 py-5">
                   <div class="flex items-center gap-4">
                     <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400">
