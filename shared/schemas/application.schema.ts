@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { companyResponseSchema } from './company.schema';
 import { contactBaseSchema } from './contact.schema';
 import { addressSchema } from './common.schema';
+import { applicationDocumentSchema } from './document.schema';
 
 export const applicationHistoryBaseSchema = z.object({
   id: z.number().optional(),
@@ -64,6 +65,7 @@ export const applicationResponseSchema = applicationBaseSchema.extend({
   histories: z.array(applicationHistoryBaseSchema), // Kept original name 'histories'
   company: companyResponseSchema, // Full company object
   contacts: z.array(contactBaseSchema), // Full contact objects
+  documents: z.array(applicationDocumentSchema).optional().default([]),
 });
 
 // Removed InterviewPayload

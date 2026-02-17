@@ -1,9 +1,10 @@
-import { applications, companies, addresses, applicationHistories, applications_to_contacts } from '~~/server/db/schema';
+import { applications, companies, addresses, applicationHistories, applications_to_contacts, applications_to_documents } from '~~/server/db/schema';
 import type { ApplicationResponsePayload, ApplicationCreatePayload, Status } from '~~/shared/schemas/application.schema';
 import type { CompanyResponse } from '~~/shared/schemas/company.schema';
-import { eq, desc, and, inArray } from 'drizzle-orm';
+import { eq, desc, and, inArray, asc } from 'drizzle-orm';
 import fs from 'fs';
 import path from 'path';
+import { documentService } from './document.service';
 
 // --- Internal Helpers ---
 
@@ -26,6 +27,7 @@ const mapApplication = (app: any): ApplicationResponsePayload => {
       address: app.company?.address || null,
     } as CompanyResponse,
     contacts: associatedContacts,
+    documents: app.documents || [],
   };
 };
 
@@ -92,11 +94,18 @@ export const applicationService = {
         company: { with: { address: true } },
         contacts: { with: { contact: true } },
         histories: true,
+        documents: { with: { document: true } },
       },
       orderBy: [desc(applications.createdAt)],
     });
 
-    return allApplications.map(mapApplication);
+    return Promise.all(allApplications.map(async (app) => {
+      const mapped = mapApplication(app);
+      if (mapped.documents.length === 0) {
+        mapped.documents = await documentService.getForApplicationWithFallback(app.id);
+      }
+      return mapped;
+    }));
   },
 
   async getBySlug(slug: string): Promise<ApplicationResponsePayload | null> {
@@ -108,11 +117,16 @@ export const applicationService = {
         histories: {
           orderBy: [desc(applicationHistories.createdAt), desc(applicationHistories.id)],
         },
+        documents: { with: { document: true }, orderBy: [asc(applications_to_documents.sortOrder)] },
       },
     });
   
     if (!application) return null;
-    return mapApplication(application);
+    const mapped = mapApplication(application);
+    if (mapped.documents.length === 0) {
+      mapped.documents = await documentService.getForApplicationWithFallback(application.id);
+    }
+    return mapped;
   },
 
   async addHistory(slug: string, data: { status: Status; notes?: string | null; scheduled_at?: string | null }) {
