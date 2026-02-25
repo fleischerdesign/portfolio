@@ -56,9 +56,6 @@ export default defineEventHandler(async (event) => {
     
     // Wait for the main container to be present
     await page.waitForSelector('.pdf-resume-container', { visible: true, timeout: 15000 });
-    
-    // Additional delay to ensure hydration and icons are fully rendered before capturing the PDF.
-    await new Promise(resolve => setTimeout(resolve, 3500));
 
     const coverLetterPdfBuffer = await page.pdf({
       format: 'A4',
