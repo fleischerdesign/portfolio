@@ -726,23 +726,20 @@ const getShortenedBody = (body: string) => {
 		transition-duration: 0s !important;
 		animation: none !important;
 		animation-duration: 0s !important;
-	}
-
-	/* Disable backdrop-filter specifically on content containers as it breaks text rendering in PDF */
-	.pdf-resume-container .backdrop-blur-md,
-	.pdf-resume-container .bg-white\/40,
-	.pdf-resume-container .bg-white\/60,
-	.pdf-resume-container .bg-white\/80 {
 		backdrop-filter: none !important;
 		-webkit-backdrop-filter: none !important;
-		background-color: rgba(255, 255, 255, 0.95) !important;
+		opacity: 1 !important;
+		visibility: visible !important;
+		filter: none !important;
 	}
 
-	/* Re-enable filters for decorative background elements to restore the "glow" */
-	.pdf-resume-container div[class*="blur-"],
-	.pdf-resume-container div[class*="bg-secondary-"] {
-		filter: blur(var(--tw-blur)) !important;
-		opacity: 0.3 !important;
+	/* Ensure cards and lists are visible */
+	.pdf-resume-container .bg-white\/40,
+	.pdf-resume-container .bg-white\/60,
+	.pdf-resume-container .bg-white\/80,
+	.pdf-resume-container .backdrop-blur-md {
+		background-color: rgba(255, 255, 255, 0.95) !important;
+		backdrop-filter: none !important;
 	}
 
 	.cover-page,
