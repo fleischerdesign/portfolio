@@ -716,24 +716,33 @@ const getShortenedBody = (body: string) => {
 	</div>
 </template>
 
-<style scoped>
-/* Ensure background colors and shadows are printed */
+<style>
+/* Global print overrides to fix Puppeteer/Chromium rendering issues */
 @media print {
 	* {
 		-webkit-print-color-adjust: exact !important;
 		print-color-adjust: exact !important;
+		/* Disable problematic effects for PDF engine */
+		backdrop-filter: none !important;
+		-webkit-backdrop-filter: none !important;
+		transition: none !important;
+		animation: none !important;
+		opacity: 1 !important;
+		visibility: visible !important;
 	}
 
-	/* Ensure proper page breaks */
+	/* Ensure cards and lists are visible */
+	.pdf-resume-container .bg-white\/40,
+	.pdf-resume-container .bg-white\/60,
+	.pdf-resume-container .backdrop-blur-md {
+		background-color: rgba(255, 255, 255, 0.9) !important;
+		backdrop-filter: none !important;
+	}
+
 	.cover-page,
 	.main-content-pages {
 		break-after: always;
 		page-break-after: always;
-	}
-
-	.main-content-pages:last-child {
-		break-after: avoid;
-		page-break-after: avoid;
 	}
 }
 </style>

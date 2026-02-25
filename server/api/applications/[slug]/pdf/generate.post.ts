@@ -37,9 +37,6 @@ export default defineEventHandler(async (event) => {
     const apiBaseUrl = `${protocol}://${host}`;
     const pageUrl = `${apiBaseUrl}/de/studio/applications/${slug}/print`;
     
-    await page.setCacheEnabled(false);
-
-    // Set cookies for hydration support - MUST match the host domain
     const cookies = getRequestHeader(event, 'cookie');
     if (cookies) {
       const domain = host.split(':')[0];
@@ -50,24 +47,21 @@ export default defineEventHandler(async (event) => {
           value: parts.slice(1).join('=') || '',
           domain: domain,
           path: '/',
-          secure: protocol === 'https'
+          secure: protocol === 'https',
+          sameSite: 'Lax' as const
         };
       }).filter(c => c.name && c.value);
       await page.setCookie(...cookieList);
     }
 
-    // Set headers to prevent redirects and ensure correct locale
-    await page.setExtraHTTPHeaders({
-      'Accept-Language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7'
-    });
+    // Force print media type to ensure @media print styles are used
+    await page.emulateMediaType('print');
 
     await page.goto(pageUrl, { waitUntil: 'networkidle0', timeout: 60000 });
-    
-    // Wait for the main container
     await page.waitForSelector('.pdf-resume-container', { visible: true, timeout: 15000 });
     
-    // Additional delay to ensure hydration and icons are fully rendered
-    await new Promise(resolve => setTimeout(resolve, 4000));
+    // Give Nuxt plenty of time for hydration and icon rendering
+    await new Promise(resolve => setTimeout(resolve, 5000));
 
     const coverLetterPdfBuffer = await page.pdf({
       format: 'A4',
