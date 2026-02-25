@@ -24,34 +24,12 @@ export default defineEventHandler(async (event) => {
 
   const browser = await puppeteer.launch({
     headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-accelerated-2d-canvas',
-      '--no-first-run',
-      '--no-zygote',
-      '--disable-gpu',
-      '--hide-scrollbars',
-      '--mute-audio'
-    ],
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
     executablePath: process.env.BROWSER_BIN,
   });
   
   try {
     const page = await browser.newPage();
-    
-    // Optimize: Disable request types we don't need for PDF
-    await page.setRequestInterception(true);
-    page.on('request', (req) => {
-      const type = req.resourceType();
-      if (['image', 'font', 'stylesheet', 'document', 'script'].includes(type)) {
-        req.continue();
-      } else {
-        req.abort();
-      }
-    });
-
     const host = getRequestHost(event);
     const protocol = getRequestProtocol(event);
     const apiBaseUrl = `${protocol}://${host}`;
@@ -74,11 +52,10 @@ export default defineEventHandler(async (event) => {
       await page.setCookie(...cookieList);
     }
 
-    // networkidle2 is significantly faster than networkidle0
-    await page.goto(pageUrl, { waitUntil: 'networkidle2', timeout: 30000 });
+    await page.goto(pageUrl, { waitUntil: 'networkidle0', timeout: 60000 });
     
     // Wait for the main container to be present
-    await page.waitForSelector('.pdf-resume-container', { visible: true, timeout: 10000 });
+    await page.waitForSelector('.pdf-resume-container', { visible: true, timeout: 15000 });
 
     const coverLetterPdfBuffer = await page.pdf({
       format: 'A4',
