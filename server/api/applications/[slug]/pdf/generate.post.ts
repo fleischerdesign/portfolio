@@ -22,49 +22,49 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: 'Application not found' });
   }
 
-  const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || process.env.BROWSER_BIN;
-  
   const browser = await puppeteer.launch({
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-    executablePath,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    executablePath: process.env.BROWSER_BIN,
   });
   
   try {
     const page = await browser.newPage();
     const host = getRequestHost(event);
+    const protocol = getRequestProtocol(event);
+    const apiBaseUrl = `${protocol}://${host}`;
+    const pageUrl = `${apiBaseUrl}/de/studio/applications/${slug}/print`;
     
-    // In production (Nix/Caddy), use localhost to bypass DNS/NAT issues
-    const port = process.env.PORT || 3000;
-    const pageUrl = `http://localhost:${port}/de/studio/applications/${slug}/print`;
-    
+    // Disable cache to ensure a fresh render
     await page.setCacheEnabled(false);
 
     const cookies = getRequestHeader(event, 'cookie');
     if (cookies) {
+      const domain = host.split(':')[0];
       const cookieList = cookies.split(';').map(c => {
         const parts = c.trim().split('=');
+        const name = parts[0] || '';
+        const value = parts.slice(1).join('=') || '';
         return {
-          name: parts[0] || '',
-          value: parts.slice(1).join('=') || '',
-          domain: 'localhost',
+          name,
+          value,
+          domain,
           path: '/',
-          secure: false
+          secure: protocol === 'https',
+          sameSite: 'Lax' as const
         };
       }).filter(c => c.name && c.value);
+      
       await page.setCookie(...cookieList);
     }
 
-    await page.setExtraHTTPHeaders({
-      'Host': host,
-      'Accept-Language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7'
-    });
-
     await page.goto(pageUrl, { waitUntil: 'networkidle0', timeout: 60000 });
     
+    // Wait for the main container to be present
     await page.waitForSelector('.pdf-resume-container', { visible: true, timeout: 15000 });
     
-    await new Promise(resolve => setTimeout(resolve, 3500));
+    // Additional delay to ensure hydration and icons are fully loaded
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
     const coverLetterPdfBuffer = await page.pdf({
       format: 'A4',
