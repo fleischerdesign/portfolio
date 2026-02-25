@@ -722,20 +722,23 @@ const getShortenedBody = (body: string) => {
 	* {
 		-webkit-print-color-adjust: exact !important;
 		print-color-adjust: exact !important;
-		/* Disable problematic effects for PDF engine */
+		transition: none !important;
+		transition-duration: 0s !important;
+		animation: none !important;
+		animation-duration: 0s !important;
 		backdrop-filter: none !important;
 		-webkit-backdrop-filter: none !important;
-		transition: none !important;
-		animation: none !important;
 		opacity: 1 !important;
 		visibility: visible !important;
+		filter: none !important;
 	}
 
 	/* Ensure cards and lists are visible */
 	.pdf-resume-container .bg-white\/40,
 	.pdf-resume-container .bg-white\/60,
+	.pdf-resume-container .bg-white\/80,
 	.pdf-resume-container .backdrop-blur-md {
-		background-color: rgba(255, 255, 255, 0.9) !important;
+		background-color: rgba(255, 255, 255, 0.95) !important;
 		backdrop-filter: none !important;
 	}
 
