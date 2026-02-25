@@ -716,24 +716,35 @@ const getShortenedBody = (body: string) => {
 	</div>
 </template>
 
-<style scoped>
-/* Ensure background colors and shadows are printed */
+<style>
+/* Global print overrides to fix Puppeteer/Chromium rendering issues */
 @media print {
 	* {
 		-webkit-print-color-adjust: exact !important;
 		print-color-adjust: exact !important;
+		/* Transitions cause timing issues in Puppeteer */
+		transition: none !important;
+		transition-duration: 0s !important;
+		animation: none !important;
+		animation-duration: 0s !important;
+		/* Backdrop-filter is the main culprit for invisible elements in PDF */
+		backdrop-filter: none !important;
+		-webkit-backdrop-filter: none !important;
 	}
 
-	/* Ensure proper page breaks */
+	/* Ensure cards and items that use backdrop-blur are opaque and visible */
+	.pdf-resume-container .backdrop-blur-md,
+	.pdf-resume-container .bg-white\/40,
+	.pdf-resume-container .bg-white\/60,
+	.pdf-resume-container .bg-white\/80 {
+		background-color: rgba(255, 255, 255, 0.95) !important;
+		backdrop-filter: none !important;
+	}
+
 	.cover-page,
 	.main-content-pages {
 		break-after: always;
 		page-break-after: always;
-	}
-
-	.main-content-pages:last-child {
-		break-after: avoid;
-		page-break-after: avoid;
 	}
 }
 </style>

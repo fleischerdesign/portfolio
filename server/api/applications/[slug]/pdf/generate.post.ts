@@ -37,16 +37,28 @@ export default defineEventHandler(async (event) => {
     
     const cookies = getRequestHeader(event, 'cookie');
     if (cookies) {
-      await page.setExtraHTTPHeaders({ cookie: cookies });
+      const domain = host.split(':')[0];
+      const cookieList = cookies.split(';').map(c => {
+        const parts = c.trim().split('=');
+        return {
+          name: parts[0] || '',
+          value: parts.slice(1).join('=') || '',
+          domain: domain,
+          path: '/',
+          secure: protocol === 'https',
+          sameSite: 'Lax' as const
+        };
+      }).filter(c => c.name && c.value);
+      await page.setCookie(...cookieList);
     }
 
-    await page.goto(pageUrl, { waitUntil: 'networkidle0' });
+    await page.goto(pageUrl, { waitUntil: 'networkidle0', timeout: 60000 });
     
     // Wait for the main container to be present
-    await page.waitForSelector('.pdf-resume-container', { visible: true });
+    await page.waitForSelector('.pdf-resume-container', { visible: true, timeout: 15000 });
     
-    // Additional delay to ensure hydration and icons are fully loaded
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Additional delay to ensure hydration and icons are fully rendered before capturing the PDF.
+    await new Promise(resolve => setTimeout(resolve, 3500));
 
     const coverLetterPdfBuffer = await page.pdf({
       format: 'A4',
