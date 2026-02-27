@@ -71,14 +71,12 @@ function getStatusColor(status: string) {
                     <span class="capitalize">{{ option }}</span>
                 </template>
             </UiSelect>
-            <!-- <NuxtLink :to="$localePath('/studio/projects/new')" class="w-full md:w-auto"> -->
-            <button class="w-full cursor-not-allowed opacity-50 md:w-auto" title="Not implemented yet">
-              <UiButton variant="secondary" class="w-full justify-center" disabled>
+            <NuxtLink :to="$localePath('/studio/projects/new')" class="w-full md:w-auto">
+              <UiButton variant="secondary" class="w-full justify-center">
                 <Icon name="heroicons:plus" class="mr-2 h-5 w-5" />
                 New Project
               </UiButton>
-            </button>
-            <!-- </NuxtLink> -->
+            </NuxtLink>
           </div>
         </UiCardContainer>
       </UiCard>
