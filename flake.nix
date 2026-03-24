@@ -27,7 +27,7 @@
 
           src = ./.;
 
-          npmDepsHash = "sha256-j5Sk03laMhCog247/reM3p3oNQvv8LqqFnIdqJJia3o=";
+          npmDepsHash = "sha256-orQA0InBAV7X6UEjlFmuKyo1kmAGdu8f+aAyKv+p+I4=";
           npmFlags = [ "--legacy-peer-deps" ];
 
           nodejs = nodejs;
@@ -60,24 +60,24 @@
 
           # Install the build output
           installPhase = ''
-            mkdir -p $out/lib/portfolio
-            cp -r .output/* $out/lib/portfolio/
+                        mkdir -p $out/lib/portfolio
+                        cp -r .output/* $out/lib/portfolio/
 
-            # Include migration files for Drizzle
-            mkdir -p $out/lib/portfolio/server/db/migrations
-            if [ -d "server/db/migrations" ]; then
-              cp -r server/db/migrations/* $out/lib/portfolio/server/db/migrations/
-            fi
+                        # Include migration files for Drizzle
+                        mkdir -p $out/lib/portfolio/server/db/migrations
+                        if [ -d "server/db/migrations" ]; then
+                          cp -r server/db/migrations/* $out/lib/portfolio/server/db/migrations/
+                        fi
 
-            # Executable wrapper
-            mkdir -p $out/bin
-            cat <<EOF > $out/bin/portfolio
-#!/bin/sh
-export NODE_ENV=production
-export PUPPETEER_EXECUTABLE_PATH=\$(cat /etc/portfolio-chromium-path 2>/dev/null || echo "${pkgs.chromium}/bin/chromium")
-exec ${nodejs}/bin/node $out/lib/portfolio/server/index.mjs
-EOF
-            chmod +x $out/bin/portfolio
+                        # Executable wrapper
+                        mkdir -p $out/bin
+                        cat <<EOF > $out/bin/portfolio
+            #!/bin/sh
+            export NODE_ENV=production
+            export PUPPETEER_EXECUTABLE_PATH=\$(cat /etc/portfolio-chromium-path 2>/dev/null || echo "${pkgs.chromium}/bin/chromium")
+            exec ${nodejs}/bin/node $out/lib/portfolio/server/index.mjs
+            EOF
+                        chmod +x $out/bin/portfolio
           '';
         };
 
