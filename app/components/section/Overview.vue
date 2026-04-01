@@ -81,7 +81,7 @@
     </UiCard >
 
     <!-- 5. JOB SEARCH -->
-    <UiCard 
+    <!--<UiCard 
         interactive 
         class="group relative col-span-1 overflow-hidden border-secondary-500/20 bg-secondary-50/50 md:col-span-2 lg:col-span-2 dark:border-secondary-500/20 dark:bg-secondary-900/20"
     >
@@ -108,7 +108,7 @@
             </NuxtLink>
         </div>
       </UiCardContainer>
-    </UiCard >
+    </UiCard >-->
 
   </div>
 </template>

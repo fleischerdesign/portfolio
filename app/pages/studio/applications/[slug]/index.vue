@@ -458,6 +458,18 @@ onMounted(() => {
 
         <UiCard class="border-secondary-500/5 shadow-xl shadow-secondary-500/5">
             <UiCardContainer class="p-8 md:p-10">
+                <StudioApplicationAttachments 
+                    v-if="application" 
+                    :application-id="application.id!" 
+                    :slug="slug" 
+                    :initial-documents="application.documents" 
+                    :is-editing="isEditing"
+                />
+            </UiCardContainer>
+        </UiCard>
+
+        <UiCard class="border-secondary-500/5 shadow-xl shadow-secondary-500/5">
+            <UiCardContainer class="p-8 md:p-10">
                 <div class="mb-10 flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary-100 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400">

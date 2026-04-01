@@ -90,9 +90,12 @@ export const useApplicationUtils = () => {
   }
 
   const getDisplayDate = (application: ApplicationDateSource | null | undefined) => {
-    if (!application) return 'N/A';
+    if (!application) return formatDate(new Date());
     const appDate = getApplicationDate(application);
-    return appDate ? formatDate(appDate) : formatDate(application.createdAt);
+    if (appDate) return formatDate(appDate);
+    
+    // If it's a draft (no applied date), use current date for the document
+    return formatDate(new Date());
   }
 
   const formatForDateTimeLocal = (isoString: string | null | undefined): string => {

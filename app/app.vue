@@ -1,56 +1,56 @@
 <template>
-  <NuxtLoadingIndicator class="!bg-secondary-400" :color="false" />
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
-  <UiToastContainer ref="toastContainer" />
+	<NuxtLoadingIndicator class="!bg-secondary-400" :color="false" />
+	<NuxtLayout>
+		<NuxtPage />
+	</NuxtLayout>
+	<UiToastContainer ref="toastContainer" />
 </template>
 
 <script setup lang="ts">
 const toastContainer = ref<{ addToast: (message: string, options?: { type?: 'success' | 'error' | 'info' | 'warning', duration?: number }) => void } | null>(null);
 
 onMounted(() => {
-  if (toastContainer.value) {
-    registerToastContainer(toastContainer.value.addToast);
-  }
+	if (toastContainer.value) {
+		registerToastContainer(toastContainer.value.addToast);
+	}
 });
 
 const { locale } = useI18n()
 
 useHead({
-  titleTemplate: (titleChunk) => {
-    return titleChunk ? `${titleChunk} - Philipp Fleischer` : 'Philipp Fleischer'
-  },
-  htmlAttrs: {
-    lang: locale
-  },
-  meta: [
-    { charset: 'utf-8' },
-    { name: 'viewport', content: 'width=device-width, initial-scale=1' }
-  ],
-  bodyAttrs: {
-    class: 'dark:bg-neutral-900 dark:text-white text-neutral-950 bg-neutral-100 transition'
-  }
+	titleTemplate: (titleChunk) => {
+		return titleChunk ? `${titleChunk} - Philipp Fleischer` : 'Philipp Fleischer'
+	},
+	htmlAttrs: {
+		lang: locale
+	},
+	meta: [
+		{ charset: 'utf-8' },
+		{ name: 'viewport', content: 'width=device-width, initial-scale=1' }
+	],
+	bodyAttrs: {
+		class: 'dark:bg-[rgb(13,13,13)] dark:text-white text-neutral-950 bg-neutral-100 transition'
+	}
 })
 
 if (import.meta.server) {
-  defineOgImageComponent('Default')
+	defineOgImageComponent('Default')
 }
 </script>
 
 
 <style>
 html {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
 }
 
 .page-enter-active,
 .page-leave-active {
-  transition: all 0.05s;
+	transition: all 0.05s;
 }
 
 .page-enter-from,
 .page-leave-to {
-  opacity: 0;
+	opacity: 0;
 }
 </style>
