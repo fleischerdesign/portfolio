@@ -77,28 +77,17 @@
           '';
         };
 
-        # Docker image for deployment
-        packages.dockerImage = pkgs.dockerTools.buildImage {
+        # Docker image using buildLayeredImage - builds from nix packages
+        packages.dockerImage = pkgs.dockerTools.buildLayeredImage {
           name = "portfolio";
           tag = "latest";
 
-          fromImage = pkgs.dockerTools.pullImage {
-            imageName = "node";
-            imageTag = "24-alpine";
-          };
-
-          copyToRoot = pkgs.buildEnv {
-            name = "portfolio-env";
-            paths = [
-              self.packages.${system}.default
-              pkgs.dumb-init
-              pkgs.curl
-            ];
-            pathsToLink = [
-              "/bin"
-              "/lib"
-            ];
-          };
+          contents = [
+            nodejs
+            self.packages.${system}.default
+            pkgs.dumb-init
+            pkgs.curl
+          ];
 
           config = {
             Expose = {
@@ -108,12 +97,12 @@
               "NODE_ENV=production"
               "PORT=3000"
               "HOST=0.0.0.0"
-              "BROWSER_BIN=/usr/bin/chromium-browser"
             ];
             Cmd = [
-              "/bin/sh"
-              "-c"
-              "exec /bin/dumb-init -- node /lib/portfolio/server/index.mjs"
+              "/bin/dumb-init"
+              "--"
+              "${nodejs}/bin/node"
+              "/lib/portfolio/server/index.mjs"
             ];
             Healthcheck = {
               Test = [
@@ -122,11 +111,11 @@
                 "-fs"
                 "http://localhost:3000/api/health"
               ];
-              Interval = "30s";
-              Timeout = "3s";
-              StartPeriod = "10s";
+              Interval = 30;
+              Timeout = 3;
+              StartPeriod = 10;
             };
-            User = "nonroot";
+            User = "0";
           };
         };
 
