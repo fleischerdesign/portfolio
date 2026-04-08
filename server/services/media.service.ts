@@ -1,5 +1,8 @@
-import { writeFile, mkdir } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
+import { writeFile, mkdir } from "node:fs/promises";
+import { join, resolve } from "node:path";
+import { createLogger } from "../utils/logger";
+
+const logger = createLogger("media");
 
 interface UploadedFile {
   filename?: string;
@@ -8,26 +11,28 @@ interface UploadedFile {
 }
 
 export const mediaService = {
-  async saveFile(file: UploadedFile, type: string = 'images') {
-    const baseDir = resolve(process.cwd(), '.data/uploads', type);
-    
-    // Ensure directory exists
+  async saveFile(file: UploadedFile, type: string = "images") {
+    logger.info("saveFile", `Saving file to ${type}`, {
+      filename: file.filename,
+    });
+
+    const baseDir = resolve(process.cwd(), ".data/uploads", type);
+
     await mkdir(baseDir, { recursive: true });
 
-    // Generate unique filename
     const timestamp = Date.now();
-    const originalName = file.filename || 'upload.bin';
-    const cleanName = originalName.replace(/[^a-zA-Z0-9.]/g, '_');
+    const originalName = file.filename || "upload.bin";
+    const cleanName = originalName.replace(/[^a-zA-Z0-9.]/g, "_");
     const filename = `${timestamp}-${cleanName}`;
     const filePath = join(baseDir, filename);
 
-    // Save the file
     await writeFile(filePath, file.data);
 
-    // Return the public URL path
+    logger.info("saveFile", `File saved: ${filename}`);
+
     return {
       url: `/media/${type}/${filename}`,
-      filename: filename
+      filename: filename,
     };
-  }
+  },
 };

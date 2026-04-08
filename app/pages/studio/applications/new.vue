@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { ApplicationCreatePayload } from '#shared/schemas/application.schema';
-import type { CompanyResponse } from '#shared/schemas/company.schema';
-import type { ContactResponse } from '#shared/schemas/contact.schema';
+import type { ApplicationCreatePayload } from "#shared/schemas/application.schema";
+import type { CompanyResponse } from "#shared/schemas/company.schema";
+import type { ContactResponse } from "#shared/schemas/contact.schema";
 
 definePageMeta({
-  middleware: 'authorize',
-  ability: isAdmin
+  middleware: "authorize",
+  ability: isAdmin,
 });
 
 const router = useRouter();
@@ -21,11 +21,11 @@ const selectedCompany = ref<CompanyResponse | undefined>(undefined);
 const selectedContacts = ref<ContactResponse[]>([]);
 
 // Refs for new company/address fields
-const newCompanyName = ref('');
-const newCompanyStreet = ref('');
-const newCompanyHouseNumber = ref('');
+const newCompanyName = ref("");
+const newCompanyStreet = ref("");
+const newCompanyHouseNumber = ref("");
 const newCompanyZipcode = ref<string | undefined>(undefined);
-const constNewCompanyCity = ref(''); // Renamed to avoid conflict
+const constNewCompanyCity = ref(""); // Renamed to avoid conflict
 const showNewCompanyForm = ref(false);
 
 const showContactFormModal = ref(false);
@@ -34,31 +34,37 @@ const companyIdForNewContact = ref<number | undefined>(undefined);
 onMounted(async () => {
   try {
     const [companiesRes, contactsRes] = await Promise.all([
-      $fetch<{ companies: CompanyResponse[] }>('/api/companies'),
-      $fetch<{ contacts: ContactResponse[] }>('/api/contacts')
+      $fetch<{ companies: CompanyResponse[] }>("/api/companies"),
+      $fetch<{ contacts: ContactResponse[] }>("/api/contacts"),
     ]);
     allCompanies.value = companiesRes.companies;
     allContacts.value = contactsRes.contacts;
   } catch (err) {
     console.error("Failed to load initial data", err);
-    showToast('Fehler beim Laden der Daten.', { type: 'error' });
+    showToast("Fehler beim Laden der Daten.", { type: "error" });
   }
 });
 
-const form = ref<Omit<ApplicationCreatePayload, 'companyName' | 'companyAddress' | 'contactIds' | 'companyId'> & { companyId?: number, contactIds?: number[] }>(
-{
-  title: '',
-  subtitle: '',
-  slug: '',
-  url: '',
-  body: '',
+const form = ref<
+  Omit<
+    ApplicationCreatePayload,
+    "companyName" | "companyAddress" | "contactIds" | "companyId"
+  > & { companyId?: number; contactIds?: number[] }
+>({
+  title: "",
+  subtitle: "",
+  slug: "",
+  url: "",
+  body: "",
   notes: [],
   companyId: undefined, // Will be set by selection or new company creation
   contactIds: [],
 });
 
 const slugSource = computed(() => {
-  const companyPart = showNewCompanyForm.value ? newCompanyName.value : (selectedCompany.value?.name || '');
+  const companyPart = showNewCompanyForm.value
+    ? newCompanyName.value
+    : selectedCompany.value?.name || "";
   return `${companyPart} ${form.value.title}`;
 });
 
@@ -78,15 +84,18 @@ async function createApplication() {
   try {
     const payload: ApplicationCreatePayload = {
       ...form.value,
-      contactIds: selectedContacts.value.map(c => c.id),
-      companyId: selectedCompany.value?.id,
+      contactIds: selectedContacts.value.map((c) => c.id),
+      companyId: selectedCompany.value?.id ?? null,
     };
 
     if (showNewCompanyForm.value) {
       payload.companyName = newCompanyName.value;
-      payload.companyId = undefined; // Ensure new company is created
-      if(newCompanyStreet.value && constNewCompanyCity.value && newCompanyZipcode.value)
-      {
+      payload.companyId = null; // Ensure new company is created
+      if (
+        newCompanyStreet.value &&
+        constNewCompanyCity.value &&
+        newCompanyZipcode.value
+      ) {
         payload.companyAddress = {
           street: newCompanyStreet.value,
           houseNumber: newCompanyHouseNumber.value,
@@ -97,26 +106,30 @@ async function createApplication() {
     } else if (!selectedCompany.value) {
       // Handle error: no company selected or created
       console.error("No company selected or created.");
-      showToast('Bitte wähle ein Unternehmen aus oder erstelle ein neues.', { type: 'error' });
+      showToast("Bitte wähle ein Unternehmen aus oder erstelle ein neues.", {
+        type: "error",
+      });
       isLoading.value = false;
       return;
     }
 
-    const result = await useRequestFetch()('/api/applications', {
-      method: 'POST',
+    const result = await useRequestFetch()("/api/applications", {
+      method: "POST",
       body: payload,
     });
-    
+
     const newSlug = result?.result?.slug;
     if (newSlug) {
       router.push(localePath(`/studio/applications/${newSlug}`));
     } else {
-      showToast('Bewerbung erstellt, aber Weiterleitung fehlgeschlagen.', { type: 'warning' });
-      router.push(localePath('/studio/applications'));
+      showToast("Bewerbung erstellt, aber Weiterleitung fehlgeschlagen.", {
+        type: "warning",
+      });
+      router.push(localePath("/studio/applications"));
     }
   } catch (error) {
-    console.error('Failed to create application', error);
-    showToast('Fehler beim Erstellen der Bewerbung.', { type: 'error' });
+    console.error("Failed to create application", error);
+    showToast("Fehler beim Erstellen der Bewerbung.", { type: "error" });
   } finally {
     isLoading.value = false;
   }
@@ -139,27 +152,56 @@ function handleCancelContactForm() {
 </script>
 
 <template>
-  <div class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44">
+  <div
+    class="container mx-auto max-w-screen-xl px-4 pb-16 pt-32 md:px-8 lg:pt-44"
+  >
     <div class="mb-12">
-      <UiSectionHeader symbol="heroicons:briefcase" :title="$t('applications.new.title')" :subtitle="$t('applications.new.subtitle')" />
+      <UiSectionHeader
+        symbol="heroicons:briefcase"
+        :title="$t('applications.new.title')"
+        :subtitle="$t('applications.new.subtitle')"
+      />
     </div>
     <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-4 lg:items-start">
       <div class="space-y-8 lg:col-span-3">
         <UiCard>
           <UiCardContainer class="flex h-full flex-col gap-4">
-            <h3 class="text-2xl font-medium">{{ $t('applications.new.base_info') }}</h3>
+            <h3 class="text-2xl font-medium">
+              {{ $t("applications.new.base_info") }}
+            </h3>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <UiInput id="title" v-model="form.title" :label="$t('applications.detail.config.title_label')" required />
-              <UiInput id="subtitle" v-model="form.subtitle" :label="$t('applications.detail.config.subtitle_label')" />
-              <UiInput id="slug" v-model="form.slug" label="URL-Slug" required @input="manualSlugInput" />
-              <UiInput id="url" v-model="form.url" :label="$t('applications.detail.config.url_label')" />
+              <UiInput
+                id="title"
+                v-model="form.title"
+                :label="$t('applications.detail.config.title_label')"
+                required
+              />
+              <UiInput
+                id="subtitle"
+                v-model="form.subtitle"
+                :label="$t('applications.detail.config.subtitle_label')"
+              />
+              <UiInput
+                id="slug"
+                v-model="form.slug"
+                label="URL-Slug"
+                required
+                @input="manualSlugInput"
+              />
+              <UiInput
+                id="url"
+                v-model="form.url"
+                :label="$t('applications.detail.config.url_label')"
+              />
             </div>
           </UiCardContainer>
         </UiCard>
 
         <UiCard>
           <UiCardContainer class="flex h-full flex-col gap-4">
-            <h3 class="text-2xl font-medium">{{ $t('applications.detail.config.company') }}</h3>
+            <h3 class="text-2xl font-medium">
+              {{ $t("applications.detail.config.company") }}
+            </h3>
             <div class="flex items-center gap-2">
               <UiSelect
                 id="company-select"
@@ -177,23 +219,60 @@ function handleCancelContactForm() {
                   {{ option.name }}
                 </template>
               </UiSelect>
-              <UiButton variant="secondary" @click="showNewCompanyForm = !showNewCompanyForm">
-                {{ showNewCompanyForm ? $t('applications.new.existing_company') : $t('applications.new.new_company') }}
+              <UiButton
+                variant="secondary"
+                @click="showNewCompanyForm = !showNewCompanyForm"
+              >
+                {{
+                  showNewCompanyForm
+                    ? $t("applications.new.existing_company")
+                    : $t("applications.new.new_company")
+                }}
               </UiButton>
             </div>
 
-            <div v-if="showNewCompanyForm" class="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <UiInput id="new-company-name" v-model="newCompanyName" :label="$t('applications.new.company_name')" required />
+            <div
+              v-if="showNewCompanyForm"
+              class="grid grid-cols-1 gap-4 md:grid-cols-2"
+            >
+              <UiInput
+                id="new-company-name"
+                v-model="newCompanyName"
+                :label="$t('applications.new.company_name')"
+                required
+              />
               <div />
-              <UiInput id="new-company-street" v-model="newCompanyStreet" :label="$t('applications.new.street')" />
-              <UiInput id="new-company-housenumber" v-model="newCompanyHouseNumber" :label="$t('applications.new.house_number')" />
-              <UiInput id="new-company-zipcode" v-model="newCompanyZipcode" :label="$t('applications.new.zipcode')" />
-              <UiInput id="new-company-city" v-model="constNewCompanyCity" :label="$t('applications.new.city')" />
+              <UiInput
+                id="new-company-street"
+                v-model="newCompanyStreet"
+                :label="$t('applications.new.street')"
+              />
+              <UiInput
+                id="new-company-housenumber"
+                v-model="newCompanyHouseNumber"
+                :label="$t('applications.new.house_number')"
+              />
+              <UiInput
+                id="new-company-zipcode"
+                v-model="newCompanyZipcode"
+                :label="$t('applications.new.zipcode')"
+              />
+              <UiInput
+                id="new-company-city"
+                v-model="constNewCompanyCity"
+                :label="$t('applications.new.city')"
+              />
             </div>
             <p v-else-if="selectedCompany" class="text-neutral-500">
-              {{ $t('applications.new.selected_company', { name: selectedCompany.name }) }}
+              {{
+                $t("applications.new.selected_company", {
+                  name: selectedCompany.name,
+                })
+              }}
             </p>
-            <p v-else class="text-neutral-500">{{ $t('applications.new.please_select_company') }}</p>
+            <p v-else class="text-neutral-500">
+              {{ $t("applications.new.please_select_company") }}
+            </p>
           </UiCardContainer>
         </UiCard>
 
@@ -211,39 +290,51 @@ function handleCancelContactForm() {
             >
               <template #display="{ option }">
                 {{ option.name }}
-                <span v-if="option.company && option.company.name">({{ option.company.name }})</span>
+                <span v-if="option.company && option.company.name"
+                  >({{ option.company.name }})</span
+                >
               </template>
               <template #option="{ option }">
                 {{ option.name }}
-                <span v-if="option.company && option.company.name" class="text-sm text-neutral-500">({{ option.company.name }})</span>
+                <span
+                  v-if="option.company && option.company.name"
+                  class="text-sm text-neutral-500"
+                  >({{ option.company.name }})</span
+                >
               </template>
             </UiSelect>
           </UiCardContainer>
         </UiCard>
 
         <UiCard>
-            <UiCardContainer>
-                <h3 class="mb-4 text-2xl font-medium">{{ $t('applications.detail.document.title') }}</h3>
-                <UiInput
-                    id="body"
-                    v-model="form.body"
-                    as="textarea"
-                    :label="$t('applications.new.body_label')"
-                    class="min-h-64"
-                />
-            </UiCardContainer>
+          <UiCardContainer>
+            <h3 class="mb-4 text-2xl font-medium">
+              {{ $t("applications.detail.document.title") }}
+            </h3>
+            <UiInput
+              id="body"
+              v-model="form.body"
+              as="textarea"
+              :label="$t('applications.new.body_label')"
+              class="min-h-64"
+            />
+          </UiCardContainer>
         </UiCard>
       </div>
 
       <div class="sticky top-10 flex flex-col gap-2 lg:col-span-1">
         <div class="rounded-lg bg-white shadow dark:bg-neutral-900">
           <div class="flex w-full flex-col gap-2">
-            <UiButton class="w-full" :is-loading="isLoading" @click="createApplication">
-              {{ $t('applications.new.save_create') }}
+            <UiButton
+              class="w-full"
+              :is-loading="isLoading"
+              @click="createApplication"
+            >
+              {{ $t("applications.new.save_create") }}
             </UiButton>
             <NuxtLink :to="$localePath('/studio/applications')">
               <UiButton class="w-full" variant="secondary">
-                {{ $t('applications.detail.actions.cancel') }}
+                {{ $t("applications.detail.actions.cancel") }}
               </UiButton>
             </NuxtLink>
           </div>
@@ -253,7 +344,11 @@ function handleCancelContactForm() {
 
     <!-- Modals -->
     <UiModal v-model="showContactFormModal">
-      <template #header><h3 class="text-xl font-semibold">{{ $t('applications.modals.new_contact') }}</h3></template>
+      <template #header
+        ><h3 class="text-xl font-semibold">
+          {{ $t("applications.modals.new_contact") }}
+        </h3></template
+      >
       <template #body>
         <ApplicationContactForm
           :company-id="companyIdForNewContact"

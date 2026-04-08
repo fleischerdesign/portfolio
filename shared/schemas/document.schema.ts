@@ -1,27 +1,37 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const documentBaseSchema = z.object({
-  id: z.number().optional(),
+  id: z.number(),
   name: z.string().trim().min(1),
   filename: z.string(),
   fileType: z.string(),
-  fileSize: z.number().optional().nullable(),
+  fileSize: z.number().nullable(),
   sortOrder: z.number().default(0),
   isDefault: z.boolean().default(false),
-  createdAt: z.string().datetime().optional(),
+  createdAt: z.date().nullable(),
 });
 
-export const documentCreateSchema = documentBaseSchema.omit({ id: true, createdAt: true });
+export const documentCreateSchema = documentBaseSchema
+  .omit({
+    id: true,
+    createdAt: true,
+    sortOrder: true,
+  })
+  .extend({
+    fileSize: z.number().optional().nullable(),
+  });
 export const documentUpdateSchema = documentBaseSchema.partial();
 
 export const applicationDocumentSchema = z.object({
   applicationId: z.number(),
   documentId: z.number(),
-  sortOrder: z.number().default(0),
+  sortOrder: z.number(),
   document: documentBaseSchema,
 });
 
 export type DocumentPayload = z.infer<typeof documentBaseSchema>;
 export type DocumentCreatePayload = z.infer<typeof documentCreateSchema>;
 export type DocumentUpdatePayload = z.infer<typeof documentUpdateSchema>;
-export type ApplicationDocumentPayload = z.infer<typeof applicationDocumentSchema>;
+export type ApplicationDocumentPayload = z.infer<
+  typeof applicationDocumentSchema
+>;
