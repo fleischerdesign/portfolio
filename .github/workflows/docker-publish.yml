@@ -30,7 +30,7 @@ jobs:
       - name: Build Docker image with Nix
         run: |
           nix build .#dockerImage --out-link result
-          docker load < result/result
+          docker load < result
 
       - name: Set image tag
         run: |
