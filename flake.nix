@@ -53,23 +53,19 @@
           npm_config_build_from_source = "true";
           NUXT_TELEMETRY_DISABLED = "1";
 
-          # Nuxt build
           buildPhase = ''
             npm run build
           '';
 
-          # Install the build output
           installPhase = ''
                         mkdir -p $out/lib/portfolio
                         cp -r .output/* $out/lib/portfolio/
 
-                        # Include migration files for Drizzle
                         mkdir -p $out/lib/portfolio/server/db/migrations
                         if [ -d "server/db/migrations" ]; then
                           cp -r server/db/migrations/* $out/lib/portfolio/server/db/migrations/
                         fi
 
-                        # Executable wrapper
                         mkdir -p $out/bin
                         cat <<EOF > $out/bin/portfolio
             #!/bin/sh
@@ -81,7 +77,60 @@
           '';
         };
 
-        # Your dev environment
+        # Docker image for deployment
+        packages.dockerImage = pkgs.dockerTools.buildImage {
+          name = "portfolio";
+          tag = "latest";
+
+          fromImage = pkgs.dockerTools.pullImage {
+            imageName = "node";
+            imageTag = "24-alpine";
+          };
+
+          copyToRoot = pkgs.buildEnv {
+            name = "portfolio-env";
+            paths = [
+              self.packages.${system}.default
+              pkgs.dumb-init
+              pkgs.curl
+            ];
+            pathsToLink = [
+              "/bin"
+              "/lib"
+            ];
+          };
+
+          config = {
+            Expose = {
+              "3000/tcp" = { };
+            };
+            Env = [
+              "NODE_ENV=production"
+              "PORT=3000"
+              "HOST=0.0.0.0"
+              "BROWSER_BIN=/usr/bin/chromium-browser"
+            ];
+            Cmd = [
+              "/bin/sh"
+              "-c"
+              "exec /bin/dumb-init -- node /lib/portfolio/server/index.mjs"
+            ];
+            Healthcheck = {
+              Test = [
+                "CMD"
+                "curl"
+                "-fs"
+                "http://localhost:3000/api/health"
+              ];
+              Interval = "30s";
+              Timeout = "3s";
+              StartPeriod = "10s";
+            };
+            User = "nonroot";
+          };
+        };
+
+        # Development shell
         devShells.default = pkgs.mkShell {
           name = "portfolio-dev-shell";
           packages = with pkgs; [
