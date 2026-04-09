@@ -74,10 +74,8 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
         </div>
 
         <div class="w-full max-w-4xl">
-          <!-- eslint-disable-next-line vue/no-v-html -->
-            <div class="prose prose-lg prose-neutral max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-secondary-500 prose-a:no-underline hover:prose-a:underline prose-blockquote:rounded-r-2xl prose-blockquote:border-secondary-500 prose-blockquote:bg-secondary-500/5 prose-blockquote:px-6 prose-blockquote:py-2 prose-img:rounded-3xl prose-img:shadow-2xl" v-html="renderedBody"
-            >
-            </div>
+            <AppMarkdown :content="post.body" />
+        </div>
 
             <footer class="mt-20 flex flex-col items-start gap-10 border-t border-neutral-200/30 pt-16 dark:border-neutral-800/30">
                 <div class="flex flex-col gap-4">
@@ -99,12 +97,6 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
 <script lang="ts" setup>
 const { locale } = useI18n()
 const route = useRoute()
-const { render } = useMarkdown()
-
-const { data } = await useFetch(`/api/blog/${route.params.slug}`, {
-    query: { locale: locale.value }
-})
-
 const post = computed(() => data.value?.post)
 
 if (!post.value) {
@@ -114,7 +106,6 @@ if (!post.value) {
   })
 }
 
-const renderedBody = computed(() => post.value ? render(post.value.body) : '')
 const formattedDate = computed(() => post.value?.publishedAt ? formatDate(post.value.publishedAt) : '')
 
 useSeoMeta({

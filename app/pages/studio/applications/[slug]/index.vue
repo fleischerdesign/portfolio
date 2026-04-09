@@ -669,12 +669,10 @@ onMounted(() => {
                 {{ salutation }},
               </p>
 
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <div
-                v-if="!isEditing"
-                class="prose prose-lg prose-neutral max-w-none dark:prose-invert"
-                v-html="render(application.body || '')"
-              ></div>
+              <AppMarkdown 
+                v-if="!isEditing" 
+                :content="application.body || ''" 
+              />
               <div v-else-if="editableApplication" class="space-y-8">
                 <div
                   class="flex items-center justify-between rounded-2xl border border-secondary-100/50 bg-secondary-50/50 p-3 px-6 dark:border-secondary-500/10 dark:bg-secondary-900/10"
@@ -1283,3 +1281,11 @@ onMounted(() => {
 </template>
 
 <style scoped></style>
+lg:pt-44"
+  >
+    <p>{{ $t("applications.detail.loading") }}</p>
+  </div>
+</template>
+
+<style scoped></style>
+tyle>

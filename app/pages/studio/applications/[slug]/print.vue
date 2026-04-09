@@ -656,9 +656,10 @@ const getShortenedBody = (body: string) => {
 				<!-- Description -->
 				<UiCard class="flex-grow border-neutral-200/60 shadow-none">
 					<UiCardContainer class="p-8">
-						<div
-							class="prose prose-sm prose-neutral max-w-none text-justify leading-relaxed prose-p:my-2 prose-ul:my-2 prose-li:my-0.5"
-							v-html="render(getShortenedBody(project.body || ''))"></div>
+						<AppMarkdown 
+							:content="getShortenedBody(project.body || '')" 
+							class="prose-sm text-justify leading-relaxed prose-p:my-2 prose-ul:my-2 prose-li:my-0.5"
+						/>
 					</UiCardContainer>
 				</UiCard>
 

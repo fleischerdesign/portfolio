@@ -112,10 +112,7 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
             <div class="flex flex-col gap-16">
                 <section>
                     <UiSectionHeader :title="$t('project.case_study')" class="!mb-8" />
-                    <!-- eslint-disable-next-line vue/no-v-html -->
-                    <div class="prose prose-lg prose-neutral max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-secondary-500 prose-a:no-underline hover:prose-a:underline prose-img:rounded-3xl prose-img:shadow-2xl" v-html="renderedBody"
-                    >
-                    </div>
+                    <AppMarkdown :content="project.body" />
                 </section>
 
                 <section v-if="project.techstack?.length">
@@ -214,6 +211,13 @@ useSeoMeta({
 const details = computed(() => [
   { label: t('project.category'), value: project.value?.category?.name },
   { label: t('project.date'), value: formattedDate.value },
+  { 
+    label: t('project.state.title'), 
+    value: project.value?.status === 'published' ? t('project.state.published') : t('project.state.unpublished')
+  }
+])
+</script>
+t('project.date'), value: formattedDate.value },
   { 
     label: t('project.state.title'), 
     value: project.value?.status === 'published' ? t('project.state.published') : t('project.state.unpublished')

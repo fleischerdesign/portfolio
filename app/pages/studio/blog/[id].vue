@@ -296,16 +296,7 @@ function getStatusColor(status: string) {
             <UiCard
               class="flex h-full flex-col overflow-hidden bg-neutral-50/50 dark:bg-neutral-900/30"
             >
-              <div
-                class="border-b border-neutral-200 bg-neutral-50 px-4 py-2 text-xs font-bold uppercase tracking-widest text-neutral-500 dark:border-neutral-800 dark:bg-neutral-900/50"
-              >
-                Preview
-              </div>
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <div
-                class="prose prose-sm max-w-none flex-1 overflow-y-auto p-4 dark:prose-invert"
-                v-html="renderedBody"
-              ></div>
+              <AppMarkdown :content="currentBody" class="prose-sm flex-1 overflow-y-auto p-4" />
             </UiCard>
           </div>
         </div>
@@ -457,6 +448,25 @@ function getStatusColor(status: string) {
                 <div class="mt-2 flex flex-wrap gap-2">
                   <UiChip
                     v-for="tag in editablePost.common.tags"
+                    :key="tag"
+                    size="sm"
+                    >{{ tag }}</UiChip
+                  >
+                </div>
+              </div>
+            </UiCardContainer>
+          </UiCard>
+        </template>
+      </aside>
+    </div>
+  </div>
+</template>
+          </UiCard>
+        </template>
+      </aside>
+    </div>
+  </div>
+</template>
                     :key="tag"
                     size="sm"
                     >{{ tag }}</UiChip
