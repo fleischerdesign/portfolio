@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 /**
- * @component AppMarkdown
+ * @component BaseMarkdown
  * @description Centralized markdown renderer with support for Mermaid diagrams.
  */
 const props = defineProps<{

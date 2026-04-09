@@ -1,21 +1,18 @@
-import { marked } from 'marked';
+import { Marked } from 'marked';
 
 /**
  * @composable useMarkdown
- * @description Composable for rendering markdown content using marked.
- * Includes a custom renderer extension for mermaid diagrams.
+ * @description Composable for rendering markdown content using an isolated Marked instance.
  */
 export const useMarkdown = () => {
-  // Configure marked with a custom renderer for mermaid
-  // This ensures mermaid code blocks are rendered as <pre class="mermaid">
-  marked.use({
+  // Create an isolated instance to prevent recursion and global state pollution
+  const marked = new Marked({
     renderer: {
-      code({ text, lang }) {
-        if (lang === 'mermaid') {
-          return `<pre class="mermaid">${text}</pre>`;
+      code(token) {
+        if (token.lang === 'mermaid') {
+          return `<pre class="mermaid">${token.text}</pre>`;
         }
-        // Fallback to default renderer for other languages
-        return false;
+        return false; // use default
       }
     }
   });
@@ -24,9 +21,14 @@ export const useMarkdown = () => {
    * @method render
    * @description Parses markdown string to HTML.
    */
-  const render = (content: string) => {
+  const render = (content: string): string => {
     if (!content) return '';
-    return marked.parse(content) as string;
+    try {
+      return marked.parse(content) as string;
+    } catch (error) {
+      console.error('Markdown parsing error:', error);
+      return content;
+    }
   };
 
   return {

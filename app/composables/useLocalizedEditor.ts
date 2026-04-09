@@ -9,6 +9,7 @@ export interface EditorState<TCommon, TLocalized> {
   common: TCommon;
   de: TLocalized;
   en: TLocalized;
+  [key: string]: any; // Allow dynamic access via currentLocale
 }
 
 /**
@@ -19,7 +20,7 @@ export const editorHelpers = {
   /**
    * Maps translations from a raw array to a localized state object.
    */
-  mapTranslations: <TLocalized>(translations: any[], defaults: TLocalized): { de: TLocalized, en: TLocalized } => {
+  mapTranslations: <TLocalized extends object>(translations: any[], defaults: TLocalized): { de: TLocalized, en: TLocalized } => {
     const de = { ...defaults };
     const en = { ...defaults };
 

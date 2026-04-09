@@ -73,5 +73,24 @@ export const companyService = {
     return await db.transaction(async (tx) => {
       return await engine.update(tx, id, data);
     });
+  },
+
+  async updateAddress(id: number, addressData: Address) {
+    return await db.transaction(async (tx) => {
+      const company = await tx.query.companies.findFirst({ where: eq(companies.id, id) });
+      if (!company) throw createError({ statusCode: 404, statusMessage: "Company not found" });
+
+      if (company.addressId) {
+        await tx.update(addresses).set(addressData).where(eq(addresses.id, company.addressId));
+      } else {
+        const [newAddress] = await tx.insert(addresses).values(addressData).returning({ id: addresses.id });
+        await tx.update(companies).set({ addressId: newAddress?.id }).where(eq(companies.id, id));
+      }
+
+      return await tx.query.companies.findFirst({
+        where: eq(companies.id, id),
+        with: { address: true }
+      });
+    });
   }
 };

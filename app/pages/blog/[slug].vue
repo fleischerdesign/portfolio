@@ -74,7 +74,7 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
         </div>
 
         <div class="w-full max-w-4xl">
-            <AppMarkdown :content="post.body" />
+            <BaseMarkdown :content="post.body" />
         </div>
 
             <footer class="mt-20 flex flex-col items-start gap-10 border-t border-neutral-200/30 pt-16 dark:border-neutral-800/30">
@@ -87,7 +87,6 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
                 </div>
                 <UiBackButton :to="$localePath('/blog')" />
             </footer>
-        </div>
 
       </article>
     </div>
@@ -97,6 +96,11 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
 <script lang="ts" setup>
 const { locale } = useI18n()
 const route = useRoute()
+
+const { data } = await useFetch(`/api/blog/${route.params.slug}`, {
+    query: { locale: locale.value }
+})
+
 const post = computed(() => data.value?.post)
 
 if (!post.value) {

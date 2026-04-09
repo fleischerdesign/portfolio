@@ -656,7 +656,7 @@ const getShortenedBody = (body: string) => {
 				<!-- Description -->
 				<UiCard class="flex-grow border-neutral-200/60 shadow-none">
 					<UiCardContainer class="p-8">
-						<AppMarkdown 
+						<BaseMarkdown 
 							:content="getShortenedBody(project.body || '')" 
 							class="prose-sm text-justify leading-relaxed prose-p:my-2 prose-ul:my-2 prose-li:my-0.5"
 						/>

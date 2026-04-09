@@ -8,7 +8,6 @@ definePageMeta({
 });
 
 const route = useRoute();
-const { render } = useMarkdown();
 
 const postId = parseInt(route.params.id as string);
 const { data, refresh } = await useFetch(`/api/studio/blog/${postId}`);
@@ -17,7 +16,7 @@ const {
   isEditing,
   isLoading,
   currentLocale,
-  editablePost,
+  editableData: editablePost,
   startEditing,
   cancelEditing,
   save,
@@ -38,11 +37,11 @@ const viewTranslation = computed(() => {
   );
 });
 
-const renderedBody = computed(() => {
+const currentBody = computed(() => {
   if (isEditing.value && editablePost.value) {
-    return render(editablePost.value[currentLocale.value].body);
+    return (editablePost.value as any)[currentLocale.value].body;
   }
-  return viewTranslation.value ? render(viewTranslation.value.body) : "";
+  return viewTranslation.value?.body || "";
 });
 
 const viewFormattedDate = computed(() =>
@@ -82,7 +81,7 @@ function getStatusColor(status: string) {
       <UiSectionHeader
         v-else-if="isEditing && editablePost"
         :level="1"
-        :title="editablePost[currentLocale].title || 'Editing Post'"
+        :title="(editablePost as any)[currentLocale].title || 'Editing Post'"
         subtitle="Compose and refine your story."
         symbol="mage:edit"
       />
@@ -215,11 +214,7 @@ function getStatusColor(status: string) {
             />
           </div>
 
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <div
-            class="prose prose-lg prose-neutral w-full max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-secondary-500 prose-a:no-underline hover:prose-a:underline prose-img:rounded-3xl prose-img:shadow-2xl"
-            v-html="renderedBody"
-          ></div>
+          <BaseMarkdown :content="currentBody" class="w-full" />
         </div>
 
         <div v-else-if="isEditing && editablePost" class="space-y-8">
@@ -227,7 +222,7 @@ function getStatusColor(status: string) {
             <UiCardContainer class="space-y-6 p-8">
               <UiInput
                 id="post-title"
-                v-model="editablePost[currentLocale].title"
+                v-model="(editablePost as any)[currentLocale].title"
                 label="Title"
                 class="text-xl font-bold"
               />
@@ -235,7 +230,7 @@ function getStatusColor(status: string) {
               <div class="flex items-end gap-2">
                 <UiInput
                   id="post-slug"
-                  v-model="editablePost[currentLocale].slug"
+                  v-model="(editablePost as any)[currentLocale].slug"
                   label="Slug"
                   class="flex-1 font-mono text-sm"
                   readonly
@@ -245,8 +240,8 @@ function getStatusColor(status: string) {
                   title="Regenerate Slug from Title"
                   class="mb-[2px]"
                   @click="
-                    editablePost![currentLocale].slug = slugify(
-                      editablePost![currentLocale].title,
+                    (editablePost as any)[currentLocale].slug = slugify(
+                      (editablePost as any)[currentLocale].title,
                     )
                   "
                 >
@@ -256,7 +251,7 @@ function getStatusColor(status: string) {
 
               <UiInput
                 id="post-excerpt"
-                v-model="editablePost[currentLocale].excerpt"
+                v-model="(editablePost as any)[currentLocale].excerpt"
                 label="Excerpt"
                 as="textarea"
                 rows="3"
@@ -266,14 +261,14 @@ function getStatusColor(status: string) {
                 class="border-t border-neutral-100 pt-4 dark:border-neutral-800"
               >
                 <UiImageUploader
-                  v-model="editablePost.common.coverImage"
+                  v-model="(editablePost as any).common.coverImage"
                   label="Cover Image"
                   helper-text="Upload a representative cover image for the post."
                 />
 
                 <UiInput
                   id="post-image-alt"
-                  v-model="editablePost.common.coverImageAlt"
+                  v-model="(editablePost as any).common.coverImageAlt"
                   label="Alt Text"
                   class="mt-4"
                 />
@@ -289,14 +284,14 @@ function getStatusColor(status: string) {
                 Markdown
               </div>
               <textarea
-                v-model="editablePost[currentLocale].body"
+                v-model="(editablePost as any)[currentLocale].body"
                 class="w-full flex-1 resize-none border-none bg-transparent p-4 font-mono text-sm leading-relaxed focus:ring-0"
               ></textarea>
             </UiCard>
             <UiCard
               class="flex h-full flex-col overflow-hidden bg-neutral-50/50 dark:bg-neutral-900/30"
             >
-              <AppMarkdown :content="currentBody" class="prose-sm flex-1 overflow-y-auto p-4" />
+              <BaseMarkdown :content="currentBody" class="prose-sm flex-1 overflow-y-auto p-4" />
             </UiCard>
           </div>
         </div>
@@ -409,7 +404,7 @@ function getStatusColor(status: string) {
 
               <UiSelect
                 id="post-status"
-                v-model="editablePost.common.status"
+                v-model="(editablePost as any).common.status"
                 label="Status"
                 :options="['draft', 'published', 'archived']"
               />
@@ -422,7 +417,7 @@ function getStatusColor(status: string) {
 
               <UiInput
                 id="post-category"
-                v-model="editablePost.common.categoryName"
+                v-model="(editablePost as any).common.categoryName"
                 label="Category"
               />
 
@@ -432,12 +427,12 @@ function getStatusColor(status: string) {
                   >Tags</label
                 >
                 <input
-                  :value="editablePost.common.tags.join(', ')"
+                  :value="(editablePost as any).common.tags.join(', ')"
                   class="w-full rounded-lg border-neutral-300 bg-transparent text-sm dark:border-neutral-700"
                   placeholder="vue, nuxt"
                   @input="
                     (e) =>
-                      (editablePost!.common.tags = (
+                      ((editablePost as any).common.tags = (
                         e.target as HTMLInputElement
                       ).value
                         .split(',')
@@ -447,26 +442,7 @@ function getStatusColor(status: string) {
                 />
                 <div class="mt-2 flex flex-wrap gap-2">
                   <UiChip
-                    v-for="tag in editablePost.common.tags"
-                    :key="tag"
-                    size="sm"
-                    >{{ tag }}</UiChip
-                  >
-                </div>
-              </div>
-            </UiCardContainer>
-          </UiCard>
-        </template>
-      </aside>
-    </div>
-  </div>
-</template>
-          </UiCard>
-        </template>
-      </aside>
-    </div>
-  </div>
-</template>
+                    v-for="tag in (editablePost as any).common.tags"
                     :key="tag"
                     size="sm"
                     >{{ tag }}</UiChip

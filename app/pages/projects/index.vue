@@ -25,7 +25,7 @@ const { data } = await useFetch('/api/projects', {
     query: { locale: locale.value }
 })
 
-const projects = computed(() => data.value?.projects || [])
+const projects = computed(() => (data.value?.projects as any[]) || [])
 
 useSeoMeta({
   title: t("navigation.projects"),

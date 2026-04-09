@@ -112,7 +112,7 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
             <div class="flex flex-col gap-16">
                 <section>
                     <UiSectionHeader :title="$t('project.case_study')" class="!mb-8" />
-                    <AppMarkdown :content="project.body" />
+                    <BaseMarkdown :content="project.body" />
                 </section>
 
                 <section v-if="project.techstack?.length">
@@ -132,7 +132,7 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
                         <div class="flex flex-col gap-6">
                             <div v-for="item in details" :key="item.label" class="flex flex-col gap-1">
                                 <span class="text-sm font-medium text-neutral-500 dark:text-neutral-400">{{ item.label }}</span>
-                                <span class="text-lg font-bold text-neutral-900 dark:text-white">{{ item.value }}</span>
+                                <span class="text-lg font-bold text-neutral-900 dark:text-white">{{ item.value || '-' }}</span>
                             </div>
                         </div>
                     </UiCard>
@@ -152,7 +152,7 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
 
                     <!-- Features -->
                     <UiCard v-if="project.features?.length" class="p-8">
-                        <h3 class="mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-secondary-500">
+                        <h3 class="mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-500">
                             <Icon name="heroicons:check-circle" class="text-secondary-500" size="16" /> {{ $t("project.key_features") }}
                         </h3>
                         <ul class="flex flex-col gap-4">
@@ -176,7 +176,6 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
 <script lang="ts" setup>
 const { t, locale } = useI18n()
 const route = useRoute()
-const { render } = useMarkdown()
 
 const { data } = await useFetch(`/api/projects/${route.params.slug}`, {
     query: { locale: locale.value }
@@ -191,7 +190,6 @@ if (!project.value) {
     })
 }
 
-const renderedBody = computed(() => project.value ? render(project.value.body) : '')
 const formattedDate = computed(() => project.value?.publishedAt ? formatDate(project.value.publishedAt) : '')
 
 useSeoMeta({
@@ -211,13 +209,6 @@ useSeoMeta({
 const details = computed(() => [
   { label: t('project.category'), value: project.value?.category?.name },
   { label: t('project.date'), value: formattedDate.value },
-  { 
-    label: t('project.state.title'), 
-    value: project.value?.status === 'published' ? t('project.state.published') : t('project.state.unpublished')
-  }
-])
-</script>
-t('project.date'), value: formattedDate.value },
   { 
     label: t('project.state.title'), 
     value: project.value?.status === 'published' ? t('project.state.published') : t('project.state.unpublished')

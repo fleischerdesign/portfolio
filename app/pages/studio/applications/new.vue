@@ -45,12 +45,7 @@ onMounted(async () => {
   }
 });
 
-const form = ref<
-  Omit<
-    ApplicationCreatePayload,
-    "companyName" | "companyAddress" | "contactIds" | "companyId"
-  > & { companyId?: number; contactIds?: number[] }
->({
+const form = ref<any>({
   title: "",
   subtitle: "",
   slug: "",
@@ -113,12 +108,12 @@ async function createApplication() {
       return;
     }
 
-    const result = await useRequestFetch()("/api/applications", {
+    const result = await useRequestFetch()<{ id: number, slug: string }>("/api/applications", {
       method: "POST",
       body: payload,
     });
 
-    const newSlug = result?.result?.slug;
+    const newSlug = result?.slug;
     if (newSlug) {
       router.push(localePath(`/studio/applications/${newSlug}`));
     } else {

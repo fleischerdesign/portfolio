@@ -66,7 +66,7 @@ export function useHistoryManager(
       scheduled_at:
         newHistoryStatus.value === "interview" && newHistoryScheduledAt.value
           ? new Date(newHistoryScheduledAt.value)
-          : undefined,
+          : null,
       createdAt: new Date(newHistoryCreatedAt.value),
       _deleted: false,
     };
@@ -123,7 +123,7 @@ export function useHistoryManager(
         scheduled_at:
           isInterview && editableHistoryEntry.value.scheduled_at
             ? new Date(editableHistoryEntry.value.scheduled_at)
-            : undefined,
+            : null,
       };
       source.value.histories.sort(
         (a, b) =>

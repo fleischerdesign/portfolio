@@ -669,7 +669,7 @@ onMounted(() => {
                 {{ salutation }},
               </p>
 
-              <AppMarkdown 
+              <BaseMarkdown 
                 v-if="!isEditing" 
                 :content="application.body || ''" 
               />
@@ -1281,11 +1281,3 @@ onMounted(() => {
 </template>
 
 <style scoped></style>
-lg:pt-44"
-  >
-    <p>{{ $t("applications.detail.loading") }}</p>
-  </div>
-</template>
-
-<style scoped></style>
-tyle>

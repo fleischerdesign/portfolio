@@ -71,7 +71,7 @@ export const taxonomyHelper = {
     if (items.length > 0) {
       await tx
         .insert(junctionTable)
-        .values(items.map(item => ({
+        .values(items.map((item: any) => ({
           [parentColumn.name]: parentId,
           [lookupColumn.name]: item.id
         })));
