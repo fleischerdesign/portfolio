@@ -180,7 +180,7 @@ const formatSize = (bytes?: number | null) => {
               <tr
                 class="border-b border-neutral-100 bg-neutral-50/50 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:border-neutral-800 dark:bg-neutral-900/50"
               >
-                <th class="px-4 py-4 w-10"></th>
+                <th class="w-10 px-4 py-4"></th>
                 <th class="px-8 py-4">Name</th>
                 <th class="px-8 py-4">Typ / Größe</th>
                 <th class="px-8 py-4 text-center">Standard</th>
@@ -195,7 +195,7 @@ const formatSize = (bytes?: number | null) => {
               >
                 <td class="px-4 py-5">
                   <div
-                    class="flex flex-col opacity-0 group-hover:opacity-100 transition-opacity items-center justify-center"
+                    class="flex flex-col items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
                   >
                     <button
                       v-if="index > 0"
@@ -420,12 +420,12 @@ const formatSize = (bytes?: number | null) => {
             class="rounded-xl border border-neutral-100 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-900"
           >
             <p
-              class="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-1"
+              class="mb-1 text-[10px] font-black uppercase tracking-widest text-neutral-400"
             >
               Datei-Info
             </p>
             <p
-              class="text-sm font-bold text-neutral-700 dark:text-neutral-300 truncate"
+              class="truncate text-sm font-bold text-neutral-700 dark:text-neutral-300"
             >
               {{ editForm.filename }}
             </p>

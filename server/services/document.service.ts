@@ -8,24 +8,19 @@ import { eq, desc } from "drizzle-orm";
 import fs from "fs";
 import path from "path";
 import { createLogger } from "../utils/logger";
-import { createTranslatableService, type TranslatableEntityDescriptor } from "../utils/db.engine";
+import { createEntityService, type EntityDescriptor } from "../utils/db.engine";
 
 const logger = createLogger("document");
 
-/**
- * @descriptor documentDescriptor
- * @description Configuration for the document entity.
- */
-const documentDescriptor: TranslatableEntityDescriptor = {
-  mainTable: documents
+const documentDescriptor: EntityDescriptor<
+  typeof documents,
+  DocumentCreatePayload
+> = {
+  mainTable: documents,
 };
 
-const engine = createTranslatableService<DocumentCreatePayload, DocumentUpdatePayload>(documentDescriptor);
+const engine = createEntityService(documentDescriptor);
 
-/**
- * @service documentService
- * @description Service for managing documents and file storage.
- */
 export const documentService = {
   ...engine,
 
@@ -37,15 +32,24 @@ export const documentService = {
   },
 
   async getById(id: number) {
-    const document = await db.query.documents.findFirst({ where: eq(documents.id, id) });
-    if (!document) throw createError({ statusCode: 404, statusMessage: "Document not found" });
+    const document = await db.query.documents.findFirst({
+      where: eq(documents.id, id),
+    });
+    if (!document)
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Document not found",
+      });
     return document;
   },
 
   async reorder(documentIds: number[]) {
     return await db.transaction(async (tx) => {
       for (let i = 0; i < documentIds.length; i++) {
-        await tx.update(documents).set({ sortOrder: i }).where(eq(documents.id, documentIds[i]!));
+        await tx
+          .update(documents)
+          .set({ sortOrder: i })
+          .where(eq(documents.id, documentIds[i]!));
       }
     });
   },
@@ -65,14 +69,27 @@ export const documentService = {
   async delete(id: number) {
     const document = await this.getById(id);
     const result = await db.transaction(async (tx) => {
-      const [deleted] = await tx.delete(documents).where(eq(documents.id, id)).returning();
+      const [deleted] = await tx
+        .delete(documents)
+        .where(eq(documents.id, id))
+        .returning();
       return deleted;
     });
 
     if (result) {
-      const filePath = path.join(process.cwd(), ".data", "uploads", "documents", document.filename);
+      const filePath = path.join(
+        process.cwd(),
+        ".data",
+        "uploads",
+        "documents",
+        document.filename,
+      );
       if (fs.existsSync(filePath)) {
-        try { fs.unlinkSync(filePath); } catch (err) { logger.error("delete", `Failed to delete file: ${filePath}`, err); }
+        try {
+          fs.unlinkSync(filePath);
+        } catch (err) {
+          logger.error("delete", `Failed to delete file: ${filePath}`, err);
+        }
       }
     }
     return result;
@@ -108,11 +125,19 @@ export const documentService = {
 
   async syncApplicationDocuments(applicationId: number, documentIds: number[]) {
     return await db.transaction(async (tx) => {
-      await tx.delete(applications_to_documents).where(eq(applications_to_documents.applicationId, applicationId));
+      await tx
+        .delete(applications_to_documents)
+        .where(eq(applications_to_documents.applicationId, applicationId));
       if (documentIds.length > 0) {
-        await tx.insert(applications_to_documents).values(
-          documentIds.map((docId, index) => ({ applicationId, documentId: docId, sortOrder: index }))
-        );
+        await tx
+          .insert(applications_to_documents)
+          .values(
+            documentIds.map((docId, index) => ({
+              applicationId,
+              documentId: docId,
+              sortOrder: index,
+            })),
+          );
       }
     });
   },

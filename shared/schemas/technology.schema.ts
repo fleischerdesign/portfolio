@@ -1,13 +1,11 @@
-import { z } from 'zod';
+import type { z } from 'zod';
+import { createSelectSchema } from 'drizzle-zod';
+import { technologies } from '~~/server/db/schema';
 
 /**
  * @schema technologySchema
- * @description Shared schema for technical stack items.
+ * @description Automatically generated from Drizzle schema using drizzle-zod.
  */
-export const technologySchema = z.object({
-  id: z.number(),
-  slug: z.string(),
-  name: z.string(),
-});
+export const technologySchema = createSelectSchema(technologies);
 
 export type Technology = z.infer<typeof technologySchema>;

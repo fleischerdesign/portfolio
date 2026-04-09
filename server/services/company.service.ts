@@ -2,46 +2,49 @@ import { companies, addresses } from "~~/server/db/schema";
 import type { CompanyCreate, Address } from "~~/shared/schemas/company.schema";
 import { eq } from "drizzle-orm";
 import { createLogger } from "../utils/logger";
-import { createTranslatableService, type TranslatableEntityDescriptor } from "../utils/db.engine";
+import { createEntityService, type EntityDescriptor } from "../utils/db.engine";
 
 const logger = createLogger("company");
 
-/**
- * @descriptor companyDescriptor
- * @description Configuration for the company entity.
- */
-const companyDescriptor: TranslatableEntityDescriptor = {
+const companyDescriptor: EntityDescriptor<typeof companies, CompanyCreate> = {
   mainTable: companies,
   hooks: {
     beforeCreate: async (tx, data) => {
-      let addressId = undefined;
+      let addressId: number | undefined;
       if (data.address) {
-        const [newAddress] = await tx.insert(addresses).values(data.address).returning({ id: addresses.id });
+        const [newAddress] = await tx
+          .insert(addresses)
+          .values(data.address)
+          .returning({ id: addresses.id });
         addressId = newAddress?.id;
       }
       return { ...data, addressId };
     },
     beforeUpdate: async (tx, id, data) => {
       if (data.address) {
-        const company = await tx.query.companies.findFirst({ where: eq(companies.id, id) });
+        const company = await tx.query.companies.findFirst({
+          where: eq(companies.id, id),
+        });
         if (company?.addressId) {
-          await tx.update(addresses).set(data.address).where(eq(addresses.id, company.addressId));
+          await tx
+            .update(addresses)
+            .set(data.address)
+            .where(eq(addresses.id, company.addressId));
         } else {
-          const [newAddress] = await tx.insert(addresses).values(data.address).returning({ id: addresses.id });
+          const [newAddress] = await tx
+            .insert(addresses)
+            .values(data.address)
+            .returning({ id: addresses.id });
           return { ...data, addressId: newAddress?.id };
         }
       }
       return data;
-    }
-  }
+    },
+  },
 };
 
-const engine = createTranslatableService<CompanyCreate, CompanyCreate>(companyDescriptor);
+const engine = createEntityService(companyDescriptor);
 
-/**
- * @service companyService
- * @description Service for managing companies.
- */
 export const companyService = {
   ...engine,
 
@@ -59,7 +62,11 @@ export const companyService = {
       where: eq(companies.id, id),
       with: { address: true, contacts: true },
     });
-    if (!company) throw createError({ statusCode: 404, statusMessage: "Company not found" });
+    if (!company)
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Company not found",
+      });
     return company;
   },
 
@@ -77,20 +84,35 @@ export const companyService = {
 
   async updateAddress(id: number, addressData: Address) {
     return await db.transaction(async (tx) => {
-      const company = await tx.query.companies.findFirst({ where: eq(companies.id, id) });
-      if (!company) throw createError({ statusCode: 404, statusMessage: "Company not found" });
+      const company = await tx.query.companies.findFirst({
+        where: eq(companies.id, id),
+      });
+      if (!company)
+        throw createError({
+          statusCode: 404,
+          statusMessage: "Company not found",
+        });
 
       if (company.addressId) {
-        await tx.update(addresses).set(addressData).where(eq(addresses.id, company.addressId));
+        await tx
+          .update(addresses)
+          .set(addressData)
+          .where(eq(addresses.id, company.addressId));
       } else {
-        const [newAddress] = await tx.insert(addresses).values(addressData).returning({ id: addresses.id });
-        await tx.update(companies).set({ addressId: newAddress?.id }).where(eq(companies.id, id));
+        const [newAddress] = await tx
+          .insert(addresses)
+          .values(addressData)
+          .returning({ id: addresses.id });
+        await tx
+          .update(companies)
+          .set({ addressId: newAddress?.id })
+          .where(eq(companies.id, id));
       }
 
       return await tx.query.companies.findFirst({
         where: eq(companies.id, id),
-        with: { address: true }
+        with: { address: true },
       });
     });
-  }
+  },
 };

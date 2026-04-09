@@ -1,13 +1,11 @@
-import { z } from 'zod';
+import type { z } from 'zod';
+import { createSelectSchema } from 'drizzle-zod';
+import { tags } from '~~/server/db/schema';
 
 /**
  * @schema tagSchema
- * @description Shared schema for content tags.
+ * @description Automatically generated from Drizzle schema using drizzle-zod.
  */
-export const tagSchema = z.object({
-  id: z.number(),
-  slug: z.string(),
-  name: z.string(),
-});
+export const tagSchema = createSelectSchema(tags);
 
 export type Tag = z.infer<typeof tagSchema>;

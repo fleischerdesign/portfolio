@@ -1,25 +1,20 @@
 import { courses } from "../db/schema";
 import { eq, desc, and } from "drizzle-orm";
-import type { CourseCreate, CourseUpdate } from "~~/shared/schemas/course.schema";
+import type {
+  CourseCreate,
+  CourseUpdate,
+} from "~~/shared/schemas/course.schema";
 import { createLogger } from "../utils/logger";
-import { createTranslatableService, type TranslatableEntityDescriptor } from "../utils/db.engine";
+import { createEntityService, type EntityDescriptor } from "../utils/db.engine";
 
 const logger = createLogger("course");
 
-/**
- * @descriptor courseDescriptor
- * @description Configuration for the course entity.
- */
-const courseDescriptor: TranslatableEntityDescriptor = {
-  mainTable: courses
+const courseDescriptor: EntityDescriptor<typeof courses> = {
+  mainTable: courses,
 };
 
-const engine = createTranslatableService<CourseCreate, CourseUpdate>(courseDescriptor);
+const engine = createEntityService(courseDescriptor);
 
-/**
- * @service courseService
- * @description Service for managing courses.
- */
 export const courseService = {
   ...engine,
 
@@ -35,7 +30,8 @@ export const courseService = {
     const course = await db.query.courses.findFirst({
       where: and(eq(courses.id, id), eq(courses.userId, userId)),
     });
-    if (!course) throw createError({ statusCode: 404, statusMessage: "Course not found" });
+    if (!course)
+      throw createError({ statusCode: 404, statusMessage: "Course not found" });
     return course;
   },
 
@@ -50,14 +46,22 @@ export const courseService = {
       const course = await tx.query.courses.findFirst({
         where: and(eq(courses.id, id), eq(courses.userId, userId)),
       });
-      if (!course) throw createError({ statusCode: 404, statusMessage: "Course not found" });
+      if (!course)
+        throw createError({
+          statusCode: 404,
+          statusMessage: "Course not found",
+        });
       return await engine.update(tx, id, data);
     });
   },
 
   async delete(userId: number, id: number) {
-    const [deleted] = await db.delete(courses).where(and(eq(courses.id, id), eq(courses.userId, userId))).returning();
-    if (!deleted) throw createError({ statusCode: 404, statusMessage: "Course not found" });
+    const [deleted] = await db
+      .delete(courses)
+      .where(and(eq(courses.id, id), eq(courses.userId, userId)))
+      .returning();
+    if (!deleted)
+      throw createError({ statusCode: 404, statusMessage: "Course not found" });
     return deleted;
   },
 };

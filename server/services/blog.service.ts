@@ -14,15 +14,18 @@ import {
   type BlogPostCreate,
 } from "~~/shared/schemas/blog.schema";
 import { createLogger } from "../utils/logger";
-import { createTranslatableService, type TranslatableEntityDescriptor } from "../utils/db.engine";
+import {
+  createTranslatableEntityService,
+  type TranslatableEntityDescriptor,
+} from "../utils/db.engine";
 
 const logger = createLogger("blog");
 
-/**
- * @descriptor blogDescriptor
- * @description Configuration for the blog entity.
- */
-const blogDescriptor: TranslatableEntityDescriptor = {
+const blogDescriptor: TranslatableEntityDescriptor<
+  typeof blogPosts,
+  typeof blogPostTranslations,
+  BlogPostCreate
+> = {
   mainTable: blogPosts,
   translationTable: blogPostTranslations,
   parentColumnName: "blogPostId",
@@ -37,17 +40,18 @@ const blogDescriptor: TranslatableEntityDescriptor = {
   },
 };
 
-const engine = createTranslatableService<BlogPostCreate, BlogPostUpdate>(blogDescriptor);
+const engine = createTranslatableEntityService(blogDescriptor);
 
-/**
- * @service blogService
- * @description Service for managing blog posts.
- */
 export const blogService = {
   ...engine,
 
-  async getPublicAll(locale: AppLocale, limit?: number): Promise<BlogPostResponse[]> {
-    logger.info("getPublicAll", `Fetching posts for locale: ${locale}`, { limit });
+  async getPublicAll(
+    locale: AppLocale,
+    limit?: number,
+  ): Promise<BlogPostResponse[]> {
+    logger.info("getPublicAll", `Fetching posts for locale: ${locale}`, {
+      limit,
+    });
 
     const posts = await db.query.blogPosts.findMany({
       where: (posts, { eq }) => eq(posts.status, "published"),
@@ -65,14 +69,14 @@ export const blogService = {
       .filter((p) => p.translations[0])
       .map((post) => {
         const translation = post.translations[0]!;
-        return blogPostResponseSchema.parse({
-          ...post,
-          ...translation,
-        });
+        return blogPostResponseSchema.parse({ ...post, ...translation });
       });
   },
 
-  async getPublicBySlug(slug: string, locale: AppLocale): Promise<BlogPostResponse | null> {
+  async getPublicBySlug(
+    slug: string,
+    locale: AppLocale,
+  ): Promise<BlogPostResponse | null> {
     const translation = await db.query.blogPostTranslations.findFirst({
       where: (t, { eq, and }) => and(eq(t.slug, slug), eq(t.locale, locale)),
       with: {
@@ -86,7 +90,8 @@ export const blogService = {
       },
     });
 
-    if (!translation?.post || translation.post.status !== "published") return null;
+    if (!translation?.post || translation.post.status !== "published")
+      return null;
 
     return blogPostResponseSchema.parse({
       ...translation.post,
@@ -121,7 +126,10 @@ export const blogService = {
     });
 
     if (!post) {
-      throw createError({ statusCode: 404, statusMessage: "Blog post not found" });
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Blog post not found",
+      });
     }
 
     return blogPostStudioResponseSchema.parse(post);

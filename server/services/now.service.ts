@@ -1,24 +1,17 @@
 import { nowEntries } from "~~/server/db/schema";
+import type { InferInsertModel } from "drizzle-orm";
 import { desc } from "drizzle-orm";
 import { createLogger } from "../utils/logger";
-import { createTranslatableService, type TranslatableEntityDescriptor } from "../utils/db.engine";
+import { createEntityService, type EntityDescriptor } from "../utils/db.engine";
 
 const logger = createLogger("now");
 
-/**
- * @descriptor nowDescriptor
- * @description Configuration for the now entry entity.
- */
-const nowDescriptor: TranslatableEntityDescriptor = {
-  mainTable: nowEntries
+const nowDescriptor: EntityDescriptor<typeof nowEntries> = {
+  mainTable: nowEntries,
 };
 
-const engine = createTranslatableService<Record<string, unknown>, Record<string, unknown>>(nowDescriptor);
+const engine = createEntityService(nowDescriptor);
 
-/**
- * @service nowService
- * @description Service for managing 'Now' status entries.
- */
 export const nowService = {
   ...engine,
 
@@ -40,12 +33,13 @@ export const nowService = {
   },
 
   async create(data: { de: string; en: string; icon?: string }) {
+    const payload: InferInsertModel<typeof nowEntries> = {
+      contentDe: data.de,
+      contentEn: data.en,
+      icon: data.icon,
+    };
     return await db.transaction(async (tx) => {
-      const result = await engine.create(tx, {
-        contentDe: data.de,
-        contentEn: data.en,
-        icon: data.icon
-      });
+      const result = await engine.create(tx, payload);
       return { success: true, updatedAt: result?.createdAt };
     });
   },

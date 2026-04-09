@@ -1,13 +1,11 @@
-import { z } from 'zod';
+import type { z } from 'zod';
+import { createSelectSchema } from 'drizzle-zod';
+import { categories } from '~~/server/db/schema';
 
 /**
  * @schema categorySchema
- * @description Shared schema for content categories.
+ * @description Automatically generated from Drizzle schema using drizzle-zod.
  */
-export const categorySchema = z.object({
-  id: z.number(),
-  slug: z.string(),
-  name: z.string(),
-});
+export const categorySchema = createSelectSchema(categories);
 
 export type Category = z.infer<typeof categorySchema>;

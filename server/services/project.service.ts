@@ -16,15 +16,18 @@ import {
   type ProjectCreate,
 } from "~~/shared/schemas/project.schema";
 import { createLogger } from "../utils/logger";
-import { createTranslatableService, type TranslatableEntityDescriptor } from "../utils/db.engine";
+import {
+  createTranslatableEntityService,
+  type TranslatableEntityDescriptor,
+} from "../utils/db.engine";
 
 const logger = createLogger("project");
 
-/**
- * @descriptor projectDescriptor
- * @description Configuration for the project entity.
- */
-const projectDescriptor: TranslatableEntityDescriptor = {
+const projectDescriptor: TranslatableEntityDescriptor<
+  typeof projects,
+  typeof projectTranslations,
+  ProjectCreate
+> = {
   mainTable: projects,
   translationTable: projectTranslations,
   parentColumnName: "projectId",
@@ -45,17 +48,18 @@ const projectDescriptor: TranslatableEntityDescriptor = {
   },
 };
 
-const engine = createTranslatableService<ProjectCreate, ProjectUpdate>(projectDescriptor);
+const engine = createTranslatableEntityService(projectDescriptor);
 
-/**
- * @service projectService
- * @description Service for managing projects.
- */
 export const projectService = {
   ...engine,
 
-  async getPublicAll(locale: AppLocale, limit?: number): Promise<ProjectResponse[]> {
-    logger.info("getPublicAll", `Fetching projects for locale: ${locale}`, { limit });
+  async getPublicAll(
+    locale: AppLocale,
+    limit?: number,
+  ): Promise<ProjectResponse[]> {
+    logger.info("getPublicAll", `Fetching projects for locale: ${locale}`, {
+      limit,
+    });
 
     const allProjects = await db.query.projects.findMany({
       where: (p, { eq }) => eq(p.status, "published"),
@@ -74,14 +78,14 @@ export const projectService = {
       .filter((p) => p.translations[0])
       .map((p) => {
         const translation = p.translations[0]!;
-        return projectResponseSchema.parse({
-          ...p,
-          ...translation,
-        });
+        return projectResponseSchema.parse({ ...p, ...translation });
       });
   },
 
-  async getPublicBySlug(slug: string, locale: AppLocale): Promise<ProjectResponse | null> {
+  async getPublicBySlug(
+    slug: string,
+    locale: AppLocale,
+  ): Promise<ProjectResponse | null> {
     const translation = await db.query.projectTranslations.findFirst({
       where: (t, { eq, and }) => and(eq(t.slug, slug), eq(t.locale, locale)),
       with: {
@@ -96,7 +100,8 @@ export const projectService = {
       },
     });
 
-    if (!translation?.project || translation.project.status !== "published") return null;
+    if (!translation?.project || translation.project.status !== "published")
+      return null;
 
     return projectResponseSchema.parse({
       ...translation.project,
@@ -133,7 +138,10 @@ export const projectService = {
     });
 
     if (!project) {
-      throw createError({ statusCode: 404, statusMessage: "Project not found" });
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Project not found",
+      });
     }
 
     return projectStudioResponseSchema.parse(project);

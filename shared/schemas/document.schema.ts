@@ -1,32 +1,38 @@
-import { z } from "zod";
+import type { z } from "zod";
+import { createSelectSchema, createInsertSchema } from "drizzle-zod";
+import { documents, applications_to_documents } from "~~/server/db/schema";
 import { dateSchema } from "./date.schema";
 
-export const documentBaseSchema = z.object({
-  id: z.number(),
-  name: z.string().trim().min(1),
-  filename: z.string(),
-  fileType: z.string(),
-  fileSize: z.number().nullable(),
-  sortOrder: z.number().default(0),
-  isDefault: z.boolean().default(false),
+/**
+ * @schema documentBaseSchema
+ */
+export const documentBaseSchema = createSelectSchema(documents, {
   createdAt: dateSchema,
 });
 
-export const documentCreateSchema = documentBaseSchema
-  .omit({
-    id: true,
-    createdAt: true,
-    sortOrder: true,
-  })
-  .extend({
-    fileSize: z.number().optional().nullable(),
-  });
-export const documentUpdateSchema = documentBaseSchema.partial();
+/**
+ * @schema applicationDocumentBaseSchema
+ */
+export const applicationDocumentBaseSchema = createSelectSchema(
+  applications_to_documents,
+);
 
-export const applicationDocumentSchema = z.object({
-  applicationId: z.number(),
-  documentId: z.number(),
-  sortOrder: z.number(),
+/**
+ * @schema documentCreateSchema
+ */
+export const documentCreateSchema = createInsertSchema(documents, {
+  createdAt: dateSchema,
+}).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const documentUpdateSchema = documentCreateSchema.partial();
+
+/**
+ * @schema applicationDocumentSchema
+ */
+export const applicationDocumentSchema = applicationDocumentBaseSchema.extend({
   document: documentBaseSchema,
 });
 

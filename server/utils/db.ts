@@ -20,3 +20,10 @@ url = url || 'file:./.data/db.sqlite';
 const client = createClient({ url });
 
 export const db = drizzle(client, { schema, logger: import.meta.dev });
+
+/**
+ * @type DbTransaction
+ * @description Derived transaction type from the Drizzle instance.
+ * Eliminates the need for manual 'any' or complex SQLiteTransaction types.
+ */
+export type DbTransaction = Parameters<Parameters<typeof db.transaction>[0]>[0];

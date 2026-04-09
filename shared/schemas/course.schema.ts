@@ -1,25 +1,27 @@
-import { z } from 'zod';
-import { i18nSchema } from './i18n.schema';
-import { dateSchema } from './date.schema';
+import type { z } from "zod";
+import { createSelectSchema, createInsertSchema } from "drizzle-zod";
+import { courses } from "~~/server/db/schema";
+import { dateSchema } from "./date.schema";
 
-export const courseBaseSchema = z.object({
-  id: z.number().int().positive(),
-  userId: z.number().int().positive(),
-  title: i18nSchema.extend({
-    de: z.string().trim().min(1, 'Required (DE)'),
-    en: z.string().trim().min(1, 'Required (EN)'),
-  }),
-  organization: z.string().trim().nullable().optional(),
-  teachers: z.array(z.string().trim()).nullable().optional(),
+/**
+ * @schema courseBaseSchema
+ */
+export const courseBaseSchema = createSelectSchema(courses, {
   startedAt: dateSchema,
   endedAt: dateSchema,
-  certificateUrl: z.string().trim().url().nullable().optional(),
   createdAt: dateSchema,
 });
 
-export const courseCreateSchema = courseBaseSchema.omit({
+/**
+ * @schema courseCreateSchema
+ */
+export const courseCreateSchema = createInsertSchema(courses, {
+  startedAt: dateSchema,
+  endedAt: dateSchema,
+  createdAt: dateSchema,
+}).omit({
   id: true,
-  userId: true, // usually taken from session
+  userId: true,
   createdAt: true,
 });
 

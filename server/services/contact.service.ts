@@ -2,24 +2,16 @@ import { eq } from "drizzle-orm";
 import { contacts } from "~~/server/db/schema";
 import type { ContactCreate } from "~~/shared/schemas/contact.schema";
 import { createLogger } from "../utils/logger";
-import { createTranslatableService, type TranslatableEntityDescriptor } from "../utils/db.engine";
+import { createEntityService, type EntityDescriptor } from "../utils/db.engine";
 
 const logger = createLogger("contact");
 
-/**
- * @descriptor contactDescriptor
- * @description Configuration for the contact entity.
- */
-const contactDescriptor: TranslatableEntityDescriptor = {
-  mainTable: contacts
+const contactDescriptor: EntityDescriptor<typeof contacts, ContactCreate> = {
+  mainTable: contacts,
 };
 
-const engine = createTranslatableService<ContactCreate, ContactCreate>(contactDescriptor);
+const engine = createEntityService(contactDescriptor);
 
-/**
- * @service contactService
- * @description Service for managing contacts.
- */
 export const contactService = {
   ...engine,
 
@@ -27,7 +19,9 @@ export const contactService = {
     logger.info("getAll", "Fetching all contacts", options);
     return await db.query.contacts.findMany({
       limit: options.limit,
-      where: options.companyId ? eq(contacts.companyId, options.companyId) : undefined,
+      where: options.companyId
+        ? eq(contacts.companyId, options.companyId)
+        : undefined,
       with: { company: { columns: { name: true } } },
       orderBy: (contacts, { asc }) => [asc(contacts.name)],
     });
@@ -38,7 +32,11 @@ export const contactService = {
       where: eq(contacts.id, id),
       with: { company: true },
     });
-    if (!contact) throw createError({ statusCode: 404, statusMessage: "Contact not found" });
+    if (!contact)
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Contact not found",
+      });
     return contact;
   },
 
@@ -55,8 +53,15 @@ export const contactService = {
   },
 
   async delete(id: number) {
-    const [deleted] = await db.delete(contacts).where(eq(contacts.id, id)).returning();
-    if (!deleted) throw createError({ statusCode: 404, statusMessage: "Contact not found" });
+    const [deleted] = await db
+      .delete(contacts)
+      .where(eq(contacts.id, id))
+      .returning();
+    if (!deleted)
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Contact not found",
+      });
     return deleted;
   },
 };

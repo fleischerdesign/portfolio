@@ -1,12 +1,14 @@
-import { z } from 'zod';
+import type { z } from 'zod';
+import { createSelectSchema } from 'drizzle-zod';
+import { users } from '~~/server/db/schema';
 
 /**
  * @schema authorSchema
- * @description Shared schema for entity authors.
+ * @description Automatically generated from Drizzle users schema using drizzle-zod.
  */
-export const authorSchema = z.object({
-  id: z.number(),
-  name: z.string().nullable(),
+export const authorSchema = createSelectSchema(users).pick({
+  id: true,
+  name: true
 });
 
 export type Author = z.infer<typeof authorSchema>;

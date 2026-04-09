@@ -1,18 +1,26 @@
 import { z } from 'zod';
+import { createSelectSchema, createInsertSchema } from 'drizzle-zod';
+import { contacts } from '~~/server/db/schema';
 
-export const contactBaseSchema = z.object({
-  id: z.number(),
-  name: z.string().trim().min(1, 'Name is required'),
-  salutation: z.enum(['male', 'female', 'diverse', 'neutral']).nullable(),
-  position: z.string().trim().nullable(),
-  email: z.string().trim().email('Invalid email address').nullable(),
-  phone: z.string().trim().nullable(),
-  companyId: z.number().nullable(),
+/**
+ * @schema contactBaseSchema
+ */
+export const contactBaseSchema = createSelectSchema(contacts, {
+  name: (s) => s.min(1, 'Name is required'),
 });
 
-export const contactCreateSchema = contactBaseSchema.omit({ id: true });
+/**
+ * @schema contactCreateSchema
+ */
+export const contactCreateSchema = createInsertSchema(contacts, {
+  name: (s) => s.min(1, 'Name is required'),
+});
+
 export const contactUpdateSchema = contactCreateSchema.partial();
 
+/**
+ * @schema contactResponseSchema
+ */
 export const contactResponseSchema = contactBaseSchema.extend({
   company: z.object({
     name: z.string(),

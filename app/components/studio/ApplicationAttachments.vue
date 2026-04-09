@@ -115,11 +115,11 @@ async function save() {
           <div
             v-for="(ad, index) in activeDocuments"
             :key="ad.documentId"
-            class="flex items-center gap-4 rounded-2xl border border-neutral-100 bg-white p-4 shadow-sm transition-colors hover:border-secondary-500/30 dark:border-neutral-800 dark:bg-neutral-900/50 group"
+            class="group flex items-center gap-4 rounded-2xl border border-neutral-100 bg-white p-4 shadow-sm transition-colors hover:border-secondary-500/30 dark:border-neutral-800 dark:bg-neutral-900/50"
           >
             <div
               v-if="isEditing"
-              class="flex flex-col items-center justify-center w-5 opacity-0 group-hover:opacity-100 transition-opacity"
+              class="flex w-5 flex-col items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
             >
               <button
                 v-if="index > 0"
@@ -180,7 +180,7 @@ async function save() {
                 v-if="isEditing"
                 size="sm"
                 variant="ghost"
-                class="text-neutral-400 hover:text-danger-500"
+                class="hover:text-danger-500 text-neutral-400"
                 @click="removeDocument(ad.documentId)"
               >
                 <Icon name="heroicons:x-mark" />
@@ -196,7 +196,7 @@ async function save() {
             Keine spezifischen Anhänge ausgewählt.
           </p>
           <p
-            class="mt-1 text-xs text-secondary-500/70 font-bold uppercase tracking-widest"
+            class="mt-1 text-xs font-bold uppercase tracking-widest text-secondary-500/70"
           >
             Es werden die Standard-Anhänge verwendet.
           </p>

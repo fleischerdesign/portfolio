@@ -1,24 +1,16 @@
 import { eq, asc } from "drizzle-orm";
 import { users, apiKeys } from "~~/server/db/schema";
 import { createLogger } from "../utils/logger";
-import { createTranslatableService, type TranslatableEntityDescriptor } from "../utils/db.engine";
+import { createEntityService, type EntityDescriptor } from "../utils/db.engine";
 
 const logger = createLogger("user");
 
-/**
- * @descriptor userDescriptor
- * @description Configuration for the user entity.
- */
-const userDescriptor: TranslatableEntityDescriptor = {
-  mainTable: users
+const userDescriptor: EntityDescriptor<typeof users> = {
+  mainTable: users,
 };
 
-const engine = createTranslatableService<Record<string, unknown>, Record<string, unknown>>(userDescriptor);
+const engine = createEntityService(userDescriptor);
 
-/**
- * @service userService
- * @description Service for managing users and authentication.
- */
 export const userService = {
   ...engine,
 
@@ -30,7 +22,9 @@ export const userService = {
   async getOwner(ownerEmail?: string) {
     logger.info("getOwner", "Fetching owner", { ownerEmail });
     if (ownerEmail) {
-      const user = await db.query.users.findFirst({ where: eq(users.email, ownerEmail) });
+      const user = await db.query.users.findFirst({
+        where: eq(users.email, ownerEmail),
+      });
       if (user) return user;
     }
     return await db.query.users.findFirst({
