@@ -1,12 +1,10 @@
 import { z } from 'zod';
+import { i18nSchema } from './i18n.schema';
 
-export const i18nSchema = z.object({
-  de: z.string().trim(),
-  en: z.string().trim(),
-});
-
-export type I18nString = z.infer<typeof i18nSchema>;
-
+/**
+ * @schema addressSchema
+ * @description Standard schema for physical addresses.
+ */
 export const addressSchema = z.object({
   street: z.string().trim().optional().nullable(),
   houseNumber: z.string().trim().optional().nullable(),
@@ -16,4 +14,3 @@ export const addressSchema = z.object({
 });
 
 export type Address = z.infer<typeof addressSchema>;
-

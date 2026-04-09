@@ -1,4 +1,4 @@
-import type { PublicUser } from '#shared/schemas/user.schema';
+import { publicUserSchema, type PublicUser } from '#shared/schemas/user.schema';
 
 export const useProfile = () => {
   const profile = useState<PublicUser | null>('public-profile', () => null);
@@ -9,8 +9,8 @@ export const useProfile = () => {
 
     loading.value = true;
     try {
-      const { profile: data } = await $fetch<{ profile: PublicUser }>('/api/profile');
-      profile.value = data;
+      const { profile: data } = await $fetch<{ profile: any }>('/api/profile');
+      profile.value = publicUserSchema.parse(data);
     } catch (error) {
       console.error('Failed to fetch public profile', error);
     } finally {

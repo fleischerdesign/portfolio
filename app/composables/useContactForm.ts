@@ -4,6 +4,10 @@ import { type ContactForm, ContactFormSchema } from '~~/shared/schemas/contactFo
 
 const TIMEOUT_DURATION = 5000
 
+/**
+ * @composable useContactForm
+ * @description Composable for managing contact form state and submission.
+ */
 export function useContactForm() {
     const form = ref<ContactForm>({
         name: '',
@@ -17,23 +21,18 @@ export function useContactForm() {
     const success = ref(false)
     const submitError = ref(false)
 
+    /**
+     * @handler onSubmit
+     * @description Validates and submits the contact form.
+     */
     async function onSubmit() {
-        try {
-            ContactFormSchema.parse(form.value)
-            errors.value = {}
-        } catch (error) {
-            if (error instanceof z.ZodError) {
-                const newErrors: Record<string, string> = {}
-                error.errors.forEach((err) => {
-                    if (err.path[0]) {
-                        newErrors[err.path[0]] = err.message
-                    }
-                })
-                errors.value = newErrors
-                return
-            }
+        const validation = ContactFormSchema.safeParse(form.value)
+        if (!validation.success) {
+            errors.value = validation.error.flatten().fieldErrors as any
+            return
         }
-
+        
+        errors.value = {}
         loading.value = true
         success.value = false
         submitError.value = false
@@ -41,7 +40,7 @@ export function useContactForm() {
         try {
             await $fetch('/api/contact', {
                 method: 'POST',
-                body: form.value,
+                body: validation.data,
             })
             success.value = true
             form.value = { name: '', email: '', subject: '', message: '' }

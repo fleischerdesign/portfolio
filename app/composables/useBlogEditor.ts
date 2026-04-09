@@ -1,10 +1,5 @@
 import type { BlogPostUpdate, BlogPostStudioResponse } from '~~/shared/schemas/blog.schema';
-import { useLocalizedEditor } from './useLocalizedEditor';
-
-type SerializedBlogPostStudioResponse = Omit<BlogPostStudioResponse, 'publishedAt' | 'createdAt'> & {
-  publishedAt: string | null;
-  createdAt: string | null;
-};
+import { useLocalizedEditor, editorHelpers } from './useLocalizedEditor';
 
 type BlogCommon = {
   status: 'draft' | 'published' | 'archived';
@@ -23,72 +18,31 @@ type BlogLocalized = {
   excerpt: string 
 };
 
-export function useBlogEditor(postId: number, initialData: Ref<{ post: SerializedBlogPostStudioResponse | BlogPostStudioResponse } | null | undefined>, refreshPost: () => Promise<void>) {
-  
-  const { isEditing, isLoading, currentLocale, editableData: editablePost, startEditing, cancelEditing, save } = useLocalizedEditor<any, any, BlogCommon, BlogLocalized, BlogPostUpdate>(
+/**
+ * @composable useBlogEditor
+ * @description Composable for managing blog post editing in the studio.
+ */
+export function useBlogEditor(postId: number, initialData: Ref<any>, refreshPost: () => Promise<void>) {
+  return useLocalizedEditor<any, BlogPostStudioResponse, BlogCommon, BlogLocalized, BlogPostUpdate>(
     postId,
     initialData,
     (data) => data?.post,
     refreshPost,
     (id) => `/api/studio/blog/${id}`,
     {
-      toEditor: (p) => {
-        const common: BlogCommon = {
-            status: p.status,
-            publishedAt: p.publishedAt ? new Date(p.publishedAt).toISOString().slice(0, 16) : null,
-            coverImage: p.coverImage,
-            coverImageAlt: p.coverImageAlt,
-            categoryName: p.category?.name || null,
-            tags: p.tags.map((t: any) => t.name).filter((t: any): t is string => !!t),
-            translationKey: p.translationKey
-        };
-
-        const de: BlogLocalized = { title: '', body: '', slug: '', excerpt: '' };
-        const en: BlogLocalized = { title: '', body: '', slug: '', excerpt: '' };
-
-        p.translations.forEach((t: any) => {
-          if (t.locale === 'de') {
-             de.title = t.title; de.body = t.body; de.slug = t.slug; de.excerpt = t.excerpt || '';
-          } else if (t.locale === 'en') {
-             en.title = t.title; en.body = t.body; en.slug = t.slug; en.excerpt = t.excerpt || '';
-          }
-        });
-
-        return { common, de, en };
-      },
-      toPayload: (common, localized, locale) => {
-        let pubDate = undefined;
-        if (common.publishedAt) {
-            const dateVal = new Date(common.publishedAt);
-            if (!isNaN(dateVal.getTime())) {
-                pubDate = dateVal;
-            }
-        }
-
-        return {
-          ...common,
-          coverImage: common.coverImage || null,
-          coverImageAlt: common.coverImageAlt || null,
-          categoryName: common.categoryName || null,
-          publishedAt: pubDate,
-
-          locale,
-          title: localized.title,
-          excerpt: localized.excerpt || null,
-          body: localized.body,
-          slug: localized.slug,
-        } satisfies BlogPostUpdate;
-      }
+      toEditor: (p) => ({
+        common: {
+          status: p.status,
+          publishedAt: editorHelpers.formatDate(p.publishedAt),
+          coverImage: p.coverImage,
+          coverImageAlt: p.coverImageAlt,
+          categoryName: p.category?.name || null,
+          tags: p.tags.map((t: any) => t.name).filter(Boolean),
+          translationKey: p.translationKey
+        },
+        ...editorHelpers.mapTranslations(p.translations, { title: '', body: '', slug: '', excerpt: '' })
+      }),
+      toPayload: (common, localized, locale) => editorHelpers.preparePayload(common, localized, locale)
     }
   );
-
-  return {
-    isEditing,
-    isLoading,
-    currentLocale,
-    editablePost,
-    startEditing,
-    cancelEditing,
-    save
-  };
 }

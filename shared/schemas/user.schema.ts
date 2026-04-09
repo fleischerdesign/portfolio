@@ -1,5 +1,7 @@
 import { z } from 'zod';
-import { i18nSchema, addressSchema } from './common.schema';
+import { i18nSchema } from './i18n.schema';
+import { addressSchema } from './address.schema';
+import { dateSchema } from './date.schema';
 
 export const dbUserSchema = z.object({
   id: z.number().int().positive().optional(),
@@ -14,7 +16,7 @@ export const dbUserSchema = z.object({
   instagram: z.string().trim().optional().nullable(),
   
   // Personal Info
-  birthday: z.coerce.date().optional().nullable(),
+  birthday: dateSchema,
   birthLocation: z.string().trim().optional().nullable(),
 
   // Address - flattened in DB but logical group
@@ -30,7 +32,7 @@ export const dbUserSchema = z.object({
   availabilityStatus: i18nSchema.optional().nullable(),
   summary: i18nSchema.optional().nullable(),
 
-  createdAt: z.date().nullable().optional(),
+  createdAt: dateSchema,
 });
 
 export type DbUser = z.infer<typeof dbUserSchema>;

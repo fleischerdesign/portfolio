@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { addressSchema } from './common.schema';
+import { addressSchema } from './address.schema';
 
 // Extend the common address schema for the DB entity which has ID and Name
 export const addressBaseSchema = addressSchema.extend({

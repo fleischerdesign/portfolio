@@ -14,7 +14,9 @@ This directory contains all Zod validation schemas used across the application.
 | `course.schema.ts`      | Course/education schemas       |
 | `document.schema.ts`    | Document schemas               |
 | `user.schema.ts`        | User schemas                   |
-| `common.schema.ts`      | Shared schemas (address, etc.) |
+| `address.schema.ts`   | Standard address schema        |
+| `date.schema.ts`      | Absolute base date coercion    |
+| `i18n.schema.ts`      | Base i18n structure            |
 | `contactForm.schema.ts` | Contact form validation        |
 
 ## Types

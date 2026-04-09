@@ -8,157 +8,87 @@ import { eq, desc } from "drizzle-orm";
 import fs from "fs";
 import path from "path";
 import { createLogger } from "../utils/logger";
+import { createTranslatableService, type TranslatableEntityDescriptor } from "../utils/db.engine";
 
 const logger = createLogger("document");
 
-type DocumentRow = typeof documents.$inferSelect;
-type ApplicationDocumentRow = typeof applications_to_documents.$inferSelect & {
-  document: DocumentRow;
+/**
+ * @descriptor documentDescriptor
+ * @description Configuration for the document entity.
+ */
+const documentDescriptor: TranslatableEntityDescriptor = {
+  mainTable: documents
 };
 
+const engine = createTranslatableService<DocumentCreatePayload, DocumentUpdatePayload>(documentDescriptor);
+
+/**
+ * @service documentService
+ * @description Service for managing documents and file storage.
+ */
 export const documentService = {
-  async getAll(): Promise<DocumentRow[]> {
+  ...engine,
+
+  async getAll() {
     logger.info("getAll", "Fetching all documents");
     return await db.query.documents.findMany({
       orderBy: [documents.sortOrder, desc(documents.createdAt)],
     });
   },
 
-  async getById(id: number): Promise<DocumentRow | null> {
-    logger.info("getById", `Fetching document by id: ${id}`, { id });
-    const document = await db.query.documents.findFirst({
-      where: eq(documents.id, id),
-    });
-    if (!document) {
-      logger.warn("getById", `Document not found: ${id}`, { id });
-      throw createError({
-        statusCode: 404,
-        statusMessage: `Document with id ${id} not found`,
-      });
-    }
+  async getById(id: number) {
+    const document = await db.query.documents.findFirst({ where: eq(documents.id, id) });
+    if (!document) throw createError({ statusCode: 404, statusMessage: "Document not found" });
     return document;
   },
 
   async reorder(documentIds: number[]) {
-    logger.info("reorder", `Reordering documents`, { documentIds });
     return await db.transaction(async (tx) => {
       for (let i = 0; i < documentIds.length; i++) {
-        await tx
-          .update(documents)
-          .set({ sortOrder: i })
-          .where(eq(documents.id, documentIds[i]!));
+        await tx.update(documents).set({ sortOrder: i }).where(eq(documents.id, documentIds[i]!));
       }
     });
   },
 
-  async create(data: DocumentCreatePayload): Promise<DocumentRow> {
-    logger.info("create", `Creating document`, { name: data.name });
-    const [newDoc] = await db
-      .insert(documents)
-      .values({
-        ...data,
-        createdAt: new Date(),
-      })
-      .returning();
-    if (!newDoc) {
-      throw createError({
-        statusCode: 500,
-        statusMessage: "Failed to create document",
-      });
-    }
-    return newDoc;
+  async create(data: DocumentCreatePayload) {
+    return await db.transaction(async (tx) => {
+      return await engine.create(tx, data);
+    });
   },
 
-  async update(id: number, data: DocumentUpdatePayload): Promise<DocumentRow> {
-    logger.info("update", `Updating document: ${id}`, { id, data });
-    const [updated] = await db
-      .update(documents)
-      .set(data)
-      .where(eq(documents.id, id))
-      .returning();
-    if (!updated) {
-      logger.warn("update", `Document not found: ${id}`, { id });
-      throw createError({
-        statusCode: 404,
-        statusMessage: `Document with id ${id} not found`,
-      });
-    }
-    return updated;
+  async update(id: number, data: DocumentUpdatePayload) {
+    return await db.transaction(async (tx) => {
+      return await engine.update(tx, id, data);
+    });
   },
 
-  async delete(id: number): Promise<DocumentRow | null> {
-    logger.info("delete", `Deleting document: ${id}`, { id });
+  async delete(id: number) {
     const document = await this.getById(id);
-    if (!document) {
-      return null;
-    }
+    const result = await db.transaction(async (tx) => {
+      const [deleted] = await tx.delete(documents).where(eq(documents.id, id)).returning();
+      return deleted;
+    });
 
-    const [deleted] = await db
-      .delete(documents)
-      .where(eq(documents.id, id))
-      .returning();
-
-    const filePath = path.join(
-      process.cwd(),
-      ".data",
-      "uploads",
-      "documents",
-      document.filename,
-    );
-    if (fs.existsSync(filePath)) {
-      try {
-        fs.unlinkSync(filePath);
-        logger.info("delete", `Deleted file: ${filePath}`);
-      } catch (err) {
-        logger.error("delete", `Failed to delete document file: ${filePath}`, {
-          error: err,
-        });
+    if (result) {
+      const filePath = path.join(process.cwd(), ".data", "uploads", "documents", document.filename);
+      if (fs.existsSync(filePath)) {
+        try { fs.unlinkSync(filePath); } catch (err) { logger.error("delete", `Failed to delete file: ${filePath}`, err); }
       }
     }
-
-    if (!deleted) {
-      throw createError({
-        statusCode: 500,
-        statusMessage: "Failed to delete document",
-      });
-    }
-
-    return deleted;
+    return result;
   },
 
-  async getForApplication(
-    applicationId: number,
-  ): Promise<ApplicationDocumentRow[]> {
-    logger.info(
-      "getForApplication",
-      `Fetching documents for application: ${applicationId}`,
-      {
-        applicationId,
-      },
-    );
-    const appDocs = await db.query.applications_to_documents.findMany({
+  async getForApplication(applicationId: number) {
+    return await db.query.applications_to_documents.findMany({
       where: eq(applications_to_documents.applicationId, applicationId),
-      with: {
-        document: true,
-      },
+      with: { document: true },
       orderBy: [applications_to_documents.sortOrder],
     });
-    return appDocs;
   },
 
-  async getForApplicationWithFallback(
-    applicationId: number,
-  ): Promise<ApplicationDocumentRow[]> {
-    logger.info(
-      "getForApplicationWithFallback",
-      `Fetching documents for application with fallback: ${applicationId}`,
-      { applicationId },
-    );
+  async getForApplicationWithFallback(applicationId: number) {
     const appDocs = await this.getForApplication(applicationId);
-
-    if (appDocs.length > 0) {
-      return appDocs;
-    }
+    if (appDocs.length > 0) return appDocs;
 
     const defaults = await this.getDefaultDocuments();
     return defaults.map((doc, index) => ({
@@ -169,8 +99,7 @@ export const documentService = {
     }));
   },
 
-  async getDefaultDocuments(): Promise<DocumentRow[]> {
-    logger.info("getDefaultDocuments", "Fetching default documents");
+  async getDefaultDocuments() {
     return await db.query.documents.findMany({
       where: eq(documents.isDefault, true),
       orderBy: [documents.sortOrder, desc(documents.createdAt)],
@@ -178,26 +107,11 @@ export const documentService = {
   },
 
   async syncApplicationDocuments(applicationId: number, documentIds: number[]) {
-    logger.info(
-      "syncApplicationDocuments",
-      `Syncing documents for application: ${applicationId}`,
-      {
-        applicationId,
-        documentIds,
-      },
-    );
     return await db.transaction(async (tx) => {
-      await tx
-        .delete(applications_to_documents)
-        .where(eq(applications_to_documents.applicationId, applicationId));
-
+      await tx.delete(applications_to_documents).where(eq(applications_to_documents.applicationId, applicationId));
       if (documentIds.length > 0) {
         await tx.insert(applications_to_documents).values(
-          documentIds.map((docId, index) => ({
-            applicationId,
-            documentId: docId,
-            sortOrder: index,
-          })),
+          documentIds.map((docId, index) => ({ applicationId, documentId: docId, sortOrder: index }))
         );
       }
     });

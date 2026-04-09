@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { dateSchema } from "./date.schema";
 
 export const documentBaseSchema = z.object({
   id: z.number(),
@@ -8,7 +9,7 @@ export const documentBaseSchema = z.object({
   fileSize: z.number().nullable(),
   sortOrder: z.number().default(0),
   isDefault: z.boolean().default(false),
-  createdAt: z.date().nullable(),
+  createdAt: dateSchema,
 });
 
 export const documentCreateSchema = documentBaseSchema

@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { i18nSchema } from './common.schema';
+import { i18nSchema } from './i18n.schema';
+import { dateSchema } from './date.schema';
 
 export const courseBaseSchema = z.object({
   id: z.number().int().positive(),
@@ -10,10 +11,10 @@ export const courseBaseSchema = z.object({
   }),
   organization: z.string().trim().nullable().optional(),
   teachers: z.array(z.string().trim()).nullable().optional(),
-  startedAt: z.coerce.date().nullable().optional(),
-  endedAt: z.coerce.date().nullable().optional(),
+  startedAt: dateSchema,
+  endedAt: dateSchema,
   certificateUrl: z.string().trim().url().nullable().optional(),
-  createdAt: z.date().nullable().optional(),
+  createdAt: dateSchema,
 });
 
 export const courseCreateSchema = courseBaseSchema.omit({

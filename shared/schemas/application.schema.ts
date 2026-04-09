@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { companyResponseSchema } from "./company.schema";
 import { contactBaseSchema } from "./contact.schema";
-import { addressSchema } from "./common.schema";
+import { addressSchema } from "./address.schema";
+import { dateSchema } from "./date.schema";
 import { applicationDocumentSchema } from "./document.schema";
 import { APPLICATION_STATUS } from "../types/application/status";
 
@@ -9,8 +10,8 @@ export const applicationHistoryBaseSchema = z.object({
   id: z.number().optional(),
   status: z.enum(APPLICATION_STATUS),
   notes: z.string().optional().nullable(),
-  scheduled_at: z.date().optional().nullable(),
-  createdAt: z.date().optional(),
+  scheduled_at: dateSchema,
+  createdAt: dateSchema,
 });
 
 export const applicationBaseSchema = z.object({
@@ -23,9 +24,9 @@ export const applicationBaseSchema = z.object({
   contactIds: z.array(z.number()).optional().default([]),
   notes: z.array(z.string()).optional().default([]),
   body: z.string().optional().nullable(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
-  pdfGeneratedAt: z.date().optional().nullable(),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  pdfGeneratedAt: dateSchema,
 });
 
 export const applicationCreateSchema = applicationBaseSchema
@@ -53,14 +54,14 @@ export const applicationHistoryCreateSchema = applicationHistoryBaseSchema
     createdAt: true,
   })
   .extend({
-    scheduled_at: z.coerce.date().optional().nullable(),
-    createdAt: z.coerce.date().optional(),
+    scheduled_at: dateSchema,
+    createdAt: dateSchema,
   });
 
 export const applicationHistoryUpdateSchema = applicationHistoryCreateSchema
   .partial()
   .extend({
-    createdAt: z.coerce.date().optional(),
+    createdAt: dateSchema,
   });
 
 // Raw database relation shapes (before transformation)
@@ -84,23 +85,9 @@ export const applicationResponseSchema = applicationBaseSchema
     const resolvedCurrentStatus = latestHistory?.status ?? "draft";
 
     return {
-      id: val.id,
-      slug: val.slug,
-      title: val.title,
-      subtitle: val.subtitle,
-      url: val.url,
-      companyId: val.companyId,
-      contactIds: val.contactIds,
-      notes: val.notes,
-      body: val.body,
-      createdAt: val.createdAt,
-      updatedAt: val.updatedAt,
-      pdfGeneratedAt: val.pdfGeneratedAt,
+      ...val,
       currentStatus: resolvedCurrentStatus,
-      histories: val.histories ?? [],
-      company: val.company,
       contacts: val.contacts?.map((c) => c.contact) ?? [],
-      documents: val.documents ?? [],
     };
   });
 

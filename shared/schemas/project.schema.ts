@@ -1,17 +1,11 @@
 import { z } from "zod";
 import { LOCALES } from "../utils/locales";
 import { CONTENT_STATUS } from "../types/content/status";
-import {
-  authorSchema,
-  blogCategorySchema as categorySchema,
-  blogTagSchema as tagSchema,
-} from "./blog.schema";
-
-export const technologySchema = z.object({
-  id: z.number(),
-  slug: z.string(),
-  name: z.string(),
-});
+import { dateSchema } from "./date.schema";
+import { authorSchema } from "./author.schema";
+import { categorySchema } from "./category.schema";
+import { tagSchema } from "./tag.schema";
+import { technologySchema } from "./technology.schema";
 
 // Raw database relation shapes (before transformation)
 const projectRawRelations = z.object({
@@ -30,7 +24,7 @@ export const projectBaseSchema = z.object({
   subtitle: z.string().trim().nullable(),
   body: z.string(),
   status: z.enum(CONTENT_STATUS).default("published"),
-  publishedAt: z.coerce.date().nullable(),
+  publishedAt: dateSchema,
   icon: z.string().trim().nullable().optional(),
   coverImage: z.string().trim().nullable(),
   coverImageAlt: z.string().trim().nullable(),
@@ -51,7 +45,7 @@ export const projectCreateSchema = projectBaseSchema
     categoryName: z.string().trim().optional().nullable(),
     tags: z.array(z.string().trim()).optional().default([]),
     techstack: z.array(z.string().trim()).optional().default([]),
-    publishedAt: z.coerce.date().optional().nullable(),
+    publishedAt: dateSchema,
   });
 
 export const projectUpdateSchema = projectCreateSchema.partial();
@@ -59,29 +53,9 @@ export const projectUpdateSchema = projectCreateSchema.partial();
 export const projectResponseSchema = projectBaseSchema
   .extend(projectRawRelations.shape)
   .transform((val) => ({
-    id: val.id,
-    translationKey: val.translationKey,
-    slug: val.slug,
-    locale: val.locale,
-    title: val.title,
-    subtitle: val.subtitle,
-    body: val.body,
-    status: val.status,
-    publishedAt: val.publishedAt,
-    icon: val.icon,
-    coverImage: val.coverImage,
-    coverImageAlt: val.coverImageAlt,
-    repoUrl: val.repoUrl,
-    projectUrl: val.projectUrl,
-    features: val.features,
-    learned: val.learned,
-    challenges: val.challenges,
-    categoryId: val.categoryId,
-    authorId: val.authorId,
-    category: val.category,
+    ...val,
     tags: val.tags?.map((t) => t.tag) ?? [],
     techstack: val.techstack?.map((t) => t.technology) ?? [],
-    author: val.author,
   }));
 
 export const projectTranslationSchema = z.object({
@@ -110,8 +84,8 @@ export const projectStudioResponseSchema = projectBaseSchema
     icon: z.string().nullable(),
     repoUrl: z.string().nullable(),
     projectUrl: z.string().nullable(),
-    publishedAt: z.coerce.date().nullable(),
-    createdAt: z.coerce.date().nullable(),
+    publishedAt: dateSchema,
+    createdAt: dateSchema,
     translations: z.array(
       projectTranslationSchema.extend({
         body: z.string(),
@@ -126,24 +100,11 @@ export const projectStudioResponseSchema = projectBaseSchema
     author: authorSchema.nullable(),
   })
   .transform((val) => ({
-    id: val.id,
-    status: val.status,
-    translationKey: val.translationKey,
-    coverImage: val.coverImage,
-    coverImageAlt: val.coverImageAlt,
-    icon: val.icon,
-    repoUrl: val.repoUrl,
-    projectUrl: val.projectUrl,
-    publishedAt: val.publishedAt,
-    createdAt: val.createdAt,
-    translations: val.translations,
+    ...val,
     tags: val.tags?.map((t) => t.tag) ?? [],
     techstack: val.techstack?.map((t) => t.technology) ?? [],
-    category: val.category,
-    author: val.author,
   }));
 
-export type Technology = z.infer<typeof technologySchema>;
 export type Project = z.infer<typeof projectBaseSchema>;
 export type ProjectCreate = z.infer<typeof projectCreateSchema>;
 export type ProjectUpdate = z.infer<typeof projectUpdateSchema>;

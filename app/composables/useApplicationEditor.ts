@@ -2,6 +2,7 @@ import type { ApplicationUpdatePayload, ApplicationResponsePayload, ApplicationH
 import type { CompanyResponse } from '#shared/schemas/company.schema';
 import type { ContactResponse } from '#shared/schemas/contact.schema';
 import { useEditor } from './useEditor';
+import { editorHelpers } from './useLocalizedEditor';
 
 interface EditableApplication extends Partial<ApplicationUpdatePayload> {
   id: number;
@@ -11,6 +12,10 @@ interface EditableApplication extends Partial<ApplicationUpdatePayload> {
   selectedContacts?: ContactResponse[];
 }
 
+/**
+ * @composable useApplicationEditor
+ * @description Composable for managing application editing in the studio.
+ */
 export function useApplicationEditor(initialApplication: Ref<ApplicationResponsePayload | null | undefined>, refreshApplication: () => Promise<void>, slug: Ref<string>) {
   const { showToast } = useToast();
   
@@ -28,20 +33,32 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
     errorMessage: 'Fehler beim Speichern der Bewerbung.',
     toState: (app) => ({
       ...JSON.parse(JSON.stringify(app)),
-      companyId: app.company.id,
-      selectedCompany: allCompanies.value.find(c => c.id === app.company.id),
+      companyId: app.company?.id || 0,
+      selectedCompany: allCompanies.value.find(c => c.id === app.company?.id),
       selectedContacts: app.contacts,
+      // Ensure dates are formatted for input
+      histories: app.histories?.map(h => ({
+        ...h,
+        scheduled_at: editorHelpers.formatDate(h.scheduled_at) as any,
+        createdAt: editorHelpers.formatDate(h.createdAt) as any
+      })) || []
     }),
     toPayload: (editable) => {
       const cleanHistories = editable.histories
         .filter(h => !h._deleted)
         .map(h => {
           const { _deleted, ...rest } = h;
+          // Format dates back for payload
+          const formatted = {
+            ...rest,
+            scheduled_at: rest.scheduled_at ? new Date(rest.scheduled_at) : null,
+            createdAt: rest.createdAt ? new Date(rest.createdAt) : undefined
+          };
           if (h.id && h.id < 0) {
-            const { id, ...newRest } = rest;
+            const { id, ...newRest } = formatted;
             return newRest;
           }
-          return rest;
+          return formatted;
         });
 
       return {
@@ -53,7 +70,7 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
         notes: editable.notes,
         companyId: editable.selectedCompany?.id,
         contactIds: editable.selectedContacts?.map(c => c.id) || [],
-        histories: cleanHistories,
+        histories: cleanHistories as any,
       };
     },
     onSave: async (payload) => {
@@ -65,12 +82,12 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
     if (!initialApplication.value) return;
     editor.isLoading.value = true;
     try {
-      const companiesData = await useRequestFetch()<{ companies: CompanyResponse[] }>('/api/companies');
+      const [companiesData, contactsData] = await Promise.all([
+        useRequestFetch()<{ companies: CompanyResponse[] }>('/api/companies'),
+        useRequestFetch()<{ contacts: ContactResponse[] }>('/api/contacts')
+      ]);
       allCompanies.value = companiesData.companies || [];
-
-      const contactsData = await useRequestFetch()<{ contacts: ContactResponse[] }>('/api/contacts');
       allContacts.value = contactsData.contacts || [];
-
       editor.startEditing();
     } catch (error) {
       console.error('Failed to start editing', error);
@@ -98,10 +115,6 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
       if (!editor.editableData.value.selectedContacts) editor.editableData.value.selectedContacts = [];
       editor.editableData.value.selectedContacts.push(newContact);
     }
-    showContactFormModal.value = false;
-  }
-
-  function handleCancelContactForm() {
     showContactFormModal.value = false;
   }
 
@@ -140,6 +153,6 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
     nameForNewContact,
     handleCreateContactRequest,
     handleContactCreated,
-    handleCancelContactForm,
+    handleCancelContactForm: () => (showContactFormModal.value = false),
   };
 }
