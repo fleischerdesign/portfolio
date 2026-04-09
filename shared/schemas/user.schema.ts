@@ -1,7 +1,7 @@
-import type { z } from 'zod';
-import { createSelectSchema, createInsertSchema } from 'drizzle-zod';
-import { users } from '~~/server/db/schema';
-import { dateSchema } from './date.schema';
+import type { z } from "zod";
+import { createSelectSchema, createInsertSchema } from "drizzle-zod";
+import { users } from "~~/server/db/schema";
+import { dateSchema } from "./date.schema";
 
 /**
  * @schema dbUserSchema
@@ -18,7 +18,6 @@ export const dbUserSchema = createSelectSchema(users, {
 export const publicUserSchema = dbUserSchema.pick({
   name: true,
   email: true,
-  role: true,
   phone: true,
   website: true,
   github: true,
@@ -46,11 +45,11 @@ export const updateUserSchema = createInsertSchema(users, {
   birthday: dateSchema,
   createdAt: dateSchema,
 })
-.omit({
-  id: true,
-  authProviderId: true,
-  createdAt: true,
-})
-.partial();
+  .omit({
+    id: true,
+    authProviderId: true,
+    createdAt: true,
+  })
+  .partial();
 
 export type DbUser = z.infer<typeof dbUserSchema>;
