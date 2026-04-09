@@ -18,12 +18,16 @@ type BlogLocalized = {
   excerpt: string 
 };
 
+interface BlogRawData {
+  post: BlogPostStudioResponse;
+}
+
 /**
  * @composable useBlogEditor
  * @description Composable for managing blog post editing in the studio.
  */
-export function useBlogEditor(postId: number, initialData: Ref<any>, refreshPost: () => Promise<void>) {
-  return useLocalizedEditor<any, BlogPostStudioResponse, BlogCommon, BlogLocalized, BlogPostUpdate>(
+export function useBlogEditor(postId: number, initialData: Ref<BlogRawData | null | undefined>, refreshPost: () => Promise<void>) {
+  return useLocalizedEditor<BlogRawData, BlogPostStudioResponse, BlogCommon, BlogLocalized, BlogPostUpdate>(
     postId,
     initialData,
     (data) => data?.post,
@@ -37,7 +41,7 @@ export function useBlogEditor(postId: number, initialData: Ref<any>, refreshPost
           coverImage: p.coverImage,
           coverImageAlt: p.coverImageAlt,
           categoryName: p.category?.name || null,
-          tags: p.tags.map((t: any) => t.name).filter(Boolean),
+          tags: p.tags.map(t => t.name).filter(Boolean),
           translationKey: p.translationKey
         },
         ...editorHelpers.mapTranslations(p.translations, { title: '', body: '', slug: '', excerpt: '' })

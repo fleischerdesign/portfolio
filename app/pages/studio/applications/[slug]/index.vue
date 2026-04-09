@@ -8,7 +8,6 @@ const {
   getFormattedLastActivityDate,
   getDisplayDate,
 } = useApplicationUtils();
-const { render } = useMarkdown();
 const { getSalutation } = useSalutation();
 const { t } = useI18n();
 
@@ -804,13 +803,13 @@ onMounted(() => {
                 class="prose prose-neutral max-w-none dark:prose-invert"
               >
                 <ul class="list-disc space-y-3 pl-5">
-                  <!-- eslint-disable-next-line vue/no-v-html -->
                   <li
                     v-for="(note, index) in application.notes"
                     :key="index"
                     class="text-neutral-600 dark:text-neutral-400"
-                    v-html="render(note)"
-                  ></li>
+                  >
+                    <BaseMarkdown :content="note" unstyled />
+                  </li>
                 </ul>
               </div>
               <div v-else class="space-y-4">
@@ -1174,13 +1173,13 @@ onMounted(() => {
             :model-value="
               editableHistoryEntry?.scheduled_at?.toISOString().slice(0, 16)
             "
+            type="datetime-local"
+            :label="$t('applications.modals.interview_date')"
             @update:model-value="
               (val) =>
                 editableHistoryEntry &&
                 (editableHistoryEntry.scheduled_at = val ? new Date(val) : null)
             "
-            type="datetime-local"
-            :label="$t('applications.modals.interview_date')"
           />
           <UiInput
             id="edit-history-notes"
@@ -1193,6 +1192,8 @@ onMounted(() => {
             :model-value="
               editableHistoryEntry?.createdAt?.toISOString().slice(0, 16)
             "
+            type="datetime-local"
+            :label="$t('applications.modals.date')"
             @update:model-value="
               (val) =>
                 editableHistoryEntry &&
@@ -1200,8 +1201,6 @@ onMounted(() => {
                   ? new Date(val)
                   : new Date())
             "
-            type="datetime-local"
-            :label="$t('applications.modals.date')"
           />
         </form>
       </template>

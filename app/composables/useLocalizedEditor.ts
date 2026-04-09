@@ -9,7 +9,7 @@ export interface EditorState<TCommon, TLocalized> {
   common: TCommon;
   de: TLocalized;
   en: TLocalized;
-  [key: string]: any; // Allow dynamic access via currentLocale
+  [key: string]: TCommon | TLocalized | AppLocale; // Allow dynamic access via currentLocale
 }
 
 /**
@@ -20,11 +20,11 @@ export const editorHelpers = {
   /**
    * Maps translations from a raw array to a localized state object.
    */
-  mapTranslations: <TLocalized extends object>(translations: any[], defaults: TLocalized): { de: TLocalized, en: TLocalized } => {
+  mapTranslations: <TLocalized extends object>(translations: unknown[], defaults: TLocalized): { de: TLocalized, en: TLocalized } => {
     const de = { ...defaults };
     const en = { ...defaults };
 
-    translations.forEach((t: any) => {
+    (translations as Array<TLocalized & { locale: string }>).forEach((t) => {
       if (t.locale === 'de') Object.assign(de, t);
       else if (t.locale === 'en') Object.assign(en, t);
     });
@@ -44,12 +44,13 @@ export const editorHelpers = {
   /**
    * Cleans up common fields and ensures dates are proper objects or undefined.
    */
-  preparePayload: <TCommon, TLocalized>(common: TCommon, localized: TLocalized, locale: AppLocale): any => {
-    const payload: any = { ...common, ...localized, locale };
+  preparePayload: <TCommon, TLocalized>(common: TCommon, localized: TLocalized, locale: AppLocale): TCommon & TLocalized & { locale: AppLocale } => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const payload = { ...common, ...localized, locale } as any;
     
     // Auto-convert common fields
     if (payload.publishedAt) {
-      const dateVal = new Date(payload.publishedAt);
+      const dateVal = new Date(payload.publishedAt as string);
       payload.publishedAt = !isNaN(dateVal.getTime()) ? dateVal : undefined;
     }
 
@@ -97,14 +98,14 @@ export function useLocalizedEditor<
     },
     toPayload: (state) => {
       return LOCALES.map(locale => 
-        transformers.toPayload(state.common, state[locale], locale)
+        transformers.toPayload(state.common, state[locale] as TLocalized, locale)
       );
     },
     onSave: async (payloads) => {
       await Promise.all(payloads.map(payload => 
         $fetch(endpointFactory(id), {
           method: 'PUT',
-          body: payload as any
+          body: payload as Record<string, unknown>
         })
       ));
     }

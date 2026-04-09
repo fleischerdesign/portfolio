@@ -268,14 +268,6 @@ const location = computed(() => {
 });
 const availabilityStatus = computed(() => localize(profile.value?.availabilityStatus, locale.value));
 
-const birthday = computed(() => {
-    if (profile.value?.birthday) {
-        const date = new Date(profile.value.birthday);
-        return date.toLocaleDateString(locale.value === 'de' ? 'de-DE' : 'en-US');
-    }
-    return '';
-});
-
 const birthLocation = computed(() => profile.value?.birthLocation || '');
 
 useSeoMeta({

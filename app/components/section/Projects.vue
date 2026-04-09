@@ -22,5 +22,5 @@ const { data } = await useFetch('/api/projects', {
   query: { locale: locale.value, limit: 3 }
 });
 
-const projects = computed(() => (data.value?.projects as any[]) || []);
+const projects = computed(() => (data.value?.projects as unknown[]) || []);
 </script>

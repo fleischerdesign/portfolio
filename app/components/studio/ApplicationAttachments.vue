@@ -11,7 +11,6 @@ const props = defineProps<{
   isEditing: boolean;
 }>();
 
-const { t } = useI18n();
 const { data: allDocuments } =
   await useFetch<DocumentPayload[]>("/api/documents");
 
@@ -71,15 +70,6 @@ async function save() {
     isSaving.value = false;
   }
 }
-
-const isUsingDefaults = computed(() => {
-  // If props.initialDocuments was empty, it means the server fell back to defaults
-  // If the user hasn't made any manual changes yet (activeDocuments matches initial),
-  // and those initial were actually just standard defaults (not stored in DB for this app),
-  // then we are in "Default Mode".
-  // For simplicity, we can just look at if activeDocuments has items.
-  return activeDocuments.value.length === 0;
-});
 </script>
 
 <template>

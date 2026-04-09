@@ -1,4 +1,4 @@
-import { LOCALES, DEFAULT_LOCALE, type AppLocale, isAppLocale } from '~~/shared/utils/locales';
+import { DEFAULT_LOCALE, isAppLocale } from '~~/shared/utils/locales';
 
 /**
  * Helper to retrieve the correct string from a localized object { de, en }

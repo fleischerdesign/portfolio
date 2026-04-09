@@ -33,6 +33,7 @@ const viewTranslation = computed(() => {
 
 const currentBody = computed(() => {
     if (isEditing.value && editableProject.value) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return (editableProject.value as any)[currentLocale.value].body;
     }
     return viewTranslation.value?.body || '';

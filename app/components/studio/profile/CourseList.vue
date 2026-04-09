@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import type { DbCourse, CourseCreate } from '#shared/schemas/course.schema';
 
 const courses = ref<DbCourse[]>([]);
@@ -92,14 +92,15 @@ const saveCourse = async () => {
     }
     isModalOpen.value = false;
     fetchCourses();
-  } catch (e: any) {
-    console.error('Save error:', e.data || e);
-    const issues = e.data?.data?.issues;
+  } catch (e: unknown) {
+    console.error('Save error:', e);
+    const errorData = (e as { data?: { data?: { issues?: Array<{ path: string[], message: string }> }, statusMessage?: string } }).data;
+    const issues = errorData?.data?.issues;
     if (issues && Array.isArray(issues)) {
-       const msg = issues.map((i: any) => `${i.path.join('.')}: ${i.message}`).join('\n');
+       const msg = issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('\n');
        showToast(`Fehler:\n${msg}`, { type: 'error' });
     } else {
-       const msg = e.data?.statusMessage || e.message || 'Unbekannter Fehler';
+       const msg = errorData?.statusMessage || (e as Error).message || 'Unbekannter Fehler';
        showToast(`Fehler: ${msg}`, { type: 'error' });
     }
   }
@@ -129,7 +130,7 @@ const formatDate = (d: string | Date | null | undefined) => {
   <div>
     <div class="mb-6 flex items-center justify-between">
       <h3 class="text-lg font-bold">Meine Kurse & Zertifikate</h3>
-      <UiButton @click="openAddModal" size="sm" variant="default">
+      <UiButton size="sm" variant="default" @click="openAddModal">
         <Icon name="heroicons:plus" class="mr-2" />
         Kurs hinzufügen
       </UiButton>
@@ -150,10 +151,10 @@ const formatDate = (d: string | Date | null | undefined) => {
           </div>
         </div>
         <div class="flex gap-2">
-          <UiButton @click="openEditModal(course)" size="sm" variant="ghost">
+          <UiButton size="sm" variant="ghost" @click="openEditModal(course)">
             <Icon name="heroicons:pencil" />
           </UiButton>
-          <UiButton @click="deleteCourse(course.id)" size="sm" variant="ghost" class="text-red-500 hover:bg-red-50 hover:text-red-600">
+          <UiButton size="sm" variant="ghost" class="text-red-500 hover:bg-red-50 hover:text-red-600" @click="deleteCourse(course.id)">
             <Icon name="heroicons:trash" />
           </UiButton>
         </div>
@@ -166,24 +167,24 @@ const formatDate = (d: string | Date | null | undefined) => {
         <h3 class="mb-4 text-xl font-bold">{{ isEditing ? 'Kurs bearbeiten' : 'Neuer Kurs' }}</h3>
         
         <div class="max-h-[70vh] space-y-4 overflow-y-auto pr-2">
-           <UiInput id="course-title-de" label="Titel (DE)" v-model="form.title.de" placeholder="Kursname Deutsch" />
-           <UiInput id="course-title-en" label="Titel (EN)" v-model="form.title.en" placeholder="Course Name English" />
+           <UiInput id="course-title-de" v-model="form.title.de" label="Titel (DE)" placeholder="Kursname Deutsch" />
+           <UiInput id="course-title-en" v-model="form.title.en" label="Titel (EN)" placeholder="Course Name English" />
            
-           <UiInput id="course-org" label="Organisation / Anbieter" v-model="form.organization" placeholder="z.B. Udemy, WBS..." />
+           <UiInput id="course-org" v-model="form.organization" label="Organisation / Anbieter" placeholder="z.B. Udemy, WBS..." />
            
            <div class="grid grid-cols-2 gap-4">
               <UiInput id="course-start" label="Startdatum" type="date" :model-value="form.startedAt ? new Date(form.startedAt).toISOString().split('T')[0] : ''" @update:model-value="v => form.startedAt = v ? new Date(v) : null" />
               <UiInput id="course-end" label="Enddatum" type="date" :model-value="form.endedAt ? new Date(form.endedAt).toISOString().split('T')[0] : ''" @update:model-value="v => form.endedAt = v ? new Date(v) : null" />
            </div>
 
-           <UiInput id="course-teachers" label="Lehrer / Dozenten (Kommagetrennt)" v-model="teachersInput" placeholder="Max Mustermann, ..." />
+           <UiInput id="course-teachers" v-model="teachersInput" label="Lehrer / Dozenten (Kommagetrennt)" placeholder="Max Mustermann, ..." />
            
-           <UiInput id="course-cert" label="Zertifikat URL" v-model="form.certificateUrl" placeholder="https://..." />
+           <UiInput id="course-cert" v-model="form.certificateUrl" label="Zertifikat URL" placeholder="https://..." />
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UiButton @click="isModalOpen = false" variant="ghost">Abbrechen</UiButton>
-          <UiButton @click="saveCourse" variant="default">Speichern</UiButton>
+          <UiButton variant="ghost" @click="isModalOpen = false">Abbrechen</UiButton>
+          <UiButton variant="default" @click="saveCourse">Speichern</UiButton>
         </div>
       </div>
     </div>

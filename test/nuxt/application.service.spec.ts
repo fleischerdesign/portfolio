@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { db } from '~~/server/utils/db'
 import { applications, companies, addresses, contacts, applicationHistories, applications_to_contacts } from '~~/server/db/schema'
+import type { ApplicationCreatePayload } from '~~/shared/schemas/application.schema'
+import { applicationService } from '~~/server/services/application.service'
 
 // Stub global 'db'
 vi.stubGlobal('db', db)
-
-import { applicationService } from '~~/server/services/application.service'
 
 describe('ApplicationService', () => {
   beforeEach(async () => {
@@ -19,21 +19,22 @@ describe('ApplicationService', () => {
   })
 
   it('should create an application, company and address automatically', async () => {
-    const appData = {
+    const appData: ApplicationCreatePayload = {
       slug: 'test-application',
       title: 'Senior Developer',
       companyName: 'Test Corp',
       companyAddress: {
         street: 'Tech Lane',
         city: 'Berlin',
-        zipcode: '10115'
+        zipcode: '10115',
+        country: { de: 'Deutschland', en: 'Germany' }
       },
-      status: 'applied',
       url: 'https://test-corp.com/jobs/1'
     }
 
     // Since we refactored createOrUpdate, it handles everything
-    const result = await applicationService.createOrUpdate(appData as any)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (applicationService as any).createOrUpdate(appData)
 
     expect(result).toBeDefined()
     expect(result.action).toBe('inserted')
@@ -56,12 +57,13 @@ describe('ApplicationService', () => {
     await db.insert(companies).values({ name: 'Existing Corp', addressId: address!.id })
 
     // 2. Create Application for SAME company
-    const result = await applicationService.createOrUpdate({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (applicationService as any).createOrUpdate({
       slug: 'new-app-existing-comp',
       title: 'Frontend Dev',
       companyName: 'Existing Corp',
       // No address update this time
-    } as any)
+    } as ApplicationCreatePayload)
 
     expect(result.company?.addressId).toBe(address!.id) // Should link to existing address
   })

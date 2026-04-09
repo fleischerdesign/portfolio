@@ -45,7 +45,7 @@ onMounted(async () => {
   }
 });
 
-const form = ref<any>({
+const form = ref<Record<string, unknown>>({
   title: "",
   subtitle: "",
   slug: "",

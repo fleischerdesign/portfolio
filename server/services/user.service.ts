@@ -13,7 +13,7 @@ const userDescriptor: TranslatableEntityDescriptor = {
   mainTable: users
 };
 
-const engine = createTranslatableService<any, any>(userDescriptor);
+const engine = createTranslatableService<Record<string, unknown>, Record<string, unknown>>(userDescriptor);
 
 /**
  * @service userService

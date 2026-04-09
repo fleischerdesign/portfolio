@@ -13,7 +13,7 @@ const nowDescriptor: TranslatableEntityDescriptor = {
   mainTable: nowEntries
 };
 
-const engine = createTranslatableService<any, any>(nowDescriptor);
+const engine = createTranslatableService<Record<string, unknown>, Record<string, unknown>>(nowDescriptor);
 
 /**
  * @service nowService

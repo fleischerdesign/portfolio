@@ -25,6 +25,7 @@ const markdownRef = ref<HTMLElement | null>(null)
  * @computed renderedHtml
  * @description Parsed HTML from markdown content.
  */
+// eslint-disable-next-line vue/no-v-html
 const renderedHtml = computed(() => render(props.content))
 
 /**

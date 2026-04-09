@@ -9,7 +9,7 @@ export const useProfile = () => {
 
     loading.value = true;
     try {
-      const { profile: data } = await $fetch<{ profile: any }>('/api/profile');
+      const { profile: data } = await $fetch<{ profile: unknown }>('/api/profile');
       profile.value = publicUserSchema.parse(data);
     } catch (error) {
       console.error('Failed to fetch public profile', error);

@@ -13,7 +13,7 @@ const route = useRoute();
 const router = useRouter();
 
 const activeTab = computed({
-  get: () => route.query.tab as string || 'basics',
+  get: () => (route.query.tab as string) || 'basics',
   set: (val) => router.replace({ query: { ...route.query, tab: val } })
 });
 
@@ -47,8 +47,8 @@ async function fetchProfile() {
 async function saveProfile() {
   isSaving.value = true;
   try {
-    // Basic fields
-    const payload: any = {
+    // Basic fields - explicit payload construction for type safety
+    const payload: Partial<DbUser> = {
       name: user.value.name,
       email: user.value.email,
       phone: user.value.phone,
@@ -71,7 +71,7 @@ async function saveProfile() {
 
     await $fetch('/api/studio/profile', {
       method: 'PUT',
-      body: payload
+      body: payload as Record<string, unknown>
     });
 
     showToast('Profil erfolgreich aktualisiert!', { type: 'success' });
@@ -83,7 +83,7 @@ async function saveProfile() {
   }
 }
 
-const formatDateForInput = (date: any) => {
+const formatDateForInput = (date: string | Date | null | undefined) => {
     if (!date) return '';
     const d = new Date(date);
     if (isNaN(d.getTime())) return '';
@@ -109,16 +109,16 @@ onMounted(() => {
     <!-- Tabs -->
     <div class="mb-8 flex gap-4 border-b border-neutral-200 dark:border-neutral-800">
       <button 
-        @click="activeTab = 'basics'"
         class="border-b-2 px-4 py-2 font-bold transition-colors"
         :class="activeTab === 'basics' ? 'border-secondary-500 text-secondary-500' : 'border-transparent text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200'"
+        @click="activeTab = 'basics'"
       >
         Stammdaten
       </button>
       <button 
-        @click="activeTab = 'courses'"
         class="border-b-2 px-4 py-2 font-bold transition-colors"
         :class="activeTab === 'courses' ? 'border-secondary-500 text-secondary-500' : 'border-transparent text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200'"
+        @click="activeTab = 'courses'"
       >
         Kurse & Zertifikate
       </button>
@@ -135,7 +135,7 @@ onMounted(() => {
                     <div class="space-y-6">
                         <h3 class="text-sm font-black uppercase tracking-[0.2em] text-secondary-500">Kontakt</h3>
                         <UiInput id="profile-name" v-model="user.name" label="Anzeigename" placeholder="Dein Name" required />
-                        <UiInput id="profile-email" v-model="user.email" label="E-Mail Adresse" type="email" placeholder="beispiel@domain.de" required />
+                        <UiInput id="profile-email" v-model="user.email" type="email" label="E-Mail Adresse" placeholder="beispiel@domain.de" required />
                         <UiInput id="profile-phone" v-model="user.phone" label="Telefon" placeholder="+49 ..." />
                     </div>
 
@@ -192,12 +192,12 @@ onMounted(() => {
                     <div class="space-y-6">
                         <h3 class="text-sm font-black uppercase tracking-[0.2em] text-secondary-500">Anschrift</h3>
                         <div class="grid grid-cols-3 gap-4">
-                            <UiInput id="profile-street" v-model="user.street" label="Straße" class="col-span-2" />
+                            <UiInput id="profile-street" v-model="user.street" class="col-span-2" label="Straße" />
                             <UiInput id="profile-hnr" v-model="user.houseNumber" label="Nr." />
                         </div>
                         <div class="grid grid-cols-3 gap-4">
                             <UiInput id="profile-zip" v-model="user.zipcode" label="PLZ" />
-                            <UiInput id="profile-city" v-model="user.city" label="Stadt" class="col-span-2" />
+                            <UiInput id="profile-city" v-model="user.city" class="col-span-2" label="Stadt" />
                         </div>
                     </div>
                     <div class="space-y-6">
@@ -213,7 +213,7 @@ onMounted(() => {
 
         <!-- Actions -->
         <div class="flex justify-end pb-20 pt-4">
-            <UiButton :is-loading="isSaving" variant="secondary" size="lg" class="min-w-[200px]" @click="saveProfile">
+            <UiButton size="lg" variant="secondary" class="min-w-[200px]" :is-loading="isSaving" @click="saveProfile">
                 {{ isSaving ? 'Speichern...' : 'Änderungen speichern' }}
             </UiButton>
         </div>

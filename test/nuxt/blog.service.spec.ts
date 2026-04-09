@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { db } from '~~/server/utils/db'
 import { blogPosts, blogPostTranslations, categories, tags, blogPostsToTags } from '~~/server/db/schema'
+import type { BlogPostCreate } from '~~/shared/schemas/blog.schema'
+import { blogService } from '~~/server/services/blog.service'
 
 // Stub global 'db'
 vi.stubGlobal('db', db)
-
-import { blogService } from '~~/server/services/blog.service'
 
 describe('BlogService', () => {
   beforeEach(async () => {
@@ -18,7 +18,7 @@ describe('BlogService', () => {
   })
 
   it('should create a blog post with translations and tags', async () => {
-    const postData = {
+    const postData: BlogPostCreate = {
       translationKey: 'test-post',
       locale: 'en' as const,
       slug: 'test-post-slug',
@@ -34,7 +34,7 @@ describe('BlogService', () => {
       coverImageAlt: null,
     }
 
-    const result = await blogService.create(postData as any)
+    const result = await blogService.create(postData)
 
     expect(result).toBeDefined()
     expect(result?.translationKey).toBe('test-post')
@@ -52,7 +52,8 @@ describe('BlogService', () => {
 
   it('should update a blog post translation and sync tags', async () => {
     // 1. Create
-    const created = await blogService.create({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const created = await (blogService as any).create({
       translationKey: 'update-post',
       locale: 'en',
       slug: 'original-slug',
@@ -64,7 +65,7 @@ describe('BlogService', () => {
       coverImageAlt: null,
       excerpt: null,
       readingTime: null
-    } as any)
+    } as BlogPostCreate)
 
     // 2. Update
     await blogService.update(created!.id, {
@@ -103,7 +104,7 @@ describe('BlogService', () => {
       coverImageAlt: null,
       excerpt: null,
       readingTime: null
-    } as any)
+    } as BlogPostCreate)
 
     const all = await blogService.getPublicAll('en')
     expect(all.find(p => p.slug === 'draft-post')).toBeUndefined()

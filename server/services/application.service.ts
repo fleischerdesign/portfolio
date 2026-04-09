@@ -12,7 +12,7 @@ import {
   type ApplicationCreatePayload,
   type Status,
 } from "~~/shared/schemas/application.schema";
-import { eq, desc, and, inArray, asc } from "drizzle-orm";
+import { eq, desc, asc } from "drizzle-orm";
 import fs from "fs";
 import path from "path";
 import { documentService } from "./document.service";

@@ -27,7 +27,7 @@ afterAll(() => {
   if (existsSync(TEST_DB_PATH)) {
     try {
       unlinkSync(TEST_DB_PATH);
-    } catch (e) {
+    } catch {
       // Ignore cleanup errors
     }
   }

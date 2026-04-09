@@ -8,7 +8,7 @@ if (!url) {
     try {
         const config = useRuntimeConfig();
         url = config.dbUrl;
-    } catch (e) {
+    } catch {
         // Running outside Nuxt context (e.g. seed script)
         url = process.env.DB_URL || 'file:./.data/db.sqlite';
     }

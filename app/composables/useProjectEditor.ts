@@ -25,12 +25,16 @@ type ProjectLocalized = {
   challenges: string[];
 };
 
+interface ProjectRawData {
+  project: ProjectStudioResponse;
+}
+
 /**
  * @composable useProjectEditor
  * @description Composable for managing project editing in the studio.
  */
-export function useProjectEditor(projectId: number, initialData: Ref<any>, refreshProject: () => Promise<void>) {
-  return useLocalizedEditor<any, ProjectStudioResponse, ProjectCommon, ProjectLocalized, ProjectUpdate>(
+export function useProjectEditor(projectId: number, initialData: Ref<ProjectRawData | null | undefined>, refreshProject: () => Promise<void>) {
+  return useLocalizedEditor<ProjectRawData, ProjectStudioResponse, ProjectCommon, ProjectLocalized, ProjectUpdate>(
     projectId,
     initialData,
     (data) => data?.project,
@@ -47,15 +51,15 @@ export function useProjectEditor(projectId: number, initialData: Ref<any>, refre
           repoUrl: p.repoUrl || null,
           projectUrl: p.projectUrl || null,
           categoryName: p.category?.name || null,
-          tags: p.tags.map((t: any) => t.name).filter(Boolean),
-          techstack: p.techstack.map((t: any) => t.name).filter(Boolean),
+          tags: p.tags.map(t => t.name).filter(Boolean),
+          techstack: p.techstack.map(t => t.name).filter(Boolean),
           translationKey: p.translationKey
         },
         ...editorHelpers.mapTranslations(p.translations, { 
           title: '', subtitle: '', body: '', slug: '', features: [], learned: [], challenges: [] 
         })
       }),
-      toPayload: (common, localized, locale) => editorHelpers.preparePayload(common, localized, locale)
+      toPayload: (common, localized, locale) => editorHelpers.preparePayload(common, localized, locale) as ProjectUpdate
     }
   );
 }

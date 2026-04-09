@@ -3,7 +3,7 @@ export interface EditorOptions<TRaw, TState, TPayload> {
   refresh: () => Promise<void>;
   toState: (data: TRaw) => TState;
   toPayload: (state: TState) => TPayload | Promise<TPayload>;
-  onSave: (payload: TPayload) => Promise<any>;
+  onSave: (payload: TPayload) => Promise<void>;
   successMessage?: string;
   errorMessage?: string;
 }
@@ -12,7 +12,7 @@ export function useEditor<TRaw, TState, TPayload>(options: EditorOptions<TRaw, T
   const { showToast } = useToast();
   const isLoading = ref(false);
   const isEditing = ref(false);
-  const editableData = ref<TState | null>(null);
+  const editableData = ref<TState | null>(null) as Ref<TState | null>;
 
   function startEditing() {
     if (!options.initialData.value) return;

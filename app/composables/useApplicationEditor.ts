@@ -4,9 +4,15 @@ import type { ContactResponse } from '#shared/schemas/contact.schema';
 import { useEditor } from './useEditor';
 import { editorHelpers } from './useLocalizedEditor';
 
+interface EditableHistoryEntry extends Omit<ApplicationHistoryPayload, 'scheduled_at' | 'createdAt'> {
+  scheduled_at: string | null;
+  createdAt: string | null;
+  _deleted?: boolean;
+}
+
 interface EditableApplication extends Partial<ApplicationUpdatePayload> {
   id: number;
-  histories: (ApplicationHistoryPayload & { _deleted?: boolean })[];
+  histories: EditableHistoryEntry[];
   companyId: number;
   selectedCompany?: CompanyResponse;
   selectedContacts?: ContactResponse[];
@@ -37,11 +43,11 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
       selectedCompany: allCompanies.value.find(c => c.id === app.company?.id),
       selectedContacts: app.contacts,
       // Ensure dates are formatted for input
-      histories: app.histories?.map(h => ({
+      histories: (app.histories || []).map(h => ({
         ...h,
-        scheduled_at: editorHelpers.formatDate(h.scheduled_at) as any,
-        createdAt: editorHelpers.formatDate(h.createdAt) as any
-      })) || []
+        scheduled_at: editorHelpers.formatDate(h.scheduled_at),
+        createdAt: editorHelpers.formatDate(h.createdAt)
+      } as EditableHistoryEntry))
     }),
     toPayload: (editable) => {
       const cleanHistories = editable.histories
@@ -62,19 +68,20 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
         });
 
       return {
-        title: editable.title,
+        title: editable.title || '',
         subtitle: editable.subtitle,
-        slug: editable.slug,
+        slug: editable.slug || '',
         url: editable.url,
         body: editable.body,
         notes: editable.notes,
         companyId: editable.selectedCompany?.id,
         contactIds: editable.selectedContacts?.map(c => c.id) || [],
-        histories: cleanHistories as any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        histories: cleanHistories as any, // Drizzle type for JSON arrays can be complex
       };
     },
     onSave: async (payload) => {
-      await useRequestFetch()(`/api/applications/${slug.value}`, { method: 'PUT', body: payload });
+      await useRequestFetch()(`/api/applications/${slug.value}`, { method: 'PUT', body: payload as Record<string, unknown> });
     }
   });
 
@@ -86,8 +93,8 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
         useRequestFetch()<{ companies: CompanyResponse[] }>('/api/companies'),
         useRequestFetch()<{ contacts: ContactResponse[] }>('/api/contacts')
       ]);
-      allCompanies.value = companiesData.companies || [];
-      allContacts.value = contactsData.contacts || [];
+      allCompanies.value = companiesResToResponse(companiesData);
+      allContacts.value = contactsResToResponse(contactsData);
       editor.startEditing();
     } catch (error) {
       console.error('Failed to start editing', error);
@@ -95,6 +102,14 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
     } finally {
       editor.isLoading.value = false;
     }
+  }
+
+  // Helper to ensure type safety for fetch results
+  function companiesResToResponse(data: unknown): CompanyResponse[] {
+    return (data as { companies: CompanyResponse[] }).companies || [];
+  }
+  function contactsResToResponse(data: unknown): ContactResponse[] {
+    return (data as { contacts: ContactResponse[] }).contacts || [];
   }
 
   function cancelEditing() {

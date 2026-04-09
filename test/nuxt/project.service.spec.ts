@@ -1,12 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { db } from '~~/server/utils/db'
 import { projects, projectTranslations, categories, tags, technologies, projectsToTags, projectsToTechnologies } from '~~/server/db/schema'
-import { sql } from 'drizzle-orm'
+import type { ProjectCreate } from '~~/shared/schemas/project.schema'
+import { projectService } from '~~/server/services/project.service'
 
 // Stub global 'db'
 vi.stubGlobal('db', db)
-
-import { projectService } from '~~/server/services/project.service'
 
 describe('ProjectService', () => {
   beforeEach(async () => {
@@ -21,7 +20,7 @@ describe('ProjectService', () => {
   })
 
   it('should create a project with translations, tags and techstack', async () => {
-    const projectData = {
+    const projectData: ProjectCreate = {
       translationKey: 'test-project',
       locale: 'en' as const,
       slug: 'test-project-slug',
@@ -43,7 +42,8 @@ describe('ProjectService', () => {
       challenges: []
     }
 
-    const result = await projectService.create(projectData as any)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (projectService as any).create(projectData)
 
     expect(result).toBeDefined()
     expect(result?.translationKey).toBe('test-project')
@@ -59,7 +59,8 @@ describe('ProjectService', () => {
 
   it('should update an existing project translation', async () => {
      // 1. Create initial
-     const initial = await projectService.create({
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     const initial = await (projectService as any).create({
         translationKey: 'update-test',
         locale: 'en',
         slug: 'initial-slug',
@@ -77,7 +78,7 @@ describe('ProjectService', () => {
         features: [],
         learned: [],
         challenges: []
-     } as any)
+     } as ProjectCreate)
 
      // 2. Update same translation
      await projectService.update(initial!.id, {
@@ -117,7 +118,7 @@ describe('ProjectService', () => {
       features: [],
       learned: [],
       challenges: []
-    } as any)
+    } as ProjectCreate)
 
     const result = await projectService.getPublicBySlug('draft-slug', 'en')
     expect(result).toBeNull()

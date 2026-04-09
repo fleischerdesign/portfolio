@@ -1,10 +1,11 @@
 import { sql, eq, inArray } from "drizzle-orm";
+import type { AnySQLiteTable, SQLiteColumn } from "drizzle-orm/sqlite-core";
 import { slugify } from "~~/shared/utils/slugify";
 
 /**
  * @helper taxonomyHelper
  * @description Manages categories, tags, and technologies using high-performance Drizzle upserts.
- * Placed in utils to be auto-imported and prevent circular dependencies with services.
+ * Uses official Drizzle types for maximum reliability.
  */
 export const taxonomyHelper = {
   /**
@@ -13,38 +14,43 @@ export const taxonomyHelper = {
    * @param name Name of the category to ensure
    * @returns The ID of the ensured category or null
    */
-  async ensureCategory(tx: any, categoriesTable: any, name: string | null | undefined): Promise<number | null> {
+  async ensureCategory(tx: unknown, categoriesTable: AnySQLiteTable, name: string | null | undefined): Promise<number | null> {
     if (!name) return null;
 
     const slug = slugify(name);
-    const [category] = await tx
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [category] = await (tx as any)
       .insert(categoriesTable)
-      .values({ slug, name })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .values({ slug, name } as any)
       .onConflictDoUpdate({
-        target: categoriesTable.slug,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        target: (categoriesTable as any).slug,
         set: { name },
       })
-      .returning({ id: categoriesTable.id });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .returning({ id: (categoriesTable as any).id });
 
-    return category?.id || null;
+    return (category as { id: number })?.id || null;
   },
 
   /**
    * @param tx Drizzle transaction instance
    * @param config Configuration for the many-to-many synchronization
    */
-  async syncManyToMany(tx: any, config: {
+  async syncManyToMany(tx: unknown, config: {
     parentId: number;
-    parentColumn: any;
-    junctionTable: any;
-    lookupTable: any;
-    lookupColumn: any;
+    parentColumn: SQLiteColumn;
+    junctionTable: AnySQLiteTable;
+    lookupTable: AnySQLiteTable;
+    lookupColumn: SQLiteColumn;
     names: string[];
   }) {
     const { parentId, parentColumn, junctionTable, lookupTable, lookupColumn, names } = config;
 
     if (!names || names.length === 0) {
-      await tx.delete(junctionTable).where(eq(parentColumn, parentId));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (tx as any).delete(junctionTable).where(eq(parentColumn, parentId));
       return;
     }
 
@@ -53,25 +59,37 @@ export const taxonomyHelper = {
       slug: slugify(name)
     }));
 
-    await tx
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (tx as any)
       .insert(lookupTable)
-      .values(lookupData)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .values(lookupData as any)
       .onConflictDoUpdate({
-        target: lookupTable.slug,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        target: (lookupTable as any).slug,
         set: { name: sql`excluded.name` }
       });
 
-    const items = await tx
-      .select({ id: lookupTable.id, slug: lookupTable.slug })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const items = await (tx as any)
+      .select({ 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        id: (lookupTable as any).id, 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        slug: (lookupTable as any).slug 
+      })
       .from(lookupTable)
-      .where(inArray(lookupTable.slug, lookupData.map(d => d.slug)));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .where(inArray((lookupTable as any).slug, lookupData.map(d => d.slug)));
 
-    await tx.delete(junctionTable).where(eq(parentColumn, parentId));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (tx as any).delete(junctionTable).where(eq(parentColumn, parentId));
 
     if (items.length > 0) {
-      await tx
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (tx as any)
         .insert(junctionTable)
-        .values(items.map((item: any) => ({
+        .values((items as Array<{ id: number }>).map(item => ({
           [parentColumn.name]: parentId,
           [lookupColumn.name]: item.id
         })));

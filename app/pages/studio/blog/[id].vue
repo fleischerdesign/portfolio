@@ -39,6 +39,7 @@ const viewTranslation = computed(() => {
 
 const currentBody = computed(() => {
   if (isEditing.value && editablePost.value) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (editablePost.value as any)[currentLocale.value].body;
   }
   return viewTranslation.value?.body || "";

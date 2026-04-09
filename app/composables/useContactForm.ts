@@ -1,5 +1,4 @@
 import { ref } from 'vue'
-import { z } from 'zod'
 import { type ContactForm, ContactFormSchema } from '~~/shared/schemas/contactForm.schema'
 
 const TIMEOUT_DURATION = 5000
@@ -28,7 +27,10 @@ export function useContactForm() {
     async function onSubmit() {
         const validation = ContactFormSchema.safeParse(form.value)
         if (!validation.success) {
-            errors.value = validation.error.flatten().fieldErrors as any
+            const fieldErrors = validation.error.flatten().fieldErrors
+            errors.value = Object.fromEntries(
+                Object.entries(fieldErrors).map(([key, value]) => [key, value?.[0] || ''])
+            )
             return
         }
         
@@ -45,7 +47,7 @@ export function useContactForm() {
             success.value = true
             form.value = { name: '', email: '', subject: '', message: '' }
             setTimeout(() => (success.value = false), TIMEOUT_DURATION)
-        } catch (error) {
+        } catch (error: unknown) {
             console.error('Form submission failed:', error)
             submitError.value = true
             setTimeout(() => (submitError.value = false), TIMEOUT_DURATION)
