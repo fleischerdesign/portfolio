@@ -25,7 +25,7 @@ export const useSalutation = () => {
   const getSalutation = (contacts: Contact[] | undefined, options: SalutationOptions = {}): string => {
     const { format = 'full', multiple = 'individual' } = options;
 
-    if (!contacts || contacts.length === 0) {
+    if (!contacts || !Array.isArray(contacts) || contacts.length === 0) {
       return 'Sehr geehrte Damen und Herren';
     }
 

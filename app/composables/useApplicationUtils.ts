@@ -53,19 +53,20 @@ export const useApplicationUtils = () => {
     });
   };
 
+  const toTime = (d: string | Date | null | undefined) => {
+    if (!d) return 0;
+    return new Date(d).getTime();
+  };
+
   const getApplicationDate = (
     application: ApplicationDateSource | null | undefined,
   ): string | null => {
     if (!application) return null;
     const sortedHistories = [...(application.histories || [])]
       .filter((h) => h.createdAt)
-      .sort(
-        (a, b) => (a.createdAt?.getTime() ?? 0) - (b.createdAt?.getTime() ?? 0),
-      );
+      .sort((a, b) => toTime(a.createdAt) - toTime(b.createdAt));
     const appliedHistory = sortedHistories.find((h) => h.status === "applied");
-    return appliedHistory?.createdAt
-      ? formatDate(appliedHistory.createdAt)
-      : null;
+    return appliedHistory?.createdAt ? appliedHistory.createdAt.toString() : null;
   };
 
   const getResponseDate = (
@@ -74,22 +75,18 @@ export const useApplicationUtils = () => {
     if (!application) return null;
     const sortedHistories = [...(application.histories || [])]
       .filter((h) => h.createdAt)
-      .sort(
-        (a, b) => (a.createdAt?.getTime() ?? 0) - (b.createdAt?.getTime() ?? 0),
-      );
+      .sort((a, b) => toTime(a.createdAt) - toTime(b.createdAt));
     const responseHistory = sortedHistories.find(
       (h) => h.status !== "draft" && h.status !== "applied",
     );
-    return responseHistory?.createdAt
-      ? formatDate(responseHistory.createdAt)
-      : null;
+    return responseHistory?.createdAt ? responseHistory.createdAt.toString() : null;
   };
 
   const getLastActivityDate = (
     application: ApplicationDateSource | null | undefined,
   ): string | null => {
     if (!application) return null;
-    return application.updatedAt ? formatDate(application.updatedAt) : null;
+    return application.updatedAt ? application.updatedAt.toString() : null;
   };
 
   const getFormattedApplicationDate = (

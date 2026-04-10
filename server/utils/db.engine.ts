@@ -1,10 +1,12 @@
-import { eq, getTableColumns, getTableName } from "drizzle-orm";
+import { eq, getTableColumns, getTableName, sql, inArray } from "drizzle-orm";
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import type { AnySQLiteTable, AnySQLiteColumn } from "drizzle-orm/sqlite-core";
+import type { AnySQLiteTable, AnySQLiteColumn, SQLiteColumn } from "drizzle-orm/sqlite-core";
+import { z } from "zod";
 import type { DbTransaction } from "./db";
+import { taxonomyHelper } from "./taxonomy.helper";
 
 // ---------------------------------------------------------------------------
-// Shared Types
+// Shared Types & Errors
 // ---------------------------------------------------------------------------
 
 /** Configuration for a many-to-many relationship managed via taxonomyHelper. */
@@ -15,44 +17,62 @@ export interface RelationConfig {
   lookupColumn: AnySQLiteColumn;
 }
 
+/** 
+ * Centralized DB Error mapping (Optional enhancement)
+ */
+export class DatabaseError extends Error {
+  constructor(public message: string, public statusCode = 500, public cause?: unknown) {
+    super(message);
+  }
+}
+
 // ---------------------------------------------------------------------------
-// Internal helpers — typed wrappers around Drizzle's generic table operations
+// Internal helpers — strictly typed wrappers
 // ---------------------------------------------------------------------------
 
 /**
- * Insert a record into any table. Uses `Record<string, unknown>` internally
- * because Drizzle's `.values()` overloads fight with generic `AnySQLiteTable`.
+ * Insert a record into any table. 
+ * Input is strictly typed based on the table's insert model.
  */
 async function insertInto<T extends AnySQLiteTable>(
   tx: DbTransaction,
   table: T,
-  data: Record<string, unknown>,
+  data: InferInsertModel<T>,
 ): Promise<InferSelectModel<T>> {
-  const [row] = await tx
-    .insert(table)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Drizzle's insert overload doesn't accept Record<string, unknown> for generic tables
-    .values(data as any)
-    .returning();
-  return row as InferSelectModel<T>;
+  try {
+    const [row] = await tx
+      .insert(table)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Drizzle limitation with generic tables
+      .values(data as any)
+      .returning();
+    
+    if (!row) throw new DatabaseError("Failed to insert record: No row returned.");
+    return row as InferSelectModel<T>;
+  } catch (error) {
+    if (error instanceof DatabaseError) throw error;
+    throw new DatabaseError("Database insertion failed", 500, error);
+  }
 }
 
-async function updateTable(
+async function updateTable<T extends AnySQLiteTable>(
   tx: DbTransaction,
-  table: AnySQLiteTable,
+  table: T,
   id: number,
-  data: Record<string, unknown>,
+  data: Partial<InferInsertModel<T>>,
 ): Promise<void> {
   const cols = getTableColumns(table);
+  const idCol = cols.id as AnySQLiteColumn;
+
   await tx
     .update(table)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Drizzle generic table limitation
     .set(data as any)
-    .where(eq(cols.id as AnySQLiteColumn, id));
+    .where(eq(idCol, id));
 }
 
-async function upsertTranslation(
+async function upsertTranslation<T extends AnySQLiteTable>(
   tx: DbTransaction,
-  table: AnySQLiteTable,
+  table: T,
   parentColumnName: string,
   data: Record<string, unknown>,
 ): Promise<void> {
@@ -71,34 +91,37 @@ async function upsertTranslation(
     });
 }
 
+/**
+ * Clean Refetching: Avoids string-based lookup in tx.query.
+ */
 async function refetch<T extends AnySQLiteTable>(
   tx: DbTransaction,
   table: T,
   id: number,
 ): Promise<InferSelectModel<T>> {
   const cols = getTableColumns(table);
-  const tableName = getTableName(table);
-  const queryTable = (
-    tx.query as Record<
-      string,
-      { findFirst: (opts: unknown) => Promise<InferSelectModel<T>> }
-    >
-  )[tableName]!;
-  return queryTable.findFirst({
-    where: eq(cols.id as AnySQLiteColumn, id),
-  });
+  const idCol = cols.id as AnySQLiteColumn;
+
+  const [row] = await tx
+    .select()
+    .from(table)
+    .where(eq(idCol, id))
+    .limit(1);
+
+  if (!row) throw new DatabaseError(`Record with ID ${id} not found after operation`, 404);
+  return row as InferSelectModel<T>;
 }
 
 // ---------------------------------------------------------------------------
-// 1. Entity Service — base CRUD for any table
+// 1. Entity Service — base CRUD factory
 // ---------------------------------------------------------------------------
 
-/** Descriptor for a plain (non-translatable) entity. */
 export interface EntityDescriptor<
   TMain extends AnySQLiteTable,
   TCreate = InferInsertModel<TMain>,
 > {
   mainTable: TMain;
+  schema?: z.ZodSchema<TCreate>; // Added for automatic validation
   relations?: Record<string, RelationConfig>;
   hooks?: {
     beforeCreate?: (tx: DbTransaction, data: TCreate) => Promise<TCreate>;
@@ -120,36 +143,42 @@ export interface EntityDescriptor<
   };
 }
 
-/**
- * Factory for plain entity services.
- *
- * Provides `create` and `update` that accept an *external* transaction,
- * keeping transaction ownership with the caller (service layer).
- */
 export function createEntityService<
   TMain extends AnySQLiteTable,
   TCreate = InferInsertModel<TMain>,
 >(descriptor: EntityDescriptor<TMain, TCreate>) {
   type TSelect = InferSelectModel<TMain>;
 
+  /** Internal validator */
+  function validate(data: unknown): TCreate {
+    if (descriptor.schema) {
+      return descriptor.schema.parse(data);
+    }
+    return data as TCreate;
+  }
+
   return {
-    async create(tx: DbTransaction, data: TCreate): Promise<TSelect> {
+    async create(tx: DbTransaction, rawData: TCreate): Promise<TSelect> {
+      const validatedData = validate(rawData);
+      
       const processedData = descriptor.hooks?.beforeCreate
-        ? await descriptor.hooks.beforeCreate(tx, data)
-        : data;
+        ? await descriptor.hooks.beforeCreate(tx, validatedData)
+        : validatedData;
 
       const entity = await insertInto(
         tx,
         descriptor.mainTable,
-        processedData as Record<string, unknown>,
+        processedData as InferInsertModel<TMain>,
       );
+
+      const entityId = (entity as unknown as { id: number }).id;
 
       if (descriptor.relations) {
         await syncRelations(
           tx,
           descriptor.relations,
           processedData as Record<string, unknown>,
-          (entity as unknown as { id: number }).id,
+          entityId,
         );
       }
 
@@ -163,17 +192,22 @@ export function createEntityService<
     async update(
       tx: DbTransaction,
       id: number,
-      data: Partial<TCreate>,
+      rawData: Partial<TCreate>,
     ): Promise<TSelect> {
+      // Partial validation for updates
+      const validatedData = descriptor.schema 
+        ? (descriptor.schema as z.ZodObject<any>).partial().parse(rawData) 
+        : rawData;
+
       const processedData = descriptor.hooks?.beforeUpdate
-        ? await descriptor.hooks.beforeUpdate(tx, id, data)
-        : data;
+        ? await descriptor.hooks.beforeUpdate(tx, id, validatedData)
+        : validatedData;
 
       await updateTable(
         tx,
         descriptor.mainTable,
         id,
-        processedData as Record<string, unknown>,
+        processedData as Partial<InferInsertModel<TMain>>,
       );
 
       if (descriptor.relations) {
@@ -197,10 +231,9 @@ export function createEntityService<
 }
 
 // ---------------------------------------------------------------------------
-// 2. Translatable Entity Service — extends base with i18n + taxonomy
+// 2. Translatable Entity Service
 // ---------------------------------------------------------------------------
 
-/** Extended descriptor for entities with a separate translations table. */
 export interface TranslatableEntityDescriptor<
   TMain extends AnySQLiteTable,
   TTrans extends AnySQLiteTable,
@@ -214,14 +247,10 @@ export interface TranslatableEntityDescriptor<
   translationTable: TTrans;
   parentColumnName: keyof InferInsertModel<TTrans>;
   categoriesTable?: AnySQLiteTable;
+  /** Custom fields that shouldn't be auto-mapped to columns */
+  ignoredFields?: string[];
 }
 
-/**
- * Factory for translatable entity services.
- *
- * Dynamically splits a flat payload into main-table and translation-table
- * parts based on actual column metadata — no hardcoded field names.
- */
 export function createTranslatableEntityService<
   TMain extends AnySQLiteTable,
   TTrans extends AnySQLiteTable,
@@ -234,16 +263,18 @@ export function createTranslatableEntityService<
 >(descriptor: TranslatableEntityDescriptor<TMain, TTrans, TCreate>) {
   type TSelect = InferSelectModel<TMain>;
 
-  // Pre-compute column name sets for dynamic field splitting
-  const mainColumnNames = new Set(
-    Object.keys(getTableColumns(descriptor.mainTable)),
-  );
-  const transColumnNames = new Set(
-    Object.keys(getTableColumns(descriptor.translationTable)),
-  );
-  const managedFields = new Set(["categoryName", "tags", "techstack"]);
+  const mainColumns = getTableColumns(descriptor.mainTable);
+  const transColumns = getTableColumns(descriptor.translationTable);
+  
+  const mainColumnNames = new Set(Object.keys(mainColumns));
+  const transColumnNames = new Set(Object.keys(transColumns));
+  
+  const managedFields = new Set([
+    "id", "categoryName", "tags", "techstack", 
+    ...(descriptor.ignoredFields || [])
+  ]);
 
-  /** Split a flat payload into main-table and translation-table parts. */
+  /** Dynamic Splitter: Maps flat payload to table-specific structures */
   function splitPayload(payload: Record<string, unknown>) {
     const mainData: Record<string, unknown> = {};
     const transData: Record<string, unknown> = {};
@@ -258,18 +289,14 @@ export function createTranslatableEntityService<
   }
 
   return {
-    async create(
-      tx: DbTransaction,
-      data: TCreate,
-      authorId?: number,
-    ): Promise<TSelect> {
+    async create(tx: DbTransaction, data: TCreate, authorId?: number): Promise<TSelect> {
       const processedData = descriptor.hooks?.beforeCreate
         ? await descriptor.hooks.beforeCreate(tx, data)
         : data;
 
       const record = processedData as Record<string, unknown>;
 
-      // Resolve category
+      // Taxonomy Handling
       let categoryId = record.categoryId as number | null | undefined;
       if (descriptor.categoriesTable && record.categoryName) {
         categoryId = await taxonomyHelper.ensureCategory(
@@ -281,20 +308,20 @@ export function createTranslatableEntityService<
 
       const { mainData, transData } = splitPayload(record);
 
+      // Auto-populate system fields
       if (mainColumnNames.has("translationKey") && !mainData.translationKey) {
         mainData.translationKey = crypto.randomUUID();
       }
       if (categoryId !== undefined) mainData.categoryId = categoryId;
       if (authorId !== undefined) mainData.authorId = authorId;
 
-      const entity = await insertInto(tx, descriptor.mainTable, mainData);
+      const entity = await insertInto(tx, descriptor.mainTable, mainData as InferInsertModel<TMain>);
       const entityId = (entity as unknown as { id: number }).id;
 
-      // Insert translation row
+      // Translation Layer
       transData[descriptor.parentColumnName as string] = entityId;
-      await insertInto(tx, descriptor.translationTable, transData);
+      await insertInto(tx, descriptor.translationTable, transData as InferInsertModel<TTrans>);
 
-      // Sync M2M relations
       if (descriptor.relations) {
         await syncRelations(tx, descriptor.relations, record, entityId);
       }
@@ -306,18 +333,13 @@ export function createTranslatableEntityService<
       return entity;
     },
 
-    async update(
-      tx: DbTransaction,
-      id: number,
-      data: Partial<TCreate>,
-    ): Promise<TSelect> {
+    async update(tx: DbTransaction, id: number, data: Partial<TCreate>): Promise<TSelect> {
       const processedData = descriptor.hooks?.beforeUpdate
         ? await descriptor.hooks.beforeUpdate(tx, id, data)
         : data;
 
       const record = processedData as Record<string, unknown>;
 
-      // Resolve category
       let categoryId = record.categoryId as number | null | undefined;
       if (descriptor.categoriesTable && record.categoryName) {
         categoryId = await taxonomyHelper.ensureCategory(
@@ -334,10 +356,10 @@ export function createTranslatableEntityService<
         mainData.updatedAt = mainData.updatedAt ?? new Date();
       }
 
-      await updateTable(tx, descriptor.mainTable, id, mainData);
+      await updateTable(tx, descriptor.mainTable, id, mainData as Partial<InferInsertModel<TMain>>);
 
-      // Upsert translation (only when locale is present)
-      if (transData.locale && transData.slug && transData.title) {
+      // Upsert translation if essential fields are present
+      if (transData.locale && (transData.slug || transData.title)) {
         transData[descriptor.parentColumnName as string] = id;
         if (transColumnNames.has("updatedAt")) {
           transData.updatedAt = new Date();
@@ -350,7 +372,6 @@ export function createTranslatableEntityService<
         );
       }
 
-      // Sync M2M relations
       if (descriptor.relations) {
         await syncRelations(tx, descriptor.relations, record, id);
       }
@@ -367,10 +388,9 @@ export function createTranslatableEntityService<
 }
 
 // ---------------------------------------------------------------------------
-// Helpers
+// Shared Utility Helpers
 // ---------------------------------------------------------------------------
 
-/** Sync all configured M2M relations for a given parent entity. */
 async function syncRelations(
   tx: DbTransaction,
   relations: Record<string, RelationConfig>,
@@ -382,10 +402,10 @@ async function syncRelations(
     if (Array.isArray(names)) {
       await taxonomyHelper.syncManyToMany(tx, {
         parentId,
-        parentColumn: rel.parentColumn,
+        parentColumn: rel.parentColumn as SQLiteColumn,
         junctionTable: rel.junctionTable,
         lookupTable: rel.lookupTable,
-        lookupColumn: rel.lookupColumn,
+        lookupColumn: rel.lookupColumn as SQLiteColumn,
         names: names as string[],
       });
     }
