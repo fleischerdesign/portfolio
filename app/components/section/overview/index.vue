@@ -76,7 +76,7 @@
             </div>
             <h3 class="text-xl font-bold text-neutral-900 dark:text-white">{{ $t("home.overview.statistics.title") }}</h3>
         </div>
-        <BaseStats />
+        <SectionOverviewStats />
       </UiCardContainer>
     </UiCard >
 
