@@ -93,49 +93,30 @@ useSeoMeta({
 
       <ApplicationStats :applications="filteredApplications" />
 
-      <UiCard class="mt-8">
-        <UiCardContainer class="flex flex-col gap-4 md:flex-row md:items-end">
-          <UiInput
-            id="search-applications"
-            v-model="searchTerm"
-            :placeholder="$t('applications.index.search')"
-            class="w-full md:flex-grow"
-          />
-          <div
-            class="flex flex-col gap-4 md:flex-shrink-0 md:flex-row md:items-end"
-          >
-            <UiSelect
-              id="filter-status"
-              v-model="statusFilter"
-              :options="availableStatuses"
-              :label="$t('applications.index.filter_status')"
-              class="w-full md:w-48"
-            >
-              <template #display="{ option }">
-                <span v-if="option === 'all'">{{
-                  $t("applications.index.all_statuses")
-                }}</span>
-                <span v-else>{{ $t(`applications.status.${option}`) }}</span>
-              </template>
-              <template #option="{ option }">
-                <span v-if="option === 'all'">{{
-                  $t("applications.index.all_statuses")
-                }}</span>
-                <span v-else>{{ $t(`applications.status.${option}`) }}</span>
-              </template>
-            </UiSelect>
-            <NuxtLink
-              :to="$localePath('/studio/applications/new')"
-              class="w-full md:w-auto"
-            >
-              <UiButton variant="secondary" class="w-full justify-center">
-                <Icon name="heroicons:plus" class="mr-2 h-5 w-5" />
-                {{ $t("applications.index.new_application") }}
-              </UiButton>
-            </NuxtLink>
-          </div>
-        </UiCardContainer>
-      </UiCard>
+      <StudioSearchFilter
+        :search-term="searchTerm"
+        :status-filter="statusFilter"
+        :status-options="availableStatuses"
+        :search-placeholder="$t('applications.index.search')"
+        :new-label="$t('applications.index.new_application')"
+        :new-route="$localePath('/studio/applications/new')"
+        search-id="search-applications"
+        @update:search-term="searchTerm = $event"
+        @update:status-filter="statusFilter = $event"
+      >
+        <template #statusDisplay="{ option }">
+          <span v-if="option === 'all'">{{
+            $t("applications.index.all_statuses")
+          }}</span>
+          <span v-else>{{ $t(`applications.status.${option}`) }}</span>
+        </template>
+        <template #statusOption="{ option }">
+          <span v-if="option === 'all'">{{
+            $t("applications.index.all_statuses")
+          }}</span>
+          <span v-else>{{ $t(`applications.status.${option}`) }}</span>
+        </template>
+      </StudioSearchFilter>
 
       <div
         v-if="filteredApplications && filteredApplications.length > 0"

@@ -544,7 +544,8 @@
     "search": {
       "placeholder": "Search...",
       "search": "Search",
-      "filter": "Filter by status"
+      "filter": "Filter by status",
+      "reset": "Reset filters"
     },
     "blog": {
       "new": "New Post",

@@ -553,7 +553,8 @@
     "search": {
       "placeholder": "Suchen...",
       "search": "Suchen",
-      "filter": "Status filtern"
+      "filter": "Status filtern",
+      "reset": "Filter zurücksetzen"
     },
     "blog": {
       "new": "Neuer Beitrag",

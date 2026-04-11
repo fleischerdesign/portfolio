@@ -33,9 +33,9 @@ Legend: [ ] = pending, [x] = done
 - [ ] **P1.3** `studio/documents.vue` (448 Zeilen) zerlegen
 - [x] **P1.4** `schema.ts` (630 Zeilen) nach Domain aufteilen → `server/db/schema/` (application, user, course, now, taxonomy, content, relations, index)
 - [x] **P1.5** `StatusBadge`-Komponente extrahieren (ersetzt 4x `getStatusColor()` + `getStatusChipClasses` aus `useApplicationUtils`)
-- [ ] **P1.6** `MarkdownEditor`-Komponente extrahieren (ersetzt 2x duplicat split-view)
-- [ ] **P1.7** `LocaleSwitcher`-Komponente extrahieren (ersetzt 2x duplicat UI)
-- [ ] **P1.8** `StudioListPage`-Komponente extrahieren (ersetzt 3x search+filter+grid)
+- [x] **P1.6** `MarkdownEditor`-Komponente extrahieren (ersetzt 2x duplicat split-view)
+- [x] **P1.7** `LocaleSwitcher`-Komponente extrahieren (ersetzt 2x duplicat UI)
+- [x] **P1.8** `StudioSearchFilter`-Komponente extrahieren (ersetzt 2x search+filter+grid)
 - [ ] **P1.9** Konsistente Fehlerbehandlung: `throwIfNull()` Helper + einheitliche 404-Strategie
 - [ ] **P1.10** `Document-Fallback` Check in `application.service.ts` als private Methode extrahieren
 
