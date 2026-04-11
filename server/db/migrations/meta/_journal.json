@@ -134,6 +134,13 @@
       "when": 1771324474011,
       "tag": "0018_friendly_echo",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "6",
+      "when": 1775912184355,
+      "tag": "0019_mysterious_molly_hayes",
+      "breakpoints": true
     }
   ]
 }
