@@ -94,7 +94,7 @@ function getTitle(project: ProjectStudioResponse) {
               <div
                 class="absolute bottom-4 left-4 right-4 flex items-end justify-between"
               >
-                <UiStatusBadge :status="project.status" />
+                <UiTag :status="project.status" shape="rounded" variant="status" />
               </div>
             </div>
             <div
@@ -104,7 +104,7 @@ function getTitle(project: ProjectStudioResponse) {
 
             <UiCardContainer class="flex flex-1 flex-col p-6">
               <div v-if="!project.coverImage" class="mb-4">
-                <UiStatusBadge :status="project.status" />
+                <UiTag :status="project.status" shape="rounded" variant="status" />
               </div>
 
               <h3

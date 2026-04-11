@@ -95,7 +95,7 @@ const viewFormattedDate = computed(() =>
               Status
             </p>
             <div class="mt-1">
-              <UiStatusBadge :status="post.status" size="md" />
+              <UiTag :status="post.status" shape="rounded" variant="status" size="md" />
             </div>
           </div>
         </div>

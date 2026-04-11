@@ -175,13 +175,14 @@ onUnmounted(() => {
               >{{ $t("applications.card.last_activity") }}:
               {{ getFormattedLastActivityDate(application) }}</span
             >
-            <UiStatusBadge
+            <UiTag
               :status="application.currentStatus"
+              shape="rounded"
+              variant="status"
               size="md"
-              :capitalize="false"
             >
               {{ $t(`applications.status.${application.currentStatus}`) }}
-            </UiStatusBadge>
+            </UiTag>
           </div>
         </UiCardContainer>
       </UiCard>

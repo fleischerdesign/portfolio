@@ -290,7 +290,7 @@ const currentBody = computed(() => {
             <div class="flex flex-col gap-1">
               <span class="text-xs text-neutral-500">Status</span>
               <div class="flex">
-                <UiStatusBadge :status="project.status" />
+                <UiTag :status="project.status" shape="rounded" variant="status" />
               </div>
             </div>
             <div class="flex flex-col gap-1">

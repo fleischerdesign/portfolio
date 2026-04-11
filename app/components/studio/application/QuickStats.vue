@@ -19,13 +19,14 @@ const { getFormattedLastActivityDate, getDisplayDate } = useApplicationUtils();
         :label="$t('applications.detail.document.current_status')"
       >
         <template #value>
-          <UiStatusBadge
+          <UiTag
             :status="application.currentStatus"
+            shape="rounded"
+            variant="status"
             size="md"
-            :capitalize="false"
           >
             {{ $t(`applications.status.${application.currentStatus}`) }}
-          </UiStatusBadge>
+          </UiTag>
         </template>
       </UiQuickStat>
 
