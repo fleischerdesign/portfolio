@@ -20,7 +20,7 @@ const emit = defineEmits<{
     <UiCard class="border-secondary-500/5 shadow-lg">
       <UiCardContainer class="flex h-full flex-col gap-4">
         <h3 class="text-xl font-bold text-neutral-900 dark:text-white">
-          {{ $t("applications.detail.preview.title") || "Vorschau" }}
+          {{ $t("applications.detail.preview") }}
         </h3>
 
         <div
