@@ -32,20 +32,13 @@ const stats = [
 
 <template>
   <div class="flex flex-col gap-3 py-2">
-    <div
+    <UiQuickStat
       v-for="(stat, index) in stats"
-      :key="index" 
-      class="group relative flex items-center justify-between rounded-2xl border border-neutral-200/50 bg-white/50 p-4 shadow-sm backdrop-blur-sm transition-all duration-500 hover:border-secondary-500/30 hover:bg-secondary-50/50 dark:border-neutral-800/50 dark:bg-neutral-900/40 dark:hover:border-secondary-400/30 dark:hover:bg-secondary-900/20"
-    >
-      <div class="flex items-center gap-4">
-          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 transition-transform group-hover:scale-110 dark:bg-secondary-900/40 dark:text-secondary-400">
-              <Icon :name="stat.icon" size="20" />
-          </div>
-          <span class="font-medium text-neutral-700 dark:text-neutral-300">{{ stat.label }}</span>
-      </div>
-      <span class="text-xl font-bold text-secondary-600 dark:text-secondary-400">
-        {{ stat.value.toLocaleString() }}
-      </span>
-    </div>
+      :key="index"
+      layout="inline"
+      :icon="stat.icon"
+      :label="stat.label"
+      :value="stat.value"
+    />
   </div>
 </template>
