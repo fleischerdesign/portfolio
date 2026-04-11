@@ -31,7 +31,7 @@ Legend: [ ] = pending, [x] = done
 - [ ] **P1.1** `print.vue` (753 Zeilen) in einzelne Print-Page-Komponenten zerlegen
 - [ ] **P1.2** `studio/blog/[id].vue` (459 Zeilen) zerlegen
 - [ ] **P1.3** `studio/documents.vue` (448 Zeilen) zerlegen
-- [ ] **P1.4** `schema.ts` (435 Zeilen) nach Domain aufteilen
+- [x] **P1.4** `schema.ts` (630 Zeilen) nach Domain aufteilen → `server/db/schema/` (application, user, course, now, taxonomy, content, relations, index)
 - [ ] **P1.5** `StatusBadge`-Komponente extrahieren (ersetzt 4x `getStatusColor()`)
 - [ ] **P1.6** `MarkdownEditor`-Komponente extrahieren (ersetzt 2x duplicat split-view)
 - [ ] **P1.7** `LocaleSwitcher`-Komponente extrahieren (ersetzt 2x duplicat UI)
