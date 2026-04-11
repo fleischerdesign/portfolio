@@ -58,48 +58,15 @@ function getTitle(project: ProjectStudioResponse) {
         subtitle="Showcase your work."
       />
 
-      <UiCard
-        class="mt-8 border-secondary-500/10 shadow-xl shadow-secondary-500/5"
-      >
-        <UiCardContainer
-          class="flex flex-col gap-4 p-6 md:flex-row md:items-end"
-        >
-          <UiInput
-            id="search-projects"
-            v-model="searchTerm"
-            placeholder="Search projects..."
-            label="Search"
-            class="w-full md:flex-grow"
-          />
-          <div
-            class="flex flex-col gap-4 md:flex-shrink-0 md:flex-row md:items-end"
-          >
-            <UiSelect
-              id="filter-status"
-              v-model="statusFilter"
-              :options="['all', 'published', 'draft', 'archived']"
-              label="Status"
-              class="w-full md:w-48"
-            >
-              <template #display="{ option }">
-                <span class="capitalize">{{ option }}</span>
-              </template>
-              <template #option="{ option }">
-                <span class="capitalize">{{ option }}</span>
-              </template>
-            </UiSelect>
-            <NuxtLink
-              :to="$localePath('/studio/projects/new')"
-              class="w-full md:w-auto"
-            >
-              <UiButton variant="secondary" class="w-full justify-center">
-                <Icon name="heroicons:plus" class="mr-2 h-5 w-5" />
-                New Project
-              </UiButton>
-            </NuxtLink>
-          </div>
-        </UiCardContainer>
-      </UiCard>
+      <StudioSearchFilter
+        :search-term="searchTerm"
+        :status-filter="statusFilter"
+        :new-label="$t('studio.projects.new')"
+        :new-route="$localePath('/studio/projects/new')"
+        search-id="search-projects"
+        @update:search-term="searchTerm = $event"
+        @update:status-filter="statusFilter = $event"
+      />
 
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <UiCard
@@ -171,7 +138,7 @@ function getTitle(project: ProjectStudioResponse) {
         class="flex flex-col items-center py-12 text-center text-neutral-500"
       >
         <Icon name="heroicons:folder" class="mb-4 h-12 w-12 opacity-20" />
-        <p>No projects found matching your criteria.</p>
+        <p>{{ $t("studio.projects.empty") }}</p>
       </div>
     </div>
   </div>

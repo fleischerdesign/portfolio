@@ -58,48 +58,15 @@ function getTitle(post: BlogPostStudioResponse) {
         subtitle="Manage and write articles."
       />
 
-      <UiCard
-        class="mt-8 border-secondary-500/10 shadow-xl shadow-secondary-500/5"
-      >
-        <UiCardContainer
-          class="flex flex-col gap-4 p-6 md:flex-row md:items-end"
-        >
-          <UiInput
-            id="search-posts"
-            v-model="searchTerm"
-            placeholder="Search posts..."
-            label="Search"
-            class="w-full md:flex-grow"
-          />
-          <div
-            class="flex flex-col gap-4 md:flex-shrink-0 md:flex-row md:items-end"
-          >
-            <UiSelect
-              id="filter-status"
-              v-model="statusFilter"
-              :options="['all', 'published', 'draft', 'archived']"
-              label="Status"
-              class="w-full md:w-48"
-            >
-              <template #display="{ option }">
-                <span class="capitalize">{{ option }}</span>
-              </template>
-              <template #option="{ option }">
-                <span class="capitalize">{{ option }}</span>
-              </template>
-            </UiSelect>
-            <NuxtLink
-              :to="$localePath('/studio/blog/new')"
-              class="w-full md:w-auto"
-            >
-              <UiButton variant="secondary" class="w-full justify-center">
-                <Icon name="heroicons:plus" class="mr-2 h-5 w-5" />
-                New Post
-              </UiButton>
-            </NuxtLink>
-          </div>
-        </UiCardContainer>
-      </UiCard>
+      <StudioSearchFilter
+        :search-term="searchTerm"
+        :status-filter="statusFilter"
+        :new-label="$t('studio.blog.new')"
+        :new-route="$localePath('/studio/blog/new')"
+        search-id="search-posts"
+        @update:search-term="searchTerm = $event"
+        @update:status-filter="statusFilter = $event"
+      />
 
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <UiCard
@@ -174,7 +141,7 @@ function getTitle(post: BlogPostStudioResponse) {
           name="heroicons:document-text"
           class="mb-4 h-12 w-12 opacity-20"
         />
-        <p>No posts found matching your criteria.</p>
+        <p>{{ $t("studio.blog.empty") }}</p>
       </div>
     </div>
   </div>

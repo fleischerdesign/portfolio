@@ -548,5 +548,20 @@
       "politics": "Politik",
       "biology": "Biologie"
     }
+  },
+  "studio": {
+    "search": {
+      "placeholder": "Suchen...",
+      "search": "Suchen",
+      "filter": "Status filtern"
+    },
+    "blog": {
+      "new": "Neuer Beitrag",
+      "empty": "Keine Beiträge gefunden."
+    },
+    "projects": {
+      "new": "Neues Projekt",
+      "empty": "Keine Projekte gefunden."
+    }
   }
 }

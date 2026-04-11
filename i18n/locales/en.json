@@ -539,5 +539,20 @@
       "politics": "Politics",
       "biology": "Biology"
     }
+  },
+  "studio": {
+    "search": {
+      "placeholder": "Search...",
+      "search": "Search",
+      "filter": "Filter by status"
+    },
+    "blog": {
+      "new": "New Post",
+      "empty": "No posts found."
+    },
+    "projects": {
+      "new": "New Project",
+      "empty": "No projects found."
+    }
   }
 }

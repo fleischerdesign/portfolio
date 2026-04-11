@@ -167,27 +167,12 @@ const currentBody = computed(() => {
             </UiCardContainer>
           </UiCard>
 
-          <div class="grid h-[600px] grid-cols-1 gap-4 md:grid-cols-2">
-            <UiCard class="flex h-full flex-col overflow-hidden">
-              <div
-                class="border-b border-neutral-200 bg-neutral-50 px-4 py-2 text-xs font-bold uppercase tracking-widest text-neutral-500 dark:border-neutral-800 dark:bg-neutral-900/50"
-              >
-                Markdown
-              </div>
-              <textarea
-                v-model="(editableProject as any)[currentLocale].body"
-                class="w-full flex-1 resize-none border-none bg-transparent p-4 font-mono text-sm leading-relaxed focus:ring-0"
-              ></textarea>
-            </UiCard>
-            <UiCard
-              class="flex h-full flex-col overflow-hidden bg-neutral-50/50 dark:bg-neutral-900/30"
-            >
-              <BaseMarkdown
-                :content="currentBody"
-                class="prose-sm flex-1 overflow-y-auto p-4"
-              />
-            </UiCard>
-          </div>
+          <StudioMarkdownEditor
+            :model-value="(editableProject as any)[currentLocale].body"
+            @update:model-value="
+              (editableProject as any)[currentLocale].body = $event
+            "
+          />
 
           <UiCard>
             <UiCardContainer class="space-y-6 p-6">
@@ -272,21 +257,7 @@ const currentBody = computed(() => {
           class="overflow-hidden border-secondary-500/10 shadow-lg shadow-secondary-500/5"
         >
           <UiCardContainer class="space-y-6 p-6">
-            <div class="flex rounded-lg bg-neutral-100 p-1 dark:bg-neutral-900">
-              <button
-                v-for="lang in LOCALES"
-                :key="lang"
-                class="flex-1 rounded-md px-3 py-2 text-xs font-bold uppercase transition-all"
-                :class="
-                  currentLocale === lang
-                    ? 'bg-white dark:bg-neutral-800 shadow-sm text-secondary-600'
-                    : 'text-neutral-500 hover:text-neutral-900'
-                "
-                @click="currentLocale = lang"
-              >
-                {{ lang }}
-              </button>
-            </div>
+            <StudioLocaleSwitcher v-model="currentLocale" />
 
             <div class="flex flex-col gap-2">
               <template v-if="!isEditing">
