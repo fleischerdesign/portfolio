@@ -48,19 +48,6 @@ const currentBody = computed(() => {
 const viewFormattedDate = computed(() =>
   post.value?.publishedAt ? formatDate(post.value.publishedAt) : "",
 );
-
-function getStatusColor(status: string) {
-  switch (status) {
-    case "published":
-      return "bg-emerald-500 text-white shadow-emerald-500/30 border-emerald-400/50";
-    case "draft":
-      return "bg-amber-500 text-white shadow-amber-500/30 border-amber-400/50";
-    case "archived":
-      return "bg-neutral-500 text-white border-neutral-400/50";
-    default:
-      return "bg-neutral-500";
-  }
-}
 </script>
 
 <template>
@@ -108,12 +95,7 @@ function getStatusColor(status: string) {
               Status
             </p>
             <div class="mt-1">
-              <span
-                class="rounded-lg border px-3 py-0.5 text-xs font-bold capitalize shadow-sm"
-                :class="getStatusColor(post.status)"
-              >
-                {{ post.status }}
-              </span>
+              <UiStatusBadge :status="post.status" size="md" />
             </div>
           </div>
         </div>
@@ -292,7 +274,10 @@ function getStatusColor(status: string) {
             <UiCard
               class="flex h-full flex-col overflow-hidden bg-neutral-50/50 dark:bg-neutral-900/30"
             >
-              <BaseMarkdown :content="currentBody" class="prose-sm flex-1 overflow-y-auto p-4" />
+              <BaseMarkdown
+                :content="currentBody"
+                class="prose-sm flex-1 overflow-y-auto p-4"
+              />
             </UiCard>
           </div>
         </div>
@@ -368,12 +353,7 @@ function getStatusColor(status: string) {
             <div class="flex flex-col gap-1">
               <span class="text-xs text-neutral-500">Status</span>
               <div class="flex">
-                <span
-                  class="rounded border px-2 py-0.5 text-[10px] font-bold uppercase capitalize shadow-sm"
-                  :class="getStatusColor(post.status)"
-                >
-                  {{ post.status }}
-                </span>
+                <UiStatusBadge :status="post.status" />
               </div>
             </div>
             <div class="flex flex-col gap-1">

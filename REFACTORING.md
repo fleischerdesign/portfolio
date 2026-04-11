@@ -23,7 +23,7 @@ Legend: [ ] = pending, [x] = done
 
 ### i18n Migration (einheitliche Strategie)
 
-- [ ] **P0.4** `nowEntries` auf Translation-Table-Pattern migrieren (Schema + Migration + Service)
+- [x] **P0.4** `nowEntries` auf Translation-Table-Pattern migrieren (Schema + Migration + Service)
 - [ ] **P0.5** Tags, Categories, Technologies auf Translation-Table-Pattern migrieren (zukuenftig)
 
 ## P1 -- Hoch
@@ -32,7 +32,7 @@ Legend: [ ] = pending, [x] = done
 - [ ] **P1.2** `studio/blog/[id].vue` (459 Zeilen) zerlegen
 - [ ] **P1.3** `studio/documents.vue` (448 Zeilen) zerlegen
 - [x] **P1.4** `schema.ts` (630 Zeilen) nach Domain aufteilen → `server/db/schema/` (application, user, course, now, taxonomy, content, relations, index)
-- [ ] **P1.5** `StatusBadge`-Komponente extrahieren (ersetzt 4x `getStatusColor()`)
+- [x] **P1.5** `StatusBadge`-Komponente extrahieren (ersetzt 4x `getStatusColor()` + `getStatusChipClasses` aus `useApplicationUtils`)
 - [ ] **P1.6** `MarkdownEditor`-Komponente extrahieren (ersetzt 2x duplicat split-view)
 - [ ] **P1.7** `LocaleSwitcher`-Komponente extrahieren (ersetzt 2x duplicat UI)
 - [ ] **P1.8** `StudioListPage`-Komponente extrahieren (ersetzt 3x search+filter+grid)

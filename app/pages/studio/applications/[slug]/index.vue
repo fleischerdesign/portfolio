@@ -2,12 +2,8 @@
 import type { ApplicationResponsePayload } from "#shared/schemas/application.schema";
 import type { CompanyResponse } from "#shared/schemas/company.schema";
 
-const {
-  getStatusChipClasses,
-  getStatusTextClasses,
-  getFormattedLastActivityDate,
-  getDisplayDate,
-} = useApplicationUtils();
+const { getStatusTextClasses, getFormattedLastActivityDate, getDisplayDate } =
+  useApplicationUtils();
 const { getSalutation } = useSalutation();
 const { t } = useI18n();
 
@@ -220,17 +216,13 @@ onMounted(() => {
               {{ $t("applications.detail.document.current_status") }}
             </p>
             <div class="mt-1">
-              <UiChip
-                unstyled
-                size="sm"
-                :class="[
-                  getStatusChipClasses(application.currentStatus),
-                  getStatusTextClasses(application.currentStatus),
-                  'rounded-lg border px-3 py-0.5 text-xs font-bold shadow-sm',
-                ]"
+              <UiStatusBadge
+                :status="application.currentStatus"
+                size="md"
+                :capitalize="false"
               >
                 {{ $t(`applications.status.${application.currentStatus}`) }}
-              </UiChip>
+              </UiStatusBadge>
             </div>
           </div>
         </div>
@@ -668,9 +660,9 @@ onMounted(() => {
                 {{ salutation }},
               </p>
 
-              <BaseMarkdown 
-                v-if="!isEditing" 
-                :content="application.body || ''" 
+              <BaseMarkdown
+                v-if="!isEditing"
+                :content="application.body || ''"
               />
               <div v-else-if="editableApplication" class="space-y-8">
                 <div
