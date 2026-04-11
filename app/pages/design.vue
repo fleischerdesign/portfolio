@@ -1,15 +1,9 @@
 <script setup lang="ts">
+const { showToast } = useToast();
+
 definePageMeta({
   title: 'Design System',
 });
-
-const categories = [
-  { id: 'buttons', name: 'Buttons', icon: 'heroicons:cursor-arrow-rays' },
-  { id: 'cards', name: 'Cards', icon: 'heroicons:square-2-stack' },
-  { id: 'forms', name: 'Forms', icon: 'heroicons:pencil-square' },
-  { id: 'tags', name: 'Tags', icon: 'heroicons:tag' },
-  { id: 'stats', name: 'Stats', icon: 'heroicons:chart-bar' },
-];
 
 // Demo states
 const isLoading = ref(false);
@@ -17,17 +11,69 @@ const searchTerm = ref('');
 const selectedStatus = ref('published');
 const inputText = ref('Sample text');
 const inputError = ref('This field is required');
+const showDemoModal = ref(false);
+const editorContent = ref('# Hello Markdown\n\nThis is a live preview of the **ContentEditor**.\n\n- Feature 1\n- Feature 2');
 
 function toggleLoading() {
   isLoading.value = true;
   setTimeout(() => (isLoading.value = false), 2000);
 }
+
+function triggerToast(type: 'success' | 'error' | 'info' | 'warning') {
+  showToast(`This is a ${type} toast message!`, { type });
+}
+
+// Mock Data
+const demoTimeline = [
+  { date: '2024', title: 'Senior Developer', description: 'Leading the frontend team at TechCorp.', icon: 'heroicons:briefcase', skills: ['Vue', 'Nuxt', 'TypeScript'] },
+  { date: '2022', title: 'Fullstack Engineer', description: 'Built highly scalable microservices.', icon: 'heroicons:cpu-chip', skills: ['Node.js', 'Go'] },
+];
+
+const demoContact = {
+  name: 'John Doe',
+  position: 'Hiring Manager',
+  email: 'john@example.com',
+  phone: '+49 123 456789'
+};
+
+const mockProject = {
+  id: 1,
+  title: 'Portfolio Website',
+  subtitle: 'Nuxt 4 & Tailwind CSS',
+  slug: 'portfolio',
+  status: 'published',
+  icon: 'heroicons:globe-alt',
+  coverImage: null,
+  tags: [{ id: 1, name: 'Nuxt', slug: 'nuxt' }],
+  techstack: [{ id: 1, name: 'Vue', slug: 'vue' }]
+};
+
+const mockPost = {
+  id: 1,
+  title: 'Refactoring like a Pro',
+  excerpt: 'A deep dive into clean code patterns.',
+  slug: 'refactoring-pro',
+  status: 'published',
+  publishedAt: new Date(),
+  tags: [{ id: 1, name: 'Engineering', slug: 'eng' }]
+};
+
+const mockApplication = {
+  id: 1,
+  title: 'Senior Frontend Developer',
+  company: { name: 'Tech Solutions' },
+  currentStatus: 'applied',
+  updatedAt: new Date(),
+  notes: [],
+  documents: [],
+  contacts: []
+};
 </script>
 
 <template>
-  <div class="container mx-auto max-w-screen-xl px-4 pb-32 pt-32 md:px-8 lg:pt-44">
+  <div class="container mx-auto max-w-screen-xl px-4 pb-32 pt-32 md:px-8 lg:pt-44 font-sans">
     
-    <!-- Hero Section -->
+    <!-- Header -->
     <section class="mb-32">
       <UiSectionHeader
         symbol="heroicons:paint-brush"
@@ -36,30 +82,10 @@ function toggleLoading() {
       />
     </section>
 
-    <!-- Local Navigation -->
-    <section class="mb-32">
-      <div class="flex flex-wrap gap-4">
-        <NuxtLink
-          v-for="cat in categories"
-          :key="cat.id"
-          :to="`#${cat.id}`"
-          class="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-5 py-3 text-sm font-bold text-neutral-600 transition-all hover:border-secondary-500 hover:text-secondary-600 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:text-secondary-400"
-        >
-          <Icon :name="cat.icon" size="18" />
-          {{ cat.name }}
-        </NuxtLink>
-      </div>
-    </section>
-
     <!-- 1. BUTTONS -->
-    <section id="buttons" class="mb-32 scroll-mt-32">
-      <UiSectionHeader 
-        title="Buttons" 
-        subtitle="Trigger actions with consistent visual feedback." 
-        class="mb-16"
-      />
-
-      <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
+    <section class="mb-32">
+      <UiSectionHeader title="Buttons" subtitle="Interactive triggers." class="mb-16" />
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-3">
         <div class="space-y-6">
           <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Variants</p>
           <div class="flex flex-wrap items-center gap-4">
@@ -68,24 +94,21 @@ function toggleLoading() {
             <UiButton variant="glass">Glass</UiButton>
             <UiButton variant="danger">Danger</UiButton>
             <UiButton variant="ghost">Ghost</UiButton>
-            <UiButton variant="link">Link</UiButton>
           </div>
         </div>
-
         <div class="space-y-6 md:pl-10">
           <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Sizes</p>
-          <div class="flex flex-wrap items-center gap-4">
+          <div class="flex flex-wrap gap-4 items-center">
             <UiButton size="sm">Small</UiButton>
             <UiButton size="md">Medium</UiButton>
             <UiButton size="lg">Large</UiButton>
             <UiButton size="icon"><Icon name="heroicons:plus" /></UiButton>
           </div>
         </div>
-
         <div class="space-y-6 lg:pl-10">
-          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Interactive States</p>
-          <div class="flex flex-wrap items-center gap-4">
-            <UiButton :is-loading="isLoading" @click="toggleLoading">Toggle Loading</UiButton>
+          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Async</p>
+          <div class="flex flex-wrap gap-4">
+            <UiButton :is-loading="isLoading" @click="toggleLoading">Click to Load</UiButton>
             <UiButton disabled>Disabled</UiButton>
           </div>
         </div>
@@ -93,73 +116,29 @@ function toggleLoading() {
     </section>
 
     <!-- 2. CARDS -->
-    <section id="cards" class="mb-32 scroll-mt-32">
-      <UiSectionHeader 
-        title="Cards & Elevation" 
-        subtitle="Surface containers for different content depths." 
-        class="mb-16"
-      />
-
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <div class="space-y-4">
-          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500 text-center">shadow-sm</p>
-          <UiCard shadow="sm">
-            <UiCardContainer class="p-10 text-center">
-              <h3 class="text-xl font-bold text-neutral-900 dark:text-white">Standard Card</h3>
-              <p class="mt-2 text-neutral-500">Used for basic content grouping.</p>
-            </UiCardContainer>
-          </UiCard>
-        </div>
-
-        <div class="space-y-4">
-          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500 text-center">hover-shadow</p>
-          <UiCard hover shadow="sm">
-            <UiCardContainer class="p-10 text-center">
-              <h3 class="text-xl font-bold text-neutral-900 dark:text-white">Interactive Card</h3>
-              <p class="mt-2 text-neutral-500">Elevates slightly on hover.</p>
-            </UiCardContainer>
-          </UiCard>
-        </div>
-
-        <div class="space-y-4">
-          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500 text-center">shadow-accent</p>
-          <UiCard shadow="accent">
-            <UiCardContainer class="p-10 text-center">
-              <h3 class="text-xl font-bold text-secondary-600">Brand Depth</h3>
-              <p class="mt-2 text-neutral-500">Utilizes the emerald glow shadow.</p>
-            </UiCardContainer>
-          </UiCard>
-        </div>
+    <section class="mb-32">
+      <UiSectionHeader title="Cards & Elevation" subtitle="Surface containers." class="mb-16" />
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <UiCard shadow="sm"><UiCardContainer class="p-10 text-center font-bold">shadow-sm</UiCardContainer></UiCard>
+        <UiCard hover shadow="sm"><UiCardContainer class="p-10 text-center font-bold">hover-shadow</UiCardContainer></UiCard>
+        <UiCard shadow="accent"><UiCardContainer class="p-10 text-center font-bold text-secondary-600">shadow-accent</UiCardContainer></UiCard>
+        <UiContactCard :contact="demoContact" />
       </div>
     </section>
 
     <!-- 3. FORMS -->
-    <section id="forms" class="mb-32 scroll-mt-32">
-      <UiSectionHeader 
-        title="Form Elements" 
-        subtitle="Input types and validation feedback states." 
-        class="mb-16"
-      />
-
-      <div class="grid grid-cols-1 gap-16 lg:grid-cols-2">
-        <div class="space-y-10">
-          <UiInput id="lab-1" label="Standard Input" placeholder="Search..." v-model="inputText" />
-          <UiInput id="lab-2" label="Input with Prefix Icon">
-            <template #prefix>
-              <Icon name="heroicons:magnifying-glass" size="18" />
-            </template>
-          </UiInput>
-          <UiInput id="lab-3" label="Validation State" :error="inputError" has-error />
+    <section class="mb-32">
+      <UiSectionHeader title="Forms & Inputs" subtitle="Data entry." class="mb-16" />
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
+        <div class="space-y-8">
+          <UiInput id="f1" label="Standard Input" placeholder="Type something..." v-model="inputText" />
+          <UiInput id="f2" label="With Icon"><template #prefix><Icon name="heroicons:envelope" size="18" /></template></UiInput>
+          <UiInput id="f3" label="Error State" :error="inputError" has-error />
         </div>
-        <div class="space-y-10 lg:pl-16">
-          <UiSelect
-            id="lab-select"
-            label="Select Dropdown"
-            v-model="selectedStatus"
-            :options="['published', 'draft', 'archived']"
-          />
-          <div class="space-y-4">
-            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Search Filter Component</p>
+        <div class="space-y-8 lg:pl-16">
+          <UiSelect id="s1" label="Select Component" v-model="selectedStatus" :options="['published', 'draft', 'archived']" />
+          <div class="space-y-2">
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Search Filter</p>
             <UiSearchFilter v-model:search-term="searchTerm" />
           </div>
         </div>
@@ -167,65 +146,128 @@ function toggleLoading() {
     </section>
 
     <!-- 4. TAGS -->
-    <section id="tags" class="mb-32 scroll-mt-32">
-      <UiSectionHeader 
-        title="Tags & Chips" 
-        subtitle="Status indicators and metadata classification." 
-        class="mb-16"
-      />
-
-      <div class="grid gap-16 md:grid-cols-2">
-        <div class="space-y-8">
-          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Status Badges</p>
+    <section class="mb-32">
+      <UiSectionHeader title="Tags & Status" subtitle="Classification." class="mb-16" />
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-3">
+        <div class="space-y-6">
+          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Status</p>
           <div class="flex flex-wrap gap-3">
             <UiTag status="published" variant="status" shape="rounded">Published</UiTag>
-            <UiTag status="draft" variant="status" shape="rounded">Draft</UiTag>
             <UiTag status="interview" variant="status" shape="rounded">Interview</UiTag>
             <UiTag status="rejected" variant="status" shape="rounded">Rejected</UiTag>
           </div>
         </div>
-        <div class="space-y-8 md:pl-16">
-          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Tag Variants</p>
+        <div class="space-y-6 md:pl-10">
+          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Variants</p>
           <div class="flex flex-wrap gap-3">
-            <UiTag variant="glow">Vue.js</UiTag>
-            <UiTag variant="outline">Tailwind</UiTag>
-            <UiTag variant="fill" color="primary">Nuxt 4</UiTag>
-            <UiTag interactive>Interactive Tag</UiTag>
+            <UiTag variant="glow">Glow</UiTag>
+            <UiTag variant="outline">Outline</UiTag>
+            <UiTag variant="fill" color="primary">Primary</UiTag>
           </div>
         </div>
-        <div class="col-span-1 space-y-8 md:col-span-2">
-          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500 text-center">Interactive Chips</p>
-          <div class="flex justify-center flex-wrap gap-4">
-            <UiChip>Standard Entity</UiChip>
-            <UiChip closable @close="() => {}">Removable Chip</UiChip>
-            <UiChip variant="gradient" size="lg">Premium/Special</UiChip>
+        <div class="space-y-6 lg:pl-10">
+          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Chips</p>
+          <div class="flex flex-wrap gap-3">
+            <UiChip closable @close="() => {}">Entity Chip</UiChip>
+            <UiChip variant="gradient">Special</UiChip>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 5. STATS -->
-    <section id="stats" class="mb-32 scroll-mt-32">
-      <UiSectionHeader 
-        title="Data Visualization" 
-        subtitle="Simple metrics and statistical representations." 
-        class="mb-16"
-      />
+    <!-- 5. FEEDBACK -->
+    <section class="mb-32">
+      <UiSectionHeader title="Feedback" subtitle="Alerts and Modals." class="mb-16" />
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
+        <div class="space-y-4">
+          <UiAlert variant="info" title="Info">This is an information.</UiAlert>
+          <UiAlert variant="warning" title="Warning">Please be careful.</UiAlert>
+          <UiAlert variant="error" title="Error">Something went wrong.</UiAlert>
+        </div>
+        <div class="flex flex-wrap gap-4 items-start lg:pl-16 pt-4">
+          <UiButton size="sm" @click="triggerToast('success')">Success Toast</UiButton>
+          <UiButton size="sm" variant="danger" @click="triggerToast('error')">Error Toast</UiButton>
+          <UiButton size="sm" variant="secondary" @click="showDemoModal = true">Open Modal</UiButton>
+        </div>
+      </div>
+      <UiModal v-model="showDemoModal">
+        <template #header><h3 class="text-2xl font-black">System Modal</h3></template>
+        <template #body><p>Demonstration of the global modal component.</p></template>
+        <template #footer><UiButton @click="showDemoModal = false">Close</UiButton></template>
+      </UiModal>
+    </section>
 
-      <div class="grid grid-cols-1 gap-16 lg:grid-cols-2">
-        <div class="space-y-10">
-          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Stacked Metric Layout</p>
-          <div class="grid grid-cols-2 gap-6">
-            <UiQuickStat icon="heroicons:signal" label="Current Status" value="Interview" />
-            <UiQuickStat icon="heroicons:building-office" label="Company" value="Tech Corp" />
+    <!-- 6. CONTENT -->
+    <section class="mb-32">
+      <UiSectionHeader title="Content Tools" subtitle="Rich text." class="mb-16" />
+      <div class="space-y-16">
+        <div class="space-y-6">
+          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Content Editor</p>
+          <UiContentEditor v-model="editorContent" />
+        </div>
+        <div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
+          <div class="space-y-6">
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Markdown</p>
+            <div class="rounded-2xl border border-neutral-100 bg-white p-8 dark:border-neutral-800 dark:bg-neutral-900">
+              <BaseMarkdown content="**Bold**, *italic*, and [links](https://google.com) work here." />
+            </div>
+          </div>
+          <div class="space-y-6 lg:pl-16">
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Timeline</p>
+            <UiTimeline :items="demoTimeline" />
           </div>
         </div>
-        <div class="space-y-10 lg:pl-16">
-          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Inline Metric Layout</p>
-          <div class="flex flex-col gap-4">
-            <UiQuickStat layout="inline" icon="mdi:coffee" label="Coffee consumed" value="1,234" />
-            <UiQuickStat layout="inline" icon="mdi:code-tags" label="Lines of code" value="85,000" />
+      </div>
+    </section>
+
+    <!-- 7. DISPLAY -->
+    <section class="mb-32">
+      <UiSectionHeader title="Display Components" subtitle="Frontend cards." class="mb-16" />
+      <div class="grid grid-cols-1 gap-16 lg:grid-cols-2">
+        <div class="space-y-12">
+          <div class="space-y-4">
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Project Card</p>
+            <ProjectCard :project="(mockProject as any)" />
           </div>
+          <div class="space-y-4">
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Blog Card</p>
+            <BlogPostCard :post="(mockPost as any)" />
+          </div>
+        </div>
+        <div class="space-y-12 lg:pl-16">
+          <div class="space-y-4">
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Application Card</p>
+            <ApplicationCard :application="(mockApplication as any)" />
+          </div>
+          <div class="space-y-4">
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Status & Social</p>
+            <div class="flex items-center justify-between rounded-2xl border border-neutral-100 bg-white p-8 dark:border-neutral-800 dark:bg-neutral-900">
+              <div class="flex items-center gap-3">
+                <span class="text-sm font-bold text-neutral-500">Status:</span>
+                <NowIndicator />
+              </div>
+              <SocialLinks />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. NAVIGATION & UTILS -->
+    <section class="mb-32 pb-32">
+      <UiSectionHeader title="Navigation & Utils" subtitle="Utility components." class="mb-16" />
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-3">
+        <div class="space-y-4">
+          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Image Uploader</p>
+          <UiImageUploader label="Upload Image" />
+        </div>
+        <div class="space-y-4 md:pl-10">
+          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Back Actions</p>
+          <UiBackButton />
+        </div>
+        <div class="space-y-4 lg:pl-10">
+          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500">Locale Switcher</p>
+          <StudioLocaleSwitcher model-value="en" @update:model-value="() => {}" />
         </div>
       </div>
     </section>
