@@ -151,7 +151,7 @@
       </div>
 
       <div class="rounded-3xl bg-neutral-50/50 p-8 md:p-12 dark:bg-neutral-900/50">
-          <BaseTimeline :items="timeline" />
+          <UiTimeline :items="timeline" />
       </div>
     </section>
 

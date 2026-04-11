@@ -34,7 +34,13 @@ const resolvedColor = computed(() => {
 });
 
 const tagClasses = useCva(
-  { ...props, color: resolvedColor.value },
+  { 
+    variant: props.variant, 
+    size: props.size, 
+    shape: props.shape, 
+    interactive: props.interactive, 
+    color: resolvedColor.value 
+  },
   'inline-flex items-center font-bold transition-all duration-300 border shadow-sm',
   {
     variant: {

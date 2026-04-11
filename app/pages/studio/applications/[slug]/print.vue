@@ -531,7 +531,7 @@ const getShortenedBody = (body: string) => {
 							</div>
 							<h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Bildungsweg</h3>
 						</div>
-						<BaseTimeline :items="timeline.filter(item => item.type === 'education').splice(0, 4)" :is-print-view="true"
+						<UiTimeline :items="timeline.filter(item => item.type === 'education').splice(0, 4)" :is-print-view="true"
 							compact>
 							<template #default="{ item }">
 								<div class="flex flex-col gap-1">
@@ -549,7 +549,7 @@ const getShortenedBody = (body: string) => {
 									</div>
 								</div>
 							</template>
-						</BaseTimeline>
+						</UiTimeline>
 					</div>
 
 					<!-- Career -->
@@ -562,7 +562,7 @@ const getShortenedBody = (body: string) => {
 							<h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">{{
 								$t('about.overview.careerPath.title') }}</h3>
 						</div>
-						<BaseTimeline :items="timeline.filter(item => item.type === 'career')" :is-print-view="true" compact>
+						<UiTimeline :items="timeline.filter(item => item.type === 'career')" :is-print-view="true" compact>
 							<template #default="{ item }">
 								<div class="flex flex-col gap-1">
 									<div class="flex items-baseline justify-between gap-2">
@@ -579,7 +579,7 @@ const getShortenedBody = (body: string) => {
 									</div>
 								</div>
 							</template>
-						</BaseTimeline>
+						</UiTimeline>
 					</div>
 
 				</div>

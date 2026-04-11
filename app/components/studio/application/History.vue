@@ -54,7 +54,7 @@ const emit = defineEmits<{
         </UiButton>
       </div>
 
-      <BaseTimeline v-if="items.length" :items="items">
+      <UiTimeline v-if="items.length" :items="items">
         <template #default="{ item, index }">
           <div :class="{ 'md:text-right': index % 2 === 0 }">
             <span
@@ -106,7 +106,7 @@ const emit = defineEmits<{
             </UiButton>
           </div>
         </template>
-      </BaseTimeline>
+      </UiTimeline>
 
       <div
         v-else
