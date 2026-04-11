@@ -19,7 +19,7 @@ Legend: [ ] = pending, [x] = done
 ### Component Decomposition
 
 - [ ] **P0.1** `applications/[slug]/index.vue` (1282 Zeilen) in 6-8 Komponenten zerlegen
-- [ ] **P0.3** Generische Factory fuer Blog/Project Zod-Schemas (`createTranslatableContentSchema`)
+- [x] **P0.3** Shared content schema helpers (`content.schema.ts`): Date overrides, common create extensions, `buildCommonRelations()`
 
 ### i18n Migration (einheitliche Strategie)
 
