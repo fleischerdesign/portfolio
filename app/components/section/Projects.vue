@@ -16,11 +16,13 @@
 </template>
 
 <script lang="ts" setup>
+import type { ProjectResponse } from '~~/shared/schemas/project.schema';
+
 const { locale } = useI18n();
 
-const { data } = await useFetch('/api/projects', {
+const { data } = await useFetch<{ projects: ProjectResponse[] }>('/api/projects', {
   query: { locale: locale.value, limit: 3 }
 });
 
-const projects = computed(() => (data.value?.projects as unknown[]) || []);
+const projects = computed(() => data.value?.projects || []);
 </script>

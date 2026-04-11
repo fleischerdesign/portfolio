@@ -1,8 +1,18 @@
 type Variants = Record<string, Record<string, string>>;
 type VariantProps = Record<string, string | boolean | undefined | null>;
 
+interface CompoundVariant {
+  [key: string]: string | boolean | undefined | null;
+  class: string;
+}
+
 // Helper to create variant classes for Vue components (inspired by class-variance-authority)
-export function useCva(props: VariantProps, base: string, variants: Variants): ComputedRef<string> {
+export function useCva(
+  props: VariantProps, 
+  base: string, 
+  variants: Variants, 
+  compoundVariants: CompoundVariant[] = []
+): ComputedRef<string> {
   return computed(() => {
     const variantClasses = Object.entries(variants)
       .map(([variantName, variantOptions]) => {
@@ -17,6 +27,15 @@ export function useCva(props: VariantProps, base: string, variants: Variants): C
       })
       .filter(Boolean);
 
-    return [base, ...variantClasses].join(' ');
+    const compoundClasses = compoundVariants
+      .filter((cv) => {
+        return Object.entries(cv).every(([key, value]) => {
+          if (key === 'class') return true;
+          return props[key] === value;
+        });
+      })
+      .map((cv) => cv.class);
+
+    return [base, ...variantClasses, ...compoundClasses].join(' ');
   });
 }

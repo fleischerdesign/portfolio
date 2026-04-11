@@ -18,14 +18,16 @@
 </template>
 
 <script lang="ts" setup>
+import type { ProjectResponse } from '~~/shared/schemas/project.schema';
+
 const { locale, t } = useI18n()
 const route = useRoute()
 
-const { data } = await useFetch('/api/projects', {
+const { data } = await useFetch<{ projects: ProjectResponse[] }>('/api/projects', {
     query: { locale: locale.value }
 })
 
-const projects = computed(() => (data.value?.projects as unknown[]) || [])
+const projects = computed(() => data.value?.projects || [])
 
 
 useSeoMeta({

@@ -9,7 +9,7 @@ definePageMeta({
 });
 
 const { locale } = useI18n();
-const { data } = await useFetch("/api/studio/projects");
+const { data } = await useFetch<{ projects: ProjectStudioResponse[] }>("/api/studio/projects");
 
 const projects = computed(() => data.value?.projects || []);
 
@@ -17,7 +17,7 @@ const searchTerm = ref("");
 const statusFilter = ref("all");
 
 const filteredProjects = computed(() => {
-  let result = projects.value as unknown as ProjectStudioResponse[];
+  let result = projects.value;
 
   if (searchTerm.value) {
     const term = searchTerm.value.toLowerCase();

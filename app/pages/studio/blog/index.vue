@@ -9,7 +9,7 @@ definePageMeta({
 });
 
 const { locale } = useI18n();
-const { data } = await useFetch("/api/studio/blog");
+const { data } = await useFetch<{ posts: BlogPostStudioResponse[] }>("/api/studio/blog");
 
 const posts = computed(() => data.value?.posts || []);
 
@@ -17,7 +17,7 @@ const searchTerm = ref("");
 const statusFilter = ref("all");
 
 const filteredPosts = computed(() => {
-  let result = posts.value as unknown as BlogPostStudioResponse[];
+  let result = posts.value;
 
   if (searchTerm.value) {
     const term = searchTerm.value.toLowerCase();
