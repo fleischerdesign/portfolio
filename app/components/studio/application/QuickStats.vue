@@ -14,92 +14,49 @@ const { getFormattedLastActivityDate, getDisplayDate } = useApplicationUtils();
       class="flex flex-col justify-between gap-6 px-8 py-6 lg:flex-row lg:items-center lg:gap-8"
     >
       <!-- Status -->
-      <div class="flex w-full items-center gap-5 lg:w-auto">
-        <div
-          class="flex h-14 w-14 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400"
-        >
-          <Icon name="heroicons:signal" size="28" />
-        </div>
-        <div>
-          <p
-            class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500"
+      <UiQuickStat
+        icon="heroicons:signal"
+        :label="$t('applications.detail.document.current_status')"
+      >
+        <template #value>
+          <UiStatusBadge
+            :status="application.currentStatus"
+            size="md"
+            :capitalize="false"
           >
-            {{ $t("applications.detail.document.current_status") }}
-          </p>
-          <div class="mt-1">
-            <UiStatusBadge
-              :status="application.currentStatus"
-              size="md"
-              :capitalize="false"
-            >
-              {{ $t(`applications.status.${application.currentStatus}`) }}
-            </UiStatusBadge>
-          </div>
-        </div>
-      </div>
+            {{ $t(`applications.status.${application.currentStatus}`) }}
+          </UiStatusBadge>
+        </template>
+      </UiQuickStat>
 
       <!-- Company -->
-      <div
-        class="flex w-full items-center gap-5 border-t border-neutral-100 pt-6 lg:min-w-0 lg:flex-1 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-neutral-800"
+      <UiQuickStat
+        class="border-t border-neutral-100 pt-6 lg:min-w-0 lg:flex-1 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-neutral-800"
+        icon="heroicons:building-office"
+        :label="$t('applications.detail.config.company')"
+        :value="application.company.name"
       >
-        <div
-          class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400"
-        >
-          <Icon name="heroicons:building-office" size="28" />
-        </div>
-        <div class="min-w-0 flex-1">
-          <p
-            class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500"
-          >
-            {{ $t("applications.detail.config.company") }}
-          </p>
-          <p
-            class="mt-0.5 truncate text-xl font-bold text-neutral-900 dark:text-white"
-            :title="application.company.name"
-          >
-            {{ application.company.name }}
-          </p>
-          <p
-            v-if="application.company.address"
-            class="truncate text-xs font-medium text-neutral-500 dark:text-neutral-400"
-          >
-            {{ application.company.address.city }}
-          </p>
-        </div>
-      </div>
+        <template #footer v-if="application.company.address">
+          {{ application.company.address.city }}
+        </template>
+      </UiQuickStat>
 
       <!-- Activity -->
-      <div
-        class="flex w-full items-center gap-5 border-t border-neutral-100 pt-6 lg:w-auto lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-neutral-800"
+      <UiQuickStat
+        class="border-t border-neutral-100 pt-6 lg:w-auto lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-neutral-800"
+        icon="heroicons:clock"
+        :label="$t('applications.detail.document.activity')"
+        :value="getFormattedLastActivityDate(application)"
       >
-        <div
-          class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400"
-        >
-          <Icon name="heroicons:clock" size="28" />
-        </div>
-        <div>
-          <p
-            class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500"
-          >
-            {{ $t("applications.detail.document.activity") }}
-          </p>
-          <p
-            class="mt-0.5 text-xl font-bold text-neutral-900 dark:text-white"
-          >
-            {{ getFormattedLastActivityDate(application) }}
-          </p>
-          <p
-            class="whitespace-nowrap text-xs font-medium text-neutral-500 dark:text-neutral-400"
-          >
-            {{
-              application.currentStatus === "draft"
-                ? $t("applications.detail.document.created_at")
-                : $t("applications.detail.document.applied_at")
-            }}
-            {{ getDisplayDate(application) }}
-          </p>
-        </div>
-      </div>
+        <template #footer>
+          {{
+            application.currentStatus === "draft"
+              ? $t("applications.detail.document.created_at")
+              : $t("applications.detail.document.applied_at")
+          }}
+          {{ getDisplayDate(application) }}
+        </template>
+      </UiQuickStat>
 
       <!-- Listing Link -->
       <div

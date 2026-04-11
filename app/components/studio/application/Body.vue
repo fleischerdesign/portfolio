@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { ApplicationResponsePayload } from "#shared/schemas/application.schema";
-
 const props = defineProps<{
   application: any; // Can be ApplicationResponsePayload or EditableApplication
   isEditing: boolean;
@@ -17,52 +15,6 @@ const body = computed({
   get: () => props.modelValue ?? "",
   set: (val) => emit("update:modelValue", val),
 });
-
-const bodyStats = computed(() => {
-  const text = props.isEditing ? body.value : props.application.body;
-  const words = text?.trim().split(/\s+/).filter(Boolean).length || 0;
-  const chars = text?.length || 0;
-  return {
-    words,
-    chars,
-    readingTime: Math.max(1, Math.ceil(words / 200)),
-    isLong: chars > 2800,
-  };
-});
-
-const textareaRef = ref<{ $el: HTMLElement } | null>(null);
-const adjustTextareaHeight = () => {
-  if (!textareaRef.value) return;
-  const el = textareaRef.value?.$el?.querySelector("textarea");
-  if (el) {
-    el.style.height = "auto";
-    el.style.height = `${el.scrollHeight}px`;
-  }
-};
-
-watch(
-  () => body.value,
-  () => {
-    if (props.isEditing) {
-      nextTick(adjustTextareaHeight);
-    }
-  },
-);
-
-watch(
-  () => props.isEditing,
-  (val) => {
-    if (val) {
-      nextTick(adjustTextareaHeight);
-    }
-  },
-);
-
-onMounted(() => {
-  if (props.isEditing) {
-    adjustTextareaHeight();
-  }
-});
 </script>
 
 <template>
@@ -75,6 +27,7 @@ onMounted(() => {
       class="relative overflow-hidden bg-white/90 shadow-2xl dark:bg-neutral-900/80"
     >
       <UiCardContainer class="p-8 md:p-16 lg:p-24">
+        <!-- Document Header (unchanged) -->
         <div
           class="mb-16 flex items-start gap-5 border-b border-neutral-100 pb-10 dark:border-neutral-800"
         >
@@ -176,76 +129,12 @@ onMounted(() => {
 
         <!-- Markdown / Editor -->
         <BaseMarkdown v-if="!isEditing" :content="application.body || ''" />
-        <div v-else class="space-y-8">
-          <div
-            class="flex items-center justify-between rounded-2xl border border-secondary-100/50 bg-secondary-50/50 p-3 px-6 dark:border-secondary-500/10 dark:bg-secondary-900/10"
-          >
-            <div class="flex items-center gap-8">
-              <div class="flex flex-col">
-                <span
-                  class="text-[9px] font-black uppercase tracking-widest text-secondary-500/60"
-                  >{{ $t("applications.detail.editor.words") }}</span
-                >
-                <span class="text-lg font-black text-secondary-600">{{
-                  bodyStats.words
-                }}</span>
-              </div>
-              <div class="flex flex-col">
-                <span
-                  class="text-[9px] font-black uppercase tracking-widest text-neutral-400"
-                  >{{ $t("applications.detail.editor.chars") }}</span
-                >
-                <span
-                  class="text-lg font-bold text-neutral-600 dark:text-neutral-300"
-                  :class="{ 'text-amber-500': bodyStats.isLong }"
-                  >{{ bodyStats.chars }}</span
-                >
-              </div>
-              <div
-                class="mx-2 hidden h-8 w-px bg-neutral-200 sm:flex dark:bg-neutral-700"
-              ></div>
-              <div class="hidden flex-col sm:flex">
-                <span
-                  class="text-[9px] font-black uppercase tracking-widest text-neutral-400"
-                  >{{ $t("applications.detail.editor.reading_time") }}</span
-                >
-                <span
-                  class="text-sm font-bold text-neutral-600 dark:text-neutral-300"
-                  >~ {{ bodyStats.readingTime }} Min.</span
-                >
-              </div>
-            </div>
-
-            <div class="flex gap-2">
-              <div
-                v-if="bodyStats.isLong"
-                class="hidden items-center gap-2 rounded-lg border border-amber-100 bg-amber-50 px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-amber-500 lg:flex dark:border-amber-800 dark:bg-amber-900/20"
-              >
-                <Icon name="heroicons:exclamation-triangle" size="14" />
-                {{ $t("applications.detail.editor.over_page_limit") }}
-              </div>
-              <div
-                class="hidden items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-400 lg:flex"
-              >
-                <Icon name="mdi:markdown" size="18" />
-                Markdown
-              </div>
-            </div>
-          </div>
-
-          <div class="group/editor relative">
-            <UiInput
-              id="body"
-              ref="textareaRef"
-              v-model="body"
-              as="textarea"
-              label=""
-              :placeholder="$t('applications.detail.editor.placeholder')"
-              class="min-h-[600px] resize-none overflow-hidden border-none !bg-transparent !p-0 text-lg leading-relaxed selection:bg-secondary-100 focus:ring-0 dark:selection:bg-secondary-900/50"
-              @input="adjustTextareaHeight"
-            />
-          </div>
-        </div>
+        <UiContentEditor
+          v-else
+          v-model="body"
+          :show-preview="false"
+          :placeholder="$t('applications.detail.editor.placeholder')"
+        />
 
         <!-- Closing -->
         <div

@@ -45,15 +45,15 @@ onMounted(async () => {
   }
 });
 
-const form = ref<Record<string, unknown>>({
+const form = ref({
   title: "",
   subtitle: "",
   slug: "",
   url: "",
   body: "",
-  notes: [],
-  companyId: undefined, // Will be set by selection or new company creation
-  contactIds: [],
+  notes: [] as string[],
+  companyId: undefined as number | undefined,
+  contactIds: [] as number[],
 });
 
 const slugSource = computed(() => {
@@ -301,20 +301,10 @@ function handleCancelContactForm() {
           </UiCardContainer>
         </UiCard>
 
-        <UiCard>
-          <UiCardContainer>
-            <h3 class="mb-4 text-2xl font-medium">
-              {{ $t("applications.detail.document.title") }}
-            </h3>
-            <UiInput
-              id="body"
-              v-model="form.body"
-              as="textarea"
-              :label="$t('applications.new.body_label')"
-              class="min-h-64"
-            />
-          </UiCardContainer>
-        </UiCard>
+        <UiContentEditor
+          v-model="form.body"
+          :placeholder="$t('applications.detail.editor.placeholder')"
+        />
       </div>
 
       <div class="sticky top-10 flex flex-col gap-2 lg:col-span-1">

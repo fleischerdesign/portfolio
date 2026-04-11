@@ -167,11 +167,8 @@ const currentBody = computed(() => {
             </UiCardContainer>
           </UiCard>
 
-          <StudioMarkdownEditor
-            :model-value="(editableProject as any)[currentLocale].body"
-            @update:model-value="
-              (editableProject as any)[currentLocale].body = $event
-            "
+          <UiContentEditor
+            v-model="(editableProject as any)[currentLocale].body"
           />
 
           <UiCard>

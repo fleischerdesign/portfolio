@@ -259,11 +259,8 @@ const viewFormattedDate = computed(() =>
             </UiCardContainer>
           </UiCard>
 
-          <StudioMarkdownEditor
-            :model-value="(editablePost as any)[currentLocale].body"
-            @update:model-value="
-              (editablePost as any)[currentLocale].body = $event
-            "
+          <UiContentEditor
+            v-model="(editablePost as any)[currentLocale].body"
           />
         </div>
       </div>
