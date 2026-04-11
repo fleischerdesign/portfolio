@@ -45,24 +45,44 @@ async function upsertCompanyWithAddress(
   let { companyId } = data;
 
   if (data.companyName) {
-    let addressId: number | undefined;
-    if (data.companyAddress) {
-      const [address] = await tx
-        .insert(addresses)
-        .values(data.companyAddress)
-        .returning({ id: addresses.id });
-      addressId = address?.id;
-    }
+    const existing = await tx.query.companies.findFirst({
+      where: eq(companies.name, data.companyName),
+    });
 
-    const [company] = await tx
-      .insert(companies)
-      .values({ name: data.companyName, addressId })
-      .onConflictDoUpdate({
-        target: companies.name,
-        set: addressId ? { addressId } : {},
-      })
-      .returning({ id: companies.id });
-    companyId = company?.id;
+    if (existing) {
+      if (data.companyAddress) {
+        if (existing.addressId) {
+          await tx
+            .update(addresses)
+            .set(data.companyAddress)
+            .where(eq(addresses.id, existing.addressId));
+        } else {
+          const [newAddress] = await tx
+            .insert(addresses)
+            .values(data.companyAddress)
+            .returning({ id: addresses.id });
+          await tx
+            .update(companies)
+            .set({ addressId: newAddress?.id })
+            .where(eq(companies.id, existing.id));
+        }
+      }
+      companyId = existing.id;
+    } else {
+      let addressId: number | undefined;
+      if (data.companyAddress) {
+        const [address] = await tx
+          .insert(addresses)
+          .values(data.companyAddress)
+          .returning({ id: addresses.id });
+        addressId = address?.id;
+      }
+      const [company] = await tx
+        .insert(companies)
+        .values({ name: data.companyName, addressId })
+        .returning({ id: companies.id });
+      companyId = company?.id;
+    }
   }
 
   return companyId ?? undefined;

@@ -96,11 +96,19 @@ export const taxonomyHelper = {
     await (tx as any).delete(junctionTable).where(eq(parentColumn, parentId));
 
     if (items.length > 0) {
+      const junctionColumns = getTableColumns(junctionTable);
+      const parentKey = Object.keys(junctionColumns).find(
+        (key) => junctionColumns[key] === parentColumn,
+      );
+      const lookupKey = Object.keys(junctionColumns).find(
+        (key) => junctionColumns[key] === lookupColumn,
+      );
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Drizzle generic table limitation
       await (tx as any).insert(junctionTable).values(
         items.map((item) => ({
-          [parentColumn.name]: parentId,
-          [lookupColumn.name]: item.id,
+          [parentKey!]: parentId,
+          [lookupKey!]: item.id,
         })),
       );
     }
