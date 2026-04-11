@@ -9,20 +9,32 @@
       {{ label }} <span v-if="required" class="text-secondary-500">*</span>
     </label>
 
-    <div class="relative">
+    <div class="relative flex items-center">
+      <div v-if="$slots.prefix" class="absolute left-4 z-10 flex items-center justify-center text-neutral-400">
+        <slot name="prefix" />
+      </div>
+
       <component
         :is="as"
         :id="id"
-        v-bind="$attrs"
+        v-bind="sanitizedAttrs"
         :value="model"
-        :class="inputClasses"
+        :class="[
+          inputClasses,
+          $slots.prefix ? 'pl-11' : '',
+          $slots.suffix ? 'pr-11' : '',
+        ]"
         :required="required"
         :type="type"
         :rows="as === 'textarea' ? 5 : undefined"
         @input="handleInput"
       />
+
+      <div v-if="$slots.suffix" class="absolute right-4 z-10 flex items-center justify-center text-neutral-400">
+        <slot name="suffix" />
+      </div>
       
-      <!-- Subtle internal glow/border on focus (Optional decorative element) -->
+      <!-- Subtle internal glow/border on focus -->
       <div class="pointer-events-none absolute inset-0 rounded-xl border border-secondary-500/0 shadow-none transition-all duration-300 peer-focus:border-secondary-500/20 peer-focus:shadow-[0_0_15px_rgba(16,185,129,0.05)]"></div>
     </div>
 
@@ -39,7 +51,7 @@ const model = defineModel<string | number | null>();
 
 interface Props {
   id: string;
-  label: string;
+  label?: string;
   as?: 'input' | 'textarea';
   type?: string;
   error?: string;
@@ -48,11 +60,18 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  label: '',
   as: 'input',
   type: 'text',
   required: false,
   error: '',
   hasError: false,
+});
+
+const attrs = useAttrs();
+const sanitizedAttrs = computed(() => {
+  const { class: _, ...rest } = attrs;
+  return rest;
 });
 
 const handleInput = (event: Event) => {

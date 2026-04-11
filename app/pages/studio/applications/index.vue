@@ -93,16 +93,14 @@ useSeoMeta({
 
       <ApplicationStats :applications="filteredApplications" />
 
-      <StudioSearchFilter
-        :search-term="searchTerm"
-        :status-filter="statusFilter"
+      <UiSearchFilter
+        v-model:search-term="searchTerm"
+        v-model:status-filter="statusFilter"
         :status-options="availableStatuses"
         :search-placeholder="$t('applications.index.search')"
         :new-label="$t('applications.index.new_application')"
         :new-route="$localePath('/studio/applications/new')"
         search-id="search-applications"
-        @update:search-term="searchTerm = $event"
-        @update:status-filter="statusFilter = $event"
       >
         <template #statusDisplay="{ option }">
           <span v-if="option === 'all'">{{
@@ -116,7 +114,7 @@ useSeoMeta({
           }}</span>
           <span v-else>{{ $t(`applications.status.${option}`) }}</span>
         </template>
-      </StudioSearchFilter>
+      </UiSearchFilter>
 
       <div
         v-if="filteredApplications && filteredApplications.length > 0"

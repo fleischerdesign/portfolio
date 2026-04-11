@@ -3,31 +3,33 @@
     class="mt-8 flex flex-col gap-3 rounded-2xl border border-secondary-500/10 bg-white/50 p-4 shadow-xl shadow-secondary-500/5 backdrop-blur-sm dark:bg-neutral-900/50 md:flex-row md:items-center md:gap-4 md:p-4"
   >
     <div class="relative flex-1">
-      <Icon
-        name="heroicons:magnifying-glass"
-        class="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-400"
-      />
-      <input
+      <UiInput
         :id="searchId"
-        :value="searchTerm"
-        type="text"
+        v-model="modelSearchTerm"
         :placeholder="searchPlaceholderProp"
-        class="w-full rounded-lg border-none bg-neutral-100 py-2.5 pl-10 pr-8 text-sm outline-none transition-all placeholder:text-neutral-400 focus:bg-neutral-100/50 focus:ring-2 focus:ring-secondary-500/20 dark:bg-neutral-800 dark:focus:bg-neutral-800/50"
-        @input="
-          emit('update:searchTerm', ($event.target as HTMLInputElement).value)
-        "
-      />
-      <button
-        v-if="searchTerm"
-        type="button"
-        class="absolute right-2 top-1/2 -translate-y-1/2 flex h-6 w-6 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-600 dark:hover:bg-neutral-700"
-        @click="emit('update:searchTerm', '')"
+        class="flex-1"
       >
-        <Icon name="heroicons:x-mark" class="h-4 w-4" />
-      </button>
+        <template #prefix>
+          <Icon
+            name="heroicons:magnifying-glass"
+            class="h-5 w-5 text-neutral-400"
+          />
+        </template>
+        <template #suffix>
+          <button
+            v-if="searchTerm"
+            type="button"
+            class="flex h-6 w-6 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-600 dark:hover:bg-neutral-700"
+            @click="emit('update:searchTerm', '')"
+          >
+            <Icon name="heroicons:x-mark" class="h-4 w-4" />
+          </button>
+        </template>
+      </UiInput>
     </div>
 
     <UiSelect
+      v-if="showFilter"
       :id="filterId"
       :model-value="statusFilter"
       :options="statusOptions"
@@ -77,31 +79,39 @@ const { t } = useI18n();
 
 interface Props {
   searchTerm: string;
-  statusFilter: string;
+  statusFilter?: string;
   searchPlaceholder?: string;
   newLabel?: string;
   newRoute?: string;
   searchId?: string;
   filterId?: string;
   statusOptions?: string[];
+  showFilter?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  statusFilter: "",
   searchPlaceholder: "",
   newLabel: "",
-  newRoute: "#",
+  newRoute: "",
   searchId: "search",
   filterId: "filter-status",
   statusOptions: () => ["all", "published", "draft", "archived"],
+  showFilter: true,
 });
-
-const searchPlaceholderProp = computed(
-  () => props.searchPlaceholder || t("studio.search.placeholder"),
-);
 
 const emit = defineEmits<{
   "update:searchTerm": [value: string];
   "update:statusFilter": [value: string];
   "click:new": [];
 }>();
+
+const modelSearchTerm = computed({
+  get: () => props.searchTerm,
+  set: (val) => emit("update:searchTerm", val),
+});
+
+const searchPlaceholderProp = computed(
+  () => props.searchPlaceholder || t("studio.search.placeholder") || "Suchen...",
+);
 </script>

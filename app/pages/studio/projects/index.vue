@@ -58,14 +58,12 @@ function getTitle(project: ProjectStudioResponse) {
         subtitle="Showcase your work."
       />
 
-      <StudioSearchFilter
-        :search-term="searchTerm"
-        :status-filter="statusFilter"
+      <UiSearchFilter
+        v-model:search-term="searchTerm"
+        v-model:status-filter="statusFilter"
         :new-label="$t('studio.projects.new')"
         :new-route="$localePath('/studio/projects/new')"
         search-id="search-projects"
-        @update:search-term="searchTerm = $event"
-        @update:status-filter="statusFilter = $event"
       />
 
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

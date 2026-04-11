@@ -58,14 +58,12 @@ function getTitle(post: BlogPostStudioResponse) {
         subtitle="Manage and write articles."
       />
 
-      <StudioSearchFilter
-        :search-term="searchTerm"
-        :status-filter="statusFilter"
+      <UiSearchFilter
+        v-model:search-term="searchTerm"
+        v-model:status-filter="statusFilter"
         :new-label="$t('studio.blog.new')"
         :new-route="$localePath('/studio/blog/new')"
         search-id="search-posts"
-        @update:search-term="searchTerm = $event"
-        @update:status-filter="statusFilter = $event"
       />
 
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
