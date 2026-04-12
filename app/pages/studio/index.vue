@@ -82,6 +82,27 @@ definePageMeta({
         </UiCard>
       </NuxtLink>
 
+      <!-- Technologies -->
+      <NuxtLink :to="$localePath('/studio/technologies')">
+        <UiCard interactive class="h-full">
+          <UiCardContainer class="flex items-center gap-4 p-6">
+            <div
+              class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-secondary-100 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400"
+            >
+              <Icon name="heroicons:cpu-chip" size="28" />
+            </div>
+            <div class="flex flex-1 flex-col justify-center text-center">
+              <h3 class="text-lg font-bold text-primary-900 dark:text-white">
+                Technologies
+              </h3>
+              <p class="text-sm text-primary-500 dark:text-primary-400">
+                Manage icons and featured tech
+              </p>
+            </div>
+          </UiCardContainer>
+        </UiCard>
+      </NuxtLink>
+
       <!-- Profile -->
       <NuxtLink :to="$localePath('/studio/profile')">
         <UiCard interactive class="h-full">

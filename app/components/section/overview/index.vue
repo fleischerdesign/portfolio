@@ -1,36 +1,63 @@
 <template>
-  <div id="overview" class="mb-32 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-    
+  <div
+    id="overview"
+    class="mb-32 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+  >
     <!-- 1. GITHUB ACTIVITY -->
-    <UiCard class="col-span-1 border-primary-200/50 bg-white/50 p-0 md:col-span-2 dark:border-primary-800/50 dark:bg-primary-900/50">
+    <UiCard
+      class="col-span-1 border-primary-200/50 bg-white/50 p-0 md:col-span-2 dark:border-primary-800/50 dark:bg-primary-900/50"
+    >
       <UiCardContainer class="h-full flex-col justify-between p-8">
         <div class="flex items-start justify-between">
-            <div class="flex flex-col gap-1">
-                <div class="flex items-center gap-3">
-                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-100 text-primary-900 dark:bg-primary-800 dark:text-white">
-                        <Icon name="mdi:github" size="24" />
-                    </div>
-                    <h3 class="text-2xl font-bold tracking-tight text-primary-900 dark:text-white">{{ $t("home.overview.github.title") }}</h3>
-                </div>
-                <!-- Subtitle closer to title -->
-                <p class="max-w-md text-base text-primary-500 dark:text-primary-400">{{ subtitle }}</p>
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center gap-3">
+              <div
+                class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-100 text-primary-900 dark:bg-primary-800 dark:text-white"
+              >
+                <Icon name="mdi:github" size="24" />
+              </div>
+              <h3
+                class="text-2xl font-bold tracking-tight text-primary-900 dark:text-white"
+              >
+                {{ $t("home.overview.github.title") }}
+              </h3>
             </div>
-            <UiButton variant="glass" size="icon" to="https://github.com/fleischerdesign" target="_blank" external>
-                <Icon name="heroicons:arrow-top-right-on-square" />
-            </UiButton>
+            <!-- Subtitle closer to title -->
+            <p
+              class="max-w-md text-base text-primary-500 dark:text-primary-400"
+            >
+              {{ subtitle }}
+            </p>
+          </div>
+          <UiButton
+            variant="glass"
+            size="icon"
+            to="https://github.com/fleischerdesign"
+            target="_blank"
+            external
+          >
+            <Icon name="heroicons:arrow-top-right-on-square" />
+          </UiButton>
         </div>
-        
+
         <!-- Content closer to Header (mt-6 instead of mt-8) -->
-        <div class="mt-6 overflow-hidden rounded-xl border border-primary-200/50 bg-white/50 p-4 backdrop-blur-sm dark:border-primary-800/50 dark:bg-black/20">
-            <ClientOnly>
-              <GithubChart :contributions="contributions" @displayed-weeks-count-changed="onDisplayedWeeksCountChanged" />
-            </ClientOnly>
+        <div
+          class="mt-6 overflow-hidden rounded-xl border border-primary-200/50 bg-white/50 p-4 backdrop-blur-sm dark:border-primary-800/50 dark:bg-black/20"
+        >
+          <ClientOnly>
+            <GithubChart
+              :contributions="contributions"
+              @displayed-weeks-count-changed="onDisplayedWeeksCountChanged"
+            />
+          </ClientOnly>
         </div>
       </UiCardContainer>
-    </UiCard >
+    </UiCard>
 
     <!-- 2. PROFILE PICTURE -->
-    <UiCard class="group relative col-span-1 min-h-[340px] overflow-hidden border-0 bg-primary-900 p-0 md:row-span-2">
+    <UiCard
+      class="group relative col-span-1 min-h-[340px] overflow-hidden border-0 bg-primary-900 p-0 md:row-span-2"
+    >
       <NuxtImg
         src="/img/profile.jpg"
         class="absolute inset-0 h-full w-full object-cover transition duration-1000 group-hover:rotate-1 group-hover:scale-110"
@@ -38,47 +65,67 @@
         placeholder
         alt="Profile Picture"
       />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-      
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"
+      ></div>
+
       <div class="absolute bottom-6 left-6 right-6">
-          <div class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md">
-              <span class="relative flex h-2 w-2">
-                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-              </span>
-              {{ $t("home.overview.searching.status") }}
-          </div>
+        <div
+          class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md"
+        >
+          <span class="relative flex h-2 w-2">
+            <span
+              class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"
+            ></span>
+            <span
+              class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"
+            ></span>
+          </span>
+          {{ $t("home.overview.searching.status") }}
+        </div>
       </div>
-    </UiCard >
+    </UiCard>
 
     <!-- 3. TECH STACK -->
-    <UiCard class="col-span-1 overflow-hidden border-primary-200/50 bg-white/50 dark:border-primary-800/50 dark:bg-primary-900/50">
+    <UiCard
+      class="col-span-1 overflow-hidden border-primary-200/50 bg-white/50 dark:border-primary-800/50 dark:bg-primary-900/50"
+    >
       <!-- Reduced gap to gap-4 -->
       <UiCardContainer class="flex-col gap-4 p-8">
         <div class="flex items-center gap-3">
-            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-100 text-primary-600 dark:bg-primary-800 dark:text-primary-300">
-                <Icon name="heroicons:square-3-stack-3d" size="24" />
-            </div>
-            <h3 class="text-xl font-bold text-primary-900 dark:text-white">{{ $t("home.overview.techstack.title") }}</h3>
+          <div
+            class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-100 text-primary-600 dark:bg-primary-800 dark:text-primary-300"
+          >
+            <Icon name="heroicons:square-3-stack-3d" size="24" />
+          </div>
+          <h3 class="text-xl font-bold text-primary-900 dark:text-white">
+            {{ $t("home.overview.techstack.title") }}
+          </h3>
         </div>
-        
-        <TechstackList scroll :rows="3" :items="['Typescript', 'React', 'Git', 'Docker', 'Dart', 'Rust', 'Tailwind', 'Vue', 'Flutter', 'Node.js', 'Deno', 'Python', 'PostgreSQL', 'MongoDB', 'REST', 'GraphQL']" />
+
+        <TechstackList scroll :rows="3" :items="featuredTechs" />
       </UiCardContainer>
-    </UiCard >
+    </UiCard>
 
     <!-- 4. STATISTICS -->
-    <UiCard class="col-span-1 border-primary-200/50 bg-white/50 dark:border-primary-800/50 dark:bg-primary-900/50">
+    <UiCard
+      class="col-span-1 border-primary-200/50 bg-white/50 dark:border-primary-800/50 dark:bg-primary-900/50"
+    >
       <!-- Reduced gap to gap-4 -->
       <UiCardContainer class="flex-col gap-4 p-8">
         <div class="flex items-center gap-3">
-            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-100 text-primary-600 dark:bg-primary-800 dark:text-primary-300">
-                <Icon name="heroicons:presentation-chart-line" size="24" />
-            </div>
-            <h3 class="text-xl font-bold text-primary-900 dark:text-white">{{ $t("home.overview.statistics.title") }}</h3>
+          <div
+            class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-100 text-primary-600 dark:bg-primary-800 dark:text-primary-300"
+          >
+            <Icon name="heroicons:presentation-chart-line" size="24" />
+          </div>
+          <h3 class="text-xl font-bold text-primary-900 dark:text-white">
+            {{ $t("home.overview.statistics.title") }}
+          </h3>
         </div>
         <SectionOverviewStats />
       </UiCardContainer>
-    </UiCard >
+    </UiCard>
 
     <!-- 5. JOB SEARCH -->
     <!--<UiCard 
@@ -109,13 +156,22 @@
         </div>
       </UiCardContainer>
     </UiCard >-->
-
   </div>
 </template>
 
 <script lang="ts" setup>
+import type { Technology } from "#shared/schemas/technology.schema";
+
 const { t } = useI18n();
-const { contributions, fetchContributions } = useGitHubContributions()
+const { contributions, fetchContributions } = useGitHubContributions();
+
+const { data: techsResponse } = await useFetch<{ technologies: Technology[] }>(
+  "/api/technologies",
+  {
+    query: { featured: "true" },
+  },
+);
+const featuredTechs = computed(() => techsResponse.value?.technologies ?? []);
 
 onMounted(async () => {
   if (contributions.value.length === 0) {
@@ -132,7 +188,9 @@ const subtitle = computed(() => {
     const months = Math.round(displayedWeeks.value / 4);
     return t("home.overview.github.subtitle.months", { count: months });
   } else if (displayedWeeks.value <= 4 && displayedWeeks.value > 1) {
-    return t("home.overview.github.subtitle.weeks", { count: displayedWeeks.value });
+    return t("home.overview.github.subtitle.weeks", {
+      count: displayedWeeks.value,
+    });
   } else if (displayedWeeks.value === 1) {
     return t("home.overview.github.subtitle.week");
   } else {

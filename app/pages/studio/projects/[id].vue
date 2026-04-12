@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useProjectEditor } from "~/composables/useProjectEditor";
+import type { Technology } from "#shared/schemas/technology.schema";
 
 definePageMeta({
   middleware: "authorize",
@@ -21,6 +22,13 @@ const {
   cancelEditing,
   save,
 } = useProjectEditor(projectId, data, refresh);
+
+const { data: techsData } = await useFetch<{ technologies: Technology[] }>(
+  "/api/technologies",
+);
+const allTechNames = computed(() =>
+  (techsData.value?.technologies || []).map((t) => t.name),
+);
 
 const project = computed(() => data.value?.project);
 
@@ -290,7 +298,11 @@ const currentBody = computed(() => {
             <div class="flex flex-col gap-1">
               <span class="text-xs text-primary-500">Status</span>
               <div class="flex">
-                <UiTag :status="project.status" shape="rounded" variant="status" />
+                <UiTag
+                  :status="project.status"
+                  shape="rounded"
+                  variant="status"
+                />
               </div>
             </div>
             <div class="flex flex-col gap-1">
@@ -392,28 +404,23 @@ const currentBody = computed(() => {
                   class="mb-1 block text-sm font-medium text-primary-700 dark:text-primary-300"
                   >Techstack</label
                 >
-                <input
-                  :value="editableProject.common.techstack.join(', ')"
-                  class="w-full rounded-lg border-primary-300 bg-transparent text-sm dark:border-primary-700"
-                  placeholder="typescript, tailwind"
-                  @input="
-                    (e) =>
-                      ((editableProject as any).common.techstack = (
-                        e.target as HTMLInputElement
-                      ).value
-                        .split(',')
-                        .map((t) => t.trim())
-                        .filter(Boolean))
-                  "
-                />
-                <div class="mt-2 flex flex-wrap gap-2">
-                  <UiChip
-                    v-for="tech in (editableProject as any).common.techstack"
-                    :key="tech"
-                    size="sm"
-                    >{{ tech }}</UiChip
-                  >
-                </div>
+                <UiSelect
+                  id="project-techstack"
+                  v-model="(editableProject as any).common.techstack"
+                  :options="allTechNames"
+                  label=""
+                  multiple
+                  searchable
+                  creatable
+                  placeholder="Technologien auswahlen..."
+                >
+                  <template #display="{ option }">
+                    <span>{{ option }}</span>
+                  </template>
+                  <template #option="{ option }">
+                    <span>{{ option }}</span>
+                  </template>
+                </UiSelect>
               </div>
             </UiCardContainer>
           </UiCard>

@@ -120,7 +120,15 @@ const mockProject: ProjectResponse = {
   challenges: null,
   category: null,
   tags: [{ id: 1, slug: "nuxt", name: "Nuxt" }],
-  techstack: [{ id: 1, slug: "vue", name: "Vue" }],
+  techstack: [
+    {
+      id: 1,
+      slug: "vue",
+      name: "Vue",
+      icon: "teenyicons:vue-solid",
+      featured: false,
+    },
+  ],
   author: null,
 };
 
@@ -199,14 +207,50 @@ const tagColors = [
   "purple",
 ];
 const demoTechstack = [
-  "Vue",
-  "Nuxt",
-  "TypeScript",
-  "Tailwind CSS",
-  "Node.js",
-  "Go",
-  "SQLite",
-  "Docker",
+  {
+    id: 1,
+    slug: "vue",
+    name: "Vue",
+    icon: "teenyicons:vue-solid",
+    featured: true,
+  },
+  {
+    id: 2,
+    slug: "nuxt",
+    name: "Nuxt",
+    icon: "simple-icons:nuxt",
+    featured: false,
+  },
+  {
+    id: 3,
+    slug: "typescript",
+    name: "TypeScript",
+    icon: "simple-icons:typescript",
+    featured: true,
+  },
+  {
+    id: 4,
+    slug: "tailwind",
+    name: "Tailwind CSS",
+    icon: "simple-icons:tailwindcss",
+    featured: false,
+  },
+  {
+    id: 5,
+    slug: "nodejs",
+    name: "Node.js",
+    icon: "simple-icons:nodedotjs",
+    featured: true,
+  },
+  { id: 6, slug: "go", name: "Go", icon: "simple-icons:go", featured: false },
+  {
+    id: 7,
+    slug: "sqlite",
+    name: "SQLite",
+    icon: "simple-icons:sqlite",
+    featured: false,
+  },
+  { id: 8, slug: "docker", name: "Docker", icon: "mdi:docker", featured: true },
 ];
 
 const mockContributions = (() => {
