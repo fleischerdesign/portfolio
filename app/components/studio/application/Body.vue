@@ -24,12 +24,12 @@ const body = computed({
     ></div>
 
     <UiCard
-      class="relative overflow-hidden bg-white/90 shadow-2xl dark:bg-neutral-900/80"
+      class="relative overflow-hidden bg-white/90 shadow-2xl dark:bg-primary-900/80"
     >
       <UiCardContainer class="p-8 md:p-16 lg:p-24">
         <!-- Document Header (unchanged) -->
         <div
-          class="mb-16 flex items-start gap-5 border-b border-neutral-100 pb-10 dark:border-neutral-800"
+          class="mb-16 flex items-start gap-5 border-b border-primary-100 pb-10 dark:border-primary-800"
         >
           <div
             class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-secondary-100 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400"
@@ -38,24 +38,24 @@ const body = computed({
           </div>
           <div class="flex-1">
             <div class="flex items-center justify-between">
-              <h3 class="text-3xl font-black text-neutral-900 dark:text-white">
+              <h3 class="text-3xl font-black text-primary-900 dark:text-white">
                 {{ $t("applications.detail.document.title") }}
               </h3>
               <div class="hidden text-right sm:block">
                 <p
-                  class="text-sm font-black uppercase tracking-widest text-neutral-900 dark:text-white"
+                  class="text-sm font-black uppercase tracking-widest text-primary-900 dark:text-white"
                 >
                   {{ displayDate }}
                 </p>
                 <p
-                  class="text-[10px] uppercase tracking-widest text-neutral-400"
+                  class="text-[10px] uppercase tracking-widest text-primary-400"
                 >
                   {{ $t("applications.detail.document.date_label") }}
                 </p>
               </div>
             </div>
             <p
-              class="mt-1 text-lg font-medium text-neutral-500 dark:text-neutral-400"
+              class="mt-1 text-lg font-medium text-primary-500 dark:text-primary-400"
             >
               {{ $t("applications.detail.document.subtitle") }}
             </p>
@@ -69,7 +69,7 @@ const body = computed({
           >
             {{ $t("applications.detail.document.recipient_label") }}
           </p>
-          <p class="text-xl font-bold text-neutral-900 dark:text-white">
+          <p class="text-xl font-bold text-primary-900 dark:text-white">
             {{
               isEditing
                 ? application.selectedCompany?.name || application.company.name
@@ -83,7 +83,7 @@ const body = computed({
                   application.company.address
                 : application.company.address
             "
-            class="mt-1 text-sm text-neutral-600 dark:text-neutral-400"
+            class="mt-1 text-sm text-primary-600 dark:text-primary-400"
           >
             <template
               v-if="isEditing && application.selectedCompany?.address"
@@ -112,18 +112,18 @@ const body = computed({
 
         <!-- Document Title & Subtitle -->
         <div class="mb-12">
-          <h3 class="text-3xl font-black text-neutral-900 dark:text-white">
+          <h3 class="text-3xl font-black text-primary-900 dark:text-white">
             {{ isEditing ? application.title : application.title }}
           </h3>
           <p
             v-if="isEditing ? application.subtitle : application.subtitle"
-            class="mt-2 text-xl font-medium text-neutral-500 dark:text-neutral-400"
+            class="mt-2 text-xl font-medium text-primary-500 dark:text-primary-400"
           >
             {{ isEditing ? application.subtitle : application.subtitle }}
           </p>
         </div>
 
-        <p class="mb-8 text-lg font-bold text-neutral-900 dark:text-white">
+        <p class="mb-8 text-lg font-bold text-primary-900 dark:text-white">
           {{ salutation }},
         </p>
 
@@ -138,13 +138,13 @@ const body = computed({
 
         <!-- Closing -->
         <div
-          class="mt-20 border-t border-neutral-50 pt-10 dark:border-neutral-800/50"
+          class="mt-20 border-t border-primary-50 pt-10 dark:border-primary-800/50"
         >
-          <p class="text-lg font-medium text-neutral-900 dark:text-white">
+          <p class="text-lg font-medium text-primary-900 dark:text-white">
             {{ $t("applications.detail.document.closing") }}
           </p>
           <div class="mt-8">
-            <p class="text-xl font-black text-neutral-900 dark:text-white">
+            <p class="text-xl font-black text-primary-900 dark:text-white">
               Philipp Fleischer
             </p>
             <NuxtImg

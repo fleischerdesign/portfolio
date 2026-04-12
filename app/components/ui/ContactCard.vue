@@ -24,10 +24,10 @@ defineProps<{
 
       <!-- Details -->
       <div class="min-w-0 flex-1">
-        <p class="font-bold text-neutral-900 dark:text-white truncate">
+        <p class="font-bold text-primary-900 dark:text-white truncate">
           {{ contact.name }}
         </p>
-        <p class="text-xs text-neutral-500 dark:text-neutral-400 truncate">
+        <p class="text-xs text-primary-500 dark:text-primary-400 truncate">
           {{ contact.position || $t('common.contact_person') || 'Ansprechpartner' }}
         </p>
         

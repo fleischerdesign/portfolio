@@ -1,7 +1,7 @@
 
 <template>
     <NuxtLink :to="$localePath(`/projects/${project?.slug}`)" class="group block h-full" :aria-label="$t('project.details_for', { title: project.title })">
-        <UiCard interactive class="relative h-[400px] w-full overflow-hidden border-neutral-200/50 bg-neutral-100/50 dark:border-neutral-800/50 dark:bg-neutral-900/50">
+        <UiCard interactive class="relative h-[400px] w-full overflow-hidden border-primary-200/50 bg-primary-100/50 dark:border-primary-800/50 dark:bg-primary-900/50">
             <!-- 1. Background Image -->
             <div class="absolute inset-0 h-full w-full">
                 <NuxtImg
@@ -12,7 +12,7 @@
                     class="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" 
                 />
                 <!-- Gradient Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-primary-950 via-primary-950/60 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100"></div>
             </div>
 
             <!-- 2. Ambient Accent Glow -->
@@ -50,7 +50,7 @@
                             {{ project.title }}
                         </h3>
                         
-                        <p class="line-clamp-2 text-base font-medium text-neutral-300 transition-colors duration-500 group-hover:text-neutral-100">
+                        <p class="line-clamp-2 text-base font-medium text-primary-300 transition-colors duration-500 group-hover:text-primary-100">
                             {{ project.subtitle }}
                         </p>
                     </div>

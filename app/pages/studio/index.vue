@@ -29,10 +29,10 @@ definePageMeta({
               <Icon name="mage:users" size="28" />
             </div>
             <div class="flex flex-1 flex-col justify-center text-center">
-              <h3 class="text-lg font-bold text-neutral-900 dark:text-white">
+              <h3 class="text-lg font-bold text-primary-900 dark:text-white">
                 {{ $t("navigation.applications") }}
               </h3>
-              <p class="text-sm text-neutral-500 dark:text-neutral-400">
+              <p class="text-sm text-primary-500 dark:text-primary-400">
                 Manage job applications
               </p>
             </div>
@@ -50,10 +50,10 @@ definePageMeta({
               <Icon name="mage:edit" size="28" />
             </div>
             <div class="flex flex-1 flex-col justify-center text-center">
-              <h3 class="text-lg font-bold text-neutral-900 dark:text-white">
+              <h3 class="text-lg font-bold text-primary-900 dark:text-white">
                 {{ $t("navigation.blog_editor") }}
               </h3>
-              <p class="text-sm text-neutral-500 dark:text-neutral-400">
+              <p class="text-sm text-primary-500 dark:text-primary-400">
                 Write and edit articles
               </p>
             </div>
@@ -71,10 +71,10 @@ definePageMeta({
               <Icon name="mage:folder" size="28" />
             </div>
             <div class="flex flex-1 flex-col justify-center text-center">
-              <h3 class="text-lg font-bold text-neutral-900 dark:text-white">
+              <h3 class="text-lg font-bold text-primary-900 dark:text-white">
                 {{ $t("navigation.project_editor") }}
               </h3>
-              <p class="text-sm text-neutral-500 dark:text-neutral-400">
+              <p class="text-sm text-primary-500 dark:text-primary-400">
                 Showcase your work
               </p>
             </div>
@@ -92,10 +92,10 @@ definePageMeta({
               <Icon name="mage:user-circle" size="28" />
             </div>
             <div class="flex flex-1 flex-col justify-center text-center">
-              <h3 class="text-lg font-bold text-neutral-900 dark:text-white">
+              <h3 class="text-lg font-bold text-primary-900 dark:text-white">
                 {{ $t("navigation.profile") }}
               </h3>
-              <p class="text-sm text-neutral-500 dark:text-neutral-400">
+              <p class="text-sm text-primary-500 dark:text-primary-400">
                 Manage personal info
               </p>
             </div>

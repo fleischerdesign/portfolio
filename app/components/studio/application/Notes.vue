@@ -20,7 +20,7 @@ const notes = computed({
 <template>
   <div class="pt-8">
     <UiCard
-      class="border-dashed border-neutral-200 bg-neutral-50/20 shadow-none dark:border-neutral-800 dark:bg-neutral-900/20"
+      class="border-dashed border-primary-200 bg-primary-50/20 shadow-none dark:border-primary-800 dark:bg-primary-900/20"
     >
       <UiCardContainer class="flex h-full flex-col gap-6 p-8">
         <div class="flex items-center gap-4">
@@ -30,10 +30,10 @@ const notes = computed({
             <Icon name="heroicons:pencil-square" size="24" />
           </div>
           <div>
-            <h3 class="text-xl font-black text-neutral-900 dark:text-white">
+            <h3 class="text-xl font-black text-primary-900 dark:text-white">
               {{ $t("applications.detail.notes.title") }}
             </h3>
-            <p class="text-xs font-medium text-neutral-500">
+            <p class="text-xs font-medium text-primary-500">
               {{ $t("applications.detail.notes.subtitle") }}
             </p>
           </div>
@@ -41,13 +41,13 @@ const notes = computed({
 
         <div
           v-if="!isEditing"
-          class="prose prose-neutral max-w-none dark:prose-invert"
+          class="prose prose-primary max-w-none dark:prose-invert"
         >
           <ul class="list-disc space-y-3 pl-5">
             <li
               v-for="(note, index) in application.notes"
               :key="index"
-              class="text-neutral-600 dark:text-neutral-400"
+              class="text-primary-600 dark:text-primary-400"
             >
               <BaseMarkdown :content="note" unstyled />
             </li>

@@ -79,7 +79,7 @@ const currentBody = computed(() => {
         <div v-if="!isEditing && project && viewTranslation" class="space-y-12">
           <div
             v-if="project.coverImage"
-            class="group relative aspect-[21/9] w-full overflow-hidden rounded-[2.5rem] border border-neutral-200/50 bg-neutral-100 shadow-2xl dark:border-neutral-800/50 dark:bg-neutral-900"
+            class="group relative aspect-[21/9] w-full overflow-hidden rounded-[2.5rem] border border-primary-200/50 bg-primary-100 shadow-2xl dark:border-primary-800/50 dark:bg-primary-900"
           >
             <NuxtImg
               :src="project.coverImage"
@@ -94,7 +94,7 @@ const currentBody = computed(() => {
             <UiCard v-if="viewTranslation.features?.length" class="p-6">
               <h3 class="mb-4 text-lg font-bold">Features</h3>
               <ul
-                class="list-disc space-y-1 pl-4 text-sm text-neutral-600 dark:text-neutral-400"
+                class="list-disc space-y-1 pl-4 text-sm text-primary-600 dark:text-primary-400"
               >
                 <li v-for="item in viewTranslation.features" :key="item">
                   {{ item }}
@@ -104,7 +104,7 @@ const currentBody = computed(() => {
             <UiCard v-if="viewTranslation.learned?.length" class="p-6">
               <h3 class="mb-4 text-lg font-bold">Learned</h3>
               <ul
-                class="list-disc space-y-1 pl-4 text-sm text-neutral-600 dark:text-neutral-400"
+                class="list-disc space-y-1 pl-4 text-sm text-primary-600 dark:text-primary-400"
               >
                 <li v-for="item in viewTranslation.learned" :key="item">
                   {{ item }}
@@ -114,7 +114,7 @@ const currentBody = computed(() => {
             <UiCard v-if="viewTranslation.challenges?.length" class="p-6">
               <h3 class="mb-4 text-lg font-bold">Challenges</h3>
               <ul
-                class="list-disc space-y-1 pl-4 text-sm text-neutral-600 dark:text-neutral-400"
+                class="list-disc space-y-1 pl-4 text-sm text-primary-600 dark:text-primary-400"
               >
                 <li v-for="item in viewTranslation.challenges" :key="item">
                   {{ item }}
@@ -149,7 +149,7 @@ const currentBody = computed(() => {
               />
 
               <div
-                class="border-t border-neutral-100 pt-4 dark:border-neutral-800"
+                class="border-t border-primary-100 pt-4 dark:border-primary-800"
               >
                 <UiImageUploader
                   v-model="(editableProject as any).common.coverImage"
@@ -180,14 +180,14 @@ const currentBody = computed(() => {
               </h3>
               <div>
                 <label
-                  class="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                  class="mb-1 block text-sm font-medium text-primary-700 dark:text-primary-300"
                   >Features (one per line)</label
                 >
                 <textarea
                   :value="
                     (editableProject as any)[currentLocale].features.join('\n')
                   "
-                  class="w-full rounded-lg border-neutral-300 bg-transparent text-sm dark:border-neutral-700"
+                  class="w-full rounded-lg border-primary-300 bg-transparent text-sm dark:border-primary-700"
                   rows="5"
                   @input="
                     (e) =>
@@ -201,14 +201,14 @@ const currentBody = computed(() => {
               </div>
               <div>
                 <label
-                  class="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                  class="mb-1 block text-sm font-medium text-primary-700 dark:text-primary-300"
                   >Learned (one per line)</label
                 >
                 <textarea
                   :value="
                     (editableProject as any)[currentLocale].learned.join('\n')
                   "
-                  class="w-full rounded-lg border-neutral-300 bg-transparent text-sm dark:border-neutral-700"
+                  class="w-full rounded-lg border-primary-300 bg-transparent text-sm dark:border-primary-700"
                   rows="5"
                   @input="
                     (e) =>
@@ -222,7 +222,7 @@ const currentBody = computed(() => {
               </div>
               <div>
                 <label
-                  class="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                  class="mb-1 block text-sm font-medium text-primary-700 dark:text-primary-300"
                   >Challenges (one per line)</label
                 >
                 <textarea
@@ -231,7 +231,7 @@ const currentBody = computed(() => {
                       '\n',
                     )
                   "
-                  class="w-full rounded-lg border-neutral-300 bg-transparent text-sm dark:border-neutral-700"
+                  class="w-full rounded-lg border-primary-300 bg-transparent text-sm dark:border-primary-700"
                   rows="5"
                   @input="
                     (e) =>
@@ -288,13 +288,13 @@ const currentBody = computed(() => {
           </h3>
           <div class="space-y-4 text-sm">
             <div class="flex flex-col gap-1">
-              <span class="text-xs text-neutral-500">Status</span>
+              <span class="text-xs text-primary-500">Status</span>
               <div class="flex">
                 <UiTag :status="project.status" shape="rounded" variant="status" />
               </div>
             </div>
             <div class="flex flex-col gap-1">
-              <span class="text-xs text-neutral-500">Icon</span>
+              <span class="text-xs text-primary-500">Icon</span>
               <div class="flex items-center gap-2">
                 <Icon
                   :name="project.icon || 'heroicons:question-mark-circle'"
@@ -306,7 +306,7 @@ const currentBody = computed(() => {
               </div>
             </div>
             <div class="flex flex-col gap-1">
-              <span class="text-xs text-neutral-500">Repo URL</span>
+              <span class="text-xs text-primary-500">Repo URL</span>
               <a
                 v-if="project.repoUrl"
                 :href="project.repoUrl"
@@ -314,10 +314,10 @@ const currentBody = computed(() => {
                 class="truncate text-secondary-500 hover:underline"
                 >{{ project.repoUrl }}</a
               >
-              <span v-else class="text-neutral-400">-</span>
+              <span v-else class="text-primary-400">-</span>
             </div>
             <div class="flex flex-col gap-1">
-              <span class="text-xs text-neutral-500">Project URL</span>
+              <span class="text-xs text-primary-500">Project URL</span>
               <a
                 v-if="project.projectUrl"
                 :href="project.projectUrl"
@@ -325,7 +325,7 @@ const currentBody = computed(() => {
                 class="truncate text-secondary-500 hover:underline"
                 >{{ project.projectUrl }}</a
               >
-              <span v-else class="text-neutral-400">-</span>
+              <span v-else class="text-primary-400">-</span>
             </div>
           </div>
         </UiCard>
@@ -360,12 +360,12 @@ const currentBody = computed(() => {
 
               <div>
                 <label
-                  class="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                  class="mb-1 block text-sm font-medium text-primary-700 dark:text-primary-300"
                   >Tags</label
                 >
                 <input
                   :value="(editableProject as any).common.tags.join(', ')"
-                  class="w-full rounded-lg border-neutral-300 bg-transparent text-sm dark:border-neutral-700"
+                  class="w-full rounded-lg border-primary-300 bg-transparent text-sm dark:border-primary-700"
                   placeholder="vue, nuxt"
                   @input="
                     (e) =>
@@ -389,12 +389,12 @@ const currentBody = computed(() => {
 
               <div>
                 <label
-                  class="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                  class="mb-1 block text-sm font-medium text-primary-700 dark:text-primary-300"
                   >Techstack</label
                 >
                 <input
                   :value="editableProject.common.techstack.join(', ')"
-                  class="w-full rounded-lg border-neutral-300 bg-transparent text-sm dark:border-neutral-700"
+                  class="w-full rounded-lg border-primary-300 bg-transparent text-sm dark:border-primary-700"
                   placeholder="typescript, tailwind"
                   @input="
                     (e) =>
@@ -433,7 +433,7 @@ const currentBody = computed(() => {
               />
               <div
                 v-if="(editableProject as any).common.icon"
-                class="flex items-center gap-2 rounded bg-neutral-100 p-2 dark:bg-neutral-800"
+                class="flex items-center gap-2 rounded bg-primary-100 p-2 dark:bg-primary-800"
               >
                 <Icon
                   :name="(editableProject as any).common.icon"

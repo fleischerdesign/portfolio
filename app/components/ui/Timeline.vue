@@ -79,7 +79,7 @@ const itemClasses = useCva(
         <!-- Timeline Dot/Icon (Mobile) -->
         <div 
           v-if="!compact && !isPrintView"
-          class="absolute left-5 z-10 flex h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-xl border border-secondary-500/30 bg-white shadow-xl shadow-secondary-500/10 backdrop-blur-md dark:bg-neutral-900 md:hidden" 
+          class="absolute left-5 z-10 flex h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-xl border border-secondary-500/30 bg-white shadow-xl shadow-secondary-500/10 backdrop-blur-md dark:bg-primary-900 md:hidden" 
         >
           <Icon v-if="item.icon" :name="item.icon" size="20" class="text-secondary-600 dark:text-secondary-400" />
           <div class="absolute inset-0 animate-pulse rounded-xl bg-secondary-500/5 blur-sm"></div>
@@ -88,7 +88,7 @@ const itemClasses = useCva(
         <!-- Timeline Dot/Icon (Desktop) -->
         <div 
           v-if="!compact && !isPrintView"
-          class="absolute left-1/2 z-10 hidden h-12 w-12 -translate-x-1/2 transform items-center justify-center rounded-2xl border border-secondary-500/30 bg-white shadow-2xl shadow-secondary-500/10 backdrop-blur-md dark:bg-neutral-900 md:flex" 
+          class="absolute left-1/2 z-10 hidden h-12 w-12 -translate-x-1/2 transform items-center justify-center rounded-2xl border border-secondary-500/30 bg-white shadow-2xl shadow-secondary-500/10 backdrop-blur-md dark:bg-primary-900 md:flex" 
         >
           <Icon v-if="item.icon" :name="item.icon" size="24" class="text-secondary-600 dark:text-secondary-400" />
           <div class="absolute inset-0 animate-pulse rounded-2xl bg-secondary-500/10 blur-md"></div>
@@ -113,13 +113,13 @@ const itemClasses = useCva(
           <slot :item="item" :index="index">
             <div class="flex flex-col gap-1">
               <span class="text-xs font-bold uppercase tracking-widest text-secondary-500" :class="{'text-[10px]': compact}">{{ item.date }}</span>
-              <h3 class="flex items-center gap-3 font-bold text-neutral-900 dark:text-white" :class="[compact ? 'text-lg' : 'text-2xl', {'md:flex-row-reverse': !isPrintView && !compact && index % 2 === 0}]">
+              <h3 class="flex items-center gap-3 font-bold text-primary-900 dark:text-white" :class="[compact ? 'text-lg' : 'text-2xl', {'md:flex-row-reverse': !isPrintView && !compact && index % 2 === 0}]">
                 <Icon v-if="compact && item.icon" :name="item.icon" class="text-secondary-500 opacity-50" size="18" />
                 {{ item.title }}
               </h3>
             </div>
             
-            <p class="mt-2 leading-relaxed text-neutral-600 dark:text-neutral-400" :class="compact ? 'text-sm' : 'text-lg'">{{ item.description }}</p>
+            <p class="mt-2 leading-relaxed text-primary-600 dark:text-primary-400" :class="compact ? 'text-sm' : 'text-lg'">{{ item.description }}</p>
             
             <div 
               v-if="item.skills && item.skills.length && !isPrintView" 

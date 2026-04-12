@@ -50,14 +50,14 @@ const buttonClasses = useCva(
     'rounded-xl flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.98]',
     {
         variant: {
-            default: 'shadow-sm border border-neutral-200 bg-white hover:border-neutral-300 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 dark:hover:bg-neutral-800',
-            secondary: 'bg-secondary-500 text-neutral-900 font-bold hover:bg-secondary-400 hover:shadow-lg hover:shadow-secondary-500/25 active:bg-secondary-600',
+            default: 'shadow-sm border border-primary-200 bg-white hover:border-primary-300 hover:bg-primary-50 dark:border-primary-800 dark:bg-primary-900 dark:hover:border-primary-700 dark:hover:bg-primary-800',
+            secondary: 'bg-secondary-500 text-primary-900 font-bold hover:bg-secondary-400 hover:shadow-lg hover:shadow-secondary-500/25 active:bg-secondary-600',
             
             // IMPROVED GLASS / SOCIAL VARIANT
-            glass: 'border border-neutral-200 bg-white/50 text-neutral-600 shadow-sm backdrop-blur-sm hover:border-secondary-300 hover:bg-secondary-50 hover:text-secondary-600 hover:shadow-md hover:shadow-secondary-500/10 dark:border-neutral-800 dark:bg-neutral-900/50 dark:text-neutral-400 dark:hover:border-secondary-700 dark:hover:bg-secondary-900/30 dark:hover:text-secondary-400',
+            glass: 'border border-primary-200 bg-white/50 text-primary-600 shadow-sm backdrop-blur-sm hover:border-secondary-300 hover:bg-secondary-50 hover:text-secondary-600 hover:shadow-md hover:shadow-secondary-500/10 dark:border-primary-800 dark:bg-primary-900/50 dark:text-primary-400 dark:hover:border-secondary-700 dark:hover:bg-secondary-900/30 dark:hover:text-secondary-400',
             
             danger: 'bg-red-500 text-white font-medium hover:bg-red-600 active:bg-red-700',
-            ghost: 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800',
+            ghost: 'text-primary-600 dark:text-primary-400 hover:text-primary-900 dark:hover:text-white hover:bg-primary-100 dark:hover:bg-primary-800',
             link: 'text-secondary-500 dark:text-secondary-400 hover:underline underline-offset-4',
         },
         size: {

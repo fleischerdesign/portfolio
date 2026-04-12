@@ -98,7 +98,7 @@ onUnmounted(() => {
       <UiCard interactive class="h-full">
         <UiCardContainer class="h-full flex-col">
           <uiButton
-            class="absolute right-4 z-20 h-9 w-9 rounded-md !p-1 text-neutral-500 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700"
+            class="absolute right-4 z-20 h-9 w-9 rounded-md !p-1 text-primary-500 hover:bg-primary-200 dark:text-primary-400 dark:hover:bg-primary-700"
             @click.stop.prevent="isMenuOpen = !isMenuOpen"
           >
             <Icon name="mdi:dots-vertical" class="p-3" />
@@ -115,7 +115,7 @@ onUnmounted(() => {
             <div
               v-if="isMenuOpen"
               ref="menu"
-              class="absolute right-4 top-12 z-50 w-48 origin-top-right rounded-xl border border-neutral-200/60 bg-white/80 px-2 py-2 text-neutral-900 shadow-xl backdrop-blur-xl dark:border-neutral-800/60 dark:bg-neutral-900/80 dark:text-white"
+              class="absolute right-4 top-12 z-50 w-48 origin-top-right rounded-xl border border-primary-200/60 bg-white/80 px-2 py-2 text-primary-900 shadow-xl backdrop-blur-xl dark:border-primary-800/60 dark:bg-primary-900/80 dark:text-white"
               @click.stop.prevent
             >
               <ul class="flex flex-col gap-1">
@@ -158,18 +158,18 @@ onUnmounted(() => {
           <div class="flex-grow">
             <div class="flex items-center justify-between">
               <h2
-                class="text-xl font-semibold text-neutral-900 dark:text-white"
+                class="text-xl font-semibold text-primary-900 dark:text-white"
               >
                 {{ application.company.name }}
               </h2>
             </div>
-            <p class="mt-2 text-neutral-600 dark:text-neutral-300">
+            <p class="mt-2 text-primary-600 dark:text-primary-300">
               {{ application.title }}
             </p>
           </div>
 
           <div
-            class="mt-4 flex items-center justify-between border-t border-neutral-200 pt-4 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400"
+            class="mt-4 flex items-center justify-between border-t border-primary-200 pt-4 text-sm text-primary-500 dark:border-primary-700 dark:text-primary-400"
           >
             <span
               >{{ $t("applications.card.last_activity") }}:

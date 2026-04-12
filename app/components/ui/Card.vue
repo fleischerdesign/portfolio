@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const computedClasses = useCva(
   props,
-  'relative flex overflow-hidden rounded-2xl border border-neutral-200/60 bg-white/80 transition-all duration-500 dark:border-neutral-800/60 dark:bg-neutral-900/60',
+  'relative flex overflow-hidden rounded-2xl border border-primary-200/60 bg-white/80 transition-all duration-500 dark:border-primary-800/60 dark:bg-primary-900/60',
   {
     direction: {
       row: 'flex-row',

@@ -31,8 +31,15 @@ export default <Partial<Config>>{
         glow: '0px 0px 10px ' + secondary['400'],
       },
       colors: {
-        neutral: primary,
+        primary: {
+          ...primary,
+          950: 'rgb(13, 13, 13)',
+        },
         secondary: secondary,
+        neutral: {
+          ...primary,
+          950: 'rgb(13, 13, 13)',
+        },
       },
     },
   }

@@ -72,8 +72,8 @@ const stats = computed(() => [
           <Icon :name="stat.icon" class="h-6 w-6 text-secondary-600 dark:text-secondary-400" />
         </div>
         <div class="flex flex-col">
-          <span class="text-2xl font-bold text-neutral-900 dark:text-white">{{ stat.value }}</span>
-          <span class="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">{{ stat.label }}</span>
+          <span class="text-2xl font-bold text-primary-900 dark:text-white">{{ stat.value }}</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">{{ stat.label }}</span>
         </div>
       </UiCardContainer>
     </UiCard>

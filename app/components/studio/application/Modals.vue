@@ -274,7 +274,7 @@ const vShowCompanyAddress = computed({
       </template>
       <template #body>
         <p>{{ $t("applications.modals.delete_history_confirm") }}</p>
-        <p class="mt-2 rounded-lg bg-neutral-100 p-2 dark:bg-neutral-800">
+        <p class="mt-2 rounded-lg bg-primary-100 p-2 dark:bg-primary-800">
           <strong>{{ deletableHistoryEntry.title }}:</strong>
           {{ deletableHistoryEntry.description }}
         </p>

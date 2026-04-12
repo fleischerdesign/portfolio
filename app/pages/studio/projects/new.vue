@@ -94,7 +94,7 @@ async function create() {
         <UiCardContainer class="space-y-6 p-8">
             <div class="mb-6">
                 <h1 class="text-2xl font-bold">Create New Project</h1>
-                <p class="text-neutral-500">Start with the basics. You can edit the full details and translations later.</p>
+                <p class="text-primary-500">Start with the basics. You can edit the full details and translations later.</p>
             </div>
 
             <UiInput id="title" v-model="form.title" label="Title (German)" placeholder="My Awesome Project" required />

@@ -79,7 +79,7 @@ function getTitle(project: ProjectStudioResponse) {
           >
             <div
               v-if="project.coverImage"
-              class="relative h-48 w-full overflow-hidden border-b border-neutral-100 dark:border-neutral-800"
+              class="relative h-48 w-full overflow-hidden border-b border-primary-100 dark:border-primary-800"
             >
               <NuxtImg
                 :src="project.coverImage"
@@ -87,7 +87,7 @@ function getTitle(project: ProjectStudioResponse) {
                 class="h-full w-full object-cover transition duration-700 group-hover:scale-105"
               />
               <div
-                class="absolute inset-0 bg-gradient-to-t from-neutral-900/60 to-transparent"
+                class="absolute inset-0 bg-gradient-to-t from-primary-900/60 to-transparent"
               ></div>
               <div
                 class="absolute bottom-4 left-4 right-4 flex items-end justify-between"
@@ -106,13 +106,13 @@ function getTitle(project: ProjectStudioResponse) {
               </div>
 
               <h3
-                class="mb-2 line-clamp-2 text-xl font-bold text-neutral-900 transition-colors group-hover:text-secondary-600 dark:text-white"
+                class="mb-2 line-clamp-2 text-xl font-bold text-primary-900 transition-colors group-hover:text-secondary-600 dark:text-white"
               >
                 {{ getTitle(project) }}
               </h3>
 
               <div
-                class="mt-auto flex items-center justify-between border-t border-neutral-100 pt-4 text-xs text-neutral-500 dark:border-neutral-800"
+                class="mt-auto flex items-center justify-between border-t border-primary-100 pt-4 text-xs text-primary-500 dark:border-primary-800"
               >
                 <span>{{ formatDate(project.createdAt) }}</span>
 
@@ -120,7 +120,7 @@ function getTitle(project: ProjectStudioResponse) {
                   <span
                     v-for="trans in project.translations"
                     :key="trans.locale"
-                    class="rounded bg-neutral-100 px-1.5 py-0.5 font-mono text-[10px] uppercase dark:bg-neutral-800"
+                    class="rounded bg-primary-100 px-1.5 py-0.5 font-mono text-[10px] uppercase dark:bg-primary-800"
                   >
                     {{ trans.locale }}
                   </span>
@@ -133,7 +133,7 @@ function getTitle(project: ProjectStudioResponse) {
 
       <div
         v-if="filteredProjects.length === 0"
-        class="flex flex-col items-center py-12 text-center text-neutral-500"
+        class="flex flex-col items-center py-12 text-center text-primary-500"
       >
         <Icon name="heroicons:folder" class="mb-4 h-12 w-12 opacity-20" />
         <p>{{ $t("studio.projects.empty") }}</p>

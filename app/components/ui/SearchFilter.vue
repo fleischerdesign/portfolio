@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mt-8 flex flex-col gap-3 rounded-2xl border border-secondary-500/10 bg-white/50 p-4 shadow-xl shadow-secondary-500/5 backdrop-blur-sm dark:bg-neutral-900/50 md:flex-row md:items-center md:gap-4 md:p-4"
+    class="mt-8 flex flex-col gap-3 rounded-2xl border border-secondary-500/10 bg-white/50 p-4 shadow-xl shadow-secondary-500/5 backdrop-blur-sm dark:bg-primary-900/50 md:flex-row md:items-center md:gap-4 md:p-4"
   >
     <div class="relative flex-1">
       <UiInput
@@ -12,14 +12,14 @@
         <template #prefix>
           <Icon
             name="heroicons:magnifying-glass"
-            class="h-5 w-5 text-neutral-400"
+            class="h-5 w-5 text-primary-400"
           />
         </template>
         <template #suffix>
           <button
             v-if="searchTerm"
             type="button"
-            class="flex h-6 w-6 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-600 dark:hover:bg-neutral-700"
+            class="flex h-6 w-6 items-center justify-center rounded-full text-primary-400 transition-colors hover:bg-primary-200 hover:text-primary-600 dark:hover:bg-primary-700"
             @click="emit('update:searchTerm', '')"
           >
             <Icon name="heroicons:x-mark" class="h-4 w-4" />

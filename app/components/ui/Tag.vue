@@ -45,10 +45,10 @@ const tagClasses = useCva(
   {
     variant: {
       glow: 'bg-secondary-50 text-secondary-700 border-secondary-200/50 dark:bg-secondary-900/20 dark:text-secondary-400 dark:border-secondary-500/20',
-      outline: 'bg-transparent border-neutral-300 text-neutral-600 dark:border-neutral-700 dark:text-neutral-400',
+      outline: 'bg-transparent border-primary-300 text-primary-600 dark:border-primary-700 dark:text-primary-400',
       fill: 'border-transparent',
       status: '', // Base classes for status style
-      default: 'bg-white/50 backdrop-blur-sm border-neutral-200 text-neutral-700 dark:bg-neutral-900/50 dark:border-neutral-800 dark:text-neutral-300',
+      default: 'bg-white/50 backdrop-blur-sm border-primary-200 text-primary-700 dark:bg-primary-900/50 dark:border-primary-800 dark:text-primary-300',
     },
     size: {
       xs: 'px-1.5 py-0.5 text-[9px] uppercase tracking-tighter',
@@ -60,7 +60,7 @@ const tagClasses = useCva(
       pill: 'rounded-full',
     },
     color: {
-      neutral: 'bg-neutral-100 text-neutral-800 border-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700',
+      neutral: 'bg-primary-100 text-primary-800 border-primary-200 dark:bg-primary-800 dark:text-primary-300 dark:border-primary-700',
       primary: 'bg-primary-100 text-primary-800 border-primary-200 dark:bg-primary-900/50 dark:text-primary-300 dark:border-primary-700',
       secondary: 'bg-secondary-100 text-secondary-800 border-secondary-200 dark:bg-secondary-900/50 dark:text-secondary-300 dark:border-secondary-700',
       success: 'bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-900/50 dark:text-emerald-300 dark:border-emerald-700',

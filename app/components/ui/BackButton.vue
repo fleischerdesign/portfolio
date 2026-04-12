@@ -1,7 +1,7 @@
 <template>
   <NuxtLink 
     :to="to" 
-    class="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-neutral-500 transition-colors hover:text-secondary-500"
+    class="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary-500 transition-colors hover:text-secondary-500"
   >
     <Icon 
       name="heroicons:arrow-left" 

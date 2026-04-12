@@ -75,7 +75,7 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
 
 
         <!-- 2. HERO IMAGE -->
-        <div class="group relative mb-20 w-full overflow-hidden rounded-[2.5rem] border border-neutral-200/50 bg-neutral-900 shadow-2xl dark:border-neutral-800/50">
+        <div class="group relative mb-20 w-full overflow-hidden rounded-[2.5rem] border border-primary-200/50 bg-primary-900 shadow-2xl dark:border-primary-800/50">
             <div class="pointer-events-none absolute -right-20 -top-20 z-10 h-96 w-96 rounded-full bg-secondary-500/10 blur-[100px] transition-all duration-700 group-hover:bg-secondary-500/20"></div>
             
             <NuxtImg
@@ -87,7 +87,7 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
                 placeholder
             />
             
-            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-transparent to-transparent"></div>
 
             <div class="absolute bottom-8 left-8 z-20 flex items-center gap-6 transition-transform duration-500 group-hover:-translate-y-2 md:bottom-12 md:left-12">
                 <div class="flex flex-col gap-1">
@@ -131,19 +131,19 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
                         <h3 class="mb-6 text-xs font-bold uppercase tracking-widest text-secondary-500">{{ $t("project.details") }}</h3>
                         <div class="flex flex-col gap-6">
                             <div v-for="item in details" :key="item.label" class="flex flex-col gap-1">
-                                <span class="text-sm font-medium text-neutral-500 dark:text-neutral-400">{{ item.label }}</span>
-                                <span class="text-lg font-bold text-neutral-900 dark:text-white">{{ item.value || '-' }}</span>
+                                <span class="text-sm font-medium text-primary-500 dark:text-primary-400">{{ item.label }}</span>
+                                <span class="text-lg font-bold text-primary-900 dark:text-white">{{ item.value || '-' }}</span>
                             </div>
                         </div>
                     </UiCard>
 
                     <!-- Challenges -->
                     <UiCard v-if="project.challenges?.length" class="p-8">
-                        <h3 class="mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-500">
+                        <h3 class="mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary-500">
                             <Icon name="mage:exclamation-circle" class="text-amber-500" size="16" /> {{ $t("project.challenges") }}
                         </h3>
                         <ul class="flex flex-col gap-4">
-                            <li v-for="challenge in project.challenges" :key="challenge" class="flex gap-3 text-sm font-medium leading-relaxed text-neutral-700 dark:text-neutral-300">
+                            <li v-for="challenge in project.challenges" :key="challenge" class="flex gap-3 text-sm font-medium leading-relaxed text-primary-700 dark:text-primary-300">
                                 <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500"></span>
                                 {{ challenge }}
                             </li>
@@ -152,11 +152,11 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
 
                     <!-- Features -->
                     <UiCard v-if="project.features?.length" class="p-8">
-                        <h3 class="mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-500">
+                        <h3 class="mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary-500">
                             <Icon name="heroicons:check-circle" class="text-secondary-500" size="16" /> {{ $t("project.key_features") }}
                         </h3>
                         <ul class="flex flex-col gap-4">
-                            <li v-for="feature in project.features" :key="feature" class="flex gap-3 text-sm font-medium leading-relaxed text-neutral-700 dark:text-neutral-300">
+                            <li v-for="feature in project.features" :key="feature" class="flex gap-3 text-sm font-medium leading-relaxed text-primary-700 dark:text-primary-300">
                                 <Icon name="heroicons:check" class="mt-0.5 shrink-0 text-secondary-500" size="16" />
                                 {{ feature }}
                             </li>

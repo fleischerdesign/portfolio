@@ -32,7 +32,7 @@ const { getFormattedLastActivityDate, getDisplayDate } = useApplicationUtils();
 
       <!-- Company -->
       <UiQuickStat
-        class="border-t border-neutral-100 pt-6 lg:min-w-0 lg:flex-1 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-neutral-800"
+        class="border-t border-primary-100 pt-6 lg:min-w-0 lg:flex-1 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-primary-800"
         icon="heroicons:building-office"
         :label="$t('applications.detail.config.company')"
         :value="application.company.name"
@@ -44,7 +44,7 @@ const { getFormattedLastActivityDate, getDisplayDate } = useApplicationUtils();
 
       <!-- Activity -->
       <UiQuickStat
-        class="border-t border-neutral-100 pt-6 lg:w-auto lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-neutral-800"
+        class="border-t border-primary-100 pt-6 lg:w-auto lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-primary-800"
         icon="heroicons:clock"
         :label="$t('applications.detail.document.activity')"
         :value="getFormattedLastActivityDate(application)"
@@ -62,7 +62,7 @@ const { getFormattedLastActivityDate, getDisplayDate } = useApplicationUtils();
       <!-- Listing Link -->
       <div
         v-if="application.url"
-        class="w-full border-t border-neutral-100 pt-6 lg:ml-auto lg:w-auto lg:border-t-0 lg:pt-0 dark:border-neutral-800"
+        class="w-full border-t border-primary-100 pt-6 lg:ml-auto lg:w-auto lg:border-t-0 lg:pt-0 dark:border-primary-800"
       >
         <a :href="application.url" target="_blank" rel="noopener noreferrer">
           <UiButton

@@ -10,7 +10,7 @@
                 :project="project"
             />
             </div>
-            <div v-if="!projects?.length" class="mt-12 text-center text-neutral-500">
+            <div v-if="!projects?.length" class="mt-12 text-center text-primary-500">
                 {{ $t('projects.no_projects') }}
             </div>
         </div>

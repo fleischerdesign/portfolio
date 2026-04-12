@@ -5,7 +5,7 @@
       v-if="label"
       :id="`${id}-label`"
       :for="id"
-      class="text-sm font-bold uppercase tracking-widest text-neutral-500 transition-colors group-focus-within:text-secondary-500 dark:text-neutral-400"
+      class="text-sm font-bold uppercase tracking-widest text-primary-500 transition-colors group-focus-within:text-secondary-500 dark:text-primary-400"
     >
       {{ label }} <span v-if="required" class="text-secondary-500">*</span>
     </label>
@@ -43,17 +43,17 @@
           </template>
           <template v-else-if="!multiple && selectedOption">
             <slot name="display" :option="selectedOption">
-              <span class="text-neutral-900 dark:text-white">{{ selectedOption }}</span>
+              <span class="text-primary-900 dark:text-white">{{ selectedOption }}</span>
             </slot>
           </template>
         </template>
-        <span v-else class="text-neutral-400">Select an option...</span>
+        <span v-else class="text-primary-400">Select an option...</span>
       </div>
 
       <!-- Arrow Icon -->
       <Icon 
         name="heroicons:chevron-down" 
-        class="ml-auto h-5 w-5 text-neutral-400 transition-transform duration-300"
+        class="ml-auto h-5 w-5 text-primary-400 transition-transform duration-300"
         :class="{ 'rotate-180': isOpen }" 
       />
     </button>
@@ -71,7 +71,7 @@
         <div
           v-if="isOpen"
           ref="dropdownEl"
-          class="fixed z-[9999] mt-2 overflow-hidden rounded-xl border border-neutral-200/60 bg-white/80 shadow-2xl backdrop-blur-xl dark:border-neutral-800/60 dark:bg-neutral-900/80"
+          class="fixed z-[9999] mt-2 overflow-hidden rounded-xl border border-primary-200/60 bg-white/80 shadow-2xl backdrop-blur-xl dark:border-primary-800/60 dark:bg-primary-900/80"
           :style="dropdownStyle"
           role="listbox"
           :aria-labelledby="`${id}-label`"
@@ -92,7 +92,7 @@
             <li
               v-for="(option, index) in options"
               :key="index"
-              class="cursor-pointer px-4 py-2.5 transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+              class="cursor-pointer px-4 py-2.5 transition-colors hover:bg-primary-100 dark:text-primary-200 dark:hover:bg-primary-800"
               :class="{
                 'bg-secondary-50 text-secondary-700 dark:bg-secondary-900/20 dark:text-secondary-400': !multiple && selectedOption && areEqual(option, selectedOption),
                 'bg-secondary-50/50 text-secondary-700 dark:bg-secondary-900/10 dark:text-secondary-400': multiple && Array.isArray(modelValue) && modelValue.some(v => areEqual(v, option))
@@ -267,7 +267,7 @@ const selectButtonClasses = useCva(
   'relative flex w-full items-center justify-between rounded-xl px-4 py-3 text-left shadow-sm transition-all duration-300 outline-none backdrop-blur-md',
   {
     hasError: {
-      false: 'border border-neutral-200/60 bg-white/50 focus:border-secondary-500/50 focus:ring-4 focus:ring-secondary-500/10 dark:border-neutral-800/60 dark:bg-neutral-900/40 dark:focus:border-secondary-400/40',
+      false: 'border border-primary-200/60 bg-white/50 focus:border-secondary-500/50 focus:ring-4 focus:ring-secondary-500/10 dark:border-primary-800/60 dark:bg-primary-900/40 dark:focus:border-secondary-400/40',
       true: 'border border-red-500/50 bg-red-50/50 focus:border-red-500 focus:ring-4 focus:ring-red-500/10 text-red-500 dark:bg-red-900/10',
     },
   },

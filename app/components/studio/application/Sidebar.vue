@@ -19,12 +19,12 @@ const emit = defineEmits<{
   <div class="sticky top-10 flex flex-col gap-6">
     <UiCard class="border-secondary-500/5 shadow-lg">
       <UiCardContainer class="flex h-full flex-col gap-4">
-        <h3 class="text-xl font-bold text-neutral-900 dark:text-white">
+        <h3 class="text-xl font-bold text-primary-900 dark:text-white">
           {{ $t("applications.detail.preview") }}
         </h3>
 
         <div
-          class="w-full overflow-hidden rounded-xl border border-neutral-100 shadow-sm transition-all hover:shadow-md dark:border-neutral-800"
+          class="w-full overflow-hidden rounded-xl border border-primary-100 shadow-sm transition-all hover:shadow-md dark:border-primary-800"
           style="aspect-ratio: 1 / 1.4142"
         >
           <iframe
@@ -66,7 +66,7 @@ const emit = defineEmits<{
           </UiButton>
         </template>
 
-        <hr class="my-2 border-neutral-100 dark:border-neutral-800" />
+        <hr class="my-2 border-primary-100 dark:border-primary-800" />
 
         <UiButton
           variant="glass"

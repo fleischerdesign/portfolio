@@ -165,7 +165,7 @@ const formatSize = (bytes?: number | null) => {
       <UiCardContainer class="p-0">
         <div
           v-if="pending && !documents"
-          class="p-12 text-center text-neutral-500"
+          class="p-12 text-center text-primary-500"
         >
           <Icon name="svg-spinners:ring-resize" class="mb-4 h-8 w-8" />
           <p>Lade Dokumente...</p>
@@ -178,7 +178,7 @@ const formatSize = (bytes?: number | null) => {
           <table class="w-full text-left">
             <thead>
               <tr
-                class="border-b border-neutral-100 bg-neutral-50/50 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:border-neutral-800 dark:bg-neutral-900/50"
+                class="border-b border-primary-100 bg-primary-50/50 text-[10px] font-black uppercase tracking-[0.2em] text-primary-400 dark:border-primary-800 dark:bg-primary-900/50"
               >
                 <th class="w-10 px-4 py-4"></th>
                 <th class="px-8 py-4">Name</th>
@@ -187,11 +187,11 @@ const formatSize = (bytes?: number | null) => {
                 <th class="px-8 py-4 text-right">Aktionen</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-neutral-100 dark:divide-neutral-800">
+            <tbody class="divide-y divide-primary-100 dark:divide-primary-800">
               <tr
                 v-for="(doc, index) in documents"
                 :key="doc.id"
-                class="group hover:bg-neutral-50/50 dark:hover:bg-neutral-900/30"
+                class="group hover:bg-primary-50/50 dark:hover:bg-primary-900/30"
               >
                 <td class="px-4 py-5">
                   <div
@@ -199,14 +199,14 @@ const formatSize = (bytes?: number | null) => {
                   >
                     <button
                       v-if="index > 0"
-                      class="text-neutral-300 hover:text-secondary-500"
+                      class="text-primary-300 hover:text-secondary-500"
                       @click="move(index, 'up')"
                     >
                       <Icon name="heroicons:chevron-up" size="14" />
                     </button>
                     <button
                       v-if="index < documents.length - 1"
-                      class="text-neutral-300 hover:text-secondary-500"
+                      class="text-primary-300 hover:text-secondary-500"
                       @click="move(index, 'down')"
                     >
                       <Icon name="heroicons:chevron-down" size="14" />
@@ -228,16 +228,16 @@ const formatSize = (bytes?: number | null) => {
                       />
                     </div>
                     <div>
-                      <p class="font-bold text-neutral-900 dark:text-white">
+                      <p class="font-bold text-primary-900 dark:text-white">
                         {{ doc.name }}
                       </p>
-                      <p class="text-xs text-neutral-400">{{ doc.filename }}</p>
+                      <p class="text-xs text-primary-400">{{ doc.filename }}</p>
                     </div>
                   </div>
                 </td>
-                <td class="px-8 py-5 text-sm text-neutral-500">
+                <td class="px-8 py-5 text-sm text-primary-500">
                   <span
-                    class="rounded-md border border-neutral-200 bg-neutral-100 px-2 py-0.5 text-[10px] font-bold uppercase dark:border-neutral-700 dark:bg-neutral-800"
+                    class="rounded-md border border-primary-200 bg-primary-100 px-2 py-0.5 text-[10px] font-bold uppercase dark:border-primary-700 dark:bg-primary-800"
                   >
                     {{ doc.fileType.split("/")[1]?.toUpperCase() || "FILE" }}
                   </span>
@@ -249,7 +249,7 @@ const formatSize = (bytes?: number | null) => {
                     :class="
                       doc.isDefault
                         ? 'text-secondary-500'
-                        : 'text-neutral-300 hover:text-neutral-400'
+                        : 'text-primary-300 hover:text-primary-400'
                     "
                     @click="toggleDefault(doc)"
                   >
@@ -295,14 +295,14 @@ const formatSize = (bytes?: number | null) => {
 
         <div v-else class="p-20 text-center">
           <div
-            class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-neutral-50 text-neutral-200 dark:bg-neutral-900"
+            class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-primary-50 text-primary-200 dark:bg-primary-900"
           >
             <Icon name="heroicons:document-plus" size="40" />
           </div>
-          <h3 class="text-xl font-bold text-neutral-900 dark:text-white">
+          <h3 class="text-xl font-bold text-primary-900 dark:text-white">
             Keine Dokumente gefunden
           </h3>
-          <p class="mt-2 text-neutral-500">
+          <p class="mt-2 text-primary-500">
             Lade dein erstes Zertifikat oder Zeugnis hoch.
           </p>
           <UiButton variant="link" class="mt-4" @click="showUploadModal = true"
@@ -329,11 +329,11 @@ const formatSize = (bytes?: number | null) => {
 
           <div class="space-y-2">
             <label
-              class="text-sm font-bold text-neutral-700 dark:text-neutral-300"
+              class="text-sm font-bold text-primary-700 dark:text-primary-300"
               >Datei (PDF)</label
             >
             <div
-              class="relative flex min-h-[100px] cursor-pointer items-center justify-center rounded-2xl border-2 border-dashed border-neutral-200 bg-neutral-50/50 p-6 transition-colors hover:border-secondary-500/50 hover:bg-white dark:border-neutral-800 dark:bg-neutral-900/50 dark:hover:bg-neutral-900"
+              class="relative flex min-h-[100px] cursor-pointer items-center justify-center rounded-2xl border-2 border-dashed border-primary-200 bg-primary-50/50 p-6 transition-colors hover:border-secondary-500/50 hover:bg-white dark:border-primary-800 dark:bg-primary-900/50 dark:hover:bg-primary-900"
             >
               <input
                 type="file"
@@ -348,7 +348,7 @@ const formatSize = (bytes?: number | null) => {
                 <Icon name="heroicons:check-badge" size="24" />
                 <span class="font-bold">{{ uploadForm.file.name }}</span>
               </div>
-              <div v-else class="text-center text-neutral-400">
+              <div v-else class="text-center text-primary-400">
                 <Icon name="heroicons:cloud-arrow-up" size="32" class="mb-2" />
                 <p class="text-xs font-medium">
                   Klicke zum Auswählen oder Drag & Drop
@@ -362,11 +362,11 @@ const formatSize = (bytes?: number | null) => {
               id="is-default"
               v-model="uploadForm.isDefault"
               type="checkbox"
-              class="h-5 w-5 rounded border-neutral-300 text-secondary-600 focus:ring-secondary-500"
+              class="h-5 w-5 rounded border-primary-300 text-secondary-600 focus:ring-secondary-500"
             />
             <label
               for="is-default"
-              class="text-sm font-medium text-neutral-600 dark:text-neutral-400"
+              class="text-sm font-medium text-primary-600 dark:text-primary-400"
             >
               Als Standard-Anhang für alle Bewerbungen verwenden
             </label>
@@ -406,30 +406,30 @@ const formatSize = (bytes?: number | null) => {
               id="edit-is-default"
               v-model="editForm.isDefault"
               type="checkbox"
-              class="h-5 w-5 rounded border-neutral-300 text-secondary-600 focus:ring-secondary-500"
+              class="h-5 w-5 rounded border-primary-300 text-secondary-600 focus:ring-secondary-500"
             />
             <label
               for="edit-is-default"
-              class="text-sm font-medium text-neutral-600 dark:text-neutral-400"
+              class="text-sm font-medium text-primary-600 dark:text-primary-400"
             >
               Als Standard-Anhang für alle Bewerbungen verwenden
             </label>
           </div>
 
           <div
-            class="rounded-xl border border-neutral-100 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-900"
+            class="rounded-xl border border-primary-100 bg-primary-50 p-4 dark:border-primary-800 dark:bg-primary-900"
           >
             <p
-              class="mb-1 text-[10px] font-black uppercase tracking-widest text-neutral-400"
+              class="mb-1 text-[10px] font-black uppercase tracking-widest text-primary-400"
             >
               Datei-Info
             </p>
             <p
-              class="truncate text-sm font-bold text-neutral-700 dark:text-neutral-300"
+              class="truncate text-sm font-bold text-primary-700 dark:text-primary-300"
             >
               {{ editForm.filename }}
             </p>
-            <p class="text-xs text-neutral-400">
+            <p class="text-xs text-primary-400">
               {{ formatSize(editForm.fileSize) }} • {{ editForm.fileType }}
             </p>
           </div>

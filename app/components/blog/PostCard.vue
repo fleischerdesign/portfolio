@@ -1,5 +1,5 @@
 <template>
-    <UiCard interactive class="group relative flex h-full flex-col overflow-hidden border-neutral-200/50 bg-white/50 dark:border-neutral-800/50 dark:bg-neutral-900/50">
+    <UiCard interactive class="group relative flex h-full flex-col overflow-hidden border-primary-200/50 bg-white/50 dark:border-primary-800/50 dark:bg-primary-900/50">
         <NuxtLink :to="$localePath(`/blog/${post?.slug}`)" class="flex h-full flex-col">
             
             <!-- 1. Image Section (Top) -->
@@ -17,7 +17,7 @@
                 />
                 
                 <!-- Overlay Gradient -->
-                <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/20 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-primary-950/20 to-transparent"></div>
             </div>
 
             <!-- 2. Content Section -->
@@ -27,23 +27,23 @@
 
                 <div class="relative z-10 flex h-full flex-col">
                     <!-- Technical Meta Info -->
-                    <div class="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-neutral-500 dark:text-neutral-400">
+                    <div class="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-primary-500 dark:text-primary-400">
                         <div v-if="post.publishedAt" class="flex items-center gap-1.5">
                             <Icon name="mage:calendar-2" size="14" class="text-secondary-500" />
                             <span>{{ formattedDate }}</span>
                         </div>
-                        <span v-if="post.publishedAt && post.readingTime" class="h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-700"></span>
+                        <span v-if="post.publishedAt && post.readingTime" class="h-1 w-1 rounded-full bg-primary-300 dark:bg-primary-700"></span>
                         <div v-if="post.readingTime" class="flex items-center gap-1.5">
                         <Icon name="mage:clock" size="16" class="text-secondary-400" />
                         {{ post.readingTime }} {{ $t("blogPost.readingTimeSuffix") }}
                     </div>
                     </div>
 
-                    <h3 class="text-2xl font-bold tracking-tight text-neutral-900 transition-colors duration-300 group-hover:text-secondary-600 dark:text-white dark:group-hover:text-secondary-400">
+                    <h3 class="text-2xl font-bold tracking-tight text-primary-900 transition-colors duration-300 group-hover:text-secondary-600 dark:text-white dark:group-hover:text-secondary-400">
                         {{ post?.title }}
                     </h3>
                     
-                    <p class="mt-3 line-clamp-3 flex-1 text-base text-neutral-600 transition-colors duration-300 group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-neutral-200">
+                    <p class="mt-3 line-clamp-3 flex-1 text-base text-primary-600 transition-colors duration-300 group-hover:text-primary-900 dark:text-primary-400 dark:group-hover:text-primary-200">
                         {{ post?.excerpt }}
                     </p>
 

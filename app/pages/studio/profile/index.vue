@@ -107,17 +107,17 @@ onMounted(() => {
     </div>
 
     <!-- Tabs -->
-    <div class="mb-8 flex gap-4 border-b border-neutral-200 dark:border-neutral-800">
+    <div class="mb-8 flex gap-4 border-b border-primary-200 dark:border-primary-800">
       <button 
         class="border-b-2 px-4 py-2 font-bold transition-colors"
-        :class="activeTab === 'basics' ? 'border-secondary-500 text-secondary-500' : 'border-transparent text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200'"
+        :class="activeTab === 'basics' ? 'border-secondary-500 text-secondary-500' : 'border-transparent text-primary-500 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-200'"
         @click="activeTab = 'basics'"
       >
         Stammdaten
       </button>
       <button 
         class="border-b-2 px-4 py-2 font-bold transition-colors"
-        :class="activeTab === 'courses' ? 'border-secondary-500 text-secondary-500' : 'border-transparent text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200'"
+        :class="activeTab === 'courses' ? 'border-secondary-500 text-secondary-500' : 'border-transparent text-primary-500 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-200'"
         @click="activeTab = 'courses'"
       >
         Kurse & Zertifikate
@@ -176,9 +176,9 @@ onMounted(() => {
                             <UiInput id="profile-availability-en" v-model="user.availabilityStatus!.en" label="Verfügbarkeit (EN)" />
                         </div>
                         <div class="space-y-4">
-                            <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300">Zusammenfassung (Hero Summary)</label>
-                            <textarea v-model="user.summary!.de" rows="3" class="w-full rounded-xl border border-neutral-200 bg-white p-3 dark:border-neutral-800 dark:bg-neutral-900" placeholder="DE: Kurzinfo für den Hero Bereich"></textarea>
-                            <textarea v-model="user.summary!.en" rows="3" class="w-full rounded-xl border border-neutral-200 bg-white p-3 dark:border-neutral-800 dark:bg-neutral-900" placeholder="EN: Summary for Hero section"></textarea>
+                            <label class="block text-sm font-bold text-primary-700 dark:text-primary-300">Zusammenfassung (Hero Summary)</label>
+                            <textarea v-model="user.summary!.de" rows="3" class="w-full rounded-xl border border-primary-200 bg-white p-3 dark:border-primary-800 dark:bg-primary-900" placeholder="DE: Kurzinfo für den Hero Bereich"></textarea>
+                            <textarea v-model="user.summary!.en" rows="3" class="w-full rounded-xl border border-primary-200 bg-white p-3 dark:border-primary-800 dark:bg-primary-900" placeholder="EN: Summary for Hero section"></textarea>
                         </div>
                     </div>
                 </div>

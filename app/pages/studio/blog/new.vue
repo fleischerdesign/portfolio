@@ -83,7 +83,7 @@ async function create() {
       <UiCardContainer class="space-y-6 p-8">
         <div class="mb-6">
           <h1 class="text-2xl font-bold">Create New Post</h1>
-          <p class="text-neutral-500">
+          <p class="text-primary-500">
             Start with the basics. You can edit everything else later.
           </p>
         </div>

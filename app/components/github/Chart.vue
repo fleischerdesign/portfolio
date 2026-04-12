@@ -44,14 +44,14 @@
           <div
             v-if="tooltip.visible"
             :style="{ left: tooltip.x + 'px', top: tooltip.y + 'px' }"
-            class="pointer-events-none fixed z-[9999] rounded-xl border border-neutral-200/60 bg-white/80 px-4 py-2.5 text-sm font-bold shadow-2xl backdrop-blur-xl dark:border-neutral-800/60 dark:bg-neutral-900/80"
+            class="pointer-events-none fixed z-[9999] rounded-xl border border-primary-200/60 bg-white/80 px-4 py-2.5 text-sm font-bold shadow-2xl backdrop-blur-xl dark:border-primary-800/60 dark:bg-primary-900/80"
           >
             <!-- Tooltip Arrow/Accent -->
-            <div class="absolute -left-1 top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 border-b border-l border-neutral-200/60 bg-white/80 dark:border-neutral-800/60 dark:bg-neutral-900/80"></div>
+            <div class="absolute -left-1 top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 border-b border-l border-primary-200/60 bg-white/80 dark:border-primary-800/60 dark:bg-primary-900/80"></div>
             
             <div class="relative flex flex-col gap-0.5">
-                <span class="text-xs uppercase tracking-widest text-neutral-500 dark:text-neutral-400">{{ formatDateShort(tooltip.date) }}</span>
-                <span class="text-neutral-900 dark:text-white">
+                <span class="text-xs uppercase tracking-widest text-primary-500 dark:text-primary-400">{{ formatDateShort(tooltip.date) }}</span>
+                <span class="text-primary-900 dark:text-white">
                     <span class="text-secondary-500">{{ tooltip.count }}</span>
                     {{ tooltip.count === 1 ? 'Beitrag' : 'Beiträge' }}
                 </span>
@@ -210,7 +210,7 @@ function getColorClass(count: number) {
   const baseClasses = 'transition-all duration-300 origin-center'
   
   const colors = [
-    'fill-neutral-200 dark:fill-neutral-800/50', // Level 0: Subtle Grid
+    'fill-primary-200 dark:fill-primary-800/50', // Level 0: Subtle Grid
     'fill-secondary-300 dark:fill-secondary-900/40 hover:fill-secondary-400 hover:scale-125 hover:drop-shadow-glow',
     'fill-secondary-400 dark:fill-secondary-700/60 hover:fill-secondary-500 hover:scale-125 hover:drop-shadow-glow',
     'fill-secondary-500 dark:fill-secondary-500/80 hover:fill-secondary-400 hover:scale-125 hover:drop-shadow-glow',

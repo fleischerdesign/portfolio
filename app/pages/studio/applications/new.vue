@@ -258,14 +258,14 @@ function handleCancelContactForm() {
                 :label="$t('applications.new.city')"
               />
             </div>
-            <p v-else-if="selectedCompany" class="text-neutral-500">
+            <p v-else-if="selectedCompany" class="text-primary-500">
               {{
                 $t("applications.new.selected_company", {
                   name: selectedCompany.name,
                 })
               }}
             </p>
-            <p v-else class="text-neutral-500">
+            <p v-else class="text-primary-500">
               {{ $t("applications.new.please_select_company") }}
             </p>
           </UiCardContainer>
@@ -293,7 +293,7 @@ function handleCancelContactForm() {
                 {{ option.name }}
                 <span
                   v-if="option.company && option.company.name"
-                  class="text-sm text-neutral-500"
+                  class="text-sm text-primary-500"
                   >({{ option.company.name }})</span
                 >
               </template>
@@ -308,7 +308,7 @@ function handleCancelContactForm() {
       </div>
 
       <div class="sticky top-10 flex flex-col gap-2 lg:col-span-1">
-        <div class="rounded-lg bg-white shadow dark:bg-neutral-900">
+        <div class="rounded-lg bg-white shadow dark:bg-primary-900">
           <div class="flex w-full flex-col gap-2">
             <UiButton
               class="w-full"

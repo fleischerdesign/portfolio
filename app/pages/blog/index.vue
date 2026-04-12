@@ -5,7 +5,7 @@
             <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
                 <BlogPostCard v-for="post in posts" :key="post.id" :post="post" />
             </div>
-            <div v-if="!posts?.length" class="mt-12 text-center text-neutral-500">
+            <div v-if="!posts?.length" class="mt-12 text-center text-primary-500">
                 {{ $t('blog.no_posts') }}
             </div>
         </div>

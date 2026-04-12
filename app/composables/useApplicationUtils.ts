@@ -14,7 +14,7 @@ export const useApplicationUtils = () => {
     offer: "text-green-800 dark:text-green-300",
     rejected: "text-red-800 dark:text-red-300",
     withdrawn: "text-purple-800 dark:text-purple-300",
-    draft: "text-neutral-800 dark:text-neutral-300",
+    draft: "text-primary-800 dark:text-primary-300",
   };
 
   const getStatusTextClasses = (status: string) => {

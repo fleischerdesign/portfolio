@@ -14,7 +14,7 @@
           <div 
             v-for="(item, index) in [...row, ...row]" 
             :key="index" 
-            class="group relative flex items-center rounded-xl border border-neutral-200/50 bg-white/40 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-secondary-500/30 hover:bg-white/80 dark:border-neutral-800/50 dark:bg-neutral-900/40 dark:hover:border-secondary-400/30 dark:hover:bg-neutral-900/80"
+            class="group relative flex items-center rounded-xl border border-primary-200/50 bg-white/40 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-secondary-500/30 hover:bg-white/80 dark:border-primary-800/50 dark:bg-primary-900/40 dark:hover:border-secondary-400/30 dark:hover:bg-primary-900/80"
             :class="[
               size === 'xs' ? 'px-1.5 py-0.5' : (size === 'sm' ? 'px-2.5 py-1.5' : 'px-4 py-2'),
               hideIcons ? '' : (size === 'xs' ? 'gap-1' : (size === 'sm' ? 'gap-2' : 'gap-3'))
@@ -25,19 +25,19 @@
             
             <div 
                 v-if="!hideIcons"
-                class="flex items-center justify-center rounded-lg bg-neutral-100 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-800 dark:group-hover:bg-secondary-900/30"
+                class="flex items-center justify-center rounded-lg bg-primary-100 transition-colors group-hover:bg-secondary-50 dark:bg-primary-800 dark:group-hover:bg-secondary-900/30"
                 :class="size === 'xs' ? 'h-5 w-5 p-0.5' : (size === 'sm' ? 'h-6 w-6 p-1' : 'h-8 w-8 p-1.5')"
             >
                 <Icon 
                     v-if="techIcons[item]" 
                     :name="techIcons[item]" 
-                    class="text-neutral-600 transition-colors group-hover:text-secondary-500 dark:text-neutral-400 dark:group-hover:text-secondary-400" 
+                    class="text-primary-600 transition-colors group-hover:text-secondary-500 dark:text-primary-400 dark:group-hover:text-secondary-400" 
                     :class="size === 'xs' ? 'text-xs' : (size === 'sm' ? 'text-sm' : 'text-xl')"
                 />
-                <Icon v-else name="mage:box-3d" :class="size === 'xs' ? 'text-xs' : (size === 'sm' ? 'text-sm' : 'text-xl')" class="text-neutral-400" />
+                <Icon v-else name="mage:box-3d" :class="size === 'xs' ? 'text-xs' : (size === 'sm' ? 'text-sm' : 'text-xl')" class="text-primary-400" />
             </div>
             
-            <span class="font-bold tracking-tight text-neutral-700 transition-colors group-hover:text-neutral-900 dark:text-neutral-300 dark:group-hover:text-white" :class="size === 'xs' ? 'text-[10px]' : (size === 'sm' ? 'text-[11px]' : 'text-sm')">
+            <span class="font-bold tracking-tight text-primary-700 transition-colors group-hover:text-primary-900 dark:text-primary-300 dark:group-hover:text-white" :class="size === 'xs' ? 'text-[10px]' : (size === 'sm' ? 'text-[11px]' : 'text-sm')">
                 {{ item }}
             </span>
           </div>
@@ -52,7 +52,7 @@
         <div 
           v-for="(item, index) in row" 
           :key="index" 
-          class="group relative flex items-center rounded-xl border border-neutral-200/50 bg-white/40 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-secondary-500/30 hover:bg-white/80 dark:border-neutral-800/50 dark:bg-neutral-900/40 dark:hover:border-secondary-400/30 dark:hover:bg-neutral-900/80"
+          class="group relative flex items-center rounded-xl border border-primary-200/50 bg-white/40 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-secondary-500/30 hover:bg-white/80 dark:border-primary-800/50 dark:bg-primary-900/40 dark:hover:border-secondary-400/30 dark:hover:bg-primary-900/80"
           :class="[
               size === 'xs' ? 'px-1.5 py-0.5' : (size === 'sm' ? 'px-2.5 py-1.5' : 'px-4 py-2'),
               hideIcons ? '' : (size === 'xs' ? 'gap-1' : (size === 'sm' ? 'gap-2' : 'gap-3'))
@@ -60,18 +60,18 @@
         >
           <div 
             v-if="!hideIcons"
-            class="flex items-center justify-center rounded-lg bg-neutral-100 transition-colors group-hover:bg-secondary-50 dark:bg-neutral-800 dark:group-hover:bg-secondary-900/30"
+            class="flex items-center justify-center rounded-lg bg-primary-100 transition-colors group-hover:bg-secondary-50 dark:bg-primary-800 dark:group-hover:bg-secondary-900/30"
             :class="size === 'xs' ? 'h-5 w-5 p-0.5' : (size === 'sm' ? 'h-6 w-6 p-1' : 'h-8 w-8 p-1.5')"
           >
               <Icon 
                   v-if="techIcons[item]" 
                   :name="techIcons[item]" 
-                  class="text-neutral-600 transition-colors group-hover:text-secondary-500 dark:text-neutral-400 dark:group-hover:text-secondary-400" 
+                  class="text-primary-600 transition-colors group-hover:text-secondary-500 dark:text-primary-400 dark:group-hover:text-secondary-400" 
                   :class="size === 'xs' ? 'text-xs' : (size === 'sm' ? 'text-sm' : 'text-xl')"
               />
-              <Icon v-else name="mage:box-3d" :class="size === 'xs' ? 'text-xs' : (size === 'sm' ? 'text-sm' : 'text-xl')" class="text-neutral-400" />
+              <Icon v-else name="mage:box-3d" :class="size === 'xs' ? 'text-xs' : (size === 'sm' ? 'text-sm' : 'text-xl')" class="text-primary-400" />
           </div>
-          <span class="font-bold tracking-tight text-neutral-700 transition-colors group-hover:text-neutral-900 dark:text-neutral-300 dark:group-hover:text-white" :class="size === 'xs' ? 'text-[10px]' : (size === 'sm' ? 'text-[11px]' : 'text-sm')">
+          <span class="font-bold tracking-tight text-primary-700 transition-colors group-hover:text-primary-900 dark:text-primary-300 dark:group-hover:text-white" :class="size === 'xs' ? 'text-[10px]' : (size === 'sm' ? 'text-[11px]' : 'text-sm')">
               {{ item }}
           </span>
         </div>

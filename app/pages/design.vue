@@ -24,12 +24,12 @@ const surfaces = [
 const surfaceClasses = computed(() => {
   const map: Record<string, string> = {
     page: "",
-    card: "rounded-2xl border border-neutral-100 bg-white dark:border-neutral-800 dark:bg-neutral-900",
+    card: "rounded-2xl border border-primary-100 bg-white dark:border-primary-800 dark:bg-primary-900/40",
     glass:
-      "rounded-2xl border border-neutral-200/60 bg-white/50 backdrop-blur-md dark:border-neutral-800/60 dark:bg-neutral-900/50",
+      "rounded-2xl border border-primary-200/60 bg-white/50 backdrop-blur-md dark:border-primary-800/60 dark:bg-primary-900/50",
     accent:
       "rounded-2xl border border-secondary-200/50 bg-secondary-50/50 dark:border-secondary-500/20 dark:bg-secondary-900/20",
-    dark: "rounded-2xl border border-neutral-800 bg-neutral-900 dark",
+    dark: "rounded-2xl border border-primary-800 bg-primary-950 dark",
   };
   return map[activeSurface.value] ?? "";
 });
@@ -226,7 +226,7 @@ const demoTechstack = [
     <!-- Surface Toggle -->
     <div class="mb-32 flex flex-wrap items-center gap-3">
       <p
-        class="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400"
+        class="text-[10px] font-black uppercase tracking-[0.3em] text-primary-400"
       >
         Surface
       </p>
@@ -237,7 +237,7 @@ const demoTechstack = [
           :class="
             activeSurface === surface.key
               ? 'bg-secondary-500 text-white shadow-sm'
-              : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700'
+              : 'bg-primary-100 text-primary-600 hover:bg-primary-200 dark:bg-primary-800 dark:text-primary-400 dark:hover:bg-primary-700'
           "
           class="cursor-pointer rounded-lg px-3 py-1.5 text-xs font-bold transition-all"
           @click="activeSurface = surface.key"
@@ -739,7 +739,7 @@ const demoTechstack = [
                 Markdown
               </p>
               <div
-                class="rounded-2xl border border-neutral-100 bg-white p-8 dark:border-neutral-800 dark:bg-neutral-900"
+                class="rounded-2xl border border-primary-100 bg-white p-8 dark:border-primary-800 dark:bg-primary-900"
               >
                 <BaseMarkdown
                   content="**Bold**, *italic*, and [links](https://google.com) work here."
@@ -875,10 +875,10 @@ const demoTechstack = [
                 Status & Social
               </p>
               <div
-                class="flex items-center justify-between rounded-2xl border border-neutral-100 bg-white p-8 dark:border-neutral-800 dark:bg-neutral-900"
+                class="flex items-center justify-between rounded-2xl border border-primary-100 bg-white p-8 dark:border-primary-800 dark:bg-primary-900"
               >
                 <div class="flex items-center gap-3">
-                  <span class="text-sm font-bold text-neutral-500"
+                  <span class="text-sm font-bold text-primary-500"
                     >Status:</span
                   >
                   <NowIndicator />

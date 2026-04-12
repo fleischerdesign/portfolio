@@ -112,7 +112,7 @@ const getShortenedBody = (body: string) => {
 </script>
 
 <template>
-	<div class="pdf-resume-container font-sans text-neutral-900 print:bg-neutral-100">
+	<div class="pdf-resume-container font-sans text-primary-900 print:bg-primary-100">
 
 		<!-- ==================== PAGE 1: COVER ==================== -->
 		<div class="cover-page relative flex h-[371mm] w-full flex-col justify-between overflow-hidden p-[25mm]">
@@ -147,7 +147,7 @@ const getShortenedBody = (body: string) => {
 				</div>
 
 				<!-- Contact Grid -->
-				<UiCard class="w-full max-w-2xl border-neutral-200/50 bg-white/60 shadow-lg backdrop-blur-md print:shadow-none">
+				<UiCard class="w-full max-w-2xl border-primary-200/50 bg-white/60 shadow-lg backdrop-blur-md print:shadow-none">
 					<UiCardContainer class="grid grid-cols-2 gap-x-8 gap-y-6 p-8">
 						<div v-if="profile?.email" class="flex items-center gap-4">
 							<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600">
@@ -201,9 +201,9 @@ const getShortenedBody = (body: string) => {
 
 					<!-- Recipient -->
 					<div class="pt-2">
-						<p class="text-lg font-bold text-neutral-900">{{ application.company.name }}</p>
-						<p v-if="formattedContactNames" class="text-neutral-600">{{ formattedContactNames }}</p>
-						<div v-if="application.company.address" class="text-neutral-600">
+						<p class="text-lg font-bold text-primary-900">{{ application.company.name }}</p>
+						<p v-if="formattedContactNames" class="text-primary-600">{{ formattedContactNames }}</p>
+						<div v-if="application.company.address" class="text-primary-600">
 							<p>{{ application.company.address.street }} {{ application.company.address.houseNumber }}</p>
 							<p>{{ application.company.address.zipcode }} {{ application.company.address.city }}</p>
 						</div>
@@ -212,7 +212,7 @@ const getShortenedBody = (body: string) => {
 
 				<!-- Date Block -->
 				<div class="pt-8 text-right">
-					<p class="font-medium text-neutral-500">{{ personalDetails.address.city }}, {{ printDate }}</p>
+					<p class="font-medium text-primary-500">{{ personalDetails.address.city }}, {{ printDate }}</p>
 				</div>
 			</div>
 
@@ -234,7 +234,7 @@ const getShortenedBody = (body: string) => {
 					</div>
 
 					<!-- Body -->
-					<div class="text-base leading-relaxed text-neutral-800">
+					<div class="text-base leading-relaxed text-primary-800">
 						<p class="mb-6 text-lg font-bold">
 							{{ salutation }},
 						</p>
@@ -283,7 +283,7 @@ const getShortenedBody = (body: string) => {
 				<div class="col-span-4 flex flex-col gap-5">
 
 					<!-- Profile & Personal Card -->
-					<UiCard class="overflow-hidden border-neutral-200/60 shadow-none">
+					<UiCard class="overflow-hidden border-primary-200/60 shadow-none">
 						<!-- Profile Image: Modern Rectangular -->
 						<div class="relative h-64 w-full">
 							<NuxtImg sizes="100vw sm:40vw" src="/img/profile.jpg" alt="Profile" class="h-full w-full object-cover" />
@@ -291,36 +291,36 @@ const getShortenedBody = (body: string) => {
 						</div>
 
 						<UiCardContainer class="relative z-10 -mt-8 px-5 pb-5">
-							<h3 class="mb-4 text-xl font-black tracking-tight text-neutral-900">{{ personalDetails.name }}</h3>
+							<h3 class="mb-4 text-xl font-black tracking-tight text-primary-900">{{ personalDetails.name }}</h3>
 
-							<div class="space-y-3 text-sm text-neutral-600">
+							<div class="space-y-3 text-sm text-primary-600">
 								<div v-if="personalDetails.birth.date" class="flex flex-col">
-									<span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{
+									<span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-primary-400">{{
 										$t('resume.details.birthday') }}</span>
-									<span class="font-medium text-neutral-800">{{ personalDetails.birth.date }} <span
+									<span class="font-medium text-primary-800">{{ personalDetails.birth.date }} <span
 											v-if="personalDetails.birth.location" class="mx-1 text-secondary-400">•</span> {{
 												personalDetails.birth.location }}</span>
 								</div>
 								<div v-if="personalDetails.maritalStatus" class="flex flex-col">
-									<span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{
+									<span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-primary-400">{{
 										$t('resume.details.marital_status_label') }}</span>
-									<span class="font-medium text-neutral-800">{{ personalDetails.maritalStatus }}</span>
+									<span class="font-medium text-primary-800">{{ personalDetails.maritalStatus }}</span>
 								</div>
 								<div v-if="personalDetails.driversLicense" class="flex flex-col">
-									<span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{
+									<span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-primary-400">{{
 										$t('resume.details.drivers_license_label') }}</span>
-									<span class="font-medium text-neutral-800">{{ personalDetails.driversLicense }}</span>
+									<span class="font-medium text-primary-800">{{ personalDetails.driversLicense }}</span>
 								</div>
 								<div class="flex flex-col">
-									<span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-400">{{
+									<span class="mb-0.5 text-[10px] font-black uppercase tracking-wider text-primary-400">{{
 										$t('home.contact.title') }}</span>
 									<div v-if="profile?.email" class="flex items-center gap-2">
 										<Icon name="heroicons:envelope" size="14" class="text-secondary-500" />
-										<span class="font-medium text-neutral-800">{{ profile.email }}</span>
+										<span class="font-medium text-primary-800">{{ profile.email }}</span>
 									</div>
 									<div v-if="profile?.phone" class="mt-1 flex items-center gap-2">
 										<Icon name="heroicons:phone" size="14" class="text-secondary-500" />
-										<span class="font-medium text-neutral-800">{{ profile.phone }}</span>
+										<span class="font-medium text-primary-800">{{ profile.phone }}</span>
 									</div>
 								</div>
 							</div>
@@ -328,24 +328,24 @@ const getShortenedBody = (body: string) => {
 					</UiCard>
 
 					<!-- Languages -->
-					<UiCard class="border-neutral-200/60 shadow-none">
+					<UiCard class="border-primary-200/60 shadow-none">
 						<UiCardContainer class="p-5">
 							<div class="mb-4 flex items-center gap-4">
 								<div
 									class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
 									<Icon name="heroicons:language" size="20" />
 								</div>
-								<h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">{{ $t('languages.title') }}
+								<h3 class="text-sm font-black uppercase tracking-[0.2em] text-primary-900">{{ $t('languages.title') }}
 								</h3>
 							</div>
 							<div class="grid grid-cols-1 gap-3">
 								<div v-for="lang in languages" :key="lang.name" class="flex flex-col gap-1">
 									<div class="flex items-center justify-between">
-										<span class="text-sm font-bold text-neutral-800">{{ lang.name }}</span>
+										<span class="text-sm font-bold text-primary-800">{{ lang.name }}</span>
 										<span class="text-[10px] font-black uppercase tracking-wider text-secondary-600">{{ lang.level
 										}}</span>
 									</div>
-									<div class="h-1.5 w-full overflow-hidden rounded-full bg-neutral-100">
+									<div class="h-1.5 w-full overflow-hidden rounded-full bg-primary-100">
 										<div class="h-full rounded-full bg-secondary-400" :style="{ width: lang.score + '%' }"></div>
 									</div>
 								</div>
@@ -354,14 +354,14 @@ const getShortenedBody = (body: string) => {
 					</UiCard>
 
 					<!-- Soft Skills -->
-					<UiCard class="flex-grow border-neutral-200/60 shadow-none">
+					<UiCard class="flex-grow border-primary-200/60 shadow-none">
 						<UiCardContainer class="p-5">
 							<div class="mb-4 flex items-center gap-4">
 								<div
 									class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
 									<Icon name="heroicons:sparkles" size="20" />
 								</div>
-								<h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Softskills</h3>
+								<h3 class="text-sm font-black uppercase tracking-[0.2em] text-primary-900">Softskills</h3>
 							</div>
 							<TechstackList :items="softSkills" :scroll="false" :gradient="true" size="sm" hide-icons />
 						</UiCardContainer>
@@ -373,28 +373,28 @@ const getShortenedBody = (body: string) => {
 				<div class="col-span-8 flex flex-col gap-5">
 
 					<!-- Summary -->
-					<UiCard class="border-neutral-200/60 shadow-none">
+					<UiCard class="border-primary-200/60 shadow-none">
 						<UiCardContainer class="p-6">
 							<div class="mb-4 flex items-center gap-4">
 								<div
 									class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
 									<Icon name="heroicons:user-circle" size="20" />
 								</div>
-								<h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Zusammenfassung</h3>
+								<h3 class="text-sm font-black uppercase tracking-[0.2em] text-primary-900">Zusammenfassung</h3>
 							</div>
-							<p class="text-sm font-medium italic leading-relaxed text-neutral-700">"{{ t("home.hero.summary") }}"</p>
+							<p class="text-sm font-medium italic leading-relaxed text-primary-700">"{{ t("home.hero.summary") }}"</p>
 						</UiCardContainer>
 					</UiCard>
 
 					<!-- Tech Stack -->
-					<UiCard class="border-neutral-200/60 shadow-none">
+					<UiCard class="border-primary-200/60 shadow-none">
 						<UiCardContainer class="p-6">
 							<div class="mb-4 flex items-center gap-4">
 								<div
 									class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
 									<Icon name="heroicons:cpu-chip" size="20" />
 								</div>
-								<h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">{{
+								<h3 class="text-sm font-black uppercase tracking-[0.2em] text-primary-900">{{
 									$t('home.overview.techstack.title') }}</h3>
 							</div>
 							<TechstackList :items="techStack" :scroll="false" :gradient="true" size="sm" />
@@ -408,13 +408,13 @@ const getShortenedBody = (body: string) => {
 								class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
 								<Icon name="heroicons:presentation-chart-bar" size="20" />
 							</div>
-							<h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Ausgewählte Projekte</h3>
+							<h3 class="text-sm font-black uppercase tracking-[0.2em] text-primary-900">Ausgewählte Projekte</h3>
 						</div>
 						<div class="grid grid-cols-1 gap-3">
 							<div v-for="project in projects.slice(0, 3)" :key="project.slug"
-								class="group flex items-center gap-4 rounded-2xl border border-neutral-100 bg-white p-3 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md">
+								class="group flex items-center gap-4 rounded-2xl border border-primary-100 bg-white p-3 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md">
 								<div
-									class="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50">
+									class="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border border-primary-100 bg-primary-50">
 									<NuxtImg v-if="project.coverImage" sizes="100vw sm:20vw" :src="project.coverImage"
 										class="h-full w-full object-cover opacity-30 grayscale transition-all group-hover:opacity-100 group-hover:grayscale-0" />
 									<div class="absolute inset-0 flex items-center justify-center">
@@ -424,14 +424,14 @@ const getShortenedBody = (body: string) => {
 									</div>
 								</div>
 								<div class="flex-grow">
-									<h4 class="text-sm font-black tracking-tight text-neutral-900">{{ project.title }}</h4>
+									<h4 class="text-sm font-black tracking-tight text-primary-900">{{ project.title }}</h4>
 									<div v-if="project.techstack?.length" class="my-1 flex flex-wrap gap-1">
 										<span v-for="tech in project.techstack.slice(0, 3)" :key="tech.id"
 											class="rounded-md border border-secondary-100 bg-secondary-50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-secondary-600">
 											{{ tech.name }}
 										</span>
 									</div>
-									<p class="line-clamp-2 text-xs leading-relaxed text-neutral-500">{{ project.subtitle }}</p>
+									<p class="line-clamp-2 text-xs leading-relaxed text-primary-500">{{ project.subtitle }}</p>
 								</div>
 							</div>
 						</div>
@@ -466,40 +466,40 @@ const getShortenedBody = (body: string) => {
 				<div class="col-span-4 flex flex-col gap-6">
 
 					<!-- Interests -->
-					<UiCard class="border-neutral-200/60 shadow-none">
+					<UiCard class="border-primary-200/60 shadow-none">
 						<UiCardContainer class="p-6">
 							<div class="mb-4 flex items-center gap-4">
 								<div
 									class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
 									<Icon name="heroicons:heart" size="20" />
 								</div>
-								<h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">{{ $t('interests.title') }}
+								<h3 class="text-sm font-black uppercase tracking-[0.2em] text-primary-900">{{ $t('interests.title') }}
 								</h3>
 							</div>
 							<ul class="space-y-4 text-xs">
 								<li v-for="(items, key) in interests" :key="key">
 									<span class="mb-1 block text-[10px] font-black uppercase tracking-wider text-secondary-500">{{
 										$t(`interests.${key}.title`) }}</span>
-									<p class="font-medium leading-relaxed text-neutral-700">{{ items.join(', ') }}</p>
+									<p class="font-medium leading-relaxed text-primary-700">{{ items.join(', ') }}</p>
 								</li>
 							</ul>
 						</UiCardContainer>
 					</UiCard>
 
 					<!-- Courses -->
-					<UiCard class="border-neutral-200/60 shadow-none">
+					<UiCard class="border-primary-200/60 shadow-none">
 						<UiCardContainer class="p-6">
 							<div class="mb-4 flex items-center gap-4">
 								<div
 									class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
 									<Icon name="heroicons:academic-cap" size="20" />
 								</div>
-								<h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Kurse</h3>
+								<h3 class="text-sm font-black uppercase tracking-[0.2em] text-primary-900">Kurse</h3>
 							</div>
 							<div class="space-y-3">
 								<div v-for="(skill) in courses.slice(0, 5)" :key="skill.id"
-									class="flex flex-col rounded-xl border border-neutral-100 bg-neutral-50/50 p-3">
-									<h4 class="text-sm font-bold leading-tight text-neutral-900">{{ localize(skill.title, locale) }}</h4>
+									class="flex flex-col rounded-xl border border-primary-100 bg-primary-50/50 p-3">
+									<h4 class="text-sm font-bold leading-tight text-primary-900">{{ localize(skill.title, locale) }}</h4>
 									<div class="mt-2.5 flex flex-col gap-2">
 										<div class="flex">
 											<span
@@ -507,7 +507,7 @@ const getShortenedBody = (body: string) => {
 												{{ formatDateRange(skill.startedAt, skill.endedAt) }}
 											</span>
 										</div>
-										<span class="text-[11px] font-medium leading-tight text-neutral-400">
+										<span class="text-[11px] font-medium leading-tight text-primary-400">
 											{{ skill.organization }}<span v-if="skill.teachers?.length"> • {{ skill.teachers.join(', ')
 											}}</span>
 										</span>
@@ -529,18 +529,18 @@ const getShortenedBody = (body: string) => {
 								class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
 								<Icon name="heroicons:book-open" size="20" />
 							</div>
-							<h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">Bildungsweg</h3>
+							<h3 class="text-sm font-black uppercase tracking-[0.2em] text-primary-900">Bildungsweg</h3>
 						</div>
 						<UiTimeline :items="timeline.filter(item => item.type === 'education').splice(0, 4)" :is-print-view="true"
 							compact>
 							<template #default="{ item }">
 								<div class="flex flex-col gap-1">
 									<div class="flex items-baseline justify-between gap-2">
-										<h3 class="text-sm font-bold text-neutral-900">{{ item.title }}</h3>
+										<h3 class="text-sm font-bold text-primary-900">{{ item.title }}</h3>
 										<span class="whitespace-nowrap text-xs font-black uppercase tracking-widest text-secondary-500">{{
 											item.date }}</span>
 									</div>
-									<p class="text-xs leading-snug text-neutral-600">{{ item.description }}</p>
+									<p class="text-xs leading-snug text-primary-600">{{ item.description }}</p>
 									<div v-if="item.skills && item.skills.length" class="mt-1 flex flex-wrap gap-1">
 										<span v-for="skill in item.skills" :key="skill"
 											class="rounded-md border border-secondary-100 bg-secondary-50/50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-secondary-600">
@@ -559,18 +559,18 @@ const getShortenedBody = (body: string) => {
 								class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-secondary-200/50 bg-secondary-100 text-secondary-600">
 								<Icon name="heroicons:briefcase" size="20" />
 							</div>
-							<h3 class="text-sm font-black uppercase tracking-[0.2em] text-neutral-900">{{
+							<h3 class="text-sm font-black uppercase tracking-[0.2em] text-primary-900">{{
 								$t('about.overview.careerPath.title') }}</h3>
 						</div>
 						<UiTimeline :items="timeline.filter(item => item.type === 'career')" :is-print-view="true" compact>
 							<template #default="{ item }">
 								<div class="flex flex-col gap-1">
 									<div class="flex items-baseline justify-between gap-2">
-										<h3 class="text-sm font-bold text-neutral-900">{{ item.title }}</h3>
+										<h3 class="text-sm font-bold text-primary-900">{{ item.title }}</h3>
 										<span class="whitespace-nowrap text-xs font-black uppercase tracking-widest text-secondary-500">{{
 											item.date }}</span>
 									</div>
-									<p class="text-xs leading-snug text-neutral-600">{{ item.description }}</p>
+									<p class="text-xs leading-snug text-primary-600">{{ item.description }}</p>
 									<div v-if="item.skills && item.skills.length" class="mt-1 flex flex-wrap gap-1">
 										<span v-for="skill in item.skills" :key="skill"
 											class="rounded-md border border-secondary-100 bg-secondary-50/50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-secondary-600">
@@ -617,7 +617,7 @@ const getShortenedBody = (body: string) => {
 				<div class="flex gap-6">
 					<!-- Cover Image -->
 					<div v-if="project.coverImage"
-						class="relative flex-[2] overflow-hidden rounded-2xl border border-neutral-100 shadow-sm">
+						class="relative flex-[2] overflow-hidden rounded-2xl border border-primary-100 shadow-sm">
 						<NuxtImg sizes="100vw sm:50vw" :src="project.coverImage" :alt="project.coverImageAlt || project.title"
 							class="absolute inset-0 h-full w-full object-cover" />
 						<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
@@ -640,14 +640,14 @@ const getShortenedBody = (body: string) => {
 					</div>
 
 					<!-- Techstack (Right Column) -->
-					<UiCard class="flex-1 border-neutral-200/60 shadow-none">
+					<UiCard class="flex-1 border-primary-200/60 shadow-none">
 						<UiCardContainer class="flex h-full flex-col p-5">
 							<div class="space-y-2">
 								<div class="flex items-center gap-3">
 									<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary-100 text-secondary-600">
 										<Icon name="heroicons:cpu-chip" size="16" />
 									</div>
-									<span class="text-xs font-black uppercase tracking-wider text-neutral-500">Techstack</span>
+									<span class="text-xs font-black uppercase tracking-wider text-primary-500">Techstack</span>
 								</div>
 								<TechstackList :items="project.techstack.slice(0, 10).map(t => t.name)" :scroll="false" size="xs" />
 							</div>
@@ -656,7 +656,7 @@ const getShortenedBody = (body: string) => {
 				</div>
 
 				<!-- Description -->
-				<UiCard class="flex-grow border-neutral-200/60 shadow-none">
+				<UiCard class="flex-grow border-primary-200/60 shadow-none">
 					<UiCardContainer class="p-8">
 						<BaseMarkdown 
 							:content="getShortenedBody(project.body || '')" 
@@ -668,18 +668,18 @@ const getShortenedBody = (body: string) => {
 				<!-- Features, Learnings Cards -->
 				<div class="grid grid-cols-2 gap-6">
 					<!-- Features -->
-					<UiCard v-if="project.features && project.features.length" class="border-neutral-200/60 shadow-none">
+					<UiCard v-if="project.features && project.features.length" class="border-primary-200/60 shadow-none">
 						<UiCardContainer class="flex h-full flex-col p-5">
 							<div class="space-y-2">
 								<div class="flex items-center gap-3">
 									<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary-100 text-secondary-600">
 										<Icon name="heroicons:check-circle" size="16" />
 									</div>
-									<span class="text-xs font-black uppercase tracking-wider text-neutral-500">Features</span>
+									<span class="text-xs font-black uppercase tracking-wider text-primary-500">Features</span>
 								</div>
 								<ul class="space-y-2">
 									<li v-for="feature in project.features.slice(0, 3)" :key="feature"
-										class="flex items-start gap-2 text-xs text-neutral-700">
+										class="flex items-start gap-2 text-xs text-primary-700">
 										<span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-secondary-500"></span>
 										{{ feature }}
 									</li>
@@ -689,18 +689,18 @@ const getShortenedBody = (body: string) => {
 					</UiCard>
 
 					<!-- Learnings -->
-					<UiCard v-if="project.learned && project.learned.length" class="border-neutral-200/60 shadow-none">
+					<UiCard v-if="project.learned && project.learned.length" class="border-primary-200/60 shadow-none">
 						<UiCardContainer class="flex h-full flex-col p-5">
 							<div class="space-y-2">
 								<div class="flex items-center gap-3">
 									<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
 										<Icon name="heroicons:light-bulb" size="16" />
 									</div>
-									<span class="text-xs font-black uppercase tracking-wider text-neutral-500">Learnings</span>
+									<span class="text-xs font-black uppercase tracking-wider text-primary-500">Learnings</span>
 								</div>
 								<ul class="space-y-2">
 									<li v-for="item in project.learned.slice(0, 3)" :key="item"
-										class="flex items-start gap-2 text-xs text-neutral-700">
+										class="flex items-start gap-2 text-xs text-primary-700">
 										<span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-blue-500"></span>
 										{{ item }}
 									</li>

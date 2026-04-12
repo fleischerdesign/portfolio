@@ -29,13 +29,13 @@ class="absolute inset-0 z-0 opacity-[0.05] mix-blend-overlay [mask-image:radial-
 
       <!-- Headline -->
       <div class="flex flex-col gap-4">
-          <h1 class="animate-fade-in-up max-w-4xl text-5xl font-black tracking-tight text-neutral-950 sm:text-6xl lg:text-7xl dark:text-white" style="animation-delay: 200ms;">
+          <h1 class="animate-fade-in-up max-w-4xl text-5xl font-black tracking-tight text-primary-950 sm:text-6xl lg:text-7xl dark:text-white" style="animation-delay: 200ms;">
             {{ $t("home.hero.greeting") }}
           </h1>
           <div class="animate-fade-in-up h-2 w-24 rounded-full bg-gradient-to-r from-secondary-500 to-transparent" style="animation-delay: 250ms;"></div>
       </div>
 
-      <p class="animate-fade-in-up max-w-3xl text-xl leading-relaxed text-neutral-600 sm:text-2xl dark:text-neutral-400" style="animation-delay: 350ms;">
+      <p class="animate-fade-in-up max-w-3xl text-xl leading-relaxed text-primary-600 sm:text-2xl dark:text-primary-400" style="animation-delay: 350ms;">
         {{ $t("home.hero.summary") }}
       </p>
 
@@ -44,7 +44,7 @@ class="absolute inset-0 z-0 opacity-[0.05] mix-blend-overlay [mask-image:radial-
         <SocialLinks />
         
         <!-- Scroll Down Indicator -->
-        <a href="#overview" class="group flex items-center gap-3 rounded-2xl border border-neutral-200/60 bg-white/50 px-6 py-3 text-sm font-bold uppercase tracking-[0.2em] text-neutral-500 backdrop-blur-md transition-all hover:border-secondary-500/40 hover:bg-white/80 hover:text-secondary-600 dark:border-neutral-800/60 dark:bg-neutral-950/50 dark:text-neutral-400 dark:hover:bg-neutral-900/80 dark:hover:text-secondary-400">
+        <a href="#overview" class="group flex items-center gap-3 rounded-2xl border border-primary-200/60 bg-white/50 px-6 py-3 text-sm font-bold uppercase tracking-[0.2em] text-primary-500 backdrop-blur-md transition-all hover:border-secondary-500/40 hover:bg-white/80 hover:text-secondary-600 dark:border-primary-800/60 dark:bg-primary-950/50 dark:text-primary-400 dark:hover:bg-primary-900/80 dark:hover:text-secondary-400">
             <span>{{ $t("home.hero.explore") }}</span>
             <Icon name="mage:arrow-down" size="20" class="animate-bounce" />
         </a>

@@ -38,7 +38,7 @@ onUnmounted(() => {
 
 const modalContentClasses = useCva(
   props,
-  'flex flex-col overflow-hidden rounded-lg border border-neutral-300/40 bg-gradient-to-br from-neutral-100/40 to-neutral-200/40 text-neutral-950 shadow-lg backdrop-blur-md transition ease-out duration-200 dark:border-neutral-700/40 dark:from-neutral-900/40 dark:to-neutral-800/40 dark:text-white',
+  'flex flex-col overflow-hidden rounded-lg border border-primary-300/40 bg-gradient-to-br from-primary-100/40 to-primary-200/40 text-primary-950 shadow-lg backdrop-blur-md transition ease-out duration-200 dark:border-primary-700/40 dark:from-primary-900/40 dark:to-primary-800/40 dark:text-white',
   {
     size: {
       sm: 'max-w-sm',
@@ -68,14 +68,14 @@ const modalContentClasses = useCva(
         leave-active-class="transition ease-in duration-200"
       >
         <div v-if="modelValue" :class="modalContentClasses">
-          <div v-if="$slots.header" class="flex items-center justify-between border-b border-neutral-300/40 p-4 dark:border-neutral-700/40">
+          <div v-if="$slots.header" class="flex items-center justify-between border-b border-primary-300/40 p-4 dark:border-primary-700/40">
             <slot name="header" />
-            <button class="text-2xl font-bold text-neutral-600 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200" @click="closeModal">
+            <button class="text-2xl font-bold text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-200" @click="closeModal">
               &times;
             </button>
           </div>
           <div v-else class="flex justify-end p-4">
-              <button class="text-2xl font-bold text-neutral-600 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200" @click="closeModal">
+              <button class="text-2xl font-bold text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-200" @click="closeModal">
                   &times;
               </button>
           </div>
@@ -84,7 +84,7 @@ const modalContentClasses = useCva(
             <slot name="body" />
           </div>
 
-          <div v-if="$slots.footer" class="flex justify-end gap-3 rounded-b-lg bg-neutral-50/20 p-4 dark:bg-neutral-900/20">
+          <div v-if="$slots.footer" class="flex justify-end gap-3 rounded-b-lg bg-primary-50/20 p-4 dark:bg-primary-900/20">
             <slot name="footer" />
           </div>
         </div>

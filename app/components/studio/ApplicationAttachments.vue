@@ -82,10 +82,10 @@ async function save() {
           <Icon name="heroicons:paper-clip" size="24" />
         </div>
         <div>
-          <h3 class="text-xl font-black text-neutral-900 dark:text-white">
+          <h3 class="text-xl font-black text-primary-900 dark:text-white">
             Anhänge
           </h3>
-          <p class="text-xs font-medium text-neutral-500">
+          <p class="text-xs font-medium text-primary-500">
             Wähle aus, welche Dokumente an das PDF angehängt werden.
           </p>
         </div>
@@ -115,7 +115,7 @@ async function save() {
           <div
             v-for="(ad, index) in activeDocuments"
             :key="ad.documentId"
-            class="group flex items-center gap-4 rounded-2xl border border-neutral-100 bg-white p-4 shadow-sm transition-colors hover:border-secondary-500/30 dark:border-neutral-800 dark:bg-neutral-900/50"
+            class="group flex items-center gap-4 rounded-2xl border border-primary-100 bg-white p-4 shadow-sm transition-colors hover:border-secondary-500/30 dark:border-primary-800 dark:bg-primary-900/50"
           >
             <div
               v-if="isEditing"
@@ -123,14 +123,14 @@ async function save() {
             >
               <button
                 v-if="index > 0"
-                class="text-neutral-300 hover:text-secondary-500"
+                class="text-primary-300 hover:text-secondary-500"
                 @click="move(index, 'up')"
               >
                 <Icon name="heroicons:chevron-up" />
               </button>
               <button
                 v-if="index < activeDocuments.length - 1"
-                class="text-neutral-300 hover:text-secondary-500"
+                class="text-primary-300 hover:text-secondary-500"
                 @click="move(index, 'down')"
               >
                 <Icon name="heroicons:chevron-down" />
@@ -138,7 +138,7 @@ async function save() {
             </div>
 
             <div
-              class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-neutral-50 text-neutral-400 dark:bg-neutral-800"
+              class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-400 dark:bg-primary-800"
             >
               <Icon
                 :name="
@@ -151,10 +151,10 @@ async function save() {
             </div>
 
             <div class="min-w-0 flex-1">
-              <p class="truncate font-bold text-neutral-900 dark:text-white">
+              <p class="truncate font-bold text-primary-900 dark:text-white">
                 {{ ad.document.name }}
               </p>
-              <p class="text-[10px] font-medium text-neutral-400">
+              <p class="text-[10px] font-medium text-primary-400">
                 {{ index + 1 }}. Dokument im PDF
               </p>
             </div>
@@ -172,7 +172,7 @@ async function save() {
                 variant="ghost"
                 :to="`/media/documents/${ad.document.filename}`"
                 target="_blank"
-                class="text-neutral-400 hover:text-secondary-500"
+                class="text-primary-400 hover:text-secondary-500"
               >
                 <Icon name="heroicons:eye" class="h-4 w-4" />
               </UiButton>
@@ -180,7 +180,7 @@ async function save() {
                 v-if="isEditing"
                 size="sm"
                 variant="ghost"
-                class="hover:text-danger-500 text-neutral-400"
+                class="hover:text-danger-500 text-primary-400"
                 @click="removeDocument(ad.documentId)"
               >
                 <Icon name="heroicons:x-mark" />
@@ -190,9 +190,9 @@ async function save() {
         </div>
         <div
           v-else
-          class="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-neutral-100 py-10 text-center dark:border-neutral-800"
+          class="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-primary-100 py-10 text-center dark:border-primary-800"
         >
-          <p class="text-sm font-medium text-neutral-400">
+          <p class="text-sm font-medium text-primary-400">
             Keine spezifischen Anhänge ausgewählt.
           </p>
           <p
@@ -206,7 +206,7 @@ async function save() {
       <!-- Pool / Available (Only in Edit Mode) -->
       <div v-if="isEditing" class="space-y-4">
         <p
-          class="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400"
+          class="text-[10px] font-black uppercase tracking-[0.3em] text-primary-400"
         >
           Verfügbare Dokumente
         </p>
@@ -218,15 +218,15 @@ async function save() {
           <div
             v-for="doc in availableDocuments"
             :key="doc.id"
-            class="flex items-center gap-3 rounded-xl border border-dashed border-neutral-200 p-3 transition-colors hover:border-secondary-500/50 hover:bg-secondary-50/30 dark:border-neutral-800 dark:hover:bg-secondary-900/10"
+            class="flex items-center gap-3 rounded-xl border border-dashed border-primary-200 p-3 transition-colors hover:border-secondary-500/50 hover:bg-secondary-50/30 dark:border-primary-800 dark:hover:bg-secondary-900/10"
           >
             <div
-              class="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-100 text-neutral-400 dark:bg-neutral-800"
+              class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-100 text-primary-400 dark:bg-primary-800"
             >
               <Icon name="heroicons:plus" size="16" />
             </div>
             <p
-              class="flex-1 text-sm font-medium text-neutral-700 dark:text-neutral-300"
+              class="flex-1 text-sm font-medium text-primary-700 dark:text-primary-300"
             >
               {{ doc.name }}
             </p>
@@ -242,7 +242,7 @@ async function save() {
         </div>
         <div
           v-else
-          class="rounded-2xl border border-neutral-100 bg-neutral-50/50 p-6 text-center text-xs text-neutral-400 dark:border-neutral-800 dark:bg-neutral-900/20"
+          class="rounded-2xl border border-primary-100 bg-primary-50/50 p-6 text-center text-xs text-primary-400 dark:border-primary-800 dark:bg-primary-900/20"
         >
           Alle Dokumente aus dem Pool sind bereits aktiv oder der Pool ist leer.
           <NuxtLink

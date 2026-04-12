@@ -20,7 +20,7 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
           <UiBackButton :to="$localePath('/blog')" />
           
           <div class="flex flex-wrap items-center gap-4">
-             <div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+             <div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-primary-500 dark:text-primary-400">
                 <span v-if="post.publishedAt" class="flex items-center gap-2">
                     <Icon name="heroicons:calendar" size="16" class="text-secondary-500" />
                     {{ formattedDate }}
@@ -39,26 +39,26 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
              </div>
           </div>
 
-          <h1 class="text-5xl font-black leading-[1.1] tracking-tight text-neutral-950 sm:text-6xl lg:text-7xl dark:text-white">
+          <h1 class="text-5xl font-black leading-[1.1] tracking-tight text-primary-950 sm:text-6xl lg:text-7xl dark:text-white">
             {{ post.title }}
           </h1>
 
           <div class="h-2 w-24 rounded-full bg-gradient-to-r from-secondary-500 to-transparent"></div>
 
-          <p class="max-w-3xl text-2xl leading-relaxed text-neutral-600 dark:text-neutral-400">
+          <p class="max-w-3xl text-2xl leading-relaxed text-primary-600 dark:text-primary-400">
             {{ post.excerpt }}
           </p>
 
           <div v-if="post.author" class="flex items-center gap-4 pt-4">
               <!-- Avatar removed as not available in schema -->
               <div class="flex flex-col">
-                  <span class="text-base font-bold text-neutral-900 dark:text-white">{{ post.author.name }}</span>
+                  <span class="text-base font-bold text-primary-900 dark:text-white">{{ post.author.name }}</span>
                   <span class="text-xs font-medium uppercase tracking-wider text-secondary-500">{{ $t("blog.author") }}</span>
               </div>
           </div>
         </header>
 
-        <div v-if="post.coverImage" class="group relative mb-20 aspect-[21/9] w-full overflow-hidden rounded-[2.5rem] border border-neutral-200/50 bg-neutral-100 shadow-2xl dark:border-neutral-800/50 dark:bg-neutral-900">
+        <div v-if="post.coverImage" class="group relative mb-20 aspect-[21/9] w-full overflow-hidden rounded-[2.5rem] border border-primary-200/50 bg-primary-100 shadow-2xl dark:border-primary-800/50 dark:bg-primary-900">
             <div class="pointer-events-none absolute -right-20 -top-20 z-10 h-96 w-96 rounded-full bg-secondary-500/10 blur-[100px]"></div>
             
             <NuxtImg
@@ -70,17 +70,17 @@ class="absolute inset-0 opacity-[0.05] mix-blend-overlay"
               preload
             />
             
-            <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/20 to-transparent opacity-60"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-primary-900/20 to-transparent opacity-60"></div>
         </div>
 
         <div class="w-full max-w-4xl">
             <BaseMarkdown :content="post.body" />
         </div>
 
-            <footer class="mt-20 flex flex-col items-start gap-10 border-t border-neutral-200/30 pt-16 dark:border-neutral-800/30">
+            <footer class="mt-20 flex flex-col items-start gap-10 border-t border-primary-200/30 pt-16 dark:border-primary-800/30">
                 <div class="flex flex-col gap-4">
-                    <h3 class="text-xl font-bold text-neutral-900 dark:text-white">{{ $t("blog.enjoyed_post") }}</h3>
-                    <p class="text-neutral-500">{{ $t("blog.share_connect") }}</p>
+                    <h3 class="text-xl font-bold text-primary-900 dark:text-white">{{ $t("blog.enjoyed_post") }}</h3>
+                    <p class="text-primary-500">{{ $t("blog.share_connect") }}</p>
                 </div>
                 <div class="flex gap-4">
                     <SocialLinks />

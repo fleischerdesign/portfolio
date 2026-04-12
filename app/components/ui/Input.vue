@@ -4,13 +4,13 @@
     <label
       v-if="label"
       :for="id"
-      class="text-sm font-bold uppercase tracking-widest text-neutral-500 transition-colors group-focus-within:text-secondary-500 dark:text-neutral-400"
+      class="text-sm font-bold uppercase tracking-widest text-primary-500 transition-colors group-focus-within:text-secondary-500 dark:text-primary-400"
     >
       {{ label }} <span v-if="required" class="text-secondary-500">*</span>
     </label>
 
     <div class="relative flex items-center">
-      <div v-if="$slots.prefix" class="absolute left-4 z-10 flex items-center justify-center text-neutral-400">
+      <div v-if="$slots.prefix" class="absolute left-4 z-10 flex items-center justify-center text-primary-400">
         <slot name="prefix" />
       </div>
 
@@ -30,7 +30,7 @@
         @input="handleInput"
       />
 
-      <div v-if="$slots.suffix" class="absolute right-4 z-10 flex items-center justify-center text-neutral-400">
+      <div v-if="$slots.suffix" class="absolute right-4 z-10 flex items-center justify-center text-primary-400">
         <slot name="suffix" />
       </div>
       
@@ -86,11 +86,11 @@ const handleInput = (event: Event) => {
 
 const inputClasses = useCva(
   props,
-  'peer w-full rounded-xl bg-white/50 dark:bg-neutral-900/40 px-4 py-3 text-neutral-900 dark:text-white border transition-all duration-300 backdrop-blur-md outline-none placeholder-neutral-400',
+  'peer w-full rounded-xl bg-white/50 dark:bg-primary-900/40 px-4 py-3 text-primary-900 dark:text-white border transition-all duration-300 backdrop-blur-md outline-none placeholder-primary-400',
   {
     hasError: {
       true: 'border-red-500/50 focus:border-red-500 focus:ring-4 focus:ring-red-500/10',
-      false: 'border-neutral-200/60 dark:border-neutral-800/60 focus:border-secondary-500/50 focus:ring-4 focus:ring-secondary-500/10 dark:focus:border-secondary-400/40',
+      false: 'border-primary-200/60 dark:border-primary-800/60 focus:border-secondary-500/50 focus:ring-4 focus:ring-secondary-500/10 dark:focus:border-secondary-400/40',
     },
   }
 );

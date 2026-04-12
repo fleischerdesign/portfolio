@@ -66,22 +66,22 @@ onMounted(() => {
           <span class="text-lg font-black text-secondary-600">{{ stats.words }}</span>
         </div>
         <div class="flex flex-col">
-          <span class="text-[9px] font-black uppercase tracking-widest text-neutral-400">
+          <span class="text-[9px] font-black uppercase tracking-widest text-primary-400">
             {{ $t('applications.detail.editor.chars') || 'Zeichen' }}
           </span>
           <span
-            class="text-lg font-bold text-neutral-600 dark:text-neutral-300"
+            class="text-lg font-bold text-primary-600 dark:text-primary-300"
             :class="{ 'text-amber-500': stats.isLong }"
           >
             {{ stats.chars }}
           </span>
         </div>
-        <div class="mx-2 hidden h-8 w-px bg-neutral-200 sm:flex dark:bg-neutral-700"></div>
+        <div class="mx-2 hidden h-8 w-px bg-primary-200 sm:flex dark:bg-primary-700"></div>
         <div class="hidden flex-col sm:flex">
-          <span class="text-[9px] font-black uppercase tracking-widest text-neutral-400">
+          <span class="text-[9px] font-black uppercase tracking-widest text-primary-400">
             {{ $t('applications.detail.editor.reading_time') || 'Lesezeit' }}
           </span>
-          <span class="text-sm font-bold text-neutral-600 dark:text-neutral-300">
+          <span class="text-sm font-bold text-primary-600 dark:text-primary-300">
             ~ {{ stats.readingTime }} Min.
           </span>
         </div>
@@ -95,7 +95,7 @@ onMounted(() => {
           <Icon name="heroicons:exclamation-triangle" size="14" />
           {{ $t('applications.detail.editor.over_page_limit') || 'Über eine Seite' }}
         </div>
-        <div class="hidden items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-400 lg:flex">
+        <div class="hidden items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary-400 lg:flex">
           <Icon name="mdi:markdown" size="18" />
           Markdown
         </div>
@@ -111,14 +111,14 @@ onMounted(() => {
           v-model="content"
           :placeholder="placeholder"
           :style="{ minHeight }"
-          class="w-full resize-none overflow-hidden border-none bg-transparent p-0 text-lg leading-relaxed selection:bg-secondary-100 focus:ring-0 dark:selection:bg-secondary-900/50 dark:text-neutral-200"
+          class="w-full resize-none overflow-hidden border-none bg-transparent p-0 text-lg leading-relaxed selection:bg-secondary-100 focus:ring-0 dark:selection:bg-secondary-900/50 dark:text-primary-200"
           @input="adjustHeight"
         ></textarea>
       </div>
 
       <!-- Preview Area (DIN-A4 Style for Content) -->
       <div v-if="showPreview" class="hidden lg:block">
-        <UiCard class="h-full border-neutral-100 bg-neutral-50/30 dark:border-neutral-800 dark:bg-neutral-900/30">
+        <UiCard class="h-full border-primary-100 bg-primary-50/30 dark:border-primary-800 dark:bg-primary-900/30">
           <UiCardContainer class="p-8">
             <BaseMarkdown :content="content" />
           </UiCardContainer>

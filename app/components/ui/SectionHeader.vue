@@ -109,18 +109,18 @@ const contentAlignClasses = computed(() => {
 })
 
 const titleClasses = computed(() => [
-  'font-bold tracking-tight text-neutral-900 dark:text-white',
+  'font-bold tracking-tight text-primary-900 dark:text-white',
   props.level === 1 ? 'text-5xl sm:text-7xl' : 'text-4xl sm:text-5xl',
   props.variant === 'tech' ? 'font-mono tracking-tighter' : ''
 ])
 
 const subtitleClasses = useCva(
    { variant: props.variant },
-   'text-lg leading-relaxed text-neutral-600 dark:text-neutral-400',
+   'text-lg leading-relaxed text-primary-600 dark:text-primary-400',
    {
       variant: {
          minimal: 'max-w-3xl',
-         glow: 'max-w-2xl font-medium text-neutral-600 dark:text-neutral-300 mt-2',
+         glow: 'max-w-2xl font-medium text-primary-600 dark:text-primary-300 mt-2',
          nebula: 'mx-auto max-w-2xl',
          tech: 'max-w-3xl font-mono text-sm uppercase tracking-wide opacity-80',
          none: 'max-w-3xl',

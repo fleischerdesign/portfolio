@@ -31,10 +31,10 @@ const application = computed({
           <Icon name="heroicons:adjustments-horizontal" size="24" />
         </div>
         <div>
-          <h3 class="text-2xl font-black text-neutral-900 dark:text-white">
+          <h3 class="text-2xl font-black text-primary-900 dark:text-white">
             {{ $t("applications.detail.config.title") }}
           </h3>
-          <p class="text-xs font-medium text-neutral-500">
+          <p class="text-xs font-medium text-primary-500">
             {{ $t("applications.detail.config.subtitle") }}
           </p>
         </div>
@@ -76,7 +76,7 @@ const application = computed({
 
         <!-- Company Info -->
         <div
-          class="space-y-8 border-neutral-100 md:border-l md:pl-10 dark:border-neutral-800"
+          class="space-y-8 border-primary-100 md:border-l md:pl-10 dark:border-primary-800"
         >
           <div class="flex items-center gap-2">
             <div class="h-1 w-4 rounded-full bg-secondary-500"></div>
@@ -100,18 +100,18 @@ const application = computed({
 
             <div
               v-if="application.selectedCompany?.address"
-              class="group/addr relative rounded-2xl border border-neutral-100 bg-neutral-50/50 p-5 transition-colors hover:bg-white dark:border-neutral-800 dark:bg-neutral-900/50 dark:hover:bg-neutral-900"
+              class="group/addr relative rounded-2xl border border-primary-100 bg-primary-50/50 p-5 transition-colors hover:bg-white dark:border-primary-800 dark:bg-primary-900/50 dark:hover:bg-primary-900"
             >
               <div class="flex items-start justify-between">
                 <div class="text-sm">
-                  <p class="font-bold text-neutral-900 dark:text-white">
+                  <p class="font-bold text-primary-900 dark:text-white">
                     {{ application.selectedCompany.name }}
                   </p>
-                  <p class="mt-1 text-neutral-500">
+                  <p class="mt-1 text-primary-500">
                     {{ application.selectedCompany.address.street }}
                     {{ application.selectedCompany.address.houseNumber }}
                   </p>
-                  <p class="text-neutral-500">
+                  <p class="text-primary-500">
                     {{ application.selectedCompany.address.zipcode }}
                     {{ application.selectedCompany.address.city }}
                   </p>
@@ -130,7 +130,7 @@ const application = computed({
               v-else
               variant="ghost"
               size="sm"
-              class="w-full border-dashed border-neutral-200"
+              class="w-full border-dashed border-primary-200"
               @click="emit('edit-address')"
             >
               <Icon name="heroicons:map-pin" class="mr-2 h-4 w-4" />
@@ -141,7 +141,7 @@ const application = computed({
 
         <!-- Contacts -->
         <div
-          class="space-y-8 border-neutral-100 lg:border-l lg:pl-10 dark:border-neutral-800"
+          class="space-y-8 border-primary-100 lg:border-l lg:pl-10 dark:border-primary-800"
         >
           <div class="flex items-center gap-2">
             <div class="h-1 w-4 rounded-full bg-secondary-500"></div>

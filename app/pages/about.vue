@@ -5,7 +5,7 @@
     <section class="mb-32 flex flex-col items-center gap-12 lg:flex-row lg:items-start">
       <div class="flex-1 space-y-8 text-center lg:text-left">
         <div>
-          <h1 class="text-5xl font-bold tracking-tight text-neutral-900 sm:text-7xl dark:text-white">
+          <h1 class="text-5xl font-bold tracking-tight text-primary-900 sm:text-7xl dark:text-white">
             {{ name }}
           </h1>
           <p class="mt-4 text-2xl font-medium text-secondary-500 dark:text-secondary-400">
@@ -22,7 +22,7 @@
            </UiTag>
         </div>
 
-        <p class="text-xl leading-relaxed text-neutral-600 dark:text-neutral-300">
+        <p class="text-xl leading-relaxed text-primary-600 dark:text-primary-300">
            {{ $t('about.intro_text') }}
         </p>
 
@@ -57,8 +57,8 @@
                       <Icon name="mage:light-bulb" size="28" />
                   </div>
                   <div>
-                      <h3 class="text-2xl font-bold text-neutral-900 dark:text-white">{{ $t("about.earlyLife.content.title1") }}</h3>
-                      <p class="mt-3 text-lg leading-relaxed text-neutral-600 dark:text-neutral-300">{{ $t("about.earlyLife.content.paragraph1") }}</p>
+                      <h3 class="text-2xl font-bold text-primary-900 dark:text-white">{{ $t("about.earlyLife.content.title1") }}</h3>
+                      <p class="mt-3 text-lg leading-relaxed text-primary-600 dark:text-primary-300">{{ $t("about.earlyLife.content.paragraph1") }}</p>
                   </div>
               </div>
 
@@ -67,8 +67,8 @@
                       <Icon name="heroicons:academic-cap" size="28" />
                   </div>
                   <div>
-                      <h3 class="text-2xl font-bold text-neutral-900 dark:text-white">{{ $t("about.earlyLife.content.title2") }}</h3>
-                      <p class="mt-3 text-lg leading-relaxed text-neutral-600 dark:text-neutral-300">{{ $t("about.earlyLife.content.paragraph2") }}</p>
+                      <h3 class="text-2xl font-bold text-primary-900 dark:text-white">{{ $t("about.earlyLife.content.title2") }}</h3>
+                      <p class="mt-3 text-lg leading-relaxed text-primary-600 dark:text-primary-300">{{ $t("about.earlyLife.content.paragraph2") }}</p>
                   </div>
               </div>
 
@@ -77,8 +77,8 @@
                       <Icon name="mage:chip" size="28" />
                   </div>
                   <div>
-                      <h3 class="text-2xl font-bold text-neutral-900 dark:text-white">{{ $t("about.earlyLife.content.title3") }}</h3>
-                      <p class="mt-3 text-lg leading-relaxed text-neutral-600 dark:text-neutral-300">{{ $t("about.earlyLife.content.paragraph3") }}</p>
+                      <h3 class="text-2xl font-bold text-primary-900 dark:text-white">{{ $t("about.earlyLife.content.title3") }}</h3>
+                      <p class="mt-3 text-lg leading-relaxed text-primary-600 dark:text-primary-300">{{ $t("about.earlyLife.content.paragraph3") }}</p>
                   </div>
               </div>
           </div>
@@ -93,9 +93,9 @@
                   />
               </div>
               <div class="absolute -bottom-8 -right-8 hidden xl:block">
-                  <div class="max-w-xs rounded-2xl bg-white/80 p-8 shadow-2xl backdrop-blur-md dark:bg-neutral-800/80">
+                  <div class="max-w-xs rounded-2xl bg-white/80 p-8 shadow-2xl backdrop-blur-md dark:bg-primary-800/80">
                        <Icon name="fa6-solid:quote-left" size="32" class="mb-4 text-secondary-400/50" />
-                       <p class="text-lg italic leading-relaxed text-neutral-700 dark:text-neutral-300">
+                       <p class="text-lg italic leading-relaxed text-primary-700 dark:text-primary-300">
                           {{ $t('about.earlyLife.content.quote') }}
                        </p>
                        <div class="mt-6 flex items-center justify-end gap-2 text-sm font-bold uppercase tracking-wider text-secondary-500">
@@ -106,7 +106,7 @@
               </div>
               <!-- Mobile/Small Desktop Quote -->
                <div class="mt-8 border-l-4 border-secondary-400 pl-6 xl:hidden">
-                    <p class="text-xl italic leading-relaxed text-neutral-700 dark:text-neutral-300">
+                    <p class="text-xl italic leading-relaxed text-primary-700 dark:text-primary-300">
                         "{{ $t('about.earlyLife.content.quote') }}"
                     </p>
                </div>
@@ -120,37 +120,37 @@
       
       <!-- Intro Grid for Career -->
       <div class="mb-20 grid gap-6 md:grid-cols-2">
-         <div class="group rounded-2xl border border-neutral-100 bg-white p-8 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-secondary-900">
-            <h3 class="mb-4 flex items-center text-xl font-bold text-neutral-900 dark:text-white">
+         <div class="group rounded-2xl border border-primary-100 bg-white p-8 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md dark:border-primary-800 dark:bg-primary-900 dark:hover:border-secondary-900">
+            <h3 class="mb-4 flex items-center text-xl font-bold text-primary-900 dark:text-white">
                 <Icon name="mage:color-swatch" class="mr-3 text-secondary-500 transition-transform group-hover:scale-110" size="24" />
                 {{ $t("about.careerPath.content.title1") }}
             </h3>
-            <p class="leading-relaxed text-neutral-600 dark:text-neutral-300">{{ $t("about.careerPath.content.paragraph1") }}</p>
+            <p class="leading-relaxed text-primary-600 dark:text-primary-300">{{ $t("about.careerPath.content.paragraph1") }}</p>
          </div>
-         <div class="group rounded-2xl border border-neutral-100 bg-white p-8 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-secondary-900">
-             <h3 class="mb-4 flex items-center text-xl font-bold text-neutral-900 dark:text-white">
+         <div class="group rounded-2xl border border-primary-100 bg-white p-8 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md dark:border-primary-800 dark:bg-primary-900 dark:hover:border-secondary-900">
+             <h3 class="mb-4 flex items-center text-xl font-bold text-primary-900 dark:text-white">
                 <Icon name="mage:delivery-truck" class="mr-3 text-secondary-500 transition-transform group-hover:scale-110" size="24" />
                 {{ $t("about.careerPath.content.title2") }}
             </h3>
-            <p class="leading-relaxed text-neutral-600 dark:text-neutral-300">{{ $t("about.careerPath.content.paragraph2") }}</p>
+            <p class="leading-relaxed text-primary-600 dark:text-primary-300">{{ $t("about.careerPath.content.paragraph2") }}</p>
          </div>
-         <div class="group rounded-2xl border border-neutral-100 bg-white p-8 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-secondary-900">
-             <h3 class="mb-4 flex items-center text-xl font-bold text-neutral-900 dark:text-white">
+         <div class="group rounded-2xl border border-primary-100 bg-white p-8 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md dark:border-primary-800 dark:bg-primary-900 dark:hover:border-secondary-900">
+             <h3 class="mb-4 flex items-center text-xl font-bold text-primary-900 dark:text-white">
                 <Icon name="mage:trophy" class="mr-3 text-secondary-500 transition-transform group-hover:scale-110" size="24" />
                 {{ $t("about.careerPath.content.title3") }}
             </h3>
-            <p class="leading-relaxed text-neutral-600 dark:text-neutral-300">{{ $t("about.careerPath.content.paragraph3") }}</p>
+            <p class="leading-relaxed text-primary-600 dark:text-primary-300">{{ $t("about.careerPath.content.paragraph3") }}</p>
          </div>
-         <div class="group rounded-2xl border border-neutral-100 bg-white p-8 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-secondary-900">
-             <h3 class="mb-4 flex items-center text-xl font-bold text-neutral-900 dark:text-white">
+         <div class="group rounded-2xl border border-primary-100 bg-white p-8 shadow-sm transition-all hover:border-secondary-200 hover:shadow-md dark:border-primary-800 dark:bg-primary-900 dark:hover:border-secondary-900">
+             <h3 class="mb-4 flex items-center text-xl font-bold text-primary-900 dark:text-white">
                 <Icon name="mage:link" class="mr-3 text-secondary-500 transition-transform group-hover:scale-110" size="24" />
                 {{ $t("about.careerPath.content.title4") }}
             </h3>
-            <p class="leading-relaxed text-neutral-600 dark:text-neutral-300">{{ $t("about.careerPath.content.paragraph4") }}</p>
+            <p class="leading-relaxed text-primary-600 dark:text-primary-300">{{ $t("about.careerPath.content.paragraph4") }}</p>
          </div>
       </div>
 
-      <div class="rounded-3xl bg-neutral-50/50 p-8 md:p-12 dark:bg-neutral-900/50">
+      <div class="rounded-3xl bg-primary-50/50 p-8 md:p-12 dark:bg-primary-900/50">
           <UiTimeline :items="timeline" />
       </div>
     </section>
@@ -167,10 +167,10 @@
                         <Icon v-else-if="category === 'health'" name="heroicons:heart" size="24" />
                         <Icon v-else-if="category === 'education'" name="heroicons:book-open" size="24" />
                     </div>
-                    <h3 class="text-xl font-bold capitalize text-neutral-900 dark:text-white">{{ $t(`interests.${category}.title`) }}</h3>
+                    <h3 class="text-xl font-bold capitalize text-primary-900 dark:text-white">{{ $t(`interests.${category}.title`) }}</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <UiTag v-for="item in items" :key="item" class="bg-neutral-100 dark:bg-neutral-800/50">
+                    <UiTag v-for="item in items" :key="item" class="bg-primary-100 dark:bg-primary-800/50">
                         {{ item }}
                     </UiTag>
                 </div>
@@ -184,13 +184,13 @@
         
         <div class="mb-16 grid gap-12 lg:grid-cols-2">
             <div class="space-y-6">
-                <p class="text-lg leading-relaxed text-neutral-600 dark:text-neutral-300">{{ $t("about.personalLife.content.paragraph1") }}</p>
-                <p class="text-lg leading-relaxed text-neutral-600 dark:text-neutral-300">{{ $t("about.personalLife.content.paragraph2") }}</p>
+                <p class="text-lg leading-relaxed text-primary-600 dark:text-primary-300">{{ $t("about.personalLife.content.paragraph1") }}</p>
+                <p class="text-lg leading-relaxed text-primary-600 dark:text-primary-300">{{ $t("about.personalLife.content.paragraph2") }}</p>
             </div>
             <div class="space-y-6">
-                <p class="text-lg leading-relaxed text-neutral-600 dark:text-neutral-300">{{ $t("about.personalLife.content.paragraph3") }}</p>
-                <p class="text-lg leading-relaxed text-neutral-600 dark:text-neutral-300">{{ $t("about.personalLife.content.paragraph4") }}</p>
-                <p class="text-lg leading-relaxed text-neutral-600 dark:text-neutral-300">{{ $t("about.personalLife.content.paragraph5") }}</p>
+                <p class="text-lg leading-relaxed text-primary-600 dark:text-primary-300">{{ $t("about.personalLife.content.paragraph3") }}</p>
+                <p class="text-lg leading-relaxed text-primary-600 dark:text-primary-300">{{ $t("about.personalLife.content.paragraph4") }}</p>
+                <p class="text-lg leading-relaxed text-primary-600 dark:text-primary-300">{{ $t("about.personalLife.content.paragraph5") }}</p>
             </div>
         </div>
 

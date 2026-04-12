@@ -35,10 +35,10 @@ const emit = defineEmits<{
             <Icon name="heroicons:clock" size="24" />
           </div>
           <div>
-            <h3 class="text-2xl font-black text-neutral-900 dark:text-white">
+            <h3 class="text-2xl font-black text-primary-900 dark:text-white">
               {{ $t("applications.detail.history.title") }}
             </h3>
-            <p class="text-xs font-medium text-neutral-500">
+            <p class="text-xs font-medium text-primary-500">
               {{ $t("applications.detail.history.subtitle") }}
             </p>
           </div>
@@ -62,12 +62,12 @@ const emit = defineEmits<{
               >{{ item.date }}</span
             >
             <h3
-              class="mt-1 text-xl font-bold text-neutral-900 dark:text-white"
+              class="mt-1 text-xl font-bold text-primary-900 dark:text-white"
               :class="{ 'md:justify-end': index % 2 === 0 }"
             >
               {{ item.title }}
             </h3>
-            <p class="mt-2 text-neutral-600 dark:text-neutral-400">
+            <p class="mt-2 text-primary-600 dark:text-primary-400">
               {{ item.description }}
             </p>
           </div>
@@ -110,7 +110,7 @@ const emit = defineEmits<{
 
       <div
         v-else
-        class="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-neutral-100 py-12 text-center text-neutral-500 dark:border-neutral-800"
+        class="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-primary-100 py-12 text-center text-primary-500 dark:border-primary-800"
       >
         <Icon name="heroicons:clock" class="mb-4 h-12 w-12 opacity-20" />
         <p class="text-sm font-medium">

@@ -62,14 +62,14 @@ async function onFileChange(event: Event) {
 
 <template>
   <div class="space-y-2">
-    <label v-if="label" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+    <label v-if="label" class="block text-sm font-medium text-primary-700 dark:text-primary-300">
         {{ label }}
     </label>
     
     <div class="flex items-center gap-4">
         <div 
             v-if="modelValue" 
-            class="group relative h-20 w-32 shrink-0 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900"
+            class="group relative h-20 w-32 shrink-0 overflow-hidden rounded-xl border border-primary-200 bg-primary-100 dark:border-primary-800 dark:bg-primary-900"
         >
             <NuxtImg :src="modelValue" sizes="200px" class="h-full w-full object-cover" />
             <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
@@ -81,7 +81,7 @@ async function onFileChange(event: Event) {
         
         <div 
             v-else 
-            class="flex h-20 w-32 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-neutral-200 bg-neutral-50/50 text-neutral-400 dark:border-neutral-800 dark:bg-neutral-900/30"
+            class="flex h-20 w-32 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-primary-200 bg-primary-50/50 text-primary-400 dark:border-primary-800 dark:bg-primary-900/30"
         >
             <Icon name="heroicons:photo" size="24" />
         </div>
@@ -96,7 +96,7 @@ async function onFileChange(event: Event) {
                     Remove
                 </UiButton>
             </div>
-            <p v-if="helperText" class="text-[10px] font-bold uppercase tracking-widest text-neutral-500">
+            <p v-if="helperText" class="text-[10px] font-bold uppercase tracking-widest text-primary-500">
                 {{ helperText }}
             </p>
         </div>

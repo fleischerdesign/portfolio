@@ -16,7 +16,7 @@ const containerClasses = useCva(
   {
     layout: {
       stacked: 'gap-5',
-      inline: 'justify-between w-full rounded-2xl border border-neutral-200/50 bg-white/50 p-4 shadow-sm backdrop-blur-sm hover:border-secondary-500/30 hover:bg-secondary-50/50 dark:border-neutral-800/50 dark:bg-neutral-900/40 dark:hover:border-secondary-400/30 dark:hover:bg-secondary-900/20',
+      inline: 'justify-between w-full rounded-2xl border border-primary-200/50 bg-white/50 p-4 shadow-sm backdrop-blur-sm hover:border-secondary-500/30 hover:bg-secondary-50/50 dark:border-primary-800/50 dark:bg-primary-900/40 dark:hover:border-secondary-400/30 dark:hover:bg-secondary-900/20',
     }
   }
 );
@@ -37,7 +37,7 @@ const valueClasses = useCva(
   'font-bold text-secondary-600 dark:text-secondary-400',
   {
     layout: {
-      stacked: 'text-xl text-neutral-900 dark:text-white',
+      stacked: 'text-xl text-primary-900 dark:text-white',
       inline: 'text-xl',
     }
   }
@@ -59,8 +59,8 @@ const valueClasses = useCva(
       <div class="min-w-0 flex-1">
         <p
           v-if="label || $slots.label"
-          class="font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500"
-          :class="layout === 'stacked' ? 'text-[10px]' : 'text-base font-medium text-neutral-700 dark:text-neutral-300 !tracking-normal !normal-case'"
+          class="font-black uppercase tracking-[0.2em] text-primary-400 dark:text-primary-500"
+          :class="layout === 'stacked' ? 'text-[10px]' : 'text-base font-medium text-primary-700 dark:text-primary-300 !tracking-normal !normal-case'"
         >
           <slot name="label">{{ label }}</slot>
         </p>
@@ -69,7 +69,7 @@ const valueClasses = useCva(
           <div :class="valueClasses" class="truncate">
             <slot name="value">{{ value }}</slot>
           </div>
-          <div v-if="$slots.footer" class="mt-0.5 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+          <div v-if="$slots.footer" class="mt-0.5 text-xs font-medium text-primary-500 dark:text-primary-400">
             <slot name="footer" />
           </div>
         </div>

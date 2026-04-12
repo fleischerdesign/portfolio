@@ -14,7 +14,7 @@
         </div>
 
         <!-- Status Text -->
-        <span v-if="now?.status" class="relative z-10 font-bold tracking-wide text-neutral-700 dark:text-neutral-200">
+        <span v-if="now?.status" class="relative z-10 font-bold tracking-wide text-primary-700 dark:text-primary-200">
             {{ now?.status }}
         </span>
     </UiChip>

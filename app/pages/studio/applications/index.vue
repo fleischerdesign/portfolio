@@ -129,7 +129,7 @@ useSeoMeta({
       </div>
       <div
         v-else
-        class="mt-8 text-center text-neutral-500 dark:text-neutral-400"
+        class="mt-8 text-center text-primary-500 dark:text-primary-400"
       >
         <p>{{ $t("applications.index.no_applications") }}</p>
       </div>

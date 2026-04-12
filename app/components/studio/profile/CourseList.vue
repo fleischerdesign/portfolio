@@ -156,7 +156,7 @@ const formatDate = (d: string | Date | null | undefined) => {
     <div v-else class="space-y-4">
       <div
         v-if="courses.length === 0"
-        class="rounded-xl border border-dashed border-neutral-300 p-8 text-center text-neutral-500"
+        class="rounded-xl border border-dashed border-primary-300 p-8 text-center text-primary-500"
       >
         Noch keine Kurse eingetragen.
       </div>
@@ -164,11 +164,11 @@ const formatDate = (d: string | Date | null | undefined) => {
       <div
         v-for="course in courses"
         :key="course.id"
-        class="flex items-center justify-between rounded-xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
+        class="flex items-center justify-between rounded-xl border border-primary-200 bg-white p-4 shadow-sm dark:border-primary-800 dark:bg-primary-900"
       >
         <div>
           <h4 class="font-bold">{{ course.title.de }}</h4>
-          <div class="text-sm text-neutral-500">
+          <div class="text-sm text-primary-500">
             {{ course.organization }} • {{ formatDate(course.startedAt) }} -
             {{ formatDate(course.endedAt) }}
           </div>
@@ -195,7 +195,7 @@ const formatDate = (d: string | Date | null | undefined) => {
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
     >
       <div
-        class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl dark:bg-neutral-900"
+        class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl dark:bg-primary-900"
       >
         <h3 class="mb-4 text-xl font-bold">
           {{ isEditing ? "Kurs bearbeiten" : "Neuer Kurs" }}

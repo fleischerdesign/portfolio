@@ -29,7 +29,7 @@ useHead({
 		{ name: 'viewport', content: 'width=device-width, initial-scale=1' }
 	],
 	bodyAttrs: {
-		class: 'dark:bg-[rgb(13,13,13)] dark:text-white text-neutral-950 bg-neutral-100 transition'
+		class: 'dark:bg-primary-950 dark:text-white text-primary-950 bg-primary-100 transition'
 	}
 })
 

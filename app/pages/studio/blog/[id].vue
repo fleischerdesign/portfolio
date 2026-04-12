@@ -90,7 +90,7 @@ const viewFormattedDate = computed(() =>
           </div>
           <div>
             <p
-              class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500"
+              class="text-[10px] font-black uppercase tracking-[0.2em] text-primary-400 dark:text-primary-500"
             >
               Status
             </p>
@@ -101,7 +101,7 @@ const viewFormattedDate = computed(() =>
         </div>
 
         <div
-          class="flex w-full items-center gap-5 border-t border-neutral-100 pt-6 lg:min-w-0 lg:flex-1 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-neutral-800"
+          class="flex w-full items-center gap-5 border-t border-primary-100 pt-6 lg:min-w-0 lg:flex-1 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-primary-800"
         >
           <div
             class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400"
@@ -110,7 +110,7 @@ const viewFormattedDate = computed(() =>
           </div>
           <div class="min-w-0 flex-1">
             <p
-              class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500"
+              class="text-[10px] font-black uppercase tracking-[0.2em] text-primary-400 dark:text-primary-500"
             >
               Translations
             </p>
@@ -125,11 +125,11 @@ const viewFormattedDate = computed(() =>
                   :class="
                     post.translations.some((t: any) => t.locale === lang)
                       ? 'bg-emerald-500'
-                      : 'bg-neutral-300'
+                      : 'bg-primary-300'
                   "
                 ></span>
                 <span
-                  class="text-sm font-bold uppercase text-neutral-700 dark:text-neutral-300"
+                  class="text-sm font-bold uppercase text-primary-700 dark:text-primary-300"
                   >{{ lang }}</span
                 >
               </span>
@@ -138,7 +138,7 @@ const viewFormattedDate = computed(() =>
         </div>
 
         <div
-          class="flex w-full items-center gap-5 border-t border-neutral-100 pt-6 lg:w-auto lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-neutral-800"
+          class="flex w-full items-center gap-5 border-t border-primary-100 pt-6 lg:w-auto lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 dark:border-primary-800"
         >
           <div
             class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-secondary-200/50 bg-secondary-50 text-secondary-600 shadow-sm dark:border-secondary-500/20 dark:bg-secondary-900/30 dark:text-secondary-400"
@@ -147,17 +147,17 @@ const viewFormattedDate = computed(() =>
           </div>
           <div>
             <p
-              class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500"
+              class="text-[10px] font-black uppercase tracking-[0.2em] text-primary-400 dark:text-primary-500"
             >
               Published
             </p>
             <p
-              class="mt-0.5 text-xl font-bold text-neutral-900 dark:text-white"
+              class="mt-0.5 text-xl font-bold text-primary-900 dark:text-white"
             >
               {{ viewFormattedDate || "Not published" }}
             </p>
             <p
-              class="whitespace-nowrap text-xs font-medium text-neutral-500 dark:text-neutral-400"
+              class="whitespace-nowrap text-xs font-medium text-primary-500 dark:text-primary-400"
             >
               {{ 0 }} min read
             </p>
@@ -188,7 +188,7 @@ const viewFormattedDate = computed(() =>
 
           <div
             v-if="post.coverImage"
-            class="group relative mb-16 aspect-[21/9] w-full overflow-hidden rounded-[2.5rem] border border-neutral-200/50 bg-neutral-100 shadow-2xl dark:border-neutral-800/50 dark:bg-neutral-900"
+            class="group relative mb-16 aspect-[21/9] w-full overflow-hidden rounded-[2.5rem] border border-primary-200/50 bg-primary-100 shadow-2xl dark:border-primary-800/50 dark:bg-primary-900"
           >
             <NuxtImg
               :src="post.coverImage"
@@ -241,7 +241,7 @@ const viewFormattedDate = computed(() =>
               />
 
               <div
-                class="border-t border-neutral-100 pt-4 dark:border-neutral-800"
+                class="border-t border-primary-100 pt-4 dark:border-primary-800"
               >
                 <UiImageUploader
                   v-model="(editablePost as any).common.coverImage"
@@ -319,23 +319,23 @@ const viewFormattedDate = computed(() =>
           </h3>
           <div class="space-y-4 text-sm">
             <div class="flex flex-col gap-1">
-              <span class="text-xs text-neutral-500">Status</span>
+              <span class="text-xs text-primary-500">Status</span>
               <div class="flex">
                 <UiStatusBadge :status="post.status" />
               </div>
             </div>
             <div class="flex flex-col gap-1">
-              <span class="text-xs text-neutral-500">Published</span>
+              <span class="text-xs text-primary-500">Published</span>
               <span class="font-bold">{{ viewFormattedDate || "-" }}</span>
             </div>
             <div class="flex flex-col gap-1">
-              <span class="text-xs text-neutral-500">Category</span>
+              <span class="text-xs text-primary-500">Category</span>
               <span class="font-bold">{{ post.category?.name || "-" }}</span>
             </div>
             <div class="flex flex-col gap-1">
-              <span class="text-xs text-neutral-500">Key</span>
+              <span class="text-xs text-primary-500">Key</span>
               <span
-                class="rounded bg-neutral-100 px-1 font-mono text-xs dark:bg-neutral-800"
+                class="rounded bg-primary-100 px-1 font-mono text-xs dark:bg-primary-800"
                 >{{ post.translationKey }}</span
               >
             </div>
@@ -372,12 +372,12 @@ const viewFormattedDate = computed(() =>
 
               <div>
                 <label
-                  class="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                  class="mb-1 block text-sm font-medium text-primary-700 dark:text-primary-300"
                   >Tags</label
                 >
                 <input
                   :value="(editablePost as any).common.tags.join(', ')"
-                  class="w-full rounded-lg border-neutral-300 bg-transparent text-sm dark:border-neutral-700"
+                  class="w-full rounded-lg border-primary-300 bg-transparent text-sm dark:border-primary-700"
                   placeholder="vue, nuxt"
                   @input="
                     (e) =>

@@ -16,7 +16,7 @@ const handleError = () => clearError({ redirect: localePath('/') })
 </script>
 
 <template>
-  <div class="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-neutral-100 px-4 dark:bg-neutral-950">
+  <div class="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-primary-100 px-4 dark:bg-primary-950">
     
     <!-- Background Ambience (Hero Style) -->
     <div class="pointer-events-none absolute inset-0">
@@ -38,20 +38,20 @@ const handleError = () => clearError({ redirect: localePath('/') })
             <!-- Glow behind icon -->
             <div class="absolute inset-0 animate-pulse rounded-full bg-secondary-500/20 blur-[40px]"></div>
             
-            <div class="relative flex h-40 w-40 items-center justify-center rounded-[3rem] border border-white/60 bg-white/40 shadow-2xl backdrop-blur-xl transition-transform duration-500 hover:rotate-3 hover:scale-105 dark:border-neutral-800/60 dark:bg-neutral-900/40">
+            <div class="relative flex h-40 w-40 items-center justify-center rounded-[3rem] border border-white/60 bg-white/40 shadow-2xl backdrop-blur-xl transition-transform duration-500 hover:rotate-3 hover:scale-105 dark:border-primary-800/60 dark:bg-primary-900/40">
                 <Icon v-if="error.statusCode === 404" name="heroicons:magnifying-glass" size="80" class="text-secondary-600 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)] dark:text-secondary-400" />
                 <Icon v-else name="heroicons:exclamation-triangle" size="80" class="text-secondary-600 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)] dark:text-secondary-400" />
             </div>
 
             <!-- Floating Badge -->
-            <div class="absolute -bottom-4 -right-4 rotate-[-6deg] rounded-xl border border-white/50 bg-white/80 px-4 py-2 font-black text-neutral-900 shadow-lg backdrop-blur-md dark:border-neutral-700/50 dark:bg-neutral-800/80 dark:text-white">
+            <div class="absolute -bottom-4 -right-4 rotate-[-6deg] rounded-xl border border-white/50 bg-white/80 px-4 py-2 font-black text-primary-900 shadow-lg backdrop-blur-md dark:border-primary-700/50 dark:bg-primary-800/80 dark:text-white">
                 {{ error.statusCode }}
             </div>
         </div>
 
         <!-- Headline -->
-        <h1 class="max-w-4xl text-5xl font-black tracking-tight text-neutral-900 sm:text-7xl dark:text-white">
-            <span class="bg-gradient-to-br from-neutral-900 to-neutral-600 bg-clip-text text-transparent dark:from-white dark:to-neutral-400">
+        <h1 class="max-w-4xl text-5xl font-black tracking-tight text-primary-900 sm:text-7xl dark:text-white">
+            <span class="bg-gradient-to-br from-primary-900 to-primary-600 bg-clip-text text-transparent dark:from-white dark:to-primary-400">
                 {{ error.statusCode === 404 ? t('error.404.heading') : t('error.generic.heading') }}
             </span>
         </h1>
@@ -60,7 +60,7 @@ const handleError = () => clearError({ redirect: localePath('/') })
         <div class="mt-6 h-1.5 w-24 rounded-full bg-gradient-to-r from-secondary-500 to-transparent"></div>
 
         <!-- Message -->
-        <p class="mt-8 max-w-xl text-xl font-medium leading-relaxed text-neutral-600 dark:text-neutral-400">
+        <p class="mt-8 max-w-xl text-xl font-medium leading-relaxed text-primary-600 dark:text-primary-400">
             {{ error.statusCode === 404 ? t('error.404.message') : (error.statusMessage || error.message || t('error.generic.message')) }}
         </p>
 

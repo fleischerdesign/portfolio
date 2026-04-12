@@ -5,23 +5,23 @@
             <div class="flex items-center gap-3">
                 <!-- Theme Toggle Button -->
                 <button
-                    class="group relative flex h-11 w-11 items-center justify-center rounded-xl border border-neutral-200/50 bg-white/70 shadow-lg backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-neutral-800/50 dark:bg-neutral-900/70 dark:hover:bg-secondary-900/20"
+                    class="group relative flex h-11 w-11 items-center justify-center rounded-xl border border-primary-200/50 bg-white/70 shadow-lg backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-primary-800/50 dark:bg-primary-900/70 dark:hover:bg-secondary-900/20"
                     aria-label="Toggle Dark Mode"
                     @click="$toggleDarkMode()"
                 >
                     <ClientOnly>
                         <div class="relative h-6 w-6">
                             <template v-if="colorMode.value === 'light'">
-                                <Icon name="mage:moon" size="24" class="absolute inset-0 text-neutral-500 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0" />
+                                <Icon name="mage:moon" size="24" class="absolute inset-0 text-primary-500 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0" />
                                 <Icon name="mage:moon-fill" size="24" class="absolute inset-0 scale-90 text-secondary-600 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100" />
                             </template>
                             <template v-else>
-                                <Icon name="mage:sun" size="24" class="absolute inset-0 text-neutral-400 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0" />
+                                <Icon name="mage:sun" size="24" class="absolute inset-0 text-primary-400 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0" />
                                 <Icon name="mage:sun-fill" size="24" class="absolute inset-0 scale-90 text-secondary-400 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100" />
                             </template>
                         </div>
                         <template #fallback>
-                            <Icon name="mage:moon" size="24" class="text-neutral-500" />
+                            <Icon name="mage:moon" size="24" class="text-primary-500" />
                         </template>
                     </ClientOnly>
                 </button>
@@ -30,14 +30,14 @@
                 <NuxtLink
                     v-if="user?.role === 'admin'"
                     :to="inStudio ? $localePath('/') : $localePath('/studio')"
-                    class="group relative flex h-11 w-11 items-center justify-center rounded-xl border border-neutral-200/50 bg-white/70 shadow-lg backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-neutral-800/50 dark:bg-neutral-900/70 dark:hover:bg-secondary-900/20"
+                    class="group relative flex h-11 w-11 items-center justify-center rounded-xl border border-primary-200/50 bg-white/70 shadow-lg backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-primary-800/50 dark:bg-primary-900/70 dark:hover:bg-secondary-900/20"
                     :aria-label="inStudio ? 'Exit Studio' : 'Enter Studio'"
                 >
-                    <Icon :name="inStudio ? 'mage:multiply' : 'mage:dashboard'" size="24" class="text-neutral-500 transition-colors group-hover:text-secondary-600 dark:text-neutral-400 dark:group-hover:text-secondary-400" />
+                    <Icon :name="inStudio ? 'mage:multiply' : 'mage:dashboard'" size="24" class="text-primary-500 transition-colors group-hover:text-secondary-600 dark:text-primary-400 dark:group-hover:text-secondary-400" />
                 </NuxtLink>
 
                 <!-- Navigation Bar -->
-                <nav class="flex items-center gap-1 rounded-2xl border border-neutral-200/50 bg-white/70 p-1.5 shadow-xl backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-900/70">
+                <nav class="flex items-center gap-1 rounded-2xl border border-primary-200/50 bg-white/70 p-1.5 shadow-xl backdrop-blur-xl dark:border-primary-800/50 dark:bg-primary-900/70">
                     <NuxtLink 
                         v-for="link in navLinks" 
                         :key="link.path"
@@ -49,7 +49,7 @@
                             <Icon
                                 :name="link.icon" 
                                 size="24"
-                                class="absolute inset-0 text-neutral-500 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0 group-[.router-link-active]:opacity-0 dark:text-neutral-400" 
+                                class="absolute inset-0 text-primary-500 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0 group-[.router-link-active]:opacity-0 dark:text-primary-400" 
                             />
                             
                             <!-- Filled Icon -->
@@ -68,7 +68,7 @@
         <header class="fixed top-0 z-50 hidden w-full justify-center p-8 lg:flex">
             <div class="flex items-center gap-3">
                 <!-- Brand Pill -->
-                <NuxtLink :to="$localePath('/')" class="group flex h-12 items-center gap-3 rounded-2xl border border-neutral-200/50 bg-white/70 px-4 shadow-xl backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-neutral-800/50 dark:bg-neutral-900/70 dark:hover:bg-secondary-900/20">
+                <NuxtLink :to="$localePath('/')" class="group flex h-12 items-center gap-3 rounded-2xl border border-primary-200/50 bg-white/70 px-4 shadow-xl backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-primary-800/50 dark:bg-primary-900/70 dark:hover:bg-secondary-900/20">
                     <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary-100 text-secondary-600 shadow-sm transition-transform group-hover:rotate-12 dark:bg-secondary-900/40 dark:text-secondary-400">
                         <Icon 
                             name="logo:fleischerdesign" 
@@ -77,11 +77,11 @@
                             class="[&_*]:!fill-current"
                         />
                     </div>
-                    <span class="text-sm font-black uppercase tracking-[0.2em] text-neutral-500 transition-colors group-hover:!text-secondary-600 group-[.router-link-active]:!text-secondary-600 dark:text-neutral-400 dark:group-hover:!text-secondary-400 dark:group-[.router-link-active]:!text-secondary-400">Fleischer</span>
+                    <span class="text-sm font-black uppercase tracking-[0.2em] text-primary-500 transition-colors group-hover:!text-secondary-600 group-[.router-link-active]:!text-secondary-600 dark:text-primary-400 dark:group-hover:!text-secondary-400 dark:group-[.router-link-active]:!text-secondary-400">Fleischer</span>
                 </NuxtLink>
 
                 <!-- Navigation Bar (Mirrors Mobile Style) -->
-                <nav class="flex items-center gap-1 rounded-2xl border border-neutral-200/50 bg-white/70 p-1.5 shadow-xl backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-900/70">
+                <nav class="flex items-center gap-1 rounded-2xl border border-primary-200/50 bg-white/70 p-1.5 shadow-xl backdrop-blur-xl dark:border-primary-800/50 dark:bg-primary-900/70">
                     <NuxtLink 
                         v-for="link in navLinks" 
                         :key="link.path"
@@ -92,7 +92,7 @@
                             <Icon
                                 :name="link.icon" 
                                 size="24"
-                                class="absolute inset-0 text-neutral-500 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0 group-[.router-link-active]:opacity-0 dark:text-neutral-400" 
+                                class="absolute inset-0 text-primary-500 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0 group-[.router-link-active]:opacity-0 dark:text-primary-400" 
                             />
                             <Icon
                                 :name="link.activeIcon" 
@@ -100,7 +100,7 @@
                                 class="absolute inset-0 scale-90 text-secondary-600 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 group-[.router-link-active]:scale-100 group-[.router-link-active]:opacity-100 dark:text-secondary-400" 
                             />
                         </div>
-                        <span class="text-xs font-black uppercase tracking-[0.2em] text-neutral-500 transition-colors group-hover:!text-secondary-600 group-[.router-link-active]:!text-secondary-600 dark:group-hover:!text-secondary-400 dark:group-[.router-link-active]:!text-secondary-400">
+                        <span class="text-xs font-black uppercase tracking-[0.2em] text-primary-500 transition-colors group-hover:!text-secondary-600 group-[.router-link-active]:!text-secondary-600 dark:group-hover:!text-secondary-400 dark:group-[.router-link-active]:!text-secondary-400">
                             {{ $t(`navigation.${link.label}`) }}
                         </span>
                     </NuxtLink>
@@ -110,31 +110,31 @@
                 <NuxtLink
                     v-if="user?.role === 'admin'"
                     :to="inStudio ? $localePath('/') : $localePath('/studio')"
-                    class="group relative flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-200/50 bg-white/70 shadow-xl backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-neutral-800/50 dark:bg-neutral-900/70 dark:hover:bg-secondary-900/20"
+                    class="group relative flex h-12 w-12 items-center justify-center rounded-2xl border border-primary-200/50 bg-white/70 shadow-xl backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-primary-800/50 dark:bg-primary-900/70 dark:hover:bg-secondary-900/20"
                     :aria-label="inStudio ? 'Exit Studio' : 'Enter Studio'"
                 >
-                    <Icon :name="inStudio ? 'mage:multiply' : 'mage:dashboard'" size="24" class="text-neutral-500 transition-colors group-hover:text-secondary-600 dark:text-neutral-400 dark:group-hover:text-secondary-400" />
+                    <Icon :name="inStudio ? 'mage:multiply' : 'mage:dashboard'" size="24" class="text-primary-500 transition-colors group-hover:text-secondary-600 dark:text-primary-400 dark:group-hover:text-secondary-400" />
                 </NuxtLink>
 
                 <!-- Theme Toggle Button (Mirrors Mobile Style) -->
                 <button
-                    class="group relative flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-200/50 bg-white/70 shadow-xl backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-neutral-800/50 dark:bg-neutral-900/70 dark:hover:bg-secondary-900/20"
+                    class="group relative flex h-12 w-12 items-center justify-center rounded-2xl border border-primary-200/50 bg-white/70 shadow-xl backdrop-blur-xl transition-all duration-300 hover:bg-secondary-50 dark:border-primary-800/50 dark:bg-primary-900/70 dark:hover:bg-secondary-900/20"
                     aria-label="Toggle Dark Mode"
                     @click="$toggleDarkMode()"
                 >
                     <ClientOnly>
                         <div class="relative h-6 w-6">
                             <template v-if="colorMode.value === 'light'">
-                                <Icon name="mage:moon" size="24" class="absolute inset-0 text-neutral-500 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0" />
+                                <Icon name="mage:moon" size="24" class="absolute inset-0 text-primary-500 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0" />
                                 <Icon name="mage:moon-fill" size="24" class="absolute inset-0 scale-90 text-secondary-600 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100" />
                             </template>
                             <template v-else>
-                                <Icon name="mage:sun" size="24" class="absolute inset-0 text-neutral-400 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0" />
+                                <Icon name="mage:sun" size="24" class="absolute inset-0 text-primary-400 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0" />
                                 <Icon name="mage:sun-fill" size="24" class="absolute inset-0 scale-90 text-secondary-400 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100" />
                             </template>
                         </div>
                         <template #fallback>
-                            <Icon name="mage:moon" size="24" class="text-neutral-500" />
+                            <Icon name="mage:moon" size="24" class="text-primary-500" />
                         </template>
                     </ClientOnly>
                 </button>
