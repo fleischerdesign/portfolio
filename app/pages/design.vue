@@ -208,6 +208,60 @@ const demoTechstack = [
   "SQLite",
   "Docker",
 ];
+
+const mockContributions = (() => {
+  const items: { date: string; count: number }[] = [];
+  const today = new Date();
+  for (let i = 365; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    items.push({
+      date: d.toISOString().slice(0, 10),
+      count: Math.random() > 0.4 ? Math.floor(Math.random() * 12) : 0,
+    });
+  }
+  return items;
+})();
+
+const mockApplications: ApplicationResponsePayload[] = [
+  mockApplication,
+  {
+    ...mockApplication,
+    id: 2,
+    title: "Fullstack Engineer",
+    currentStatus: "interview",
+    histories: [
+      {
+        id: 2,
+        applicationId: 2,
+        status: "interview",
+        notes: null,
+        scheduled_at: null,
+        createdAt: new Date(),
+      },
+    ],
+  },
+  {
+    ...mockApplication,
+    id: 3,
+    title: "Backend Developer",
+    currentStatus: "offer",
+    histories: [
+      {
+        id: 3,
+        applicationId: 3,
+        status: "offer",
+        notes: null,
+        scheduled_at: null,
+        createdAt: new Date(),
+      },
+    ],
+  },
+];
+
+const spacingTokens = [
+  0, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32,
+];
 </script>
 
 <template>
@@ -246,6 +300,526 @@ const demoTechstack = [
         </button>
       </div>
     </div>
+
+    <!-- 0. DESIGN TOKENS -->
+    <section class="mb-32">
+      <UiSectionHeader
+        title="Design Tokens"
+        subtitle="Colors, typography, spacing, shadows & radius."
+        class="mb-16"
+      />
+      <div
+        :class="[surfaceClasses, surfacePadding]"
+        class="transition-all duration-500"
+      >
+        <div class="space-y-20">
+          <!-- Color Palette — Primary (Neutral) -->
+          <div class="space-y-8">
+            <p
+              class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500"
+            >
+              Color Palette — Primary (Neutral)
+            </p>
+            <div class="grid grid-cols-11 gap-2">
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-primary-50 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">50</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-primary-100 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">100</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-primary-200 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">200</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-primary-300 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">300</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-primary-400 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">400</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-primary-500 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">500</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-primary-600 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">600</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-primary-700 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">700</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-primary-800 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">800</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-primary-900 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">900</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-primary-950 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">950</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Color Palette — Secondary (Emerald) -->
+          <div class="space-y-8">
+            <p
+              class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500"
+            >
+              Color Palette — Secondary (Emerald)
+            </p>
+            <div class="grid grid-cols-11 gap-2">
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-secondary-50 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">50</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-secondary-100 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">100</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-secondary-200 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">200</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-secondary-300 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">300</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-secondary-400 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">400</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-secondary-500 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">500</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-secondary-600 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">600</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-secondary-700 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">700</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-secondary-800 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">800</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-secondary-900 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">900</span>
+              </div>
+              <div class="group flex flex-col items-center gap-2">
+                <div
+                  class="aspect-square w-full rounded-xl bg-secondary-950 transition-transform group-hover:scale-105"
+                />
+                <span class="text-[10px] font-bold text-primary-500">950</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Typography Scale -->
+          <div class="space-y-8">
+            <p
+              class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500"
+            >
+              Typography Scale
+            </p>
+            <div class="space-y-4">
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >xs</span
+                >
+                <span class="text-xs font-bold">Portfolio</span>
+              </div>
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >sm</span
+                >
+                <span class="text-sm font-bold">Portfolio</span>
+              </div>
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >base</span
+                >
+                <span class="text-base font-bold">Portfolio</span>
+              </div>
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >lg</span
+                >
+                <span class="text-lg font-bold">Portfolio</span>
+              </div>
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >xl</span
+                >
+                <span class="text-xl font-bold">Portfolio</span>
+              </div>
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >2xl</span
+                >
+                <span class="text-2xl font-bold">Portfolio</span>
+              </div>
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >3xl</span
+                >
+                <span class="text-3xl font-bold">Portfolio</span>
+              </div>
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >4xl</span
+                >
+                <span class="text-4xl font-bold">Portfolio</span>
+              </div>
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >5xl</span
+                >
+                <span class="text-5xl font-bold">Portfolio</span>
+              </div>
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >6xl</span
+                >
+                <span class="text-6xl font-bold">Portfolio</span>
+              </div>
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >7xl</span
+                >
+                <span class="text-7xl font-bold">Portfolio</span>
+              </div>
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >8xl</span
+                >
+                <span class="text-8xl font-bold">Portfolio</span>
+              </div>
+              <div class="flex items-baseline gap-6">
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >9xl</span
+                >
+                <span class="text-9xl font-bold">Portfolio</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Font Weights -->
+          <div class="space-y-8">
+            <p
+              class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500"
+            >
+              Font Weights
+            </p>
+            <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+              <div
+                class="rounded-xl border border-primary-100 p-4 text-center dark:border-primary-800"
+              >
+                <p class="text-3xl font-thin">Aa</p>
+                <p class="mt-2 text-xs text-primary-400">thin (100)</p>
+              </div>
+              <div
+                class="rounded-xl border border-primary-100 p-4 text-center dark:border-primary-800"
+              >
+                <p class="text-3xl font-extralight">Aa</p>
+                <p class="mt-2 text-xs text-primary-400">extralight (200)</p>
+              </div>
+              <div
+                class="rounded-xl border border-primary-100 p-4 text-center dark:border-primary-800"
+              >
+                <p class="text-3xl font-light">Aa</p>
+                <p class="mt-2 text-xs text-primary-400">light (300)</p>
+              </div>
+              <div
+                class="rounded-xl border border-primary-100 p-4 text-center dark:border-primary-800"
+              >
+                <p class="text-3xl font-normal">Aa</p>
+                <p class="mt-2 text-xs text-primary-400">normal (400)</p>
+              </div>
+              <div
+                class="rounded-xl border border-primary-100 p-4 text-center dark:border-primary-800"
+              >
+                <p class="text-3xl font-medium">Aa</p>
+                <p class="mt-2 text-xs text-primary-400">medium (500)</p>
+              </div>
+              <div
+                class="rounded-xl border border-primary-100 p-4 text-center dark:border-primary-800"
+              >
+                <p class="text-3xl font-semibold">Aa</p>
+                <p class="mt-2 text-xs text-primary-400">semibold (600)</p>
+              </div>
+              <div
+                class="rounded-xl border border-primary-100 p-4 text-center dark:border-primary-800"
+              >
+                <p class="text-3xl font-bold">Aa</p>
+                <p class="mt-2 text-xs text-primary-400">bold (700)</p>
+              </div>
+              <div
+                class="rounded-xl border border-primary-100 p-4 text-center dark:border-primary-800"
+              >
+                <p class="text-3xl font-extrabold">Aa</p>
+                <p class="mt-2 text-xs text-primary-400">extrabold (800)</p>
+              </div>
+              <div
+                class="rounded-xl border border-primary-100 p-4 text-center dark:border-primary-800"
+              >
+                <p class="text-3xl font-black">Aa</p>
+                <p class="mt-2 text-xs text-primary-400">black (900)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Font Family -->
+          <div class="space-y-8">
+            <p
+              class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500"
+            >
+              Font Family
+            </p>
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div
+                class="rounded-xl border border-primary-100 p-6 dark:border-primary-800"
+              >
+                <p class="font-sans text-xl font-bold">
+                  Roboto (sans) — The quick brown fox
+                </p>
+                <p class="mt-2 text-xs text-primary-400">font-sans</p>
+              </div>
+              <div
+                class="rounded-xl border border-primary-100 p-6 dark:border-primary-800"
+              >
+                <p class="font-mono text-xl font-bold">
+                  JetBrains (mono) — The quick brown fox
+                </p>
+                <p class="mt-2 text-xs text-primary-400">font-mono</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Drop Shadows -->
+          <div class="space-y-8">
+            <p
+              class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500"
+            >
+              Custom Drop Shadows
+            </p>
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+              <div class="flex flex-col items-center gap-3">
+                <div
+                  class="h-24 w-24 rounded-2xl bg-secondary-500 drop-shadow-emit"
+                />
+                <span class="text-xs font-bold text-primary-500"
+                  >drop-shadow-emit</span
+                >
+              </div>
+              <div class="flex flex-col items-center gap-3">
+                <div
+                  class="h-24 w-24 rounded-2xl bg-secondary-500 drop-shadow-emit-lg"
+                />
+                <span class="text-xs font-bold text-primary-500"
+                  >drop-shadow-emit-lg</span
+                >
+              </div>
+              <div class="flex flex-col items-center gap-3">
+                <div
+                  class="h-24 w-24 rounded-2xl bg-secondary-400 drop-shadow-glow"
+                />
+                <span class="text-xs font-bold text-primary-500"
+                  >drop-shadow-glow</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Border Radius -->
+          <div class="space-y-8">
+            <p
+              class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500"
+            >
+              Border Radius
+            </p>
+            <div class="flex flex-wrap gap-6">
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="h-20 w-20 rounded-none border-2 border-secondary-500 bg-secondary-50 dark:bg-secondary-900/30"
+                />
+                <span class="text-xs font-bold text-primary-500">none</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="h-20 w-20 rounded-sm border-2 border-secondary-500 bg-secondary-50 dark:bg-secondary-900/30"
+                />
+                <span class="text-xs font-bold text-primary-500">sm</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="h-20 w-20 rounded border-2 border-secondary-500 bg-secondary-50 dark:bg-secondary-900/30"
+                />
+                <span class="text-xs font-bold text-primary-500">DEFAULT</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="h-20 w-20 rounded-md border-2 border-secondary-500 bg-secondary-50 dark:bg-secondary-900/30"
+                />
+                <span class="text-xs font-bold text-primary-500">md</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="h-20 w-20 rounded-lg border-2 border-secondary-500 bg-secondary-50 dark:bg-secondary-900/30"
+                />
+                <span class="text-xs font-bold text-primary-500">lg</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="h-20 w-20 rounded-xl border-2 border-secondary-500 bg-secondary-50 dark:bg-secondary-900/30"
+                />
+                <span class="text-xs font-bold text-primary-500">xl</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="h-20 w-20 rounded-2xl border-2 border-secondary-500 bg-secondary-50 dark:bg-secondary-900/30"
+                />
+                <span class="text-xs font-bold text-primary-500">2xl</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="h-20 w-20 rounded-3xl border-2 border-secondary-500 bg-secondary-50 dark:bg-secondary-900/30"
+                />
+                <span class="text-xs font-bold text-primary-500">3xl</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="h-20 w-20 rounded-full border-2 border-secondary-500 bg-secondary-50 dark:bg-secondary-900/30"
+                />
+                <span class="text-xs font-bold text-primary-500">full</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spacing Scale -->
+          <div class="space-y-8">
+            <p
+              class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500"
+            >
+              Spacing Scale
+            </p>
+            <div class="space-y-2">
+              <div
+                v-for="s in spacingTokens"
+                :key="s"
+                class="flex items-center gap-4"
+              >
+                <span
+                  class="w-12 shrink-0 text-right font-mono text-xs text-primary-400"
+                  >{{ s }}</span
+                >
+                <div
+                  :style="{ width: `${s * 4}px` }"
+                  class="h-3 rounded-full bg-secondary-500 transition-all"
+                />
+                <span class="text-[10px] text-primary-400">{{ s * 4 }}px</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Prose (Typography Plugin) -->
+          <div class="space-y-8">
+            <p
+              class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500"
+            >
+              Prose (@tailwindcss/typography)
+            </p>
+            <div
+              class="rounded-2xl border border-primary-100 bg-white p-8 dark:border-primary-800 dark:bg-primary-900"
+            >
+              <article class="prose prose-primary dark:prose-invert max-w-none">
+                <h2>Prose Heading</h2>
+                <p>
+                  This is a <strong>prose</strong> paragraph with
+                  <em>italic text</em>, <a href="#">a link</a>, and
+                  <code>inline code</code>. The @tailwindcss/typography plugin
+                  provides beautiful default styles.
+                </p>
+                <ul>
+                  <li>Unordered list item one</li>
+                  <li>Unordered list item two</li>
+                  <li>Unordered list item three</li>
+                </ul>
+                <blockquote>
+                  <p>A blockquote with some text.</p>
+                </blockquote>
+                <pre><code>const greeting = "Hello World";</code></pre>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- 1. BUTTONS -->
     <section class="mb-32">
@@ -886,6 +1460,25 @@ const demoTechstack = [
                 <SocialLinks />
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="mt-16 space-y-12">
+          <div class="space-y-4">
+            <p
+              class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500"
+            >
+              Application Stats
+            </p>
+            <ApplicationStats :applications="mockApplications" />
+          </div>
+          <div class="space-y-4">
+            <p
+              class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary-500"
+            >
+              GitHub Contribution Chart
+            </p>
+            <GithubChart :contributions="mockContributions" />
           </div>
         </div>
       </div>
