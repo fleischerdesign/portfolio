@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { languagesData } from "~/data/languages.data";
-import { interestsData } from "~/data/interests.data";
-import { timelineData } from "~/data/timeline.data";
-import { softSkillsData } from "~/data/softSkills.data";
 import type { ApplicationResponsePayload } from "#shared/schemas/application.schema";
 import type { DbCourse } from "#shared/schemas/course.schema";
 import type { Technology } from "#shared/schemas/technology.schema";
+import type {
+  DbTimelineEntry,
+  DbInterestCategory,
+  DbInterest,
+  DbSkill,
+  DbLanguage,
+} from "#shared/schemas/profile.schema";
 
 definePageMeta({
   layout: "print",
@@ -61,10 +64,61 @@ const senderLine = computed(() => {
   return `${p.name} • ${p.address.street} ${p.address.houseNumber} • ${p.address.zipcode} ${p.address.city}`;
 });
 
-const languages = languagesData(t);
-const interests = interestsData(t);
-const timeline = timelineData(t);
-const softSkills = softSkillsData(t);
+const { data: skillsResponse } = await useFetch<{ skills: DbSkill[] }>(
+  "/api/skills",
+);
+const skillsLocalized = computed(() =>
+  (skillsResponse.value?.skills || []).map((s) => ({
+    name: localize(s.name, locale.value),
+    score: s.score,
+  })),
+);
+
+const { data: languagesResponse } = await useFetch<{ languages: DbLanguage[] }>(
+  "/api/languages",
+);
+const languagesLocalized = computed(() =>
+  (languagesResponse.value?.languages || []).map((l) => ({
+    name: localize(l.name, locale.value),
+    level: l.level ? localize(l.level, locale.value) : undefined,
+    score: l.score,
+  })),
+);
+
+const { data: timelineResponse } = await useFetch<{
+  timeline: DbTimelineEntry[];
+}>("/api/timeline");
+const timelineLocalized = computed(() =>
+  (timelineResponse.value?.timeline || []).map((item) => ({
+    ...item,
+    title: localize(item.title, locale.value),
+    description: localize(item.description, locale.value),
+    skills: (item.skills || []).map((s) => localize(s, locale.value)),
+    icon: item.icon ?? undefined,
+  })),
+);
+
+const { data: categoriesResponse } = await useFetch<{
+  categories: DbInterestCategory[];
+}>("/api/interest-categories");
+const { data: interestsApiResponse } = await useFetch<{
+  interests: DbInterest[];
+}>("/api/interests");
+const interestsGrouped = computed(() => {
+  const cats = categoriesResponse.value?.categories || [];
+  const items = interestsApiResponse.value?.interests || [];
+  const result: Record<string, { name: string; items: string[] }> = {};
+  for (const cat of cats) {
+    const catItems = items
+      .filter((i) => i.categoryId === cat.id)
+      .map((i) => localize(i.name, locale.value));
+    result[cat.slug] = {
+      name: localize(cat.name, locale.value),
+      items: catItems,
+    };
+  }
+  return result;
+});
 
 const { data: techsResponse } = await useFetch<{ technologies: Technology[] }>(
   "/api/technologies",
@@ -98,7 +152,6 @@ const formatDateRange = (
   return s && e ? `${s} - ${e}` : s || e;
 };
 
-const { render } = useMarkdown();
 const { getDisplayDate } = useApplicationUtils();
 
 const printDate = computed(() => {
@@ -509,7 +562,7 @@ const getShortenedBody = (body: string) => {
                   {{ $t("languages.title") }}
                 </h3>
               </div>
-              <SkillList :skills="languages" />
+              <SkillList :skills="languagesLocalized" />
             </UiCardContainer>
           </UiCard>
 
@@ -528,7 +581,7 @@ const getShortenedBody = (body: string) => {
                   Softskills
                 </h3>
               </div>
-              <SkillList :skills="softSkills" />
+              <SkillList :skills="skillsLocalized" />
             </UiCardContainer>
           </UiCard>
         </div>
@@ -700,13 +753,13 @@ const getShortenedBody = (body: string) => {
                 </h3>
               </div>
               <ul class="space-y-4 text-xs">
-                <li v-for="(items, key) in interests" :key="key">
+                <li v-for="(cat, key) in interestsGrouped" :key="key">
                   <span
                     class="mb-1 block text-[10px] font-black uppercase tracking-wider text-secondary-500"
-                    >{{ $t(`interests.${key}.title`) }}</span
+                    >{{ cat.name }}</span
                   >
                   <p class="font-medium leading-relaxed text-primary-700">
-                    {{ items.join(", ") }}
+                    {{ cat.items.join(", ") }}
                   </p>
                 </li>
               </ul>
@@ -778,9 +831,9 @@ const getShortenedBody = (body: string) => {
             </div>
             <UiTimeline
               :items="
-                timeline
+                timelineLocalized
                   .filter((item) => item.type === 'education')
-                  .splice(0, 4)
+                  .slice(0, 4)
               "
               :is-print-view="true"
               compact
@@ -831,7 +884,9 @@ const getShortenedBody = (body: string) => {
               </h3>
             </div>
             <UiTimeline
-              :items="timeline.filter((item) => item.type === 'career')"
+              :items="
+                timelineLocalized.filter((item) => item.type === 'career')
+              "
               :is-print-view="true"
               compact
             >

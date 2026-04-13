@@ -4,4 +4,5 @@ export * from "./course";
 export * from "./now";
 export * from "./taxonomy";
 export * from "./content";
+export * from "./profile";
 export * from "./relations";

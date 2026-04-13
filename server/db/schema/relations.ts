@@ -22,6 +22,7 @@ import {
   projectsToTags,
   projectsToTechnologies,
 } from "./content";
+import { interestCategories, interests } from "./profile";
 
 export const companiesRelations = relations(companies, ({ one, many }) => ({
   address: one(addresses, {
@@ -227,3 +228,17 @@ export const projectsToTechnologiesRelations = relations(
     }),
   }),
 );
+
+export const interestCategoriesRelations = relations(
+  interestCategories,
+  ({ many }) => ({
+    interests: many(interests),
+  }),
+);
+
+export const interestsRelations = relations(interests, ({ one }) => ({
+  category: one(interestCategories, {
+    fields: [interests.categoryId],
+    references: [interestCategories.id],
+  }),
+}));

@@ -148,6 +148,13 @@
       "when": 1776022885969,
       "tag": "0020_bumpy_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "6",
+      "when": 1776050793712,
+      "tag": "0021_slippery_rockslide",
+      "breakpoints": true
     }
   ]
 }
