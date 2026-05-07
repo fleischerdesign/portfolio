@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mt-8 flex flex-col gap-3 rounded-2xl border border-secondary-500/10 bg-white/50 p-4 shadow-xl shadow-secondary-500/5 backdrop-blur-sm dark:bg-primary-900/50 md:flex-row md:items-center md:gap-4 md:p-4"
+    class="mt-8 flex flex-col gap-3 rounded-2xl border border-secondary-500/10 bg-white/50 p-4 shadow-xl shadow-secondary-500/5 backdrop-blur-sm md:flex-row md:items-center md:gap-4 md:p-4 dark:bg-primary-900/50"
   >
     <div class="relative flex-1">
       <UiInput

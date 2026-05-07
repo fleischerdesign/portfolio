@@ -41,7 +41,7 @@ const notes = computed({
 
         <div
           v-if="!isEditing"
-          class="prose prose-primary max-w-none dark:prose-invert"
+          class="prose-primary prose max-w-none dark:prose-invert"
         >
           <ul class="list-disc space-y-3 pl-5">
             <li

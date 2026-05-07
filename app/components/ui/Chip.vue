@@ -49,7 +49,7 @@ const chipClasses = useCva(
     <button
       v-if="closable"
       type="button"
-      class="flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+      class="flex h-4 w-4 items-center justify-center rounded-full transition-colors hover:bg-black/10 dark:hover:bg-white/10"
       @click.stop="emit('close')"
     >
       <Icon name="heroicons:x-mark" size="14" />
