@@ -18,6 +18,36 @@ const body = computed({
   get: () => props.modelValue ?? "",
   set: (val) => emit("update:modelValue", val),
 });
+
+type AppView = ApplicationResponsePayload;
+type AppEdit = EditableApplication;
+
+const companyName = computed(() => {
+  if (props.isEditing) {
+    const app = props.application as AppEdit;
+    return app.selectedCompany?.name || (props.application as AppView).company.name;
+  }
+  return (props.application as AppView).company.name;
+});
+
+const companyAddress = computed(() => {
+  if (props.isEditing) {
+    const app = props.application as AppEdit;
+    return app.selectedCompany?.address || (props.application as AppView).company.address;
+  }
+  return (props.application as AppView).company.address;
+});
+
+const selectedAddress = computed(() => {
+  if (props.isEditing) {
+    return (props.application as AppEdit).selectedCompany?.address;
+  }
+  return null;
+});
+
+const defaultAddress = computed(() => {
+  return (props.application as AppView).company.address;
+});
 </script>
 
 <template>
@@ -73,41 +103,30 @@ const body = computed({
             {{ $t("applications.detail.document.recipient_label") }}
           </p>
           <p class="text-xl font-bold text-primary-900 dark:text-white">
-            {{
-              isEditing
-                ? application.selectedCompany?.name || application.company.name
-                : application.company.name
-            }}
+            {{ companyName }}
           </p>
           <div
-            v-if="
-              isEditing
-                ? application.selectedCompany?.address ||
-                  application.company.address
-                : application.company.address
-            "
+            v-if="companyAddress"
             class="mt-1 text-sm text-primary-600 dark:text-primary-400"
           >
-            <template
-              v-if="isEditing && application.selectedCompany?.address"
-            >
+            <template v-if="selectedAddress">
               <p>
-                {{ application.selectedCompany.address.street }}
-                {{ application.selectedCompany.address.houseNumber }}
+                {{ selectedAddress.street }}
+                {{ selectedAddress.houseNumber }}
               </p>
               <p>
-                {{ application.selectedCompany.address.zipcode }}
-                {{ application.selectedCompany.address.city }}
+                {{ selectedAddress.zipcode }}
+                {{ selectedAddress.city }}
               </p>
             </template>
-            <template v-else-if="application.company.address">
+            <template v-else-if="defaultAddress">
               <p>
-                {{ application.company.address.street }}
-                {{ application.company.address.houseNumber }}
+                {{ defaultAddress.street }}
+                {{ defaultAddress.houseNumber }}
               </p>
               <p>
-                {{ application.company.address.zipcode }}
-                {{ application.company.address.city }}
+                {{ defaultAddress.zipcode }}
+                {{ defaultAddress.city }}
               </p>
             </template>
           </div>
@@ -116,13 +135,13 @@ const body = computed({
         <!-- Document Title & Subtitle -->
         <div class="mb-12">
           <h3 class="text-3xl font-black text-primary-900 dark:text-white">
-            {{ isEditing ? application.title : application.title }}
+            {{ application.title }}
           </h3>
           <p
-            v-if="isEditing ? application.subtitle : application.subtitle"
+            v-if="application.subtitle"
             class="mt-2 text-xl font-medium text-primary-500 dark:text-primary-400"
           >
-            {{ isEditing ? application.subtitle : application.subtitle }}
+            {{ application.subtitle }}
           </p>
         </div>
 
