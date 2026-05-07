@@ -51,8 +51,8 @@ export function useProjectEditor(projectId: number, initialData: Ref<ProjectRawD
           repoUrl: p.repoUrl || null,
           projectUrl: p.projectUrl || null,
           categoryName: p.category?.name || null,
-          tags: p.tags.map(t => t.name).filter(Boolean),
-          techstack: p.techstack.map(t => t.name).filter(Boolean),
+          tags: p.tags.map(t => t.tag.name).filter(Boolean),
+          techstack: p.techstack.map(t => t.technology.name).filter(Boolean),
           translationKey: p.translationKey
         },
         ...editorHelpers.mapTranslations(p.translations, { 

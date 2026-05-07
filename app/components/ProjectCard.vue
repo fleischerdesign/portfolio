@@ -72,7 +72,6 @@
 <script setup lang="ts">
 import type { ProjectResponse } from '~~/shared/schemas/project.schema';
 
-// We define a serialized version because useFetch converts Date objects to ISO strings
 type SerializedProject = Omit<ProjectResponse, 'publishedAt'> & { publishedAt: string | Date | null };
 
 defineProps<{

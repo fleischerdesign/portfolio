@@ -14,6 +14,7 @@ const logger = createLogger("document");
 
 const documentDescriptor: EntityDescriptor<
   typeof documents,
+  undefined,
   DocumentCreatePayload
 > = {
   mainTable: documents,

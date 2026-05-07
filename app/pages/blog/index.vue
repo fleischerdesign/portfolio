@@ -13,10 +13,12 @@
 </template>
 
 <script lang="ts" setup>
+import type { BlogPostResponse } from '~~/shared/schemas/blog.schema';
+
 const { locale, t } = useI18n()
 const route = useRoute()
 
-const { data } = await useFetch('/api/blog', {
+const { data } = await useFetch<{ posts: BlogPostResponse[] }>('/api/blog', {
     query: { locale: locale.value }
 })
 

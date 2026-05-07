@@ -1,22 +1,14 @@
 <script setup lang="ts">
-import type { TimelineItem as UiTimelineItem } from "~/components/ui/Timeline.vue";
-
-interface HistoryTimelineItem extends UiTimelineItem {
-  status: string;
-  createdAt: Date;
-  scheduled_at?: Date | null;
-  notes?: string | null;
-  _deleted?: boolean;
-}
+import type { ApplicationTimelineItem } from "~/composables/useHistoryManager";
 
 defineProps<{
-  items: HistoryTimelineItem[];
+  items: ApplicationTimelineItem[];
   isEditing: boolean;
 }>();
 
 const emit = defineEmits<{
   (e: "add"): void;
-  (e: "edit" | "delete" | "undo", item: HistoryTimelineItem): void;
+  (e: "edit" | "delete" | "undo", item: ApplicationTimelineItem): void;
 }>();
 </script>
 

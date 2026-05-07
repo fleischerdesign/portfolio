@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useProjectEditor } from "~/composables/useProjectEditor";
 import type { Technology } from "#shared/schemas/technology.schema";
+import type { ProjectStudioResponse } from "~~/shared/schemas/project.schema";
 
 definePageMeta({
   middleware: "authorize",
@@ -11,7 +12,7 @@ definePageMeta({
 const route = useRoute();
 
 const projectId = parseInt(route.params.id as string);
-const { data, refresh } = await useFetch(`/api/studio/projects/${projectId}`);
+const { data, refresh } = (await useFetch(`/api/studio/projects/${projectId}`)) as unknown as { data: Ref<{ project: ProjectStudioResponse } | undefined>; refresh: () => Promise<void> };
 
 const {
   isEditing,
@@ -47,8 +48,7 @@ const viewTranslation = computed(() => {
 
 const currentBody = computed(() => {
   if (isEditing.value && editableProject.value) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (editableProject.value as any)[currentLocale.value].body;
+    return (editableProject.value[currentLocale.value] as { body: string }).body;
   }
   return viewTranslation.value?.body || "";
 });

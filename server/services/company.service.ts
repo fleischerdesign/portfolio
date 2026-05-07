@@ -6,7 +6,7 @@ import { createEntityService, type EntityDescriptor } from "../utils/db.engine";
 
 const logger = createLogger("company");
 
-const companyDescriptor: EntityDescriptor<typeof companies, CompanyCreate> = {
+const companyDescriptor: EntityDescriptor<typeof companies, undefined, CompanyCreate> = {
   mainTable: companies,
   hooks: {
     beforeCreate: async (tx, data) => {

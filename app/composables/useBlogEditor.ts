@@ -41,12 +41,12 @@ export function useBlogEditor(postId: number, initialData: Ref<BlogRawData | nul
           coverImage: p.coverImage,
           coverImageAlt: p.coverImageAlt,
           categoryName: p.category?.name || null,
-          tags: p.tags.map(t => t.name).filter(Boolean),
+          tags: p.tags.map(t => t.tag.name).filter(Boolean),
           translationKey: p.translationKey
         },
         ...editorHelpers.mapTranslations(p.translations, { title: '', body: '', slug: '', excerpt: '' })
       }),
-      toPayload: (common, localized, locale) => editorHelpers.preparePayload(common, localized, locale)
+      toPayload: (common, localized, locale) => editorHelpers.preparePayload(common, localized, locale) as BlogPostUpdate
     }
   );
 }

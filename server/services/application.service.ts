@@ -94,6 +94,7 @@ async function upsertCompanyWithAddress(
 
 const applicationDescriptor: EntityDescriptor<
   typeof applications,
+  undefined,
   ApplicationCreatePayload
 > = {
   mainTable: applications,

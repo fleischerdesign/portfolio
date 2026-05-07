@@ -1,30 +1,32 @@
 <script setup lang="ts">
 import type { CompanyResponse } from "#shared/schemas/company.schema";
 import type { ContactResponse } from "#shared/schemas/contact.schema";
+import type { ApplicationTimelineItem } from "~/composables/useHistoryManager";
 
-interface HistoryEntry {
-  status: string;
+interface EditableEntry {
+  id?: number;
+  status?: string;
   notes?: string | null;
   scheduled_at?: Date | string | null;
-  createdAt: Date | string;
+  createdAt?: Date | string | null;
   title?: string;
   description?: string;
-  id?: number;
+  [key: string]: unknown;
 }
 
 const props = defineProps<{
   showAddHistory: boolean;
   newHistoryStatus: string;
-  newHistoryNotes: string;
-  newHistoryScheduledAt: string;
+  newHistoryNotes: string | null;
+  newHistoryScheduledAt: string | null;
   newHistoryCreatedAt: string;
   availableStatuses: string[];
 
   showEditHistory: boolean;
-  editableHistoryEntry: HistoryEntry | null;
+  editableHistoryEntry: EditableEntry | null;
 
   showDeleteHistory: boolean;
-  deletableHistoryEntry: HistoryEntry | null;
+  deletableHistoryEntry: ApplicationTimelineItem | null;
 
   showContactForm: boolean;
   companyIdForNewContact?: number | null;
@@ -36,9 +38,10 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: "update:showAddHistory" | "update:showEditHistory" | "update:showDeleteHistory" | "update:showContactForm" | "update:showCompanyAddress", val: boolean): void;
-  (e: "update:newHistoryStatus" | "update:newHistoryNotes" | "update:newHistoryScheduledAt" | "update:newHistoryCreatedAt", val: string): void;
-  (e: "add-history" | "update-history" | "delete-history" | "contact-cancel"): void;
-  (e: "update-history-with", entry: HistoryEntry): void;
+  (e: "update:newHistoryStatus" | "update:newHistoryCreatedAt", val: string): void;
+  (e: "update:newHistoryNotes" | "update:newHistoryScheduledAt", val: string | null): void;
+  (e: "add-history" | "delete-history" | "contact-cancel"): void;
+  (e: "update-history-with", entry: EditableEntry): void;
   (e: "contact-created", contact: ContactResponse): void;
   (e: "address-success", company: CompanyResponse): void;
 }>();
@@ -83,7 +86,7 @@ const vShowCompanyAddress = computed({
   set: (val) => emit("update:showCompanyAddress", val),
 });
 
-const localHistoryEntry = ref<HistoryEntry | null>(null);
+const localHistoryEntry = ref<EditableEntry | null>(null);
 
 watch(() => props.showEditHistory, (isOpen) => {
   if (isOpen && props.editableHistoryEntry) {
@@ -221,9 +224,9 @@ watch(() => props.showEditHistory, (isOpen) => {
             type="datetime-local"
             :label="$t('applications.modals.interview_date')"
             @update:model-value="
-              (val) =>
+              (val: string | number | null | undefined) =>
                 localHistoryEntry &&
-                (localHistoryEntry.scheduled_at = val || null)
+                (localHistoryEntry.scheduled_at = (val as string) || null)
             "
           />
           <UiInput
@@ -244,9 +247,9 @@ watch(() => props.showEditHistory, (isOpen) => {
             type="datetime-local"
             :label="$t('applications.modals.date')"
             @update:model-value="
-              (val) =>
+              (val: string | number | null | undefined) =>
                 localHistoryEntry &&
-                (localHistoryEntry.createdAt = val || new Date().toISOString())
+                (localHistoryEntry.createdAt = (val as string) || new Date().toISOString())
             "
           />
         </form>
@@ -294,7 +297,7 @@ watch(() => props.showEditHistory, (isOpen) => {
       </template>
       <template #body>
         <ApplicationContactForm
-          :company-id="companyIdForNewContact"
+          :company-id="companyIdForNewContact ?? undefined"
           :name="nameForNewContact"
           @success="(c) => emit('contact-created', c)"
           @cancel="emit('contact-cancel')"

@@ -1,7 +1,6 @@
 import { ref, computed, type Ref } from "vue";
 import {
   applicationHistoryBaseSchema,
-  type ApplicationHistoryPayload,
   type ApplicationHistoryCreatePayload,
 } from "#shared/schemas/application.schema";
 import { useApplicationUtils } from "./useApplicationUtils";
@@ -12,7 +11,7 @@ export interface ApplicationTimelineItem {
   date: string;
   title: string;
   description: string;
-  icon: string;
+  icon?: string;
   _deleted?: boolean;
   [key: string]: unknown;
 }
@@ -26,9 +25,18 @@ const statusIconMap: Record<string, string> = {
   withdrawn: "heroicons:arrow-uturn-left",
 };
 
-// Define a type for the source object to avoid 'any'
+interface HistoryEntry {
+  id?: number;
+  status?: string;
+  notes?: string | null;
+  scheduled_at?: Date | string | null;
+  createdAt?: Date | string | null;
+  _deleted?: boolean;
+  [key: string]: unknown;
+}
+
 interface HistorySource {
-  histories: (ApplicationHistoryPayload & { _deleted?: boolean })[];
+  histories: HistoryEntry[];
 }
 
 export function useHistoryManager(
@@ -49,17 +57,14 @@ export function useHistoryManager(
   );
 
   const showEditHistoryModal = ref(false);
-  type EditableHistoryEntry = Partial<ApplicationHistoryPayload> & {
-    createdAt: Date | string;
-  };
-  const editableHistoryEntry = ref<EditableHistoryEntry | null>(null);
+  const editableHistoryEntry = ref<HistoryEntry | null>(null);
 
   const showDeleteHistoryModal = ref(false);
   const deletableHistoryEntry = ref<ApplicationTimelineItem | null>(null);
 
   function addHistory() {
     if (!newHistoryStatus.value || !source.value?.histories) return;
-    const newEntry: ApplicationHistoryPayload & { _deleted?: boolean } = {
+    const newEntry: HistoryEntry = {
       id: Date.now() * -1,
       status: newHistoryStatus.value,
       notes: newHistoryNotes.value,
@@ -73,7 +78,7 @@ export function useHistoryManager(
     source.value.histories.push(newEntry);
     source.value.histories.sort(
       (a, b) =>
-        (b.createdAt?.getTime() ?? 0) - (a.createdAt?.getTime() ?? 0) ||
+        (toTime(b.createdAt) ?? 0) - (toTime(a.createdAt) ?? 0) ||
         (b.id || 0) - (a.id || 0),
     );
 
@@ -94,12 +99,12 @@ export function useHistoryManager(
         ...entry,
         createdAt: entry.createdAt
           ? (formatForDateTimeLocal(
-              entry.createdAt.toISOString(),
+              isDate(entry.createdAt) ? entry.createdAt.toISOString() : entry.createdAt,
             ) as unknown as Date)
           : (null as unknown as Date),
         scheduled_at: entry.scheduled_at
           ? (formatForDateTimeLocal(
-              entry.scheduled_at.toISOString(),
+              isDate(entry.scheduled_at) ? entry.scheduled_at.toISOString() : entry.scheduled_at,
             ) as unknown as Date | null)
           : null,
       };
@@ -107,7 +112,7 @@ export function useHistoryManager(
     }
   }
 
-  function updateHistory(entry?: Partial<ApplicationHistoryPayload> & { createdAt: Date | string }) {
+  function updateHistory(entry?: HistoryEntry) {
     const sourceEntry = entry || editableHistoryEntry.value;
     if (!sourceEntry?.id || !source.value?.histories) return;
     const index = source.value.histories.findIndex(
@@ -120,7 +125,7 @@ export function useHistoryManager(
         ...existing,
         ...sourceEntry,
         status: sourceEntry.status!,
-        createdAt: new Date(sourceEntry.createdAt),
+        createdAt: new Date(sourceEntry.createdAt!),
         scheduled_at:
           isInterview && sourceEntry.scheduled_at
             ? new Date(sourceEntry.scheduled_at)
@@ -128,7 +133,7 @@ export function useHistoryManager(
       };
       source.value.histories.sort(
         (a, b) =>
-          (b.createdAt?.getTime() ?? 0) - (a.createdAt?.getTime() ?? 0) ||
+          (toTime(b.createdAt) ?? 0) - (toTime(a.createdAt) ?? 0) ||
           (b.id || 0) - (a.id || 0),
       );
     }
@@ -178,7 +183,6 @@ export function useHistoryManager(
     const items: ApplicationTimelineItem[] = [];
     const historiesSource = source.value.histories || [];
 
-    // filter out deleted items in view mode
     const currentHistories = isEditing.value
       ? historiesSource
       : historiesSource.filter((h) => !h._deleted);
@@ -192,7 +196,7 @@ export function useHistoryManager(
           type: "interview",
           date: formatDate(history.scheduled_at!),
           title: "Interview",
-          description: history.notes || "Geplantes Gespräch.",
+          description: (history.notes as string) || "Geplantes Gespräch.",
           icon: "heroicons:calendar-days",
           _deleted: history._deleted,
         });
@@ -202,11 +206,11 @@ export function useHistoryManager(
           type: "history",
           date: formatDate(history.createdAt),
           title:
-            history.status.charAt(0).toUpperCase() + history.status.slice(1),
+            (history.status as string).charAt(0).toUpperCase() + (history.status as string).slice(1),
           description:
-            history.notes || `Status wurde auf '${history.status}' geändert.`,
+            (history.notes as string) || `Status wurde auf '${history.status as string}' geändert.`,
           icon:
-            statusIconMap[history.status] || "heroicons:question-mark-circle",
+            statusIconMap[history.status as string] || "heroicons:question-mark-circle",
           _deleted: history._deleted,
         });
       }
@@ -237,4 +241,14 @@ export function useHistoryManager(
     availableStatuses,
     getStatusTextClasses,
   };
+}
+
+function isDate(val: Date | string): val is Date {
+  return val instanceof Date;
+}
+
+function toTime(val?: Date | string | null): number | null {
+  if (!val) return null;
+  if (isDate(val)) return val.getTime();
+  return new Date(val).getTime();
 }

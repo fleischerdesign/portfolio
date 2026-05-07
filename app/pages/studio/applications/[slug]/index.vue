@@ -254,7 +254,7 @@ onMounted(() => {
     <!-- Modals -->
     <StudioApplicationModals
       v-model:show-add-history="showAddHistoryModal"
-      v-model:new-history-status="newHistoryStatus"
+      v-model:new-history-status="newHistoryStatus!"
       v-model:new-history-notes="newHistoryNotes"
       v-model:new-history-scheduled-at="newHistoryScheduledAt"
       v-model:new-history-created-at="newHistoryCreatedAt"

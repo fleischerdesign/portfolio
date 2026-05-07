@@ -8,9 +8,11 @@ export interface EditableHistoryEntry extends Omit<ApplicationHistoryPayload, 's
   scheduled_at: string | null;
   createdAt: string | null;
   _deleted?: boolean;
+  [key: string]: unknown;
 }
 
-export interface EditableApplication extends Partial<ApplicationUpdatePayload> {
+export interface EditableApplication
+  extends Omit<Partial<ApplicationUpdatePayload>, 'histories'> {
   id: number;
   histories: EditableHistoryEntry[];
   companyId: number;

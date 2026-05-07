@@ -30,13 +30,14 @@ export const applicationHistoryBaseSchema = createSelectSchema(applicationHistor
  * @description Refined insert schema using Drizzle-Zod overrides.
  */
 export const applicationCreateSchema = createInsertSchema(applications, {
-  createdAt: dateSchema,
-  updatedAt: dateSchema,
-  pdfGeneratedAt: dateSchema,
+  createdAt: dateSchema.optional(),
+  updatedAt: dateSchema.optional(),
+  pdfGeneratedAt: dateSchema.optional(),
 }).extend({
   companyName: z.string().trim().optional(),
   companyAddress: addressSchema.optional(),
   contactIds: z.array(z.number()).optional().default([]),
+  companyId: z.number().nullable().optional(),
 });
 
 export const applicationUpdateSchema = applicationCreateSchema.partial().extend({

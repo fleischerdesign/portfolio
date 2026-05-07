@@ -154,7 +154,7 @@ const props = withDefaults(
     id: string;
     modelValue: T | T[] | null | undefined;
     options: readonly T[];
-    label: string;
+    label?: string;
     by?: keyof T;
     error?: string;
     hasError?: boolean;
@@ -169,6 +169,7 @@ const props = withDefaults(
     error: "",
     hasError: false,
     creatable: false,
+    label: "",
     multiple: false,
     required: false,
     searchable: false,
@@ -345,7 +346,7 @@ function toggleOpen() {
   isOpen.value = !isOpen.value;
 }
 
-function handleClickOutside(_event: MouseEvent) {
+function handleClickOutside(event: MouseEvent) {
   const isClickInButton =
     rootEl.value && rootEl.value.contains(event.target as Node);
   const isClickInDropdown =
