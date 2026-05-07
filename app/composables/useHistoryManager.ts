@@ -49,7 +49,7 @@ export function useHistoryManager(
 
   const showAddHistoryModal = ref(false);
   const newHistoryStatus =
-    ref<ApplicationHistoryCreatePayload["status"]>("draft");
+    ref<NonNullable<ApplicationHistoryCreatePayload["status"]>>("draft");
   const newHistoryNotes = ref<string | null>(null);
   const newHistoryScheduledAt = ref<string | null>(null);
   const newHistoryCreatedAt = ref<string>(
