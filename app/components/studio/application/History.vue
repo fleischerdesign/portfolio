@@ -1,26 +1,14 @@
 <script setup lang="ts">
-interface TimelineItem {
-  id: number;
-  status: string;
-  title: string;
-  description: string;
-  date: string;
-  createdAt: Date;
-  scheduled_at?: Date | null;
-  notes?: string | null;
-  _deleted?: boolean;
-}
+import type { ApplicationTimelineItem } from "~/composables/useHistoryManager";
 
 defineProps<{
-  items: TimelineItem[];
+  items: ApplicationTimelineItem[];
   isEditing: boolean;
 }>();
 
 const emit = defineEmits<{
   (e: "add"): void;
-  (e: "edit", item: TimelineItem): void;
-  (e: "delete", item: TimelineItem): void;
-  (e: "undo", item: TimelineItem): void;
+  (e: "edit" | "delete" | "undo", item: ApplicationTimelineItem): void;
 }>();
 </script>
 

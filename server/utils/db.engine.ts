@@ -6,6 +6,9 @@ import type { DbTransaction } from "./db";
 import { taxonomyHelper } from "./taxonomy.helper";
 import { createLogger } from "./logger";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnySQLiteColumn = SQLiteColumn<any, any>;
+
 // ---------------------------------------------------------------------------
 // Shared Types & Errors
 // ---------------------------------------------------------------------------
@@ -18,12 +21,15 @@ export interface RelationConfig {
 }
 
 export class DatabaseError extends Error {
+  public override cause?: unknown;
+
   constructor(
-    public message: string,
+    message: string,
     public statusCode = 500,
-    public cause?: unknown,
+    cause?: unknown,
   ) {
     super(message);
+    this.cause = cause;
   }
 }
 

@@ -6,7 +6,7 @@ import { createEntityService, type EntityDescriptor } from "../utils/db.engine";
 
 const logger = createLogger("contact");
 
-const contactDescriptor: EntityDescriptor<typeof contacts, ContactCreate> = {
+const contactDescriptor: EntityDescriptor<typeof contacts, undefined, ContactCreate> = {
   mainTable: contacts,
 };
 

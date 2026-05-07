@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useBlogEditor } from "~/composables/useBlogEditor";
+import type { BlogPostStudioResponse } from "~~/shared/schemas/blog.schema";
 
 definePageMeta({
   middleware: "authorize",
@@ -10,7 +11,7 @@ definePageMeta({
 const route = useRoute();
 
 const postId = parseInt(route.params.id as string);
-const { data, refresh } = await useFetch(`/api/studio/blog/${postId}`);
+const { data, refresh } = (await useFetch(`/api/studio/blog/${postId}`)) as unknown as { data: Ref<{ post: BlogPostStudioResponse } | undefined>; refresh: () => Promise<void> };
 
 const {
   isEditing,
@@ -39,8 +40,7 @@ const viewTranslation = computed(() => {
 
 const currentBody = computed(() => {
   if (isEditing.value && editablePost.value) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (editablePost.value as any)[currentLocale.value].body;
+    return (editablePost.value[currentLocale.value] as { body: string }).body;
   }
   return viewTranslation.value?.body || "";
 });
@@ -176,11 +176,11 @@ const viewFormattedDate = computed(() =>
             <div class="mb-6 flex flex-wrap items-center gap-4">
               <div class="flex gap-2">
                 <UiTag
-                  v-for="tag in post.tags"
-                  :key="tag.id"
+                  v-for="tagWrapper in post.tags"
+                  :key="(tagWrapper as { tag: { id: number; slug: string; name: string } }).tag.id"
                   variant="glow"
                   size="sm"
-                  >{{ tag.name }}</UiTag
+                  >{{ (tagWrapper as { tag: { id: number; slug: string; name: string } }).tag.name }}</UiTag
                 >
               </div>
             </div>

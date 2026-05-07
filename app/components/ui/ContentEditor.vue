@@ -105,13 +105,13 @@ onMounted(() => {
     <!-- Editor Layout -->
     <div :class="[showPreview ? 'grid grid-cols-1 gap-6 lg:grid-cols-2' : 'block']">
       <!-- Edit Area -->
-      <div class="relative group">
+      <div class="group relative">
         <textarea
           ref="textareaRef"
           v-model="content"
           :placeholder="placeholder"
           :style="{ minHeight }"
-          class="w-full resize-none overflow-hidden border-none bg-transparent p-0 text-lg leading-relaxed selection:bg-secondary-100 focus:ring-0 dark:selection:bg-secondary-900/50 dark:text-primary-200"
+          class="w-full resize-none overflow-hidden border-none bg-transparent p-0 text-lg leading-relaxed selection:bg-secondary-100 focus:ring-0 dark:text-primary-200 dark:selection:bg-secondary-900/50"
           @input="adjustHeight"
         ></textarea>
       </div>

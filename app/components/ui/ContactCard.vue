@@ -4,7 +4,7 @@ interface Contact {
   position?: string | null;
   email?: string | null;
   phone?: string | null;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 defineProps<{
@@ -24,10 +24,10 @@ defineProps<{
 
       <!-- Details -->
       <div class="min-w-0 flex-1">
-        <p class="font-bold text-primary-900 dark:text-white truncate">
+        <p class="truncate font-bold text-primary-900 dark:text-white">
           {{ contact.name }}
         </p>
-        <p class="text-xs text-primary-500 dark:text-primary-400 truncate">
+        <p class="truncate text-xs text-primary-500 dark:text-primary-400">
           {{ contact.position || $t('common.contact_person') || 'Ansprechpartner' }}
         </p>
         

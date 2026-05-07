@@ -22,7 +22,7 @@ It is built with a modern, full-stack technology stack to ensure a great develop
   - Dark & Light Mode.
   - Rich data visualizations, including a GitHub contribution chart.
 - **Authentication:** Secure authentication powered by `nuxt-auth-utils`.
-- **CI/CD:** Automated build and deployment pipeline using **GitHub Actions**.
+- **CI/CD:** Automated linting, type checking, testing and deployment via **GitHub Actions**.
 
 ## Tech Stack
 
@@ -142,7 +142,64 @@ docker run -v /path/to/data:/app/data -p 3000:3000 portfolio:latest
 
 ### GitHub Actions CI/CD
 
-The CI/CD pipeline automatically builds and pushes the Docker image to GitHub Container Registry on every push to master.
+The CI/CD pipeline automatically builds and pushes the Docker image to GitHub Container Registry on every push to `main`.
+
+## Branching Strategy
+
+This project uses a lightweight **Git Flow** branching model:
+
+| Branch | Purpose |
+|---|---|
+| `main` | Production-ready code. Only updated via pull requests from `develop`. Triggers Docker build & deploy. |
+| `develop` | Active development branch. All feature branches are based on and merged back here. |
+| `feature/*` | New features (e.g. `feature/i18n-support`) |
+| `fix/*` | Bug fixes (e.g. `fix/contact-form-validation`) |
+| `refactor/*` | Code refactoring (e.g. `refactor/extract-auth-module`) |
+
+### Workflow
+
+1. Create a feature/fix/refactor branch from `develop`
+2. Make changes and commit using [Conventional Commits](#conventional-commits)
+3. Open a Pull Request against `develop`
+4. After review and passing CI checks, merge the PR
+5. When ready for release, merge `develop` into `main`
+
+### Conventional Commits
+
+All commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification. This is enforced automatically by `commitlint` via a `commit-msg` Git hook.
+
+Format: `type(scope): description`
+
+Common types:
+
+| Type | Usage |
+|---|---|
+| `feat` | New feature |
+| `fix` | Bug fix |
+| `refactor` | Code refactoring without feature changes |
+| `docs` | Documentation changes |
+| `style` | Formatting, whitespace (no code changes) |
+| `test` | Adding or updating tests |
+| `chore` | Build process, dependencies, tooling |
+| `ci` | CI/CD configuration changes |
+| `perf` | Performance improvements |
+
+### CI Pipeline
+
+Every Pull Request against `main` and `develop` is automatically checked by GitHub Actions:
+
+- **Lint** – ESLint check
+- **Type Check** – TypeScript validation via `vue-tsc`
+- **Test** – Vitest test suite
+
+All checks must pass before a PR can be merged.
+
+### Git Hooks
+
+[Husky](https://typicode.github.io/husky/) manages Git hooks:
+
+- **pre-commit** – Runs `npm run lint` to catch linting errors before committing
+- **commit-msg** – Runs `commitlint` to validate commit message format
 
 ## Contact
 

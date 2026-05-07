@@ -841,7 +841,7 @@ const spacingTokens = [
             <div
               class="rounded-2xl border border-primary-100 bg-white p-8 dark:border-primary-800 dark:bg-primary-900"
             >
-              <article class="prose prose-primary dark:prose-invert max-w-none">
+              <article class="prose-primary prose max-w-none dark:prose-invert">
                 <h2>Prose Heading</h2>
                 <p>
                   This is a <strong>prose</strong> paragraph with

@@ -37,7 +37,7 @@ const { getFormattedLastActivityDate, getDisplayDate } = useApplicationUtils();
         :label="$t('applications.detail.config.company')"
         :value="application.company.name"
       >
-        <template #footer v-if="application.company.address">
+        <template v-if="application.company.address" #footer>
           {{ application.company.address.city }}
         </template>
       </UiQuickStat>

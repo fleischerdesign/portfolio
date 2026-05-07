@@ -6,8 +6,8 @@ import { tagSchema } from "./tag.schema";
 
 export const CONTENT_DATE_OVERRIDES = {
   publishedAt: dateSchema,
-  createdAt: dateSchema,
-  updatedAt: dateSchema,
+  createdAt: dateSchema.optional(),
+  updatedAt: dateSchema.optional(),
 };
 
 export const TRANSLATION_DATE_OVERRIDES = {

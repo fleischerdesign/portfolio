@@ -2,7 +2,7 @@ name: Build, Push, and Deploy Docker Image
 
 on:
   push:
-    branches: ["master"]
+    branches: ["main"]
   repository_dispatch:
     types: [content_update]
   workflow_dispatch:

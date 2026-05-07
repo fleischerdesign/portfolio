@@ -8,6 +8,7 @@ const updateSchema = z.object({
   name: z.string().trim().min(1).optional(),
   icon: z.string().trim().optional().nullable(),
   featured: z.boolean().optional(),
+  slug: z.string().optional(),
 });
 
 export default defineEventHandler(async (event) => {

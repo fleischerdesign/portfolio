@@ -13,10 +13,12 @@ export default defineEventHandler(async (event) => {
     }).parse,
   );
 
-  const [{ count }] = await db
+  const countResult = await db
     .select({ count: sql<number>`COUNT(*)` })
     .from(projectsToTechnologies)
     .where(eq(projectsToTechnologies.technologyId, id));
+
+  const count = countResult[0]?.count ?? 0;
 
   if (count > 0) {
     throw createError({

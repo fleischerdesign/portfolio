@@ -8,7 +8,7 @@ export interface TimelineItem {
   id?: number | string;
   type?: string;
   _deleted?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 </script>
 
@@ -79,7 +79,7 @@ const itemClasses = useCva(
         <!-- Timeline Dot/Icon (Mobile) -->
         <div 
           v-if="!compact && !isPrintView"
-          class="absolute left-5 z-10 flex h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-xl border border-secondary-500/30 bg-white shadow-xl shadow-secondary-500/10 backdrop-blur-md dark:bg-primary-900 md:hidden" 
+          class="absolute left-5 z-10 flex h-10 w-10 -translate-x-1/2 transform items-center justify-center rounded-xl border border-secondary-500/30 bg-white shadow-xl shadow-secondary-500/10 backdrop-blur-md md:hidden dark:bg-primary-900" 
         >
           <Icon v-if="item.icon" :name="item.icon" size="20" class="text-secondary-600 dark:text-secondary-400" />
           <div class="absolute inset-0 animate-pulse rounded-xl bg-secondary-500/5 blur-sm"></div>
@@ -88,7 +88,7 @@ const itemClasses = useCva(
         <!-- Timeline Dot/Icon (Desktop) -->
         <div 
           v-if="!compact && !isPrintView"
-          class="absolute left-1/2 z-10 hidden h-12 w-12 -translate-x-1/2 transform items-center justify-center rounded-2xl border border-secondary-500/30 bg-white shadow-2xl shadow-secondary-500/10 backdrop-blur-md dark:bg-primary-900 md:flex" 
+          class="absolute left-1/2 z-10 hidden h-12 w-12 -translate-x-1/2 transform items-center justify-center rounded-2xl border border-secondary-500/30 bg-white shadow-2xl shadow-secondary-500/10 backdrop-blur-md md:flex dark:bg-primary-900" 
         >
           <Icon v-if="item.icon" :name="item.icon" size="24" class="text-secondary-600 dark:text-secondary-400" />
           <div class="absolute inset-0 animate-pulse rounded-2xl bg-secondary-500/10 blur-md"></div>

@@ -124,7 +124,7 @@ export default defineEventHandler(async (event) => {
     
     const applicationUpdatePayload = {
         ...applicationData,
-        companyId: finalCompanyId,
+        companyId: finalCompanyId ?? undefined,
         createdAt: applicationData.createdAt ? new Date(applicationData.createdAt) : undefined,
         updatedAt: applicationData.updatedAt ? new Date(applicationData.updatedAt) : undefined,
         pdfGeneratedAt: applicationData.pdfGeneratedAt ? new Date(applicationData.pdfGeneratedAt) : undefined,

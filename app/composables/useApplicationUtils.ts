@@ -1,10 +1,7 @@
 export interface ApplicationDateSource {
-  histories?:
-    | { status: string; createdAt?: Date | null | undefined }[]
-    | null
-    | undefined;
-  createdAt?: Date | null | undefined;
-  updatedAt?: Date | null | undefined;
+  histories?: { status: string; createdAt?: Date | string | null | undefined }[] | null | undefined;
+  createdAt?: Date | string | null | undefined;
+  updatedAt?: Date | string | null | undefined;
 }
 
 export const useApplicationUtils = () => {
