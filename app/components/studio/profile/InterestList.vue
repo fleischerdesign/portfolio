@@ -177,7 +177,8 @@ async function removeCategory(id: number) {
     fetchData();
   } catch (e) {
     console.error(e);
-    const msg = (e as any)?.data?.statusMessage || "Fehler beim Löschen";
+    const err = e as { data?: { statusMessage?: string } };
+    const msg = err.data?.statusMessage || "Fehler beim Löschen";
     showToast(msg, { type: "error" });
   }
 }

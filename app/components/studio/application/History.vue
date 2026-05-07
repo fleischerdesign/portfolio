@@ -18,9 +18,7 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: "add"): void;
-  (e: "edit", item: TimelineItem): void;
-  (e: "delete", item: TimelineItem): void;
-  (e: "undo", item: TimelineItem): void;
+  (e: "edit" | "delete" | "undo", item: TimelineItem): void;
 }>();
 </script>
 

@@ -5,14 +5,14 @@ import type { ContactResponse } from "#shared/schemas/contact.schema";
 interface HistoryEntry {
   status: string;
   notes?: string | null;
-  scheduled_at?: Date | null;
-  createdAt: Date;
+  scheduled_at?: Date | string | null;
+  createdAt: Date | string;
   title?: string;
   description?: string;
+  id?: number;
 }
 
 const props = defineProps<{
-  // History Add
   showAddHistory: boolean;
   newHistoryStatus: string;
   newHistoryNotes: string;
@@ -20,49 +20,31 @@ const props = defineProps<{
   newHistoryCreatedAt: string;
   availableStatuses: string[];
 
-  // History Edit
   showEditHistory: boolean;
   editableHistoryEntry: HistoryEntry | null;
 
-  // History Delete
   showDeleteHistory: boolean;
   deletableHistoryEntry: HistoryEntry | null;
 
-  // Contact
   showContactForm: boolean;
   companyIdForNewContact?: number | null;
   nameForNewContact?: string;
 
-  // Address
   showCompanyAddress: boolean;
   selectedCompany?: CompanyResponse | null;
 }>();
 
 const emit = defineEmits<{
-  (e: "update:showAddHistory", val: boolean): void;
-  (e: "update:newHistoryStatus", val: string): void;
-  (e: "update:newHistoryNotes", val: string): void;
-  (e: "update:newHistoryScheduledAt", val: string): void;
-  (e: "update:newHistoryCreatedAt", val: string): void;
-  (e: "add-history"): void;
-
-  (e: "update:showEditHistory", val: boolean): void;
-  (e: "update-history"): void;
-
-  (e: "update:showDeleteHistory", val: boolean): void;
-  (e: "delete-history"): void;
-
-  (e: "update:showContactForm", val: boolean): void;
+  (e: "update:showAddHistory" | "update:showEditHistory" | "update:showDeleteHistory" | "update:showContactForm" | "update:showCompanyAddress", val: boolean): void;
+  (e: "update:newHistoryStatus" | "update:newHistoryNotes" | "update:newHistoryScheduledAt" | "update:newHistoryCreatedAt", val: string): void;
+  (e: "add-history" | "update-history" | "delete-history" | "contact-cancel"): void;
+  (e: "update-history-with", entry: HistoryEntry): void;
   (e: "contact-created", contact: ContactResponse): void;
-  (e: "contact-cancel"): void;
-
-  (e: "update:showCompanyAddress", val: boolean): void;
   (e: "address-success", company: CompanyResponse): void;
 }>();
 
 const { getStatusTextClasses } = useApplicationUtils();
 
-// Helper for proxying v-models
 const vShowAddHistory = computed({
   get: () => props.showAddHistory,
   set: (val) => emit("update:showAddHistory", val),
@@ -99,6 +81,16 @@ const vShowContactForm = computed({
 const vShowCompanyAddress = computed({
   get: () => props.showCompanyAddress,
   set: (val) => emit("update:showCompanyAddress", val),
+});
+
+const localHistoryEntry = ref<HistoryEntry | null>(null);
+
+watch(() => props.showEditHistory, (isOpen) => {
+  if (isOpen && props.editableHistoryEntry) {
+    localHistoryEntry.value = { ...props.editableHistoryEntry };
+  } else if (!isOpen) {
+    localHistoryEntry.value = null;
+  }
 });
 </script>
 
@@ -176,7 +168,7 @@ const vShowCompanyAddress = computed({
     </UiModal>
 
     <!-- Edit History Modal -->
-    <UiModal v-if="editableHistoryEntry" v-model="vShowEditHistory">
+    <UiModal v-if="localHistoryEntry" v-model="vShowEditHistory">
       <template #header>
         <h3 class="text-2xl font-black">
           {{ $t("applications.modals.edit_history") }}
@@ -185,11 +177,11 @@ const vShowCompanyAddress = computed({
       <template #body>
         <form
           class="flex flex-col gap-4"
-          @submit.prevent="emit('update-history')"
+          @submit.prevent="emit('update-history-with', localHistoryEntry!)"
         >
           <UiSelect
             id="edit-history-status"
-            v-model="editableHistoryEntry.status"
+            v-model="localHistoryEntry.status"
             :options="availableStatuses"
             :label="$t('applications.modals.status')"
           >
@@ -219,38 +211,42 @@ const vShowCompanyAddress = computed({
             </template>
           </UiSelect>
           <UiInput
-            v-if="editableHistoryEntry.status === 'interview'"
+            v-if="localHistoryEntry.status === 'interview'"
             id="edit-history-scheduled-at"
             :model-value="
-              editableHistoryEntry?.scheduled_at?.toISOString().slice(0, 16)
+              localHistoryEntry.scheduled_at instanceof Date
+                ? localHistoryEntry.scheduled_at.toISOString().slice(0, 16)
+                : localHistoryEntry.scheduled_at?.slice(0, 16) ?? ''
             "
             type="datetime-local"
             :label="$t('applications.modals.interview_date')"
             @update:model-value="
               (val) =>
-                editableHistoryEntry &&
-                (editableHistoryEntry.scheduled_at = val ? new Date(val) : null)
+                localHistoryEntry &&
+                (localHistoryEntry.scheduled_at = val || null)
             "
           />
           <UiInput
             id="edit-history-notes"
-            v-model="editableHistoryEntry.notes"
+            v-model="localHistoryEntry.notes"
             as="textarea"
             :label="$t('applications.modals.notes')"
           />
           <UiInput
             id="edit-history-date"
             :model-value="
-              editableHistoryEntry?.createdAt?.toISOString().slice(0, 16)
+              localHistoryEntry.createdAt instanceof Date
+                ? localHistoryEntry.createdAt.toISOString().slice(0, 16)
+                : typeof localHistoryEntry.createdAt === 'string'
+                  ? localHistoryEntry.createdAt.slice(0, 16)
+                  : ''
             "
             type="datetime-local"
             :label="$t('applications.modals.date')"
             @update:model-value="
               (val) =>
-                editableHistoryEntry &&
-                (editableHistoryEntry.createdAt = val
-                  ? new Date(val)
-                  : new Date())
+                localHistoryEntry &&
+                (localHistoryEntry.createdAt = val || new Date().toISOString())
             "
           />
         </form>
@@ -259,7 +255,7 @@ const vShowCompanyAddress = computed({
         <UiButton variant="secondary" @click="vShowEditHistory = false">
           {{ $t("applications.detail.actions.cancel") }}
         </UiButton>
-        <UiButton @click="emit('update-history')">
+        <UiButton @click="emit('update-history-with', localHistoryEntry!)">
           {{ $t("applications.detail.actions.save") }}
         </UiButton>
       </template>

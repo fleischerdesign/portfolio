@@ -4,13 +4,13 @@ import type { ContactResponse } from '#shared/schemas/contact.schema';
 import { useEditor } from './useEditor';
 import { editorHelpers } from './useLocalizedEditor';
 
-interface EditableHistoryEntry extends Omit<ApplicationHistoryPayload, 'scheduled_at' | 'createdAt'> {
+export interface EditableHistoryEntry extends Omit<ApplicationHistoryPayload, 'scheduled_at' | 'createdAt'> {
   scheduled_at: string | null;
   createdAt: string | null;
   _deleted?: boolean;
 }
 
-interface EditableApplication extends Partial<ApplicationUpdatePayload> {
+export interface EditableApplication extends Partial<ApplicationUpdatePayload> {
   id: number;
   histories: EditableHistoryEntry[];
   companyId: number;
@@ -76,8 +76,7 @@ export function useApplicationEditor(initialApplication: Ref<ApplicationResponse
         notes: editable.notes,
         companyId: editable.selectedCompany?.id,
         contactIds: editable.selectedContacts?.map(c => c.id) || [],
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        histories: cleanHistories as any, // Drizzle type for JSON arrays can be complex
+        histories: cleanHistories as ApplicationUpdatePayload['histories'],
       };
     },
     onSave: async (payload) => {

@@ -2,9 +2,10 @@
 import type { ApplicationUpdatePayload } from "#shared/schemas/application.schema";
 import type { CompanyResponse } from "#shared/schemas/company.schema";
 import type { ContactResponse } from "#shared/schemas/contact.schema";
+import type { EditableApplication } from "~/composables/useApplicationEditor";
 
 const props = defineProps<{
-  modelValue: any; // Should be EditableApplication
+  modelValue: EditableApplication;
   allCompanies: CompanyResponse[];
   allContacts: ContactResponse[];
 }>();

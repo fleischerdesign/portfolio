@@ -107,22 +107,23 @@ export function useHistoryManager(
     }
   }
 
-  function updateHistory() {
-    if (!editableHistoryEntry.value?.id || !source.value?.histories) return;
+  function updateHistory(entry?: Partial<ApplicationHistoryPayload> & { createdAt: Date | string }) {
+    const sourceEntry = entry || editableHistoryEntry.value;
+    if (!sourceEntry?.id || !source.value?.histories) return;
     const index = source.value.histories.findIndex(
-      (h) => h.id === editableHistoryEntry.value!.id,
+      (h) => h.id === sourceEntry!.id,
     );
     if (index !== -1) {
-      const isInterview = editableHistoryEntry.value.status === "interview";
+      const isInterview = sourceEntry.status === "interview";
       const existing = source.value.histories[index];
       source.value.histories[index] = {
         ...existing,
-        ...editableHistoryEntry.value,
-        status: editableHistoryEntry.value.status!,
-        createdAt: new Date(editableHistoryEntry.value.createdAt),
+        ...sourceEntry,
+        status: sourceEntry.status!,
+        createdAt: new Date(sourceEntry.createdAt),
         scheduled_at:
-          isInterview && editableHistoryEntry.value.scheduled_at
-            ? new Date(editableHistoryEntry.value.scheduled_at)
+          isInterview && sourceEntry.scheduled_at
+            ? new Date(sourceEntry.scheduled_at)
             : null,
       };
       source.value.histories.sort(

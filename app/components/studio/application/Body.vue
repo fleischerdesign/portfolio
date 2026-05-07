@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import type { ApplicationResponsePayload } from "#shared/schemas/application.schema";
+import type { EditableApplication } from "~/composables/useApplicationEditor";
+
 const props = defineProps<{
-  application: any; // Can be ApplicationResponsePayload or EditableApplication
+  application: ApplicationResponsePayload | EditableApplication;
   isEditing: boolean;
-  modelValue?: string; // body for editing
+  modelValue?: string;
   salutation: string;
   displayDate: string;
 }>();

@@ -8,10 +8,7 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: "save"): void;
-  (e: "cancel"): void;
-  (e: "edit"): void;
-  (e: "generate-pdf"): void;
+  (e: "save" | "cancel" | "edit" | "generate-pdf"): void;
 }>();
 </script>
 
