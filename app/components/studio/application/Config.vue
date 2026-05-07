@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { ApplicationUpdatePayload } from "#shared/schemas/application.schema";
 import type { CompanyResponse } from "#shared/schemas/company.schema";
 import type { ContactResponse } from "#shared/schemas/contact.schema";
 import type { EditableApplication } from "~/composables/useApplicationEditor";
@@ -11,7 +10,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: "update:modelValue", value: ApplicationUpdatePayload): void;
+  (e: "update:modelValue", value: EditableApplication): void;
   (e: "create-contact", name: string): void;
   (e: "edit-address"): void;
 }>();
