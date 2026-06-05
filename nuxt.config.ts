@@ -1,3 +1,5 @@
+import tailwindcss from '@tailwindcss/vite'
+
 export default defineNuxtConfig({
   nitro: {
     storage: {
@@ -42,9 +44,6 @@ export default defineNuxtConfig({
       password: ''
     },
     public: {
-      plausible: {
-        apiHost: 'https://plausible.mky.ancoris.ovh',
-      }
     }
   },
   site: {
@@ -55,6 +54,9 @@ export default defineNuxtConfig({
       '/api/__sitemap__/urls'
     ]
   },
+  css: [
+    '~/assets/css/main.css'
+  ],
   compatibilityDate: '2024-11-01',
   devtools: {
     enabled: true,
@@ -66,18 +68,17 @@ export default defineNuxtConfig({
   modules: [
     'nuxt-og-image',
     '@nuxtjs/sitemap',
-    '@nuxtjs/tailwindcss',
     '@nuxt/icon',
     '@nuxtjs/i18n',
     '@nuxt/image',
     '@nuxtjs/color-mode',
-    '@nuxtjs/plausible',
     '@nuxtjs/robots',
     '@nuxtjs/google-fonts',
     '@nuxt/eslint',
     'nuxt-auth-utils',
     'nuxt-authorization',
-    '@nuxt/test-utils/module'
+    '@nuxt/test-utils/module',
+    '@nuxt/fonts'
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -105,11 +106,7 @@ export default defineNuxtConfig({
     ],
     baseUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://fleischer.design',
   },
-  plausible: {
-    ignoredHostnames: ['localhost'],
-    autoOutboundTracking: true,
-    proxy: true,
-  },
+
   image: {
     domains: ['localhost', '127.0.0.1', 'fleischer.design'],
     alias: {
@@ -124,8 +121,13 @@ export default defineNuxtConfig({
       },
     },
   },
-  tailwindcss: {
-    exposeConfig: true,
+  vite: {
+    plugins: [
+      tailwindcss()
+    ]
+  },
+  colorMode: {
+    classSuffix: ''
   },
   icon: {
     customCollections: [{
