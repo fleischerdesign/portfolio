@@ -139,8 +139,9 @@
             export PATH=$PWD/node_modules/.bin:$PATH
             export BROWSER_BIN="${pkgs.chromium}/bin/chromium"
             export PUPPETEER_EXECUTABLE_PATH="${pkgs.chromium}/bin/chromium"
+            export NODE_PATH="${nodejs}/lib/node_modules/npm/node_modules"
 
-            if [ ! -d "node_modules" ]; then
+            if [ -z "$CI" ] && [ ! -d "node_modules" ]; then
               echo "node_modules not found, running npm install..."
               npm install
             fi
