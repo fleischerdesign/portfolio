@@ -27,7 +27,7 @@
 
           src = ./.;
 
-          npmDepsHash = "sha256-EUYqlVv/VNoGcdBRINmIDX+P+Ki9cSllIFgHStDuIzE=";
+          npmDepsHash = "sha256-1n1QNNU88Hedk/zuc3ccAzKXvD4DnV9dFrduG4ZNgPs=";
           npmFlags = [ "--legacy-peer-deps" ];
 
           nodejs = nodejs;
@@ -38,6 +38,7 @@
             node-gyp
           ];
 
+          
           buildInputs = with pkgs; [
             vips
             glib
@@ -50,12 +51,15 @@
 
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true";
           PUPPETEER_SKIP_DOWNLOAD = "1";
-          npm_config_build_from_source = "true";
+
           NUXT_TELEMETRY_DISABLED = "1";
+          NODE_OPTIONS = "--max-old-space-size=4096";
 
           buildPhase = ''
             npm run build
           '';
+
+          NODE_PATH = "${nodejs}/lib/node_modules/npm/node_modules";
 
           installPhase = ''
                         mkdir -p $out/lib/portfolio
@@ -135,8 +139,9 @@
             export PATH=$PWD/node_modules/.bin:$PATH
             export BROWSER_BIN="${pkgs.chromium}/bin/chromium"
             export PUPPETEER_EXECUTABLE_PATH="${pkgs.chromium}/bin/chromium"
+            export NODE_PATH="${nodejs}/lib/node_modules/npm/node_modules"
 
-            if [ ! -d "node_modules" ]; then
+            if [ -z "$CI" ] && [ ! -d "node_modules" ]; then
               echo "node_modules not found, running npm install..."
               npm install
             fi
