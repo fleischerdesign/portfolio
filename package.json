@@ -24,7 +24,7 @@
   "dependencies": {
     "@cantoo/pdf-lib": "^2.7.1",
     "@libsql/client": "^0.17.3",
-    "@nuxt/eslint": "^1.15.2",
+    "@nuxt/eslint": "^1.16.0",
     "@nuxt/fonts": "^0.14.0",
     "@nuxt/icon": "^2.2.3",
     "@nuxt/image": "^2.0.0",
