@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@cantoo/pdf-lib": "^2.7.1",
-    "@libsql/client": "^0.17.3",
+    "@libsql/client": "^0.17.4",
     "@nuxt/eslint": "^1.15.2",
     "@nuxt/fonts": "^0.14.0",
     "@nuxt/icon": "^2.2.3",
