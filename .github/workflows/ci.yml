@@ -48,3 +48,13 @@ jobs:
 
       - name: Run Tests
         run: nix develop --command npm test -- --run
+
+  fix-npm-deps:
+    name: Auto-fix npmDepsHash
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    needs: validate
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: fleischerdesign/workflows/.github/workflows/fix-npm-deps.yml@main
+    secrets: inherit
