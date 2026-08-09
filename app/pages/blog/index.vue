@@ -16,7 +16,6 @@
 import type { BlogPostResponse } from '~~/shared/schemas/blog.schema';
 
 const { locale, t } = useI18n()
-const route = useRoute()
 
 const { data } = await useFetch<{ posts: BlogPostResponse[] }>('/api/blog', {
     query: { locale: locale.value }
@@ -24,17 +23,9 @@ const { data } = await useFetch<{ posts: BlogPostResponse[] }>('/api/blog', {
 
 const posts = computed(() => data.value?.posts || [])
 
-useSeoMeta({
-  title: t("navigation.blog"),
-  ogTitle: t("navigation.blog"),
+useAppSeo({
+  title: t("seo.blog_title"),
   description: t("blog.subtitle"),
-  ogDescription: t("blog.subtitle"),
-  ogUrl: route.fullPath,
-  ogType: 'website', 
-  ogLocale: locale.value,
-  twitterTitle: t("navigation.blog"),
-  twitterCard: 'summary_large_image',
-  twitterDescription: t("blog.subtitle"),
-  robots: 'index, follow',
+  type: 'website'
 })
 </script>

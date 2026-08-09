@@ -21,7 +21,6 @@
 import type { ProjectResponse } from '~~/shared/schemas/project.schema';
 
 const { locale, t } = useI18n()
-const route = useRoute()
 
 const { data } = await useFetch<{ projects: ProjectResponse[] }>('/api/projects', {
     query: { locale: locale.value }
@@ -30,17 +29,9 @@ const { data } = await useFetch<{ projects: ProjectResponse[] }>('/api/projects'
 const projects = computed(() => data.value?.projects || [])
 
 
-useSeoMeta({
-  title: t("navigation.projects"),
-  ogTitle: t("navigation.projects"),
+useAppSeo({
+  title: t("seo.projects_title"),
   description: t("projects.subtitle"),
-  ogDescription: t("projects.subtitle"),
-  ogUrl: route.fullPath,
-  ogType: 'website', 
-  ogLocale: locale.value,
-  twitterTitle: t("navigation.projects"),
-  twitterCard: 'summary_large_image',
-  twitterDescription: t("projects.subtitle"),
-  robots: 'index, follow',
+  type: 'website'
 })
 </script>

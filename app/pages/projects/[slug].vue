@@ -265,19 +265,43 @@ const formattedDate = computed(() =>
   project.value?.publishedAt ? formatDate(project.value.publishedAt) : "",
 );
 
-useSeoMeta({
-  title: project.value?.title || "Project",
-  ogTitle: project.value?.title || "Project",
-  description: project.value?.subtitle || "",
-  ogDescription: project.value?.subtitle || "",
-  ogUrl: route.fullPath,
-  ogType: "website",
-  ogLocale: locale.value,
-  twitterTitle: project.value?.title || "Project",
-  twitterCard: "summary_large_image",
-  twitterDescription: project.value?.subtitle || "",
-  robots: "index, follow",
+const siteUrl = "https://fleischer.design";
+
+const projectSchema = computed(() => {
+  if (!project.value) return undefined;
+  const url = `${siteUrl}${route.fullPath}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "@id": `${url}#software`,
+    name: project.value.title,
+    description: project.value.subtitle || project.value.title,
+    url,
+    codeRepository: project.value.repoUrl || undefined,
+    programmingLanguage: project.value.techstack
+      ? project.value.techstack
+          .map((t) => (typeof t === "object" && t && "name" in t ? String((t as { name?: unknown }).name || "") : String(t)))
+          .filter(Boolean)
+          .join(", ")
+      : undefined,
+    author: {
+      "@type": "Person",
+      "@id": `${siteUrl}/#person`,
+      name: "Philipp Fleischer",
+      url: siteUrl,
+    },
+  };
 });
+
+useAppSeo(
+  computed(() => ({
+    title: project.value?.title || "Project",
+    description: project.value?.subtitle || "",
+    image: project.value?.coverImage,
+    type: "website",
+    schemaOrg: projectSchema.value,
+  })),
+);
 
 const details = computed(() => [
   { label: t("project.category"), value: project.value?.category?.name },
