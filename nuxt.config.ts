@@ -88,7 +88,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/color-mode',
     '@nuxtjs/robots',
-    '@nuxtjs/google-fonts',
     '@nuxt/eslint',
     'nuxt-auth-utils',
     'nuxt-authorization',
@@ -146,14 +145,5 @@ export default defineNuxtConfig({
       prefix: 'logo',
       dir: 'app/assets/logo'
     }]
-  },
-  googleFonts: {
-    download: false,
-    preload: false,
-    display: 'swap',
-    families: {
-      Roboto: true,
-    },
-    useStylesheet: true
   }
 })
