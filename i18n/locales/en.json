@@ -555,5 +555,15 @@
       "new": "New Project",
       "empty": "No projects found."
     }
+  },
+  "seo": {
+    "home_title": "Software Engineer & Computer Science Portfolio",
+    "home_desc": "Official portfolio and tech blog of Philipp Fleischer – Clean code architecture, fullstack web engineering, and modern web development insights.",
+    "about_title": "About Me – Background & Skills",
+    "blog_title": "Tech Blog – Software Engineering & Web Development",
+    "projects_title": "Projects – Web Applications & Open Source",
+    "store_title": "Developer Store – Merch & Tools",
+    "contact_title": "Contact – Project Inquiries & Connect",
+    "legal_title": "Legal Notice & Privacy Policy"
   }
 }

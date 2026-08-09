@@ -29,4 +29,10 @@ const redirectUrl = computed(() => {
 definePageMeta({
     layout: 'default',
 });
+
+useAppSeo({
+  title: 'Login',
+  description: 'Authentication',
+  robots: 'noindex, nofollow'
+});
 </script>

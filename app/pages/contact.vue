@@ -5,20 +5,11 @@
 </template>
 
 <script lang="ts" setup>
-const { t, locale } = useI18n();
-const route = useRoute();
+const { t } = useI18n();
 
-useSeoMeta({
-  title: t("home.contact.title"),
-  ogTitle: t("navigation.contact"),
-  description: t("home.contact.title"),
-  ogDescription: t("home.contact.subtitle"),
-  ogUrl: route.fullPath,
-  ogType: 'website', 
-  ogLocale: locale.value,
-  twitterTitle: t("home.contact.title"),
-  twitterCard: 'summary_large_image',
-  twitterDescription: t("home.contact.subtitle"),
-  robots: 'index, follow',
-})
+useAppSeo({
+  title: t("seo.contact_title"),
+  description: t("home.contact.subtitle"),
+  type: 'website'
+});
 </script>

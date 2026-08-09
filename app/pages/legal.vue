@@ -25,20 +25,11 @@ Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten d
 </template>
 
 <script lang="ts" setup>
-const { t, locale } = useI18n();
-const route = useRoute();
+const { t } = useI18n();
 
-useSeoMeta({
-  title: t("navigation.legal"),
-  ogTitle: t("navigation.legal"),
-  description: t("legal.title"),
-  ogDescription: t("legal.subtitle"),
-  ogUrl: route.fullPath,
-  ogType: 'website', 
-  ogLocale: locale.value,
-  twitterTitle: t("navigation.legal"),
-  twitterCard: 'summary_large_image',
-  twitterDescription: t("legal.subtitle"),
-  robots: 'index, follow',
-})
+useAppSeo({
+  title: t("seo.legal_title"),
+  description: t("legal.subtitle"),
+  type: 'website'
+});
 </script>

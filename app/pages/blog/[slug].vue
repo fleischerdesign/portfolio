@@ -112,17 +112,51 @@ if (!post.value) {
 
 const formattedDate = computed(() => post.value?.publishedAt ? formatDate(post.value.publishedAt) : '')
 
-useSeoMeta({
+const siteUrl = 'https://fleischer.design';
+
+const blogSchema = computed(() => {
+  if (!post.value) return undefined;
+  const url = `${siteUrl}${route.fullPath}`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `${url}#article`,
+    isPartOf: {
+      '@type': 'Blog',
+      '@id': `${siteUrl}/${locale.value}/blog`,
+      name: 'Philipp Fleischer Tech Blog'
+    },
+    headline: post.value.title,
+    description: post.value.excerpt,
+    url,
+    inLanguage: locale.value === 'de' ? 'de-DE' : 'en-US',
+    datePublished: post.value.publishedAt ? new Date(post.value.publishedAt).toISOString() : undefined,
+    dateModified: post.value.updatedAt ? new Date(post.value.updatedAt).toISOString() : (post.value.publishedAt ? new Date(post.value.publishedAt).toISOString() : undefined),
+    image: post.value.coverImage ? (post.value.coverImage.startsWith('http') ? post.value.coverImage : `${siteUrl}${post.value.coverImage}`) : undefined,
+    author: {
+      '@type': 'Person',
+      '@id': `${siteUrl}/#person`,
+      name: post.value.author?.name || 'Philipp Fleischer',
+      url: siteUrl
+    },
+    publisher: {
+      '@type': 'Person',
+      '@id': `${siteUrl}/#person`,
+      name: 'Philipp Fleischer',
+      url: siteUrl
+    },
+    keywords: post.value.tags?.map((t: { name: string }) => t.name).join(', ')
+  };
+});
+
+useAppSeo(computed(() => ({
   title: post.value?.title || 'Blog Post',
-  ogTitle: post.value?.title || 'Blog Post',
-  description: post.value?.excerpt || 'Blog Post Description',
-  ogDescription: post.value?.excerpt || 'Blog Post Description',
-  ogUrl: route.fullPath,
-  ogType: 'article', 
-  ogLocale: locale.value,
-  twitterTitle: post.value?.title || 'Blog Post',
-  twitterCard: 'summary_large_image',
-  twitterDescription: post.value?.excerpt || 'Blog Post Description',
-  robots: 'index, follow',
-})
+  description: post.value?.excerpt || '',
+  image: post.value?.coverImage,
+  type: 'article',
+  publishedTime: post.value?.publishedAt ? new Date(post.value.publishedAt) : undefined,
+  modifiedTime: post.value?.updatedAt ? new Date(post.value.updatedAt) : undefined,
+  author: post.value?.author?.name || 'Philipp Fleischer',
+  schemaOrg: blogSchema.value
+})));
 </script>
