@@ -126,21 +126,15 @@ async function handleAddressUpdateSuccess(updatedCompany: CompanyResponse) {
   }
 }
 
-useSeoMeta({
-  title: () =>
-    application.value?.title || t("applications.detail.document.title"),
-  ogTitle: () =>
-    application.value?.title || t("applications.detail.document.title"),
-  description: () =>
-    application.value?.subtitle ||
-    t("applications.detail.document.document_type"),
-  ogDescription: () =>
-    application.value?.subtitle ||
-    t("applications.detail.document.document_type"),
-  ogUrl: route.fullPath,
-  ogType: "website",
-  robots: "noindex, nofollow",
-});
+useAppSeo(
+  computed(() => ({
+    title: application.value?.title || t("applications.detail.document.title"),
+    description:
+      application.value?.subtitle ||
+      t("applications.detail.document.document_type"),
+    robots: "noindex, nofollow",
+  })),
+);
 
 onMounted(() => {
   if (route.query.edit === "true") {

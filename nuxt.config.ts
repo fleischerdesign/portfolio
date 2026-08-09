@@ -47,12 +47,27 @@ export default defineNuxtConfig({
     }
   },
   site: {
-    url: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://fleischer.design'
+    url: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://fleischer.design',
+    name: 'Philipp Fleischer',
+    description: 'Portfolio & Tech-Blog von Philipp Fleischer – Softwareentwicklung, Clean Code & Web Architecture',
+    defaultLocale: 'en'
   },
   sitemap: {
+    exclude: [
+      '/studio/**',
+      '/**/studio/**',
+      '/api/**',
+      '/**/api/**',
+      '/login',
+      '/**/login'
+    ],
     sources: [
       '/api/__sitemap__/urls'
     ]
+  },
+  robots: {
+    disallow: ['/studio', '/login'],
+    sitemap: ['https://fleischer.design/sitemap_index.xml']
   },
   css: [
     '~/assets/css/main.css'
@@ -73,7 +88,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/color-mode',
     '@nuxtjs/robots',
-    '@nuxtjs/google-fonts',
     '@nuxt/eslint',
     'nuxt-auth-utils',
     'nuxt-authorization',
@@ -131,14 +145,5 @@ export default defineNuxtConfig({
       prefix: 'logo',
       dir: 'app/assets/logo'
     }]
-  },
-  googleFonts: {
-    download: false,
-    preload: false,
-    display: 'swap',
-    families: {
-      Roboto: true,
-    },
-    useStylesheet: true
   }
 })

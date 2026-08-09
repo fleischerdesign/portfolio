@@ -48,6 +48,11 @@ const currentBody = computed(() => {
 const viewFormattedDate = computed(() =>
   post.value?.publishedAt ? formatDate(post.value.publishedAt) : "",
 );
+
+const postTags = computed(() => {
+  if (!post.value?.tags) return [];
+  return (post.value.tags as unknown as Array<{ tag?: { id: number; slug: string; name: string }; id?: number; name?: string }>).map((t) => t.tag || { id: t.id || 0, slug: '', name: t.name || '' });
+});
 </script>
 
 <template>
@@ -176,11 +181,11 @@ const viewFormattedDate = computed(() =>
             <div class="mb-6 flex flex-wrap items-center gap-4">
               <div class="flex gap-2">
                 <UiTag
-                  v-for="tagWrapper in post.tags"
-                  :key="(tagWrapper as { tag: { id: number; slug: string; name: string } }).tag.id"
+                  v-for="tag in postTags"
+                  :key="tag.id"
                   variant="glow"
                   size="sm"
-                  >{{ (tagWrapper as { tag: { id: number; slug: string; name: string } }).tag.name }}</UiTag
+                  >{{ tag.name }}</UiTag
                 >
               </div>
             </div>

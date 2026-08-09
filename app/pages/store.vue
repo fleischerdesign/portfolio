@@ -7,20 +7,11 @@
 </template>
 
 <script lang="ts" setup>
-const { t, locale } = useI18n();
-const route = useRoute();
+const { t } = useI18n();
 
-useSeoMeta({
-  title: t("navigation.store"),
-  ogTitle: t("navigation.store"),
+useAppSeo({
+  title: t("seo.store_title"),
   description: t("store.subtitle"),
-  ogDescription: t("store.subtitle"),
-  ogUrl: route.fullPath,
-  ogType: 'website', 
-  ogLocale: locale.value,
-  twitterTitle: t("navigation.store"),
-  twitterCard: 'summary_large_image',
-  twitterDescription: t("store.subtitle"),
-  robots: 'index, follow',
-})
+  type: 'website'
+});
 </script>

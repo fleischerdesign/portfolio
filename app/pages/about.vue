@@ -430,7 +430,6 @@ import type {
 } from "#shared/schemas/profile.schema";
 
 const { t, locale } = useI18n();
-const route = useRoute();
 
 const { profile, fetchProfile } = useProfile();
 
@@ -452,18 +451,11 @@ const availabilityStatus = computed(() =>
 
 const birthLocation = computed(() => profile.value?.birthLocation || "");
 
-useSeoMeta({
-  title: t("navigation.about"),
-  ogTitle: t("navigation.about"),
+useAppSeo({
+  title: t("seo.about_title"),
   description: t("about.subtitle"),
-  ogDescription: t("about.subtitle"),
-  ogUrl: route.fullPath,
-  ogType: "website",
-  ogLocale: locale.value,
-  twitterTitle: t("navigation.about"),
-  twitterCard: "summary_large_image",
-  twitterDescription: t("about.subtitle"),
-  robots: "index, follow",
+  image: '/img/profile.jpg',
+  type: "profile"
 });
 
 const { data: timelineData } = await useFetch<{ timeline: DbTimelineEntry[] }>(

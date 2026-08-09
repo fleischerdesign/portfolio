@@ -14,20 +14,11 @@
 </template>
 
 <script lang="ts" setup>
-const { locale, t } = useI18n();
-const route = useRoute();
+const { t } = useI18n();
 
-useSeoMeta({
-  title: t("navigation.home"),
-  ogTitle: t("navigation.home"),
-  description: t("home.hero.summary"),
-  ogDescription: t("home.hero.summary"),
-  ogUrl: route.fullPath,
-  ogType: 'website',
-  ogLocale: locale.value,
-  twitterTitle: t("navigation.home"),
-  twitterCard: 'summary_large_image',
-  twitterDescription: t("home.hero.summary"),
-  robots: 'index, follow',
-})
+useAppSeo({
+  title: t("seo.home_title"),
+  description: t("seo.home_desc"),
+  type: 'website'
+});
 </script>

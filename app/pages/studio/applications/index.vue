@@ -20,8 +20,7 @@ const {
 );
 const applications = ref(data.value?.applications ?? []);
 
-const { locale, t } = useI18n();
-const route = useRoute();
+const { t } = useI18n();
 
 // Filter and search state
 const searchTerm = ref("");
@@ -64,18 +63,10 @@ watch(data, (newData) => {
   applications.value = newData?.applications ?? [];
 });
 
-useSeoMeta({
-  title: () => t("applications.index.title"),
-  ogTitle: () => t("applications.index.title"),
-  description: () => t("applications.index.subtitle"),
-  ogDescription: () => t("applications.index.subtitle"),
-  ogUrl: route.fullPath,
-  ogType: "website",
-  ogLocale: locale.value,
-  twitterTitle: () => t("applications.index.title"),
-  twitterCard: "summary_large_image",
-  twitterDescription: () => t("applications.index.subtitle"),
-  robots: "noindex, nofollow",
+useAppSeo({
+  title: t("applications.index.title"),
+  description: t("applications.index.subtitle"),
+  robots: "noindex, nofollow"
 });
 </script>
 

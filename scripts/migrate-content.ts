@@ -26,7 +26,7 @@ async function migrate() {
     for (const collection of collections) {
       const dirPath = path.join(CONTENT_DIR, locale, collection);
 
-      let files: string[] = [];
+      let files: string[];
       try {
         files = fs.readdirSync(dirPath);
       } catch {

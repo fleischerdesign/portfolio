@@ -27,7 +27,7 @@
 
           src = ./.;
 
-          npmDepsHash = "sha256-1TCrvfQpvC2KilJ8HDGeOdgY7iCNAI5VoVZz8xiZCx0=";
+          npmDepsHash = "sha256-r7R678CB4dtHJMvPv2oswCmaRpFa9cPJoKnPKXezcYU=";
           npmFlags = [ "--legacy-peer-deps" ];
 
           nodejs = nodejs;

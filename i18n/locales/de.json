@@ -564,5 +564,15 @@
       "new": "Neues Projekt",
       "empty": "Keine Projekte gefunden."
     }
+  },
+  "seo": {
+    "home_title": "Softwareentwickler & Informatik-Portfolio",
+    "home_desc": "Offizielles Portfolio & Tech-Blog von Philipp Fleischer – Saubere Softwarearchitektur, Fullstack-Webentwicklung und Einblicke in moderne Web-Technologien.",
+    "about_title": "Über mich – Werdegang & Fähigkeiten",
+    "blog_title": "Tech Blog – Software Engineering & Web Development",
+    "projects_title": "Projekte – Webanwendungen & Open Source",
+    "store_title": "Developer Store – Merch & Tools",
+    "contact_title": "Kontakt – Projektanfragen & Austausch",
+    "legal_title": "Impressum & Datenschutz"
   }
 }
