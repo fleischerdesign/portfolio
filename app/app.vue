@@ -20,9 +20,9 @@ const siteUrl = 'https://fleischer.design'
 
 // Automatic Canonical and Hreflang management via @nuxtjs/i18n
 const i18nHead = useLocaleHead({
-  addSeoAttributes: true,
-  identifierAttribute: 'id',
-  addDirAttribute: true
+  dir: true,
+  seo: true,
+  lang: true
 })
 
 // Global Structured Data (Person + WebSite) for Google Knowledge Graph
@@ -67,21 +67,21 @@ const globalStructuredData = computed(() => ({
   ]
 }))
 
-useHead({
+useHead(() => ({
 	titleTemplate: (titleChunk) => {
 		return titleChunk ? `${titleChunk} - Philipp Fleischer` : 'Philipp Fleischer'
 	},
-	htmlAttrs: () => i18nHead.value.htmlAttrs || { lang: locale.value },
-	link: () => [
+	htmlAttrs: i18nHead.value.htmlAttrs || { lang: locale.value },
+	link: [
 		{ rel: 'icon', type: 'image/png', href: '/favicon.png' },
 		...(i18nHead.value.link || [])
 	],
-	meta: () => [
+	meta: [
 		{ charset: 'utf-8' },
 		{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
 		...(i18nHead.value.meta || [])
 	],
-	script: () => [
+	script: [
 		{
 			type: 'application/ld+json',
 			innerHTML: JSON.stringify(globalStructuredData.value)
@@ -90,7 +90,7 @@ useHead({
 	bodyAttrs: {
 		class: 'dark:bg-primary-950 dark:text-white text-primary-950 bg-primary-100 transition'
 	}
-})
+}))
 
 if (import.meta.server) {
 	defineOgImageComponent('Default')

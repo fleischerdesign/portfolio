@@ -5,7 +5,7 @@ export interface AppSeoOptions {
   ogTitle?: string
   description?: string
   ogDescription?: string
-  image?: string
+  image?: string | null
   type?: 'website' | 'article' | 'profile'
   robots?: string
   publishedTime?: string | Date
