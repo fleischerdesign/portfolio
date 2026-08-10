@@ -51,3 +51,8 @@
     --container-padding: 6rem;
   }
 }
+
+html, body {
+  font-family: var(--font-sans);
+}
+
