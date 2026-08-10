@@ -145,5 +145,15 @@ export default defineNuxtConfig({
       prefix: 'logo',
       dir: 'app/assets/logo'
     }]
+  },
+  fonts: {
+    families: [
+      {
+        name: 'Roboto',
+        provider: 'google',
+        weights: [100, 300, 400, 500, 700, 900],
+        styles: ['normal', 'italic']
+      }
+    ]
   }
 })
