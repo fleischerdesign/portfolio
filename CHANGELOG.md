@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/fleischerdesign/portfolio/compare/nuxt-app-v0.2.1...nuxt-app-v0.3.0) (2026-08-10)
+
+
+### Features
+
+* **seo:** implement centralized SEO composable, canonicals, and structured data ([db01d43](https://github.com/fleischerdesign/portfolio/commit/db01d433be6b0c951f725dbf4ce24c5a842d8bea))
+
+
+### Bug Fixes
+
+* **types:** resolve TypeScript typechecking in app.vue, blog studio, and add vue-tsc ([fc3ff6a](https://github.com/fleischerdesign/portfolio/commit/fc3ff6ac296c7fbc5a879b79d34abae5f150fa4f))
+
 ## [0.2.1](https://github.com/fleischerdesign/portfolio/compare/nuxt-app-v0.2.0...nuxt-app-v0.2.1) (2026-06-26)
 
 
