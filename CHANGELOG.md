@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/fleischerdesign/portfolio/compare/nuxt-app-v0.3.0...nuxt-app-v0.3.1) (2026-08-10)
+
+
+### Bug Fixes
+
+* **fonts:** explicitly configure Roboto font family and global body font ([09827f3](https://github.com/fleischerdesign/portfolio/commit/09827f33ab3897ad1c0ef09ef465ffdc61a77cec))
+
 ## [0.3.0](https://github.com/fleischerdesign/portfolio/compare/nuxt-app-v0.2.1...nuxt-app-v0.3.0) (2026-08-10)
 
 
